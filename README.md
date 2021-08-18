@@ -22,6 +22,8 @@ JavaSprict初心者のため、冗長なコードとなっています。
 ## 動作確認環境
 ゲーム言語:日本語
 
+## 参考にさせていただいたもの
+[billyvg/OverlayPlugin-themes](https://github.com/billyvg/OverlayPlugin-themes)　より、[xephero.html](https://github.com/billyvg/OverlayPlugin-themes/blob/master/xephero.html)　を編集させていただきました。
 
 ## 前提Plugin
 [ngld/OverlayPlugin](https://github.com/ngld/OverlayPlugin)
