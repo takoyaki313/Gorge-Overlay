@@ -30,5 +30,10 @@ JavaSprict初心者のため、冗長なコードとなっています。
 
 [ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)
 
+## これからの予定
+ロボとプレイヤーのDPSの合算
+
+マトンを除外したKillsの表示
+
 ## 既知のバグ
 ロボに搭乗した際、うまくOverlayに反映されないときがある。
