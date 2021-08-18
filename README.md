@@ -1,3 +1,10 @@
 # TakOverlay
 個人で使用するために作成しました。
-guildのクラスは一緒に行くメンバーを手動で追加していくといいでしょう。
+
+JavaSprict初心者のため、冗長なコードとなっています。
+またバグだらけですが、大目に見てください。
+
+## 前提Plugin
+[Overlay(ngld)](https://github.com/ngld/OverlayPlugin)
+
+## 動作例
