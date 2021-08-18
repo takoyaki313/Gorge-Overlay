@@ -1,0 +1,126 @@
+<style >
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+html {
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+#overlay {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #ded7be;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+#source {
+    display: none;
+}
+
+ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+}
+
+li .dps {
+    display: inline-block;
+    color: #ded7be;
+    width: 28%;
+    max-width: 70px;
+    text-align: right;
+    font-size: 18px;
+}
+
+li .name {
+    display: inline-block;
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+
+li.job-icon {
+    height: 20px;
+    width: 20px;
+    position: relative;
+    z-index: 100;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+li .detail {
+    display: inline-block;
+    vertical-align: top;
+    color: #ded7be;
+    font-size: 12px;
+    width: 72%;
+}
+
+li .number {
+    display: inline-block;
+    color: #ded7be;
+    float: right;
+    font-size: 13px;
+    width: 100px;
+}
+
+li .data1 {
+    display: inline-block;
+    text-align: right;
+    color: #ded7be;
+    float: right;
+    font-size: 13px;
+    width: 33px;
+}
+
+li .data2 {
+    display: inline-block;
+    text-align: right;
+    color: #ded7be;
+    float: right;
+    font-size: 13px;
+    width: 33px;
+}
+
+li .data3 {
+    display: inline-block;
+    text-align: right;
+    color: #ded7be;
+    float: right;
+    font-size: 13px;
+    width: 33px;
+}
+
+li .Robot {
+    display: inline-block;
+    width: auto;
+}
+
+li .bar {
+    display: block;
+    height: 4px;
+    background-color: rgba(157,145,101,0.7);
+}
+
+.inactive li .bar {
+    background-color: #d8dadb;
+}
+
+li.party {
+    background-color: rgba(37,92,80,0.5);
+}
+
+li.me {
+    background-color: rgba(93,81,37,0.7);
+}
+
+li.robot {
+    background-color: rgba(20,94,7,0.2);
+}
+
+</style >
