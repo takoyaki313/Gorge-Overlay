@@ -4,20 +4,19 @@
         var T_Kills = [];
         var pvpzone = 0;
         var Log_listen = 0;
+        var MargeRobots = 'True';
 
         $(function() {
         "use strict";
         var rows = 25;
 
-
-        console.log(T_Kills);
         var rdps_max = 0;
         var team = [];
         var audio = new Audio('sound/rin.wav');
         addOverlayListener("CombatData", (e) => update(e));
         addOverlayListener("ChangeZone",(Area) => {
           console.log(Area);
-          if(Area.zoneName == "The Goblet" || Area.zoneName == 'Hidden Gorge'){
+          if(Area.zoneName == 'Hidden Gorge'){
             Log_listen = 1;
           }
           else{
@@ -356,7 +355,74 @@
 
         startOverlayEvents();
 
+        function margedata(c,maxrow){
+          var GorgeData =[];
+          //console.log(maxrow.length);
+          for(var i = 0; i < maxrow.length; i++){
+            var combatant = c[maxrow[i]];
+            //console.log(combatant);
+            if(GorgeData.length == 0){
+              GorgeData[0] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,''];
+              //GorgeData[0] = ['Justice Suzuki',Number(combatant.encdps),combatant.Job,combatant.kills,combatant.deaths,0,''];
+              //console.log('初期設定');
+            }
+            else{
+              for(var k = 0; k < GorgeData.length; k++){
+                console.log('k :'+ k + 'GorgeData.length :'+GorgeData.length);
+                if(GorgeData[k][0].indexOf(combatant.name) !== -1){//配列にロボットのデータが存在する
+                  //console.log('Marge配列にロボットのデータが存在する');
+                  var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
+                  total = Math.round(total * 100) / 100;
+                  GorgeData[k] = [combatant.name,total,combatant.Job,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),'',''];
+                  k = 100;
+                }
+                else{
+                  if(combatant.name.indexOf(GorgeData[k][0]) !== -1){//配列にプレイヤー本体のデータが存在する
+                    //console.log('Marge配列にプレイヤー本体のデータが存在する');
+                    var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
+                    total = Math.round(total * 100) / 100;
+                    console.log(Number(GorgeData[k][1]) +' + '+ Number(combatant.encdps)+' = '+total);
+                    GorgeData[k] = [GorgeData[k][0],total,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,''];
+                    k = 100;
+                  }
+                }
+                if(k == GorgeData.length -1){
+                  //console.log('存在しないため、追加');
+                  GorgeData[GorgeData.length] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,''];
+                  k = GorgeData.length;
+                }
+              }
+            }
 
+            //GorgeData[i] = [combatant.name,combatant.encdps,combatant.Job,combatant.kills,combatant.deaths,'',''];
+            console.log(GorgeData);
+          }//combatantのデータコピー部分
+          for(var i = 0; i < GorgeData.length; i++){//マトン等以外のキルを表示するための部分
+            for(var k = 0; k < T_Kills.length; k++){
+              if(T_Kills[k][0].indexOf(GorgeData[i][0]) !== -1){
+                GorgeData[i][5] = GorgeData[i][5] + T_Kills[k][1];
+                //console.log('DATA ADD');
+                //console.log(GorgeData);
+                k = T_Kills.length;
+              }
+            }
+          }
+          console.log(GorgeData);
+          for(var i = 0; i < GorgeData.length; i++){//ロボ搭乗状況の表示用
+            //console.log('i :'+i);
+            for(var k = 0; k < Robots.length; k++){
+              //console.log('k :'+k);
+              if(Robots[k][0].indexOf(GorgeData[i][0]) !== -1){
+                GorgeData[i][6] = Robots[k][3];
+                //console.log('DATA ADD');
+                //console.log(GorgeData);
+                k = Robots.length;
+              }
+            }
+          }
+          console.log(GorgeData);
+          return GorgeData;
+        }
         function update(e) {
         var encounter = e.Encounter;
         var combatants = e.Combatant;
@@ -381,7 +447,7 @@
         header.find('.dps').text(encounter.ENCDPS);
         }
         pvpzone = AreaCheck(encounter);
-        if(pvpzone != 0){
+        if(pvpzone !== 0){
             header.find('.job-icon').html('<img src="images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
             header.find('.name').text(encounter.CurrentZoneName);
         }
@@ -408,165 +474,229 @@
         var maxdps = false;
 
 
-        for (var i = 0; i < names.length; i++) {
-        var combatant = combatants[names[i]];
-        var icon =0;
-        var row = template.clone();
-
-        if (!maxdps) {
-        maxdps = parseFloat(combatant.encdps);
-        }
 
 
 
-        //ここからPVPエリア専用判別式
-        if(pvpzone != 0){
-          //PTメンバーに色をつける。
-        for (var q = 0; q < PTmax && q < team.length; q++) {
-          if(combatant.name == team [q]){
-            row.addClass('party');
+        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1
+      ||encounter.CurrentZoneName == 'Middle La Noscea'
+      &&MargeRobots == 'True'){
+          //console.log('yey');
+
+          var e_sonomama = combatants;
+          var GorgeData = margedata(e_sonomama,names);
+          maxdps = GorgeData[0][1];
+
+
+          for(var i = 0; i < GorgeData.length; i++){
+            var row = template.clone();
+            var Dps = GorgeData[i][1];
+
+            if(pvpzone != 0){
+              //PTメンバーに色をつける。
+              for (var q = 0; q < 4 && q < team.length; q++) {
+                if(GorgeData[i][0] == team [q]){
+                  row.addClass('party');
+                }
+              }
+            }
+            if (GorgeData[i][0] == 'YOU'||GorgeData[i][0] =='Takoyaki') {
+            row.addClass('me');
+            }
+
+            row.find('.dps').text(Dps.toFixed(2));
+            row.find('.name').text(GorgeData[i][0]);
+            row.find('.job-icon').html('<img src="images/glow/' + GorgeData[i][2].toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+            row.find('.data1').css('width', 0);
+            row.find('.number').css('width', 70);
+            row.find('.data2').css('font-size', 15);
+            row.find('.data3').css('font-size', 15);
+            row.find('.data2').text('K:'+ GorgeData[i][5]);
+            row.find('.data3').text('D:'+ GorgeData[i][4]);
+            row.find('.bar').css('height', 4);
+            row.find('.bar').css('width', ((parseFloat(GorgeData[i][1]) / maxdps) * 100) + '%');
+            row.find('.Robot').css('height',0);
+            if(GorgeData[i][6].length > 0){
+              row.find('.bar').css('width',0);
+              row.find('.bar').css('height',18);
+              row.find('.Robot').css('height',18);
+              row.find('.Robot').css('width',GorgeData[i][6].length * 12);
+              row.find('.Robot').html(RoborImage(GorgeData[i][6]));
+            }
+            for(var t = 0; t < Robots.length ; t++){
+              if(Robots[t][0].indexOf(GorgeData[i][0])!== -1){
+
+                t = Robots.length;
+              }
+              else{
+              }
+            }
+            container.append(row);
           }
-        }
-        //ロボ専用判別式
 
-        if(combatant.name.indexOf('ファルコン・チェイサ')!== -1){
-            combatant.name = combatant.name.substr( 6 );
-            row.find('.bar').css('background', 'rgba(101,113,157,0.8)');
-            icon = 1;
-            //console.log('ファルコン・チェイサ');
-            row.addClass('robot');
         }
-        if(combatant.name.indexOf('ファルコン・オプレッサ')!== -1){
-            icon = 2;
-            //console.log('ファルコン・オプレッサ');
-            combatant.name = combatant.name.substr( 6 );
-            row.find('.bar').css('background', 'rgba(101,113,157,0.8)');
-            row.addClass('robot');
-        }
-        if(combatant.name.indexOf('レイヴン・チェイサ')!== -1){
-            icon = 1;
-            //console.log('レイヴン・チェイサ');
-            combatant.name = combatant.name.substr( 5 );
+        else{
+          for (var i = 0; i < names.length; i++) {
+          var combatant = combatants[names[i]];
+          var icon =0;
+          var row = template.clone();
+
+          if (!maxdps) {
+          maxdps = parseFloat(combatant.encdps);
+          }
+
+
+
+          //ここからPVPエリア専用判別式
+          if(pvpzone !== 0){
+            //PTメンバーに色をつける。
+          for (var q = 0; q < PTmax && q < team.length; q++) {
+            if(combatant.name == team [q]){
+              row.addClass('party');
+            }
+          }
+
+          //ロボ専用判別式
+
+          if(combatant.name.indexOf('ファルコン・チェイサ')!== -1){
+              combatant.name = combatant.name.substr( 6 );
+              row.find('.bar').css('background', 'rgba(101,113,157,0.8)');
+              icon = 1;
+              //console.log('ファルコン・チェイサ');
+              row.addClass('robot');
+          }
+          if(combatant.name.indexOf('ファルコン・オプレッサ')!== -1){
+              icon = 2;
+              //console.log('ファルコン・オプレッサ');
+              combatant.name = combatant.name.substr( 6 );
+              row.find('.bar').css('background', 'rgba(101,113,157,0.8)');
+              row.addClass('robot');
+          }
+          if(combatant.name.indexOf('レイヴン・チェイサ')!== -1){
+              icon = 1;
+              //console.log('レイヴン・チェイサ');
+              combatant.name = combatant.name.substr( 5 );
+              row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
+              row.addClass('robot');
+          }
+          if(combatant.name.indexOf('レイヴン・オプレッサ')!== -1){
+              icon = 2;
+              //console.log('レイヴン・オプレッサ');
+              combatant.name = combatant.name.substr( 5 );
+              row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
+              row.addClass('robot');
+          }
+
+          if(combatant.name.indexOf('Takobo')!== -1){
+            combatant.name = combatant.name.substring(13,combatant.name.length-1);
             row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
             row.addClass('robot');
-        }
-        if(combatant.name.indexOf('レイヴン・オプレッサ')!== -1){
-            icon = 2;
-            //console.log('レイヴン・オプレッサ');
-            combatant.name = combatant.name.substr( 5 );
-            row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
-            row.addClass('robot');
-        }
-
-        if(combatant.name.indexOf('Takobo')!== -1){
-          combatant.name = combatant.name.substring(13,combatant.name.length-1);
-          row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
-          row.addClass('robot');
-          combatant.name = 'ChocoboNosuke'
-          combatant.Job = "Opp";
-        }
-        if(combatant.name.indexOf('青燐機関車')!== -1){
-          icon = 3;
-        }
-        //表示テスト用
-        //combatant.kills = 78;
-        //combatant.deaths = 56;
-
-//ここまでPvPエリアのみ動作する部分
-
-      }else{
-        //クリティカルの表示用
-          var crit;
-          crit = combatant.crithits / combatant.hits;
-          crit = Math.round(crit*100);
-          if(crit == 'NaN'){
-            crit = 0;
+            combatant.name = 'ChocoboNosuke'
+            combatant.Job = "Opp";
           }
-      }
+          if(combatant.name.indexOf('青燐機関車')!== -1){
+            icon = 3;
+          }
+          //表示テスト用
+          //combatant.kills = 78;
+          //combatant.deaths = 56;
 
-        //以下「Takoyaki」の中にACT上の名前を入れる
-        if (combatant.name == 'YOU'||combatant.name =='Takoyaki') {
-        row.addClass('me');
+  //ここまでPvPエリアのみ動作する部分
+
+        }else{
+          //クリティカルの表示用
+            var crit;
+            crit = combatant.crithits / combatant.hits;
+            crit = Math.round(crit*100);
+            if(crit == 'NaN'){
+              crit = 0;
+            }
         }
-        //Limit Break
-        if (combatant.name == 'Limit Break') {
-        icon = 4;
-        }
 
-        if (combatant.damage.length > 6) {
-        combatant.damage = combatant.damage.substring(0,combatant.damage.length-3) + 'K';
-        }
-        if (combatant.encdps.length > 7) {
-        combatant.encdps = combatant.encdps.substring(0,combatant.encdps.length-1);
-        }
-        //ジョブアイコンが無いやつら
+          //以下「Takoyaki」の中にACT上の名前を入れる
+          if (combatant.name == 'YOU'||combatant.name =='Takoyaki') {
+          row.addClass('me');
+          }
+          //Limit Break
+          if (combatant.name == 'Limit Break') {
+          icon = 4;
+          }
 
-        row.find('.dps').text(combatant.encdps);
+          if (combatant.damage.length > 6) {
+          combatant.damage = combatant.damage.substring(0,combatant.damage.length-3) + 'K';
+          }
+          if (combatant.encdps.length > 7) {
+          combatant.encdps = combatant.encdps.substring(0,combatant.encdps.length-1);
+          }
+          //ジョブアイコンが無いやつら
 
-        row.find('.name').text(combatant.name);
+          row.find('.dps').text(combatant.encdps);
 
-        if(pvpzone !== 0){
+          row.find('.name').text(combatant.name);
+
+          if(pvpzone !== 0){
+            if(icon == 0){
+              row.find('.job-icon').html('<img src="images/glow/' + combatant.Job.toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+            }
+            else if(icon == 1){
+              row.find('.job-icon').html('<img src="images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+            }
+            else if(icon == 2){
+              row.find('.job-icon').html('<img src="images/glow/opp.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+            }
+
+              row.find('.data1').css('width', 0);
+              row.find('.number').css('width', 70);
+              row.find('.data2').css('font-size', 15);
+              row.find('.data3').css('font-size', 15);
+              //row.find('.data3').css('width', 40);
+              row.find('.data2').text('K:'+ combatant.kills);
+              row.find('.data3').text('D:'+ combatant.deaths);
+          }
+          else{
+            row.find('.data1').text(crit + '%');
+            row.find('.data2').text(combatant.DirectHitPct);
+            row.find('.data3').text(combatant.CritDirectHitPct);
+          }
+          //ジョブアイコン
           if(icon == 0){
             row.find('.job-icon').html('<img src="images/glow/' + combatant.Job.toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
           }
           else if(icon == 1){
             row.find('.job-icon').html('<img src="images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
           }
-          else if(icon == 2){
-            row.find('.job-icon').html('<img src="images/glow/opp.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+          else if(icon == 4){
+              row.find('.job-icon').html('<img src="images/glow/lib.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
           }
+          if(encounter.CurrentZoneName.indexOf('Hidden Gorge')!== -1
+          ||encounter.CurrentZoneName.indexOf('The Goblet')!== -1
+          ||encounter.CurrentZoneName == 'Middle La Noscea'
+          ){
+            //Robots[0] = ['Rena Takoyaki',55000,75000,'jasjaschecheoppoppchechechecheche']//test用
+            row.find('.bar').css('height', 4);
+            row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
+            row.find('.Robot').css('height',0);
+            for(var t = 0; t < Robots.length ; t++){
+              if(Robots[t][0].indexOf(combatant.name)!== -1){
+                row.find('.bar').css('width',0);
+                row.find('.bar').css('height',18);
+                row.find('.Robot').css('height',18);
+                row.find('.Robot').css('width',Robots[t][3].length * 12);
+                row.find('.Robot').html(RoborImage(Robots[t][3]));
+                t = Robots.length;
+              }
+              else{
+              }
+            }
+          }
+          else{//ゴージ以外
+            row.find('.bar').css('height', 4);
+            row.find('.Robot').css('height',0);
+            row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
+          }
+          container.append(row);
+          }
+        }
 
-            row.find('.data1').css('width', 0);
-            row.find('.number').css('width', 70);
-            row.find('.data2').css('font-size', 15);
-            row.find('.data3').css('font-size', 15);
-            //row.find('.data3').css('width', 40);
-            row.find('.data2').text('K:'+ combatant.kills);
-            row.find('.data3').text('D:'+ combatant.deaths);
-        }
-        else{
-          row.find('.data1').text(crit + '%');
-          row.find('.data2').text(combatant.DirectHitPct);
-          row.find('.data3').text(combatant.CritDirectHitPct);
-        }
-        //ジョブアイコン
-        if(icon == 0){
-          row.find('.job-icon').html('<img src="images/glow/' + combatant.Job.toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
-        }
-        else if(icon == 1){
-          row.find('.job-icon').html('<img src="images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
-        }
-        else if(icon == 4){
-            row.find('.job-icon').html('<img src="images/glow/lib.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
-        }
-        if(encounter.CurrentZoneName.indexOf('Hidden Gorge')!== -1
-        ||encounter.CurrentZoneName.indexOf('The Goblet')!== -1
-        ||encounter.CurrentZoneName == 'Middle La Noscea'
-        ){
-          //Robots[0] = ['Rena Takoyaki',55000,75000,'jasjaschecheoppoppchechechecheche']//test用
-          row.find('.bar').css('height', 3);
-          row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
-          row.find('.Robot').css('height',0);
-          for(var t = 0; t < Robots.length ; t++){
-            if(Robots[t][0].indexOf(combatant.name)!== -1){
-              row.find('.bar').css('width',0);
-              row.find('.bar').css('height',18);
-              row.find('.Robot').css('height',18);
-              row.find('.Robot').css('width',Robots[t][3].length * 12);
-              row.find('.Robot').html(RoborImage(Robots[t][3]));
-              t = Robots.length;
-            }
-            else{
-            }
-          }
-        }
-        else{//ゴージ以外
-          row.find('.bar').css('height', 3);
-          row.find('.Robot').css('height',0);
-          row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
-        }
-        container.append(row);
-        }
         $('#overlay').replaceWith(container);
         }
       });

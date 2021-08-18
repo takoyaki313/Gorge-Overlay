@@ -7,11 +7,11 @@
           ||encounter.CurrentZoneName == 'Middle La Noscea'
           ||encounter.CurrentZoneName.indexOf('Carteneau Flats:Bourderland Ruins')!== -1
           ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
-          ||encounter.CurrentZoneName.indexOf('the Fields of Glory (Shatter)')!== -1
+          ||encounter.CurrentZoneName.indexOf('Glory')!== -1
           ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1){
             if(encounter.CurrentZoneName.indexOf('Carteneau Flats:Bourderland Ruins')!== -1
             ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
-            ||encounter.CurrentZoneName.indexOf('the Fields of Glory (Shatter)')!== -1
+            ||encounter.CurrentZoneName.indexOf('Glory')!== -1
             ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1){
             pvpzone = 8;
             }
