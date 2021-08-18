@@ -8,6 +8,7 @@ FLでも使えるはずですが、テストしていないため動かない気
 余裕があるときに直すかも。
 
 中の人がこれ1つでPvEコンテンツも行こうとしているので、PvEエリアだと表示が少し変わります。  
+表示は左から「Crit%」「Direct%」「CritDirect%」です。  
 詳細は動作例を確認してください。
 
 OverlayPlugin製作初心者のため、冗長なコードとなっています。  
@@ -18,7 +19,7 @@ OverlayPlugin製作初心者のため、冗長なコードとなっています�
 プライバシー保護のため、この画像では名前を途中まで表示させています。
 
 ![image](https://user-images.githubusercontent.com/40759792/129853509-e9a02321-67c3-4bde-a67a-8db9ce9ff479.png)
-
+![image](https://user-images.githubusercontent.com/40759792/129938091-bc320fc1-331e-48ce-aaaa-a52c3f0a263e.png)
 ## 動作確認環境
 ゲーム言語:日本語
 
