@@ -23,12 +23,13 @@
             Log_listen = 0;
           }
           $(document).ready(function(){setTimeout(function(){
+            console.log('40sReset');
             console.log(Robots);
             console.log(T_Kills);
-            console.log('30sReset');
+            console.log('40sReset');
             Robots = [];
             T_Kills = [];
-            }, 30000);
+          }, 40000);
           });
 
         })
@@ -355,74 +356,7 @@
 
         startOverlayEvents();
 
-        function margedata(c,maxrow){
-          var GorgeData =[];
-          //console.log(maxrow.length);
-          for(var i = 0; i < maxrow.length; i++){
-            var combatant = c[maxrow[i]];
-            //console.log(combatant);
-            if(GorgeData.length == 0){
-              GorgeData[0] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,''];
-              //GorgeData[0] = ['Justice Suzuki',Number(combatant.encdps),combatant.Job,combatant.kills,combatant.deaths,0,''];
-              //console.log('初期設定');
-            }
-            else{
-              for(var k = 0; k < GorgeData.length; k++){
-                console.log('k :'+ k + 'GorgeData.length :'+GorgeData.length);
-                if(GorgeData[k][0].indexOf(combatant.name) !== -1){//配列にロボットのデータが存在する
-                  //console.log('Marge配列にロボットのデータが存在する');
-                  var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
-                  total = Math.round(total * 100) / 100;
-                  GorgeData[k] = [combatant.name,total,combatant.Job,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),'',''];
-                  k = 100;
-                }
-                else{
-                  if(combatant.name.indexOf(GorgeData[k][0]) !== -1){//配列にプレイヤー本体のデータが存在する
-                    //console.log('Marge配列にプレイヤー本体のデータが存在する');
-                    var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
-                    total = Math.round(total * 100) / 100;
-                    console.log(Number(GorgeData[k][1]) +' + '+ Number(combatant.encdps)+' = '+total);
-                    GorgeData[k] = [GorgeData[k][0],total,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,''];
-                    k = 100;
-                  }
-                }
-                if(k == GorgeData.length -1){
-                  //console.log('存在しないため、追加');
-                  GorgeData[GorgeData.length] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,''];
-                  k = GorgeData.length;
-                }
-              }
-            }
 
-            //GorgeData[i] = [combatant.name,combatant.encdps,combatant.Job,combatant.kills,combatant.deaths,'',''];
-            console.log(GorgeData);
-          }//combatantのデータコピー部分
-          for(var i = 0; i < GorgeData.length; i++){//マトン等以外のキルを表示するための部分
-            for(var k = 0; k < T_Kills.length; k++){
-              if(T_Kills[k][0].indexOf(GorgeData[i][0]) !== -1){
-                GorgeData[i][5] = GorgeData[i][5] + T_Kills[k][1];
-                //console.log('DATA ADD');
-                //console.log(GorgeData);
-                k = T_Kills.length;
-              }
-            }
-          }
-          console.log(GorgeData);
-          for(var i = 0; i < GorgeData.length; i++){//ロボ搭乗状況の表示用
-            //console.log('i :'+i);
-            for(var k = 0; k < Robots.length; k++){
-              //console.log('k :'+k);
-              if(Robots[k][0].indexOf(GorgeData[i][0]) !== -1){
-                GorgeData[i][6] = Robots[k][3];
-                //console.log('DATA ADD');
-                //console.log(GorgeData);
-                k = Robots.length;
-              }
-            }
-          }
-          console.log(GorgeData);
-          return GorgeData;
-        }
         function update(e) {
         var encounter = e.Encounter;
         var combatants = e.Combatant;
@@ -477,11 +411,7 @@
 
 
 
-        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1
-      ||encounter.CurrentZoneName == 'Middle La Noscea'
-      &&MargeRobots == 'True'){
-          //console.log('yey');
-
+        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 && MargeRobots == 'True'){
           var e_sonomama = combatants;
           var GorgeData = margedata(e_sonomama,names);
           maxdps = GorgeData[0][1];
@@ -512,7 +442,6 @@
             row.find('.data3').css('font-size', 15);
             row.find('.data2').text('K:'+ GorgeData[i][5]);
             row.find('.data3').text('D:'+ GorgeData[i][4]);
-            row.find('.bar').css('height', 4);
             row.find('.bar').css('width', ((parseFloat(GorgeData[i][1]) / maxdps) * 100) + '%');
             row.find('.Robot').css('height',0);
             if(GorgeData[i][6].length > 0){
@@ -671,8 +600,7 @@
           ||encounter.CurrentZoneName.indexOf('The Goblet')!== -1
           ||encounter.CurrentZoneName == 'Middle La Noscea'
           ){
-            //Robots[0] = ['Rena Takoyaki',55000,75000,'jasjaschecheoppoppchechechecheche']//test用
-            row.find('.bar').css('height', 4);
+
             row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
             row.find('.Robot').css('height',0);
             for(var t = 0; t < Robots.length ; t++){
@@ -689,7 +617,7 @@
             }
           }
           else{//ゴージ以外
-            row.find('.bar').css('height', 4);
+
             row.find('.Robot').css('height',0);
             row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
           }
