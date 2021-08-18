@@ -1,4 +1,4 @@
-# TakOverlay
+# Gorge-Overlay
 個人で使用するために作成しました。
 
 JavaSprict初心者のため、冗長なコードとなっています。
