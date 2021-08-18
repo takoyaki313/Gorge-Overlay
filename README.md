@@ -5,6 +5,6 @@ JavaSprict初心者のため、冗長なコードとなっています。
 またバグだらけですが、大目に見てください。
 
 ## 前提Plugin
-[Overlay(ngld)](https://github.com/ngld/OverlayPlugin)
+[OverlayPlugin (ngld)](https://github.com/ngld/OverlayPlugin)
 
 ## 動作例
