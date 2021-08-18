@@ -22,6 +22,7 @@ JavaSprict初心者のため、冗長なコードとなっています。
 
 ## 前提Plugin
 [ngld/OverlayPlugin](https://github.com/ngld/OverlayPlugin)
+
 [ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)
 
 ## 既知のバグ
