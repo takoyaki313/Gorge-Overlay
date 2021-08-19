@@ -63,6 +63,7 @@
 
             //GorgeData[i] = [combatant.name,combatant.encdps,combatant.Job,combatant.kills,combatant.deaths,'',''];
           }//combatantのデータコピー部分
+
           var killroop = T_Kills.length;
           for(var i = 0; i < GorgeData.length; i++){//マトン等以外のキルを表示するための部分
             //console.log('キルi :'+i);
@@ -89,6 +90,15 @@
             }
           }
           //console.log(GorgeData);
+          //test用データ
+          /*
+          GorgeData[1] = ['Justice Suzuki',8752.66,'Rdm',3,4,6,'cheoppche'];
+          GorgeData[2] = ['Oppresor Tanaka',6812.76,'Sam',3,4,8,'oppoppche'];
+          GorgeData[3] = ['Chaiser Satou',3812.7,'Blm',3,4,8,'jasjasjas'];
+          */
+          GorgeData.sort((a,b) => {
+              return(b[1] - a[1])
+          })
           return GorgeData;
         }
 

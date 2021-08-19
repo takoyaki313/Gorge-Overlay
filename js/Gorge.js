@@ -54,7 +54,7 @@
                     //なにもしない
                     }
                     else{//プレイヤーを倒した場合
-                      audio.play();
+                      //audio.play();
                       if(T_Kills.length == 0){
                         T_Kills[0] = [log.line[4].substr(0 ,log.line[4].indexOf('は、')),1];
                         console.log(T_Kills);
@@ -407,10 +407,7 @@
         var PTmax = pvpzone;
         var maxdps = false;
 
-
-
-
-
+        //||encounter.CurrentZoneName.indexOf('The Goblet') !== -1
         if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 && MargeRobots == 'True'){
           var e_sonomama = combatants;
           var GorgeData = margedata(e_sonomama,names);
