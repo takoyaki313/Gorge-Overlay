@@ -4,16 +4,19 @@
         var T_Kills = [];
         var pvpzone = 0;
         var Log_listen = 0;
-        var MargeRobots = 'True';
+
 
         $(function() {
         "use strict";
-        var rows = 25;
-
+        var rows = 35;
+        var myname = '';
         var rdps_max = 0;
         var team = [];
         var audio = new Audio('sound/rin.wav');
         addOverlayListener("CombatData", (e) => update(e));
+        addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
+          myname = MyName.charName;
+        })
         addOverlayListener("ChangeZone",(Area) => {
           console.log(Area);
           if(Area.zoneName == 'Hidden Gorge'){
@@ -36,7 +39,7 @@
 
         addOverlayListener("LogLine", (log) => {
 
-          if(Log_listen != 2){//本番環境では　＝＝　1 にすること
+          if(Log_listen == 1){//本番環境では　＝＝　1 にすること
 
             if(log.line.length == 6){
               //console.warn(log);
@@ -44,12 +47,11 @@
                 if(log.line[2] !== '0'){
                   if(log.line[4].indexOf('を倒した') !== -1){
 
-                    console.log(log);
+                    //console.log(log);
                     if(log.line[4].indexOf('マグス')!== -1
                     ||log.line[4].indexOf('バイキング')!== -1
                     ||log.line[4].indexOf('マーシナリー')!== -1
                     ||log.line[4].indexOf('タンク')!== -1
-                    ||log.line[4].indexOf('クラウド')!== -1
                   ){//オブジェクトを破壊した場合
                     //なにもしない
                     }
@@ -57,21 +59,21 @@
                       //audio.play();
                       if(T_Kills.length == 0){
                         T_Kills[0] = [log.line[4].substr(0 ,log.line[4].indexOf('は、')),1];
-                        console.log(T_Kills);
+                        //console.log(T_Kills);
                       }
                       else{
                         for(var z = 0; z < T_Kills.length; z++ ){
                             if(log.line[4].substr(0 ,log.line[4].indexOf('は、')) == T_Kills[z][0]){
                               T_Kills[z][1] = T_Kills[z][1] + 1;
-                              console.log(T_Kills[z][0] + 'が1kill');
+                              //console.log(T_Kills[z][0] + 'が1kill');
                               z = T_Kills.length;
-                              console.log(T_Kills);
+                              //console.log(T_Kills);
                             }
                             else{
                               if(z == T_Kills.length - 1){
                                 T_Kills[T_Kills.length] = [log.line[4].substr(0 ,log.line[4].indexOf('は、')), 1];
-                                console.log('新規追加T_Kills');
-                                console.log(T_Kills);
+                                //console.log('新規追加T_Kills');
+                                //console.log(T_Kills);
                                 z = T_Kills.length;
                               }
                             }
@@ -89,10 +91,10 @@
               if(log.line[6] !== '1E5'){
                 if(log.line[6] == 50000){//チェイサー
                   if(Robots.length == 0){
-                    console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
+                    //console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
                     Robots[0] = [log.line[3],log.line[5],log.line[6]];
                     Robots[0][3] = 'che';
-                    console.log(Robots);
+                    //console.log(Robots);
                   }
                   else{
                     for(var q = 0; q < Robots.length; q++){
@@ -101,16 +103,16 @@
                         if(log.line[6] !== Robots[q][2]){//もし最大HPが異なるなら
 
                           var ten = Robots[q][3] + 'che';//オプレッサーに新しく乗ったと判定
-                          console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
+                          //console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
                           Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                         else{//もし最大HPが同じ場合
-                          if(Robots[q][1] < log.line[5]){//HPが増えたかどうかをチェック
+                          if(Number(Robots[q][1]) < Number(log.line[5])){//HPが増えたかどうかをチェック
                             var ten = Robots[q][3] + 'che';//オプレッサーに新しく乗ったと判定
-                            console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
+                            //console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
-                            console.log(Robots);
+                            //console.log(Robots);
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -119,10 +121,10 @@
 
                       else{//同じ名前が見つからないとき
                         if(q == Robots.length - 1){//同じ名前が見つからずループを終わるとき
-                          console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
+                          //console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
                           Robots[Robots.length] = [log.line[3],log.line[5],log.line[6],'che'];
                           q = Robots.length;//ループ抜け用
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                       }
                     }
@@ -130,10 +132,10 @@
                 }
                 if(log.line[6] == 75000){//ジャスティス
                   if(Robots.length == 0){
-                    console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
+                    //console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
                     Robots[0] = [log.line[3],log.line[5],log.line[6]];
                     Robots[0][3] = 'jas';
-                    console.log(Robots);
+                    //console.log(Robots);
                   }
                   else{
                     for(var q = 0; q < Robots.length; q++){
@@ -142,16 +144,16 @@
                         if(log.line[6] !== Robots[q][2]){//もし最大HPが異なるなら
 
                           var ten = Robots[q][3] + 'jas';//オプレッサーに新しく乗ったと判定
-                          console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
+                          //console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
                           Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                         else{//もし最大HPが同じ場合
-                          if(Robots[q][1] < log.line[5]){//HPが増えたかどうかをチェック
+                          if(Number(Robots[q][1]) < Number(log.line[5])){//HPが増えたかどうかをチェック
                             var ten = Robots[q][3] + 'jas';//オプレッサーに新しく乗ったと判定
-                            console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
+                            //console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
-                            console.log(Robots);
+                            //console.log(Robots);
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -160,10 +162,10 @@
 
                       else{//同じ名前が見つからないとき
                         if(q == Robots.length - 1){//同じ名前が見つからずループを終わるとき
-                          console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
+                          //console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
                           Robots[Robots.length] = [log.line[3],log.line[5],log.line[6],'jas'];
                           q = Robots.length;//ループ抜け用
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                       }
                     }
@@ -171,28 +173,28 @@
                 }
                 if(log.line[6] == 100000){//オプレッサー
                   if(Robots.length == 0){
-                    console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
+                    //console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
                     Robots[0] = [log.line[3],log.line[5],log.line[6]];
                     Robots[0][3] = 'opp';
-                    console.log(Robots);
+                    //console.log(Robots);
                   }
                   else{
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
                         if(log.line[6] !== Robots[q][2]){//もし最大HPが異なるなら
-                          console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
+                          //console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
                           var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
 
                           Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                         else{//もし最大HPが同じ場合
-                          if(Robots[q][1] < log.line[5]){//HPが増えたかどうかをチェック
-                            console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
+                          if(Number(Robots[q][1]) < Number(log.line[5])){//HPが増えたかどうかをチェック
+                            //console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
-                            console.log(Robots);
+                            //console.log(Robots);
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -201,10 +203,10 @@
 
                       else{//同じ名前が見つからないとき
                         if(q == Robots.length - 1){//同じ名前が見つからずループを終わるとき
-                          console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
+                          //console.log('新規ロボ乗り' + log.line[3] +'がMaxHp '+ log.line[6]+'になりました');
                           Robots[Robots.length] = [log.line[3],log.line[5],log.line[6],'opp'];
                           q = Robots.length;//ループ抜け用
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                       }
                     }
@@ -218,27 +220,27 @@
 
                 if(log.line[5] == 50000){//チェイサー
                   if(Robots.length == 0){
-                    console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
+                    //console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
                     Robots[0] = log.line.slice(3,6);
                     Robots[0][3] = 'che';
-                    console.log(Robots);
+                    //console.log(Robots);
                   }
                   else{
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
                         if(log.line[5] !== Robots[q][2]){//もし最大HPが異なるなら
-                          console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
+                          //console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
                           var ten = Robots[q][3] + 'che';//オプレッサーに新しく乗ったと判定
                           Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                         else{//もし最大HPが同じ場合
-                          if(Robots[q][1] < log.line[4]){//HPが増えたかどうかをチェック
-                            console.log('同一ロボHPの増加(16)' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
+                          if(Number(Robots[q][1]) < Number(log.line[4])){//HPが増えたかどうかをチェック
+                            //console.log('同一ロボHPの増加(16)' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             var ten = Robots[q][3] + 'che';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
-                            console.log(Robots);
+                            //console.log(Robots);
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -246,10 +248,10 @@
 
                       else{//同じ名前が見つからないとき
                         if(q == Robots.length - 1){//同じ名前が見つからずループを終わるとき
-                          console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
+                          //console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
                           Robots[Robots.length] = [log.line[3],log.line[4],log.line[5],'che'];
                           q = Robots.length;//ループ抜け用
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                       }
                     }
@@ -257,27 +259,27 @@
                 }
                 else if(log.line[5] == 75000){//ジャスティス
                   if(Robots.length == 0){
-                    console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
+                    //console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
                     Robots[0] = log.line.slice(3,6);
                     Robots[0][3] = 'jas';
-                    console.log(Robots);
+                    //console.log(Robots);
                   }
                   else{
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
                         if(log.line[5] !== Robots[q][2]){//もし最大HPが異なるなら
-                          console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
+                          //console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
                           var ten = Robots[q][3] + 'jas';//オプレッサーに新しく乗ったと判定
                           Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                         else{//もし最大HPが同じ場合
-                          if(Robots[q][1] < log.line[4]){//HPが増えたかどうかをチェック
-                            console.log('同一ロボHPの増加(16)' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
+                          if(Number(Robots[q][1]) < Number(log.line[4])){//HPが増えたかどうかをチェック
+                            //console.log('同一ロボHPの増加(16)' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             var ten = Robots[q][3] + 'jas';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
-                            console.log(Robots);
+                            //console.log(Robots);
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -285,10 +287,10 @@
 
                       else{//同じ名前が見つからないとき
                         if(q == Robots.length - 1){//同じ名前が見つからずループを終わるとき
-                          console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
+                          //console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
                           Robots[Robots.length] = [log.line[3],log.line[4],log.line[5],'jas'];
                           q = Robots.length;//ループ抜け用
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                       }
                     }
@@ -296,26 +298,27 @@
                 }
                 else if(log.line[5] == 100000){//オプレッサー
                   if(Robots.length == 0){
-                    console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
+                    //console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
                     Robots[0] = log.line.slice(3,6);
                     Robots[0][3] = 'opp';
-                    console.log(Robots);
+                    //console.log(Robots);
                   }
                   else{
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
                         if(log.line[5] !== Robots[q][2]){//もし最大HPが異なるなら
-                          console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
+                          //console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
                           var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
                           Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
-                          console.log(Robots);                        }
+                          //console.log(Robots);
+                        }
                         else{//もし最大HPが同じ場合
-                          if(Robots[q][1] < log.line[4]){//HPが増えたかどうかをチェック
-                            console.log('同一ロボHPの増加(16)' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
+                          if(Number(Robots[q][1]) < Number(log.line[4])){//HPが増えたかどうかをチェック
+                            //console.log('同一ロボHPの増加(16)' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
-                            console.log(Robots);
+                            //console.log(Robots);
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -323,15 +326,15 @@
 
                       else{//同じ名前が見つからないとき
                         if(q == Robots.length - 1){//同じ名前が見つからずループを終わるとき
-                          console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
+                          //console.log('新規ロボ乗り(16)' + log.line[3] +'がMaxHp '+ log.line[5]+'になりました');
                           Robots[Robots.length] = [log.line[3],log.line[4],log.line[5],'opp'];
                           q = Robots.length;//ループ抜け用
-                          console.log(Robots);
+                          //console.log(Robots);
                         }
                       }
                     }
                   }
-                  console.log(Robots)
+                  //console.log(Robots)
                 }
             }
           }
@@ -410,7 +413,7 @@
         //||encounter.CurrentZoneName.indexOf('The Goblet') !== -1
         if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 && MargeRobots == 'True'){
           var e_sonomama = combatants;
-          var GorgeData = margedata(e_sonomama,names);
+          var GorgeData = margedata(e_sonomama,names,myname);
           maxdps = GorgeData[0][1];
 
 
@@ -426,7 +429,7 @@
                 }
               }
             }
-            if (GorgeData[i][0] == 'YOU'||GorgeData[i][0] =='Takoyaki') {
+            if (GorgeData[i][0] == 'YOU'||GorgeData[i][0] == ACTName) {
             row.addClass('me');
             }
 
@@ -448,14 +451,7 @@
               row.find('.Robot').css('width',GorgeData[i][6].length * 12);
               row.find('.Robot').html(RoborImage(GorgeData[i][6]));
             }
-            for(var t = 0; t < Robots.length ; t++){
-              if(Robots[t][0].indexOf(GorgeData[i][0])!== -1){
-
-                t = Robots.length;
-              }
-              else{
-              }
-            }
+            //console.log(GorgeData);
             container.append(row);
           }
 
@@ -538,8 +534,8 @@
             }
         }
 
-          //以下「Takoyaki」の中にACT上の名前を入れる
-          if (combatant.name == 'YOU'||combatant.name =='Takoyaki') {
+
+          if (combatant.name == 'YOU'||combatant.name == ACTName) {
           row.addClass('me');
           }
           //Limit Break
@@ -556,7 +552,8 @@
           //ジョブアイコンが無いやつら
 
           row.find('.dps').text(combatant.encdps);
-
+          //名前を1文字だけにする（配信等用）
+          //combatant.name = combatant.name.slice(0,1);
           row.find('.name').text(combatant.name);
 
           if(pvpzone !== 0){
@@ -594,8 +591,6 @@
               row.find('.job-icon').html('<img src="images/glow/lib.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
           }
           if(encounter.CurrentZoneName.indexOf('Hidden Gorge')!== -1
-          ||encounter.CurrentZoneName.indexOf('The Goblet')!== -1
-          ||encounter.CurrentZoneName == 'Middle La Noscea'
           ){
 
             row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');

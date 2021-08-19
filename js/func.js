@@ -4,17 +4,20 @@
           ||encounter.CurrentZoneName.indexOf('Astragalos')!== -1
           ||encounter.CurrentZoneName.indexOf('Hidden Gorge')!== -1
           ||encounter.CurrentZoneName.indexOf('Wolves')!== -1
-          ||encounter.CurrentZoneName.indexOf('Carteneau Flats:Bourderland Ruins')!== -1
+          ||encounter.CurrentZoneName.indexOf('Bourderland Ruins')!== -1
           ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
-          ||encounter.CurrentZoneName.indexOf('Glory')!== -1
+          ||encounter.CurrentZoneName.indexOf('Fields Of Glory')!== -1
           ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1){
-            if(encounter.CurrentZoneName.indexOf('Carteneau Flats:Bourderland Ruins')!== -1
+            if(encounter.CurrentZoneName.indexOf('Bourderland Ruins')!== -1
             ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
-            ||encounter.CurrentZoneName.indexOf('Glory')!== -1
+            ||encounter.CurrentZoneName.indexOf('Fields Of Glory')!== -1
             ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1){
-            pvpzone = 8;
+              pvpzone = 8;
             }
-            pvpzone = 4;
+            else{
+              pvpzone = 4;
+            }
+
           }
           else{
             pvpzone = 0;
@@ -22,11 +25,14 @@
           return pvpzone;
         }
 
-        function margedata(c,maxrow){
+        function margedata(c,maxrow,myname){
           var GorgeData =[];
           //console.log(maxrow.length);
           for(var i = 0; i < maxrow.length; i++){
             var combatant = c[maxrow[i]];
+            if(combatant.name == ACTName || combatant.name == 'YOU'){
+              combatant.name = myname;
+            }
             //console.log(combatant);
             if(GorgeData.length == 0){
               GorgeData[0] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,''];
@@ -40,7 +46,7 @@
                   //console.log('Marge配列にロボットのデータが存在する');
                   var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
                   total = Math.round(total * 100) / 100;
-                  GorgeData[k] = [combatant.name,total,combatant.Job,GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),'',''];
+                  GorgeData[k] = [combatant.name,total,combatant.Job,GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,''];
                   k = 100;
                 }
                 else{
@@ -48,7 +54,7 @@
                     //console.log('Marge配列にプレイヤー本体のデータが存在する');
                     var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
                     total = Math.round(total * 100) / 100;
-                    console.log(Number(GorgeData[k][1]) +' + '+ Number(combatant.encdps)+' = '+total);
+                    //console.log(Number(GorgeData[k][1]) +' + '+ Number(combatant.encdps)+' = '+total);
                     GorgeData[k] = [GorgeData[k][0],total,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,''];
                     k = 100;
                   }
