@@ -36,9 +36,10 @@ Zip形式でダウンロードしたものを展開し、OverlayPluginにGorge-O
 
 [ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)
 
-## これからの予定
-ロボ自体のDPSを表示する？
-
+## 追加するかもしれない機能
+- ロボのEPが一定値を下回ったら音を出す。
+- テンション20以降のキル音を疑似的に表現する。
+- 完全なロボのみのDPSを表示する。
 ## 仕様
 コンソールログが出力される。（デバッグ用で一部残してます。）
 
