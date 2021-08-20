@@ -21,9 +21,7 @@ OverlayPlugin製作初心者のため、冗長なコードとなっています�
 また、少し重たいかもしれません。  
 バグだらけですが、大目に見てください。
 ## インストール
-OverlayPluginにGorge-Onerlay.htmlを読み込ませてください。 
-
-表示するURLに以下をコピペしてください。
+Overlayを追加（Custom : MiniParce）し、表示するURLに以下をコピペしてください。
 ```
 https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 ```
