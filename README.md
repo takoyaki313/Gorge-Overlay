@@ -21,8 +21,14 @@ OverlayPlugin製作初心者のため、冗長なコードとなっています�
 また、少し重たいかもしれません。  
 バグだらけですが、大目に見てください。
 ## インストール
-Zip形式でダウンロードしたものを展開し、OverlayPluginにGorge-Onerlay.htmlを読み込ませてください。  
-もし、ACT側のDefault character nameを変更している場合は初期値に戻す、もしくはGorge-Onerlay.htmlのACTNameを書き換えてください。
+OverlayPluginにGorge-Onerlay.htmlを読み込ませてください。 
+
+表示するURLに以下をコピペしてください。
+'''
+https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
+'''
+もし、ACT側のDefault character nameを変更している場合は初期値に戻す、もしくはGorge-Onerlay.htmlのACTNameを書き換えてください。  
+その場合ダウンロードはGorge-Onerlay.htmlのみで大丈夫です。  
 ## 動作例
 プライバシー保護のため、この画像では名前を途中まで表示させています。
 ![image](https://user-images.githubusercontent.com/40759792/130108442-c10fe405-ad29-4617-b163-25b3a61d6920.png)
