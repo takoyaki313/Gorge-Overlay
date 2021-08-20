@@ -111,9 +111,9 @@
         function RoborImage(low){
           var data = '';
           var num = low.length/3;
-          var che = '<img src="images/glow/che.png"  height="15px" hspace="1px"> ';
-          var jas = '<img src="images/glow/jas.png"  height="15px" hspace="1px"> ';
-          var opp = '<img src="images/glow/opp.png"  height="15px" hspace="1px"> ';
+          var che = '<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  height="15px" hspace="1px"> ';
+          var jas = '<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/jas.png"  height="15px" hspace="1px"> ';
+          var opp = '<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/opp.png"  height="15px" hspace="1px"> ';
 
           //console.log(num);
           for(var c = 0;c < num; c++){

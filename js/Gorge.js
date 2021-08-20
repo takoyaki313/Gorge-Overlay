@@ -12,7 +12,7 @@
         var myname = '';
         var rdps_max = 0;
         var team = [];
-        var audio = new Audio('sound/rin.wav');
+        var audio = new Audio('https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
         addOverlayListener("CombatData", (e) => update(e));
         addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
           myname = MyName.charName;
@@ -385,11 +385,11 @@
         }
         pvpzone = AreaCheck(encounter);
         if(pvpzone !== 0){
-            header.find('.job-icon').html('<img src="images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
+            header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
             header.find('.name').text(encounter.CurrentZoneName);
         }
         else{
-          header.find('.job-icon').html('<img src="images/glow/empty.png" width="20px" height="20px" hspace="1px">')
+          header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/empty.png" width="20px" height="20px" hspace="1px">')
           header.find('.name').text(encounter.title);
         }
         header.find('.data3').text(encounter.duration);
@@ -435,7 +435,7 @@
 
             row.find('.dps').text(Dps.toFixed(2));
             row.find('.name').text(GorgeData[i][0]);
-            row.find('.job-icon').html('<img src="images/glow/' + GorgeData[i][2].toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + GorgeData[i][2].toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             row.find('.data1').css('width', 0);
             row.find('.number').css('width', 70);
             row.find('.data2').css('font-size', 15);
@@ -558,13 +558,13 @@
 
           if(pvpzone !== 0){
             if(icon == 0){
-              row.find('.job-icon').html('<img src="images/glow/' + combatant.Job.toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             }
             else if(icon == 1){
-              row.find('.job-icon').html('<img src="images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             }
             else if(icon == 2){
-              row.find('.job-icon').html('<img src="images/glow/opp.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/opp.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             }
 
               row.find('.data1').css('width', 0);
@@ -582,13 +582,13 @@
           }
           //ジョブアイコン
           if(icon == 0){
-            row.find('.job-icon').html('<img src="images/glow/' + combatant.Job.toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toUpperCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
           }
           else if(icon == 1){
-            row.find('.job-icon').html('<img src="images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
           }
           else if(icon == 4){
-              row.find('.job-icon').html('<img src="images/glow/lib.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/lib.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
           }
           if(encounter.CurrentZoneName.indexOf('Hidden Gorge')!== -1
           ){
