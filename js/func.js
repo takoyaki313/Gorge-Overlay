@@ -24,6 +24,19 @@
           }
           return pvpzone;
         }
+        function KillAudio(check,team,killname){
+          //console.log('Killsound');
+          //console.log(check + team + killname);
+          if(Zyaki == 'True'){
+            if(check == 1){
+              for(var l = 0;l < 4;l++){
+                if(killname == team[l]){
+                  KillSound.play();
+                }
+              }
+            }
+          }
+        }
 
         function margedata(c,maxrow,myname){
           var GorgeData =[];

@@ -4,7 +4,7 @@
         var T_Kills = [];
         var pvpzone = 0;
         var Log_listen = 0;
-
+        var Tensyon = 0;
 
         $(function() {
         "use strict";
@@ -12,11 +12,26 @@
         var myname = '';
         var rdps_max = 0;
         var team = [];
-        var audio = new Audio('https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
+
         addOverlayListener("CombatData", (e) => update(e));
         addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
           myname = MyName.charName;
-        })
+        });
+        addOverlayListener('PartyChanged', (p) => {
+          if(p.party.length > 7){
+            team = [];
+            PTmember = p.party.slice(0,8);
+
+            //console.log(CurrentPartyNum);
+
+            for (var n = 0; n < 8; n++) {
+              var temp = PTmember[n].name;
+              team.push(temp);
+              //console.log(test);
+            }
+              console.log(team);
+          }
+        });
         addOverlayListener("ChangeZone",(Area) => {
           console.log(Area);
           if(Area.zoneName == 'Hidden Gorge'){
@@ -32,14 +47,25 @@
             console.log('40sReset');
             Robots = [];
             T_Kills = [];
+            Tensyon = 0;
           }, 40000);
           });
 
-        })
+        });
 
         addOverlayListener("LogLine", (log) => {
 
           if(Log_listen == 1){//本番環境では　＝＝　1 にすること
+            //console.warn(log);
+            if(log.line.length == 14){
+              if(log.line[3] == 'テンションマックス'){
+                for(var j = 0; j < team.length;j++){
+                  if(log.line[8] == team[j]){
+                    Tensyon = 1;
+                  }
+                }
+              }
+            }
 
             if(log.line.length == 6){
               //console.warn(log);
@@ -60,12 +86,14 @@
                       if(T_Kills.length == 0){
                         T_Kills[0] = [log.line[4].substr(0 ,log.line[4].indexOf('は、')),1];
                         //console.log(T_Kills);
+                        KillAudio(Tensyon,team,T_Kills[0][0]);
                       }
                       else{
                         for(var z = 0; z < T_Kills.length; z++ ){
                             if(log.line[4].substr(0 ,log.line[4].indexOf('は、')) == T_Kills[z][0]){
                               T_Kills[z][1] = T_Kills[z][1] + 1;
                               //console.log(T_Kills[z][0] + 'が1kill');
+                              KillAudio(Tensyon,team,T_Kills[z][0]);
                               z = T_Kills.length;
                               //console.log(T_Kills);
                             }
@@ -75,6 +103,7 @@
                                 //console.log('新規追加T_Kills');
                                 //console.log(T_Kills);
                                 z = T_Kills.length;
+                                KillAudio(Tensyon,team,T_Kills[T_Kills.length - 1 ][0]);
                               }
                             }
                           }
@@ -100,7 +129,7 @@
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
-                        if(log.line[6] !== Robots[q][2]){//もし最大HPが異なるなら
+                        if(Number(log.line[6]) !== Number(Robots[q][2])){//もし最大HPが異なるなら
 
                           var ten = Robots[q][3] + 'che';//オプレッサーに新しく乗ったと判定
                           //console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
@@ -113,6 +142,9 @@
                             //console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
                             //console.log(Robots);
+                          }
+                          else{//HPが増えてないときの現在HPの更新
+                            Robots[q] = [Robots[q][0],log.line[5],Robots[q][2],Robots[q][3]];
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -141,7 +173,7 @@
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
-                        if(log.line[6] !== Robots[q][2]){//もし最大HPが異なるなら
+                        if(Number(log.line[6]) !== Number(Robots[q][2])){//もし最大HPが異なるなら
 
                           var ten = Robots[q][3] + 'jas';//オプレッサーに新しく乗ったと判定
                           //console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
@@ -154,6 +186,9 @@
                             //console.log('同一ロボHPの増加' + log.line[3] +'が'+Robots[q][1]+'→'+log.line[5]+'になりました');
                             Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
                             //console.log(Robots);
+                          }
+                          else{//HPが増えてないときの現在HPの更新
+                            Robots[q] = [Robots[q][0],log.line[5],Robots[q][2],Robots[q][3]];
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -182,7 +217,7 @@
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
-                        if(log.line[6] !== Robots[q][2]){//もし最大HPが異なるなら
+                        if(Number(log.line[6]) !== Number(Robots[q][2])){//もし最大HPが異なるなら
                           //console.log('最大HPの変化' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[6]+'になりました');
                           var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
 
@@ -195,6 +230,9 @@
                             var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[5],log.line[6],ten];
                             //console.log(Robots);
+                          }
+                          else{//HPが増えてないときの現在HPの更新
+                            Robots[q] = [Robots[q][0],log.line[5],Robots[q][2],Robots[q][3]];
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -229,7 +267,7 @@
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
-                        if(log.line[5] !== Robots[q][2]){//もし最大HPが異なるなら
+                        if(Number(log.line[5]) !== Number(Robots[q][2])){//もし最大HPが異なるなら
                           //console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
                           var ten = Robots[q][3] + 'che';//オプレッサーに新しく乗ったと判定
                           Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
@@ -241,6 +279,9 @@
                             var ten = Robots[q][3] + 'che';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
                             //console.log(Robots);
+                          }
+                          else{//HPが増えてないときの現在HPの更新
+                            Robots[q] = [Robots[q][0],log.line[4],Robots[q][2],Robots[q][3]];
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -268,7 +309,7 @@
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
-                        if(log.line[5] !== Robots[q][2]){//もし最大HPが異なるなら
+                        if(Number(log.line[5]) !== Number(Robots[q][2])){//もし最大HPが異なるなら
                           //console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
                           var ten = Robots[q][3] + 'jas';//オプレッサーに新しく乗ったと判定
                           Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
@@ -280,6 +321,9 @@
                             var ten = Robots[q][3] + 'jas';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
                             //console.log(Robots);
+                          }
+                          else{//HPが増えてないときの現在HPの更新
+                            Robots[q] = [Robots[q][0],log.line[4],Robots[q][2],Robots[q][3]];
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -307,7 +351,7 @@
                     for(var q = 0; q < Robots.length; q++){
                       if(log.line[3] == Robots[q][0]){//もし名前が一緒なら
 
-                        if(log.line[5] !== Robots[q][2]){//もし最大HPが異なるなら
+                        if(Number(log.line[5]) !== Number(Robots[q][2])){//もし最大HPが異なるなら
                           //console.log('最大HPの変化(16)' + log.line[3] +'が'+Robots[q][2]+'→'+log.line[5]+'になりました');
                           var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
                           Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
@@ -319,6 +363,9 @@
                             var ten = Robots[q][3] + 'opp';//オプレッサーに新しく乗ったと判定
                             Robots[q] = [log.line[3],log.line[4],log.line[5],ten];
                             //console.log(Robots);
+                          }
+                          else{//HPが増えてないときの現在HPの更新
+                            Robots[q] = [Robots[q][0],log.line[4],Robots[q][2],Robots[q][3]];4
                           }
                         }
                         q = Robots.length;//ループ抜け用
@@ -341,21 +388,7 @@
         });
 
 
-        addOverlayListener('PartyChanged', (p) => {
-          if(p.party.length > 7){
-            team = [];
-            PTmember = p.party.slice(0,8);
 
-            //console.log(CurrentPartyNum);
-
-            for (var n = 0; n < 8; n++) {
-              var temp = PTmember[n].name;
-              team.push(temp);
-              //console.log(test);
-            }
-              console.log(team);
-          }
-        });
 
         startOverlayEvents();
 
@@ -429,7 +462,7 @@
                 }
               }
             }
-            if (GorgeData[i][0] == 'YOU'||GorgeData[i][0] == ACTName) {
+            if (GorgeData[i][0] == 'YOU'||GorgeData[i][0] == ACTName||GorgeData[i][0] == myname) {
             row.addClass('me');
             }
 
@@ -609,7 +642,6 @@
             }
           }
           else{//ゴージ以外
-
             row.find('.Robot').css('height',0);
             row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
           }
