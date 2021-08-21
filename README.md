@@ -45,6 +45,8 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 ## 仕様
 コンソールログが出力される。（デバッグ用で一部残してます。）
 
+周囲で起きた状況しかOverlayに表示されない（一定以上離れるとログが来ない）
+
 Overlayが4人までしか表示されない。  
 [ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)　の[FFXIV Setting]→[Option]内、[Parse Filter]が[Party]になっていませんか。  
 (中の人の設定は[Aliance]です。）
@@ -62,7 +64,7 @@ MargeをFalseにした状態のロボットのDPSがおかしい
 気のせいです・・・適当なんです・・・
 ## 既知のバグ
 - ロボに搭乗した際、うまくOverlayに反映されないときがある。  
-- 周囲で起きた状況しかOverlayに表示されない（一定以上離れるとログが来ない）  
+- ロボとプレイヤーのデータが結合されない時がある。
 - 砕氷戦での氷破壊がキルに含まれる。    
 - 日本語以外で動かない
 
