@@ -44,11 +44,18 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 ## 仕様
 コンソールログが出力される。（デバッグ用で一部残してます。）
 
+Overlayが4人までしか表示されない。  
+[ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)　の[FFXIV Setting]→[Option]内、[Parse Filter]が[Party]になっていませんか。  
+(中の人の設定は[Aliance]です。）
+
 MargeをFalseにした状態のロボットのDPSがおかしい  
 チェイサーは照準のDPSのみ、オプレッサーはミサイルのDPSのみがそこに表示されるためです。
 
 コンテンツ退出してから40秒後にKill数とロボの表示だけが消えた！  
 40秒後にデータが消えるようになっています。ACT側の設定を40秒未満にしてください。（こちらは、30秒で確認しています。） 
+
+キルサウンドがダサい。  
+気になるのであれば個人で変更してください。
 
 ロボのアイコン色がロボごとに違う  
 気のせいです・・・適当なんです・・・
