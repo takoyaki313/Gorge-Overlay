@@ -30,7 +30,7 @@
           if(Zyaki == 'True'){
             if(check == 1){
               for(var l = 0;l < 4;l++){
-                if(killname == team[l]){
+                if(killname.indexOf(team[l]) !== -1){
                   KillSound.play();
                 }
               }
