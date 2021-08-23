@@ -1,4 +1,4 @@
-        var PTmember;
+        var Aliance = [];
         var PTMAX = 0;
         var Robots = [];
         var T_Kills = [];
@@ -18,23 +18,37 @@
           myname = MyName.charName;
         });
         addOverlayListener('PartyChanged', (p) => {
+          Aliance = [];
+          if(p.party.length == 24){
+            var aliance = 1;
+            for(var z = 0;z < 24; z++){
+              if(z > 3){
+                if(z % 4 == 0){
+                  aliance++;
+                }
+              }
+              Aliance[z] =  [p.party[z].name,aliance];
+            }
+            console.log(Aliance);
+          }
           if(p.party.length > 7){
             team = [];
-            PTmember = p.party.slice(0,8);
+            var Partymember = p.party.slice(0,8);
 
             //console.log(CurrentPartyNum);
 
             for (var n = 0; n < 8; n++) {
-              var temp = PTmember[n].name;
+              var temp = Partymember[n].name;
               team.push(temp);
               //console.log(test);
             }
-              console.log(team);
+              //console.log(team);
           }
         });
         addOverlayListener("ChangeZone",(Area) => {
           console.log(Area);
-          if(Area.zoneName == 'Hidden Gorge'){
+          if(Area.zoneName == 'Hidden Gorge'
+        ||Area.zoneName == 'Middle La Noscea'){
             Log_listen = 1;
           }
           else{
@@ -398,7 +412,7 @@
         var combatants = e.Combatant;
         var template = $('#source li');
         var container = $('#overlay').clone();
-        //console.log(PTmember.party);
+        //console.log(Aliance.party);
         //console.log(Robots);
 
         container.html('');
@@ -444,16 +458,26 @@
         var maxdps = false;
 
         //||encounter.CurrentZoneName.indexOf('The Goblet') !== -1
-        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 && MargeRobots == 'True'){
+        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1&& MargeRobots == 'True'){
           var e_sonomama = combatants;
           var GorgeData = margedata(e_sonomama,names,myname);
-          maxdps = GorgeData[0][1];
 
-
+          if(encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1){
+            GorgeData = DammyData(GorgeData);
+            Tensyon = 1;
+            team =[myname,'Justice Suzuki','Daniel Tepesh','Raphael Tachibana'];
+          }
+          GorgeData.sort((a,b) => {
+              return(b[1] - a[1])
+          })
+          if(GorgeData.length > 0){
+            maxdps = GorgeData[0][1];
+          }
           for(var i = 0; i < GorgeData.length; i++){
             var row = template.clone();
-            var Dps = GorgeData[i][1];
 
+
+            var Dps = GorgeData[i][1];
             if(pvpzone != 0){
               //PTメンバーに色をつける。
               for (var q = 0; q < 4 && q < team.length; q++) {
@@ -464,6 +488,24 @@
             }
             if (GorgeData[i][0] == 'YOU'||GorgeData[i][0] == ACTName||GorgeData[i][0] == myname) {
             row.addClass('me');
+            }
+            if(GorgeData[i][7] == 1){
+              row.addClass('aliance1');
+            }
+            else if(GorgeData[i][7] == 2){
+              row.addClass('aliance2');
+            }
+            else if(GorgeData[i][7] == 3){
+              row.addClass('aliance3');
+            }
+            else if(GorgeData[i][7] == 4){
+              row.addClass('aliance4');
+            }
+            else if(GorgeData[i][7] == 5){
+              row.addClass('aliance5');
+            }
+            else if(GorgeData[i][7] == 6){
+              row.addClass('aliance6');
             }
 
             row.find('.dps').text(Dps.toFixed(2));
@@ -481,7 +523,7 @@
               row.find('.bar').css('width',0);
               row.find('.bar').css('height',18);
               row.find('.Robot').css('height',18);
-              row.find('.Robot').css('width',GorgeData[i][6].length * 12);
+              row.find('.Robot').css('width',GorgeData[i][6].length * 7);
               row.find('.Robot').html(RoborImage(GorgeData[i][6]));
             }
             //console.log(GorgeData);
