@@ -51,6 +51,8 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 
 アライアンス表示がされない。（24人以下では動作しないようになっています。補充されたら反映されます。）
 
+中央ラノシアに行くと表示が変わる。（ダミーデータが読み込まれます。HUD調整などにどうぞ。）
+
 Overlayが4人までしか表示されない。  
 [ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)　の[FFXIV Setting]→[Option]内、[Parse Filter]が[Party]になっていませんか。  
 (中の人の設定は[Aliance]です。）
