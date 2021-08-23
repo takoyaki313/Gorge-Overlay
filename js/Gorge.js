@@ -81,7 +81,7 @@
             //console.warn(log);
             if(log.line.length == 14){
               if(log.line[3] == 'テンションマックス'){
-                for(var j = 0; j < team.length;j++){
+                for(var j = 0; j < 4 ;j++){
                   if(log.line[8] == team[j]){
                     Tensyon = 1;
                   }
