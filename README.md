@@ -8,6 +8,7 @@
 - ライバルウィングスでのOverlay上のキル数をプレイヤーのみに限定する。(マトンを除外する)
 - FL・RW/PvEエリアでの戦闘に応じてクリティカル等の表示とキルデス表示を自動で切り替える。
 - テンション20以降の味方のキルに効果音を追加する。
+- ゴージ内でアライアンスのチームごとに色を左側に表示する。
  
 ## 説明
 ゴージ好きのためのOverlay。  
@@ -31,7 +32,8 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 ## 動作例
 プライバシー保護のため、この画像では名前を途中まで表示させています。
 ![image](https://user-images.githubusercontent.com/40759792/130108442-c10fe405-ad29-4617-b163-25b3a61d6920.png)
-![image](https://user-images.githubusercontent.com/40759792/130108457-cfc556e9-ae12-43d8-b567-45e0d92448b1.png)
+![image](https://user-images.githubusercontent.com/40759792/130412794-4ef8e36a-8d02-4b3b-b4b0-10e05067a7e7.png)
+
 
 ## 参考にさせていただいたもの
 [billyvg/OverlayPlugin-themes](https://github.com/billyvg/OverlayPlugin-themes)　より、[xephero.html](https://github.com/billyvg/OverlayPlugin-themes/blob/master/xephero.html)　を編集させていただきました。
@@ -46,6 +48,8 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 コンソールログが出力される。（デバッグ用で一部残してます。）
 
 周囲で起きた状況しかOverlayに表示されない（一定以上離れるとログが来ない）
+
+アライアンス表示がされない。（24人以下では動作しないようになっています。補充されたら反映されます。）
 
 Overlayが4人までしか表示されない。  
 [ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)　の[FFXIV Setting]→[Option]内、[Parse Filter]が[Party]になっていませんか。  
