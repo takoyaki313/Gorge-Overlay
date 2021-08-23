@@ -139,7 +139,7 @@
           GorgeData[8] = ['Nathaniel Tamwood',1201.12,'Sch',2,3,7,'cheoppcheche',4];
           GorgeData[9] = ['Pearl The',5261.21,'Sam',2,2,13,'',3];
           GorgeData[10] = ['Raphael Tachibana',750.68,'Brd',2,1,4,'',1];
-          GorgeData[11] = ['Carl Tanner',3152.12,'Nin',2,2,5,'',4];
+          GorgeData[11] = ['Carl Tanner',952.12,'Nin',2,2,5,'',4];
           GorgeData[12] = ['Ansel Tod',1514.68,'Gnb',2,3,9,'',5];
           GorgeData[13] = ['Angel Twist',6742.36,'Nin',2,6,10,'',2];
           GorgeData[14] = ['Carmel Tae-yeon',3452.12,'Nin',2,9,2,'',2];
@@ -150,7 +150,7 @@
           GorgeData[19] = ['Maxwell Tudor',2235.14,'Drg',2,3,6,'',4];
           GorgeData[20] = ['Abdul Trenton',2645.84,'Drg',2,7,1,'',3];
           GorgeData[21] = ['Joel Toussaint',2874.26,'Drg',2,4,2,'cheoppcheoppoppoppopp',6];
-          GorgeData[22] = ['Niall Talbot',3547.45,'Drg',2,2,1,'',5];
+          GorgeData[22] = ['Niall Talbot',547.45,'Drg',2,2,1,'',5];
           GorgeData[23] = ['Nicolas Gutchi',4215.23,'Drg',2,9,1,'',4];
 
           return GorgeData;
