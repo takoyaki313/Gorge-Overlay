@@ -8,6 +8,8 @@
 
         $(function() {
         "use strict";
+
+
         var rows = 35;
         var myname = '';
         var rdps_max = 0;
@@ -18,7 +20,6 @@
           myname = MyName.charName;
         });
         addOverlayListener('PartyChanged', (p) => {
-          Aliance = [];
           if(p.party.length == 24){
             var aliance = 1;
             for(var z = 0;z < 24; z++){
@@ -54,6 +55,13 @@
           else{
             Log_listen = 0;
           }
+          if(Area.zoneName !== 'Hidden Gorge'){
+
+            $(document).ready(function(){setTimeout(function(){
+              Aliance = [];
+            }, 40000);
+            });
+          }
           $(document).ready(function(){setTimeout(function(){
             console.log('40sReset');
             console.log(Robots);
@@ -68,7 +76,7 @@
         });
 
         addOverlayListener("LogLine", (log) => {
-
+          //const startTime = performance.now(); // 開始時間
           if(Log_listen == 1){//本番環境では　＝＝　1 にすること
             //console.warn(log);
             if(log.line.length == 14){
@@ -399,6 +407,9 @@
                 }
             }
           }
+          //const endTime = performance.now(); // 終了時間
+          //console.warn(endTime - startTime + ' ms');
+
         });
 
 
@@ -412,6 +423,7 @@
         var combatants = e.Combatant;
         var template = $('#source li');
         var container = $('#overlay').clone();
+        const startTime = performance.now(); // 開始時間
         //console.log(Aliance.party);
         //console.log(Robots);
 
@@ -692,5 +704,8 @@
         }
 
         $('#overlay').replaceWith(container);
+        const endTime = performance.now(); // 終了時間
+        console.log(endTime - startTime + ' ms');
         }
+
       });
