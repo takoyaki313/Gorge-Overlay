@@ -28,12 +28,15 @@ li {
 }
 
 
-
+li .dpsjob{
+  display: inline-block;
+  max-width: 98px;
+  height: auto;
+}
 li .dps {
     display: inline-block;
     color: #ded7be;
-    width: 28%;
-    max-width: 70px;
+    width: 70px;
     text-align: right;
     font-size: 18px;
 }
@@ -63,7 +66,7 @@ li .detail {
     vertical-align: top;
     color: #ded7be;
     font-size: 12px;
-    width: 72%;
+    width: calc(100% - 110px);
 }
 
 li .number {
@@ -118,7 +121,6 @@ li .bar {
 }
 li.aliance1{
   border-left: 4px solid #0D7094;
-  background-color: rgba(37,92,80,0.5);
 }
 li.aliance2{
   border-left: 4px solid #9333AC;
