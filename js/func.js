@@ -44,8 +44,26 @@
           //console.log(maxrow.length);
           for(var i = 0; i < maxrow.length; i++){
             var combatant = c[maxrow[i]];
+            var yourRobot = 0;
+
             if(combatant.name == ACTName || combatant.name == 'YOU'){
               combatant.name = myname;
+            }
+            if(combatant.name.indexOf('ファルコン・チェイサ')!== -1){
+                combatant.name = combatant.name.substring(13, combatant.name.length - 1);
+                yourRobot = 1;
+            }
+            if(combatant.name.indexOf('ファルコン・オプレッサ')!== -1){
+                combatant.name = combatant.name.substring(14, combatant.name.length - 1);
+                yourRobot = 1;
+            }
+            if(combatant.name.indexOf('レイヴン・チェイサ')!== -1){
+                combatant.name = combatant.name.substring(12, combatant.name.length - 1);
+                yourRobot = 1;
+            }
+            if(combatant.name.indexOf('レイヴン・オプレッサ')!== -1){
+                combatant.name = combatant.name.substring(13, combatant.name.length - 1);
+                yourRobot = 1;
             }
             //console.log(combatant);
             if(GorgeData.length == 0){
@@ -56,20 +74,18 @@
             else{
               for(var k = 0; k < GorgeData.length; k++){
                 //console.log('k :'+ k + 'GorgeData.length :'+GorgeData.length);
-                if(GorgeData[k][0].indexOf(combatant.name) !== -1){//配列にロボットのデータが存在する
-                  //console.log('Marge配列にロボットのデータが存在する');
+                if(GorgeData[k][0].indexOf(combatant.name) !== -1 && yourRobot == 0){//ロボのデータでない場合
                   var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
                   total = Math.round(total * 100) / 100;
                   GorgeData[k] = [combatant.name,total,combatant.Job,GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',];
                   k = 100;
                 }
                 else{
-                  if(combatant.name.indexOf(GorgeData[k][0]) !== -1){//配列にプレイヤー本体のデータが存在する
-                    //console.log('Marge配列にプレイヤー本体のデータが存在する');
+                  if(combatant.name.indexOf(GorgeData[k][0]) !== -1 && yourRobot == 1){//ロボのデータの場合
                     var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
                     total = Math.round(total * 100) / 100;
                     //console.log(Number(GorgeData[k][1]) +' + '+ Number(combatant.encdps)+' = '+total);
-                    GorgeData[k] = [GorgeData[k][0],total,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',];
+                    GorgeData[k] = [combatant.name,total,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',];
                     k = 100;
                   }
                 }
