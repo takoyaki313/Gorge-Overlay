@@ -10,7 +10,7 @@
         "use strict";
 
 
-        var rows = 35;
+        var rows = 40;
         var myname = '';
         var rdps_max = 0;
         var team = [];
@@ -485,7 +485,7 @@
           if(GorgeData.length > 0){
             maxdps = GorgeData[0][1];
           }
-          for(var i = 0; i < GorgeData.length; i++){
+          for(var i = 0; i < DispMax && i < GorgeData.length; i++){
             var row = template.clone();
 
 
@@ -544,7 +544,7 @@
 
         }
         else{
-          for (var i = 0; i < names.length; i++) {
+          for (var i = 0;i < DispMax && i < names.length; i++) {
           var combatant = combatants[names[i]];
           var icon =0;
           var row = template.clone();
