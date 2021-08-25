@@ -76,6 +76,7 @@
         });
 
         addOverlayListener("LogLine", (log) => {
+          console.log(log.line);
           //const startTime = performance.now(); // 開始時間
           if(Log_listen == 1){//本番環境では　＝＝　1 にすること
             //console.warn(log);
@@ -134,6 +135,7 @@
                     }//~を倒した
                   }//logline 2
                 }//logline 0
+
               }//logline length6
 
 　            //console.log(log.line);
@@ -522,7 +524,7 @@
 
             row.find('.dps').text(Dps.toFixed(2));
             row.find('.name').text(GorgeData[i][0]);
-            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + GorgeData[i][2].toLowerCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + GorgeData[i][2].toLowerCase() + '.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             row.find('.data1').css('width', 0);
             row.find('.number').css('width', 70);
             row.find('.data2').css('font-size', 15);
@@ -532,10 +534,11 @@
             row.find('.bar').css('width', ((parseFloat(GorgeData[i][1]) / maxdps) * 100) + '%');
             row.find('.Robot').css('height',0);
             if(GorgeData[i][6].length > 0){
+              row.find('.robotdps').text('+' + GorgeData[i][8]);
               row.find('.bar').css('width',0);
               row.find('.bar').css('height',18);
               row.find('.Robot').css('height',18);
-              row.find('.Robot').css('width',GorgeData[i][6].length * 7);
+              row.find('.Robot').css('width',GorgeData[i][6].length/3 * 17);
               row.find('.Robot').html(RoborImage(GorgeData[i][6]));
             }
             //console.log(GorgeData);
@@ -645,13 +648,13 @@
 
           if(pvpzone !== 0){
             if(icon == 0){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toLowerCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toLowerCase() + '.png"  width="20px"  onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             }
             else if(icon == 1){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  width="20px"  onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             }
             else if(icon == 2){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/opp.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/opp.png"  width="20px"  onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
             }
 
               row.find('.data1').css('width', 0);
@@ -669,13 +672,13 @@
           }
           //ジョブアイコン
           if(icon == 0){
-            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toLowerCase() + '.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toLowerCase() + '.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
           }
           else if(icon == 1){
-            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
           }
           else if(icon == 4){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/lib.png"  height="20px" hspace="1px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/lib.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
           }
           if(encounter.CurrentZoneName.indexOf('Hidden Gorge')!== -1
           ){
