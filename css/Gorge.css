@@ -12,6 +12,9 @@ html {
     color: #ded7be;
     background-color: rgba(0,0,0,0.3);
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 #source {
@@ -24,53 +27,60 @@ ol {
     padding: 5px;
 }
 li {
-    border-left: none;
+    display: flex;
+    flex-direction: row;
+    margin: 1.5px;
+    border-radius: 1px;
 }
 
 
 li .dpsjob{
-  display: inline-block;
-  max-width: 98px;
-  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+li .robotdps{
+  text-align: right;
+  font-size: 13px;
 }
 li .dps {
-    display: inline-block;
+    /*display: inline-block;*/
     color: #ded7be;
     width: 70px;
     text-align: right;
     font-size: 18px;
 }
 
+li .job-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+li .detail {
+    display: flex;
+    flex-direction: column;
+    color: #ded7be;
+    font-size: 12px;
+    width: 100%;
+    margin-right: 4px;
+}
+li .title{
+  display: flex;
+}
 li .name {
-    display: inline-block;
-    width: auto;
+    display: flex;
+    width: 100%;
+    align-items: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 12px;
 }
-
-li.job-icon {
-    height: 20px;
-    width: 20px;
-    position: relative;
-    z-index: 100;
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-
-li .detail {
-    display: inline-block;
-    vertical-align: top;
-    color: #ded7be;
-    font-size: 12px;
-    width: calc(100% - 110px);
-}
-
 li .number {
-    display: inline-block;
+    display: flex;
+    flex-direction: row-reverse;
     color: #ded7be;
     float: right;
     font-size: 13px;
@@ -78,40 +88,40 @@ li .number {
 }
 
 li .data1 {
-    display: inline-block;
-    text-align: right;
+    display: flex;
+    flex-direction: row-reverse;
     color: #ded7be;
     float: right;
-    font-size: 13px;
+    font-size: 12px;
     width: 33px;
 }
 
 li .data2 {
-    display: inline-block;
-    text-align: right;
+    display: flex;
+    flex-direction: row-reverse;
     color: #ded7be;
     float: right;
-    font-size: 13px;
+    font-size: 12px;
     width: 33px;
 }
 
 li .data3 {
-    display: inline-block;
-    text-align: right;
+    display: flex;
+    flex-direction: row-reverse;
     color: #ded7be;
     float: right;
-    font-size: 13px;
+    font-size: 12px;
     width: 33px;
 }
 
 li .Robot {
-    display: inline-block;
+    display: flex;
     width: auto;
 }
 
 
 li .bar {
-    display: block;
+    /*display: inline-block;*/
     height: 4px;
     background-color: rgba(157,145,101,0.7);
 }
