@@ -55,7 +55,7 @@
             }
             if(combatant.name.indexOf('ファルコン・オプレッサ')!== -1){
                 combatant.name = combatant.name.substring(14, combatant.name.length - 1);
-                yourRobot = 1;
+                yourRobot = 2;
             }
             if(combatant.name.indexOf('レイヴン・チェイサ')!== -1){
                 combatant.name = combatant.name.substring(12, combatant.name.length - 1);
@@ -63,11 +63,14 @@
             }
             if(combatant.name.indexOf('レイヴン・オプレッサ')!== -1){
                 combatant.name = combatant.name.substring(13, combatant.name.length - 1);
-                yourRobot = 1;
+                yourRobot = 2;
             }
             //console.log(combatant);
+            if(GorgeData.length == 0 && yourRobot == 2){//オプレッサーの場合
+              GorgeData[0] = [combatant.name,0,combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,'',-1,Number(combatant.encdps)];
+            }
             if(GorgeData.length == 0){
-              GorgeData[0] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,'',];
+              GorgeData[0] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,'',-1,0];
               //GorgeData[0] = ['Justice Suzuki',Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,'',];
               //console.log('初期設定');
             }
@@ -77,7 +80,7 @@
                 if(GorgeData[k][0].indexOf(combatant.name) !== -1 && yourRobot == 0){//ロボのデータでない場合
                   var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
                   total = Math.round(total * 100) / 100;
-                  GorgeData[k] = [combatant.name,total,combatant.Job,GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',];
+                  GorgeData[k] = [combatant.name,total,combatant.Job,GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',-1,GorgeData[k][8]];
                   k = 100;
                 }
                 else{
@@ -85,14 +88,28 @@
                     var total =Number(GorgeData[k][1]) + Number(combatant.encdps);
                     total = Math.round(total * 100) / 100;
                     //console.log(Number(GorgeData[k][1]) +' + '+ Number(combatant.encdps)+' = '+total);
-                    GorgeData[k] = [combatant.name,total,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',];
+                    GorgeData[k] = [combatant.name,total,GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',-1,GorgeData[k][8]];
                     k = 100;
+                  }
+                  else{
+                    if(combatant.name.indexOf(GorgeData[k][0]) !== -1 && yourRobot == 2){//オプの場合
+                      //console.log(Number(GorgeData[k][1]) +' + '+ Number(combatant.encdps)+' = '+total);
+                      GorgeData[k] = [combatant.name,GorgeData[k][1],GorgeData[k][2],GorgeData[k][3] + Number(combatant.kills),GorgeData[k][4] + Number(combatant.deaths),0,'',-1,Number(combatant.encdps)];
+                      k = 100;
+                    }
                   }
                 }
                 if(k == GorgeData.length -1){
+                  if(yourRobot == 2){//データが存在せず、到着データがオプのとき
+                    GorgeData[GorgeData.length] = [combatant.name,0,combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,'',-1,Number(combatant.encdps)];
+                    k = GorgeData.length;
+                  }
+                  else{//データが存在せず、到着データがオプ以外のとき
+                    GorgeData[GorgeData.length] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,'',-1,0];
+                    k = GorgeData.length;
+                  }
                   //console.log('存在しないため、追加');
-                  GorgeData[GorgeData.length] = [combatant.name,Number(combatant.encdps),combatant.Job,Number(combatant.kills),Number(combatant.deaths),0,'',];
-                  k = GorgeData.length;
+
                 }
               }
             }
@@ -144,30 +161,30 @@
         }
         function DammyData(data){
           var GorgeData = [];
-          GorgeData[0] = [data[0][0],data[0][1],data[0][2],data[0][3],data[0][4],data[0][5],'cheoppjasoppjasche',1];
-          GorgeData[1] = ['Justice Suzuki',8752.66,'Rdm',3,4,6,'cheoppchejasjasjasjasjascheche',1];
-          GorgeData[2] = ['Oppresor Tanaka',6812.76,'Sam',3,4,8,'oppoppche',5];
-          GorgeData[3] = ['Chaiser Satou',3812.7,'Blm',3,4,8,'jasjasjas',2];
-          GorgeData[4] = ['Daniel Tepesh',2315.25,'Whm',2,0,3,'',1];
-          GorgeData[5] = ['Michael Twining',4415.78,'Pld',2,5,2,'',6];
-          GorgeData[6] = ['Samuel Takano',3156.25,'War',2,2,2,'',2];
-          GorgeData[7] = ['Gabriel Tepeş',3351.42,'Drk',2,1,6,'oppoppopp',3];
-          GorgeData[8] = ['Nathaniel Tamwood',1201.12,'Sch',2,3,7,'cheoppcheche',4];
-          GorgeData[9] = ['Pearl The',5261.21,'Sam',2,2,13,'',3];
-          GorgeData[10] = ['Raphael Tachibana',750.68,'Brd',2,1,4,'',1];
-          GorgeData[11] = ['Carl Tanner',952.12,'Nin',2,2,5,'',4];
-          GorgeData[12] = ['Ansel Tod',1514.68,'Gnb',2,3,9,'',5];
-          GorgeData[13] = ['Angel Twist',6742.36,'Nin',2,6,10,'',2];
-          GorgeData[14] = ['Carmel Tae-yeon',3452.12,'Nin',2,9,2,'',2];
-          GorgeData[15] = ['Karl Touya',6984.45,'Mch',2,6,1,'',3];
-          GorgeData[16] = ['Mendel Thornton',3541.51,'Sam',2,7,0,'',6];
-          GorgeData[17] = ['Saul Todman',3154.12,'Mch',2,4,3,'',5];
-          GorgeData[18] = ['Paul Talos',3514.98,'Brd',2,4,2,'',6];
-          GorgeData[19] = ['Maxwell Tudor',2235.14,'Drg',2,3,6,'',4];
-          GorgeData[20] = ['Abdul Trenton',2645.84,'Drg',2,7,1,'',3];
-          GorgeData[21] = ['Joel Toussaint',2874.26,'Drg',2,4,2,'cheoppcheoppoppoppopp',6];
-          GorgeData[22] = ['Niall Talbot',547.45,'Drg',2,2,1,'',5];
-          GorgeData[23] = ['Nicolas Gutchi',4215.23,'Drg',2,9,1,'',4];
+          GorgeData[0] = [data[0][0],data[0][1],data[0][2],data[0][3],data[0][4],data[0][5],'cheoppjasoppjasche',1,777.77];
+          GorgeData[1] = ['Justice Suzuki',8752.66,'Rdm',3,4,6,'cheoppchejasjasjasjasjascheche',1,35.12];
+          GorgeData[2] = ['Oppresor Tanaka',6812.76,'Sam',3,4,8,'oppoppche',5,3542.84];
+          GorgeData[3] = ['Chaiser Satou',3812.7,'Blm',3,4,14,'jasjasjas',2,0];
+          GorgeData[4] = ['Daniel Tepesh',2315.25,'Whm',2,0,3,'',1,0];
+          GorgeData[5] = ['Michael Twining',4415.78,'Pld',2,5,2,'',6,0];
+          GorgeData[6] = ['Samuel Takano',3156.25,'War',2,2,2,'',2,0];
+          GorgeData[7] = ['Gabriel Tepeş',3351.42,'Drk',2,1,6,'oppoppopp',3,251.54];
+          GorgeData[8] = ['Nathaniel Tamwood',1201.12,'Sch',2,3,7,'cheoppcheche',4,6421.21];
+          GorgeData[9] = ['Maxsizeno Namenoohito',5261.21,'Sam',2,2,13,'',3,0];
+          GorgeData[10] = ['Raphael Tachibana',750.68,'Brd',2,1,4,'',1,0];
+          GorgeData[11] = ['Carl Tanner',952.12,'Nin',2,2,5,'',4,0];
+          GorgeData[12] = ['Ansel Tod',1514.68,'Gnb',2,3,9,'',5,0];
+          GorgeData[13] = ['Angel Twist',6742.36,'Nin',2,6,10,'',2,0];
+          GorgeData[14] = ['Carmel Tae-yeon',3452.12,'Nin',2,9,2,'',2,0];
+          GorgeData[15] = ['Karl Touya',6984.45,'Mch',2,6,1,'',3,0];
+          GorgeData[16] = ['Mendel Thornton',3541.51,'Sam',2,7,0,'',6,0];
+          GorgeData[17] = ['Saul Todman',3154.12,'Mch',2,4,3,'',5,0];
+          GorgeData[18] = ['Paul Talos',3514.98,'Brd',2,4,2,'',6,0];
+          GorgeData[19] = ['Maxwell Tudor',2235.14,'Drg',2,3,6,'',4,0];
+          GorgeData[20] = ['Abdul Trenton',2645.84,'Drg',2,7,1,'',3,0];
+          GorgeData[21] = ['Joel Toussaint',2874.26,'Drg',2,4,2,'cheoppcheoppoppoppopp',6,1741.36];
+          GorgeData[22] = ['Niall Talbot',547.45,'Drg',2,2,1,'',5,0];
+          GorgeData[23] = ['Nicolas Gutchi',4215.23,'Drg',2,9,1,'',4,0];
 
           return GorgeData;
         }
