@@ -5,8 +5,14 @@
         var pvpzone = 0;
         var Log_listen = 0;
         var Tensyon = 0;
+        var sort_rule = 0;
+        var backup;
+
+
+
 
         $(function() {
+
         "use strict";
 
         var rows = 40;
@@ -58,16 +64,17 @@
 
             $(document).ready(function(){setTimeout(function(){
               Aliance = [];
+              Robots = [];
+              T_Kills = [];
             }, 40000);
             });
           }
           $(document).ready(function(){setTimeout(function(){
             console.log('40sReset');
+            console.log(Aliance);
             console.log(Robots);
             console.log(T_Kills);
             console.log('40sReset');
-            Robots = [];
-            T_Kills = [];
             Tensyon = 0;
           }, 40000);
           });
@@ -417,8 +424,23 @@
 
         startOverlayEvents();
 
-
+        $(document).on("click", "#obj1", function(){
+          if(sort_rule == 0){
+            sort_rule = 1;
+          }
+          else if(sort_rule == 1){
+            sort_rule = 2;
+          }
+          else if(sort_rule == 2){
+            sort_rule = 3;
+          }
+          else{
+            sort_rule = 0;
+          }
+            update(backup);
+        });
         function update(e) {
+        backup = e;
         var encounter = e.Encounter;
         var combatants = e.Combatant;
         var template = $('#source li');
@@ -444,8 +466,22 @@
         }
         pvpzone = AreaCheck(encounter);
         if(pvpzone !== 0){
-            header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
             header.find('.name').text(encounter.CurrentZoneName);
+            if(sort_rule == 0){
+              header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
+            }
+            else if (sort_rule == 1) {
+              header.find('.job-icon').text('P');
+              header.find('.job-icon').css('width',28);
+            }
+            else if (sort_rule == 2) {
+              header.find('.job-icon').text('K');
+              header.find('.job-icon').css('width',28);
+            }
+            else if (sort_rule == 3) {
+              header.find('.job-icon').text('D');
+              header.find('.job-icon').css('width',28);
+            }
         }
         else{
           header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/empty.png" width="20px" height="20px" hspace="1px">')
@@ -470,10 +506,10 @@
         var maxdps = false;
 
         //||encounter.CurrentZoneName.indexOf('The Goblet') !== -1
-        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1&& MargeRobots == 'True'){
+        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 && MargeRobots == 'True'){
           var e_sonomama = combatants;
           var GorgeData = margedata(e_sonomama,names,myname);
-
+           header.addClass('aliance0');
           if(encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1){
             GorgeData = DammyData(GorgeData);
             Tensyon = 1;
@@ -482,6 +518,21 @@
           GorgeData.sort((a,b) => {
               return(b[1] - a[1])
           })
+          if(sort_rule == 1){
+            GorgeData.sort((a,b) => {
+                return(a[7] - b[7])
+            })
+          }
+          if(sort_rule == 2){
+            GorgeData.sort((a,b) => {
+                return(b[5] - a[5])
+            })
+          }
+          else if(sort_rule == 3){
+            GorgeData.sort((a,b) => {
+                return(b[4] - a[4])
+            })
+          }
           if(GorgeData.length > 0){
             maxdps = GorgeData[0][1];
           }
