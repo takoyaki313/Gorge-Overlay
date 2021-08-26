@@ -168,7 +168,7 @@
           GorgeData[4] = ['Daniel Tepesh',2315.25,'Whm',2,0,3,'',1,0];
           GorgeData[5] = ['Michael Twining',4415.78,'Pld',2,5,2,'',6,0];
           GorgeData[6] = ['Samuel Takano',3156.25,'War',2,2,2,'',2,0];
-          GorgeData[7] = ['Gabriel Tepeş',3351.42,'Drk',2,1,6,'oppoppopp',3,251.54];
+          GorgeData[7] = ['Gabriel Tepes',3351.42,'Drk',2,1,6,'oppoppopp',3,251.54];
           GorgeData[8] = ['Nathaniel Tamwood',1201.12,'Sch',2,3,7,'cheoppcheche',4,6421.21];
           GorgeData[9] = ['Maxsizeno Namenoohito',5261.21,'Sam',2,2,13,'',3,0];
           GorgeData[10] = ['Raphael Tachibana',750.68,'Brd',2,1,4,'',1,0];
