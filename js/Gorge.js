@@ -9,7 +9,6 @@
         $(function() {
         "use strict";
 
-
         var rows = 40;
         var myname = '';
         var rdps_max = 0;
@@ -76,7 +75,6 @@
         });
 
         addOverlayListener("LogLine", (log) => {
-          console.log(log.line);
           //const startTime = performance.now(); // 開始時間
           if(Log_listen == 1){//本番環境では　＝＝　1 にすること
             //console.warn(log);
