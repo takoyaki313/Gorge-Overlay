@@ -466,8 +466,22 @@
         }
         pvpzone = AreaCheck(encounter);
         if(pvpzone !== 0){
-            header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
             header.find('.name').text(encounter.CurrentZoneName);
+            if(sort_rule == 0){
+              header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
+            }
+            else if (sort_rule == 1) {
+              header.find('.job-icon').text('P');
+              header.find('.job-icon').css('width',28);
+            }
+            else if (sort_rule == 2) {
+              header.find('.job-icon').text('K');
+              header.find('.job-icon').css('width',28);
+            }
+            else if (sort_rule == 3) {
+              header.find('.job-icon').text('D');
+              header.find('.job-icon').css('width',28);
+            }
         }
         else{
           header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/empty.png" width="20px" height="20px" hspace="1px">')
@@ -492,7 +506,7 @@
         var maxdps = false;
 
         //||encounter.CurrentZoneName.indexOf('The Goblet') !== -1
-        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1&& MargeRobots == 'True'){
+        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 && MargeRobots == 'True'){
           var e_sonomama = combatants;
           var GorgeData = margedata(e_sonomama,names,myname);
            header.addClass('aliance0');
