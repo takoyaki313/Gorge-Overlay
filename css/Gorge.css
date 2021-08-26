@@ -54,6 +54,7 @@ li .job-icon {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 20px;
     padding-left: 3px;
     padding-right: 3px;
 }
@@ -128,6 +129,9 @@ li .bar {
 
 .inactive li .bar {
     background-color: #d8dadb;
+}
+li.aliance0{
+  border-left: 4px solid rgba(0,0,0,0.3);
 }
 li.aliance1{
   border-left: 4px solid #0D7094;
