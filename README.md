@@ -33,7 +33,7 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 ## 動作例
 プライバシー保護のため、この画像では名前を途中まで表示させています。
 ![image](https://user-images.githubusercontent.com/40759792/130108442-c10fe405-ad29-4617-b163-25b3a61d6920.png)
-![image](https://user-images.githubusercontent.com/40759792/130412794-4ef8e36a-8d02-4b3b-b4b0-10e05067a7e7.png)
+![](https://user-images.githubusercontent.com/40759792/130814741-8b890e4e-3b5e-492b-9146-7dc87c4d1ce7.png)
 
 
 ## 参考にさせていただいたもの
