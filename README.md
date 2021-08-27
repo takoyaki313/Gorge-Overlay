@@ -32,7 +32,7 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 もし、ACT側のDefault character nameを変更している場合は初期値に戻す、もしくはGorge-Onerlay.htmlのACTNameを書き換えてください。  
 その場合ダウンロードはGorge-Onerlay.htmlのみで大丈夫です。  
 ## 動作例
-プライバシー保護のため、この画像では名前を途中まで表示させています。
+プライバシー保護のため、この画像では名前を途中まで表示させています。  
 RWでの表示の例  
 ![image](https://user-images.githubusercontent.com/40759792/131143834-ffc006a2-26bc-4379-9126-54e8e27b4187.png)
 FLでの表示例  
