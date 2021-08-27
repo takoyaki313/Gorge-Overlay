@@ -24,15 +24,15 @@ function Area_Gorge(e) {
   }
   else if (sort_rule == 1) {
     header.find('.job-icon').text('P');
-    header.find('.job-icon').css('width',28);
+    header.find('.job-icon').css('width',20);
   }
   else if (sort_rule == 2) {
     header.find('.job-icon').text('K');
-    header.find('.job-icon').css('width',28);
+    header.find('.job-icon').css('width',20);
   }
   else if (sort_rule == 3) {
     header.find('.job-icon').text('D');
-    header.find('.job-icon').css('width',28);
+    header.find('.job-icon').css('width',20);
   }
   header.find('.data3').text(encounter.duration);
   header.find('.bar').css('width', ((rdps / rdps_max) * 100) + '%');

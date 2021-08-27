@@ -20,12 +20,12 @@ function AreaCheck(encounter){
   ||encounter.CurrentZoneName.indexOf('Lichenweed')!== -1
   ||encounter.CurrentZoneName.indexOf('Astragalos')!== -1
   ||encounter.CurrentZoneName.indexOf('Wolves')!== -1
-  ||encounter.CurrentZoneName.indexOf('Bourderland Ruins')!== -1
+  ||encounter.CurrentZoneName.indexOf('The Borderland Ruins')!== -1
   ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
   ||encounter.CurrentZoneName.indexOf('Fields Of Glory')!== -1
   ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1
   ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1){
-    if(encounter.CurrentZoneName.indexOf('Bourderland Ruins')!== -1
+    if(encounter.CurrentZoneName.indexOf('The Borderland Ruins')!== -1
     ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
     ||encounter.CurrentZoneName.indexOf('Fields Of Glory')!== -1
     ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1){

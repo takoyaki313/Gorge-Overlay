@@ -72,7 +72,7 @@ li .detail {
     flex-direction: column;
     color: #ded7be;
     font-size: 12px;
-    width: 100%;
+    width: calc(100% - 100px);
     margin-right: 4px;
 }
 li .title{
@@ -93,7 +93,6 @@ li .number {
     color: #ded7be;
     float: right;
     font-size: 13px;
-    width: 100px;
 }
 
 li .data1 {
