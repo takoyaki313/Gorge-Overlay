@@ -6,36 +6,55 @@
         var Log_listen = 0;
         var Tensyon = 0;
         var sort_rule = 0;
+        var rows = 40;
+        var myname = '';
+        var rdps_max = 0;
+        var team = [];
         var backup;
-
-
-
+        $(document).on("click", "#obj1", function(){
+          if(sort_rule == 0){
+            sort_rule = 1;
+          }
+          else if(sort_rule == 1){
+            sort_rule = 2;
+          }
+          else if(sort_rule == 2){
+            sort_rule = 3;
+          }
+          else{
+            sort_rule = 0;
+          }
+            update(backup);
+        });
 
         $(function() {
 
         "use strict";
 
-        var rows = 40;
-        var myname = '';
-        var rdps_max = 0;
-        var team = [];
+
 
         addOverlayListener("CombatData", (e) => update(e));
         addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
           myname = MyName.charName;
         });
         addOverlayListener('PartyChanged', (p) => {
+
           if(p.party.length == 24){
-            var aliance = 1;
-            for(var z = 0;z < 24; z++){
-              if(z > 3){
-                if(z % 4 == 0){
-                  aliance++;
+            $(document).ready(function(){setTimeout(function(){
+              var aliance = 1;
+              for(var z = 0;z < 24; z++){
+                if(z > 3){
+                  if(z % 4 == 0){
+                    aliance++;
+                  }
                 }
+                Aliance[z] =  [p.party[z].name,aliance];
               }
-              Aliance[z] =  [p.party[z].name,aliance];
-            }
-            console.log(Aliance);
+              console.log(Aliance);
+
+            }, 10000);
+            });
+
           }
           if(p.party.length > 7){
             team = [];
@@ -60,22 +79,28 @@
           else{
             Log_listen = 0;
           }
-          if(Area.zoneName !== 'Hidden Gorge'){
-
+          if(Area.zoneName == 'Hidden Gorge'){//戦闘が始まる前に戦闘データを初期化する
+            Aliance = [];
             $(document).ready(function(){setTimeout(function(){
-              Aliance = [];
               Robots = [];
               T_Kills = [];
             }, 40000);
             });
           }
+          else if(Area.zoneName.indexOf('Bourderland Ruins')!== -1
+          ||Area.zoneName.indexOf('Seal Rock')!== -1
+          ||Area.zoneName.indexOf('Fields Of Glory')!== -1
+          ||Area.zoneName.indexOf('Onsal Hakair')!== -1){
+            Aliance = [];
+          }
+          Tensyon = 0;
           $(document).ready(function(){setTimeout(function(){
             console.log('40sReset');
             console.log(Aliance);
             console.log(Robots);
             console.log(T_Kills);
             console.log('40sReset');
-            Tensyon = 0;
+
           }, 40000);
           });
 
@@ -418,346 +443,5 @@
           //console.warn(endTime - startTime + ' ms');
 
         });
-
-
-
-
         startOverlayEvents();
-
-        $(document).on("click", "#obj1", function(){
-          if(sort_rule == 0){
-            sort_rule = 1;
-          }
-          else if(sort_rule == 1){
-            sort_rule = 2;
-          }
-          else if(sort_rule == 2){
-            sort_rule = 3;
-          }
-          else{
-            sort_rule = 0;
-          }
-            update(backup);
-        });
-        function update(e) {
-        backup = e;
-        var encounter = e.Encounter;
-        var combatants = e.Combatant;
-        var template = $('#source li');
-        var container = $('#overlay').clone();
-        const startTime = performance.now(); // 開始時間
-        //console.log(Aliance.party);
-        //console.log(Robots);
-
-        container.html('');
-
-        var rdps = parseFloat(encounter.encdps);
-
-        // sanity check
-        if (!isNaN(rdps) && rdps != Infinity) {
-        rdps_max = Math.max(rdps_max, rdps);
-        }
-
-        var header = template.clone();
-        if (encounter.encdps.length <= 7) {
-        header.find('.dps').text(encounter.encdps);
-        } else {
-        header.find('.dps').text(encounter.ENCDPS);
-        }
-        pvpzone = AreaCheck(encounter);
-        if(pvpzone !== 0){
-            header.find('.name').text(encounter.CurrentZoneName);
-            if(sort_rule == 0){
-              header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
-            }
-            else if (sort_rule == 1) {
-              header.find('.job-icon').text('P');
-              header.find('.job-icon').css('width',28);
-            }
-            else if (sort_rule == 2) {
-              header.find('.job-icon').text('K');
-              header.find('.job-icon').css('width',28);
-            }
-            else if (sort_rule == 3) {
-              header.find('.job-icon').text('D');
-              header.find('.job-icon').css('width',28);
-            }
-        }
-        else{
-          header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/empty.png" width="20px" height="20px" hspace="1px">')
-          header.find('.name').text(encounter.title);
-        }
-        header.find('.data3').text(encounter.duration);
-        header.find('.bar').css('width', ((rdps / rdps_max) * 100) + '%');
-
-        // set inactive
-        if (!e.isActive) {
-        rdps_max = 0;
-        $('body').addClass('inactive');
-        } else {
-        $('body').removeClass('inactive');
-        }
-
-        container.append(header);
-
-        var limit = Math.max(combatants.length, rows);
-        var names = Object.keys(combatants).slice(0,rows-1);
-        var PTmax = pvpzone;
-        var maxdps = false;
-
-        //||encounter.CurrentZoneName.indexOf('The Goblet') !== -1
-        if(encounter.CurrentZoneName.indexOf('Hidden Gorge') !== -1 ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 && MargeRobots == 'True'){
-          var e_sonomama = combatants;
-          var GorgeData = margedata(e_sonomama,names,myname);
-           header.addClass('aliance0');
-          if(encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1){
-            GorgeData = DammyData(GorgeData);
-            Tensyon = 1;
-            team =[myname,'Justice Suzuki','Daniel Tepesh','Raphael Tachibana'];
-          }
-          GorgeData.sort((a,b) => {
-              return(b[1] - a[1])
-          })
-          if(sort_rule == 1){
-            GorgeData.sort((a,b) => {
-                return(a[7] - b[7])
-            })
-          }
-          if(sort_rule == 2){
-            GorgeData.sort((a,b) => {
-                return(b[5] - a[5])
-            })
-          }
-          else if(sort_rule == 3){
-            GorgeData.sort((a,b) => {
-                return(b[4] - a[4])
-            })
-          }
-          if(GorgeData.length > 0){
-            maxdps = GorgeData[0][1];
-          }
-          for(var i = 0; i < DispMax && i < GorgeData.length; i++){
-            var row = template.clone();
-
-
-            var Dps = GorgeData[i][1];
-            if(pvpzone != 0){
-              //PTメンバーに色をつける。
-              for (var q = 0; q < 4 && q < team.length; q++) {
-                if(GorgeData[i][0] == team [q]){
-                  row.addClass('party');
-                }
-              }
-            }
-            if (GorgeData[i][0] == 'YOU'||GorgeData[i][0] == ACTName||GorgeData[i][0] == myname) {
-            row.addClass('me');
-            }
-            if(GorgeData[i][7] == 1){
-              row.addClass('aliance1');
-            }
-            else if(GorgeData[i][7] == 2){
-              row.addClass('aliance2');
-            }
-            else if(GorgeData[i][7] == 3){
-              row.addClass('aliance3');
-            }
-            else if(GorgeData[i][7] == 4){
-              row.addClass('aliance4');
-            }
-            else if(GorgeData[i][7] == 5){
-              row.addClass('aliance5');
-            }
-            else if(GorgeData[i][7] == 6){
-              row.addClass('aliance6');
-            }
-
-            row.find('.dps').text(Dps.toFixed(2));
-            row.find('.name').text(GorgeData[i][0]);
-            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + GorgeData[i][2].toLowerCase() + '.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
-            row.find('.data1').css('width', 0);
-            row.find('.number').css('width', 70);
-            row.find('.data2').css('font-size', 15);
-            row.find('.data3').css('font-size', 15);
-            row.find('.data2').text('K:'+ GorgeData[i][5]);
-            row.find('.data3').text('D:'+ GorgeData[i][4]);
-            row.find('.bar').css('width', ((parseFloat(GorgeData[i][1]) / maxdps) * 100) + '%');
-            row.find('.Robot').css('height',0);
-            if(GorgeData[i][6].length > 0){
-              row.find('.robotdps').text('+' + GorgeData[i][8]);
-              row.find('.bar').css('width',0);
-              row.find('.bar').css('height',18);
-              row.find('.Robot').css('height',18);
-              row.find('.Robot').css('width',GorgeData[i][6].length/3 * 17);
-              row.find('.Robot').html(RoborImage(GorgeData[i][6]));
-            }
-            //console.log(GorgeData);
-            container.append(row);
-          }
-
-        }
-        else{
-          for (var i = 0;i < DispMax && i < names.length; i++) {
-          var combatant = combatants[names[i]];
-          var icon =0;
-          var row = template.clone();
-
-          if (!maxdps) {
-          maxdps = parseFloat(combatant.encdps);
-          }
-
-
-
-          //ここからPVPエリア専用判別式
-          if(pvpzone !== 0){
-            //PTメンバーに色をつける。
-          for (var q = 0; q < PTmax && q < team.length; q++) {
-            if(combatant.name == team [q]){
-              row.addClass('party');
-            }
-          }
-
-          //ロボ専用判別式
-
-          if(combatant.name.indexOf('ファルコン・チェイサ')!== -1){
-              combatant.name = combatant.name.substr( 6 );
-              row.find('.bar').css('background', 'rgba(101,113,157,0.8)');
-              icon = 1;
-              //console.log('ファルコン・チェイサ');
-              row.addClass('robot');
-          }
-          if(combatant.name.indexOf('ファルコン・オプレッサ')!== -1){
-              icon = 2;
-              //console.log('ファルコン・オプレッサ');
-              combatant.name = combatant.name.substr( 6 );
-              row.find('.bar').css('background', 'rgba(101,113,157,0.8)');
-              row.addClass('robot');
-          }
-          if(combatant.name.indexOf('レイヴン・チェイサ')!== -1){
-              icon = 1;
-              //console.log('レイヴン・チェイサ');
-              combatant.name = combatant.name.substr( 5 );
-              row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
-              row.addClass('robot');
-          }
-          if(combatant.name.indexOf('レイヴン・オプレッサ')!== -1){
-              icon = 2;
-              //console.log('レイヴン・オプレッサ');
-              combatant.name = combatant.name.substr( 5 );
-              row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
-              row.addClass('robot');
-          }
-
-          if(combatant.name.indexOf('Takobo')!== -1){
-            combatant.name = combatant.name.substring(13,combatant.name.length-1);
-            row.find('.bar').css('background', 'rgba(157,101,113,0.8)');
-            row.addClass('robot');
-            combatant.name = 'ChocoboNosuke'
-            combatant.Job = "Opp";
-          }
-          if(combatant.name.indexOf('青燐機関車')!== -1){
-            icon = 3;
-          }
-          //表示テスト用
-          //combatant.kills = 78;
-          //combatant.deaths = 56;
-
-  //ここまでPvPエリアのみ動作する部分
-
-        }else{
-          //クリティカルの表示用
-            var crit;
-            crit = combatant.crithits / combatant.hits;
-            crit = Math.round(crit*100);
-            if(crit == 'NaN'){
-              crit = 0;
-            }
-        }
-
-
-          if (combatant.name == 'YOU'||combatant.name == ACTName) {
-          row.addClass('me');
-          }
-          //Limit Break
-          if (combatant.name == 'Limit Break') {
-          icon = 4;
-          }
-
-          if (combatant.damage.length > 6) {
-          combatant.damage = combatant.damage.substring(0,combatant.damage.length-3) + 'K';
-          }
-          if (combatant.encdps.length > 7) {
-          combatant.encdps = combatant.encdps.substring(0,combatant.encdps.length-1);
-          }
-          //ジョブアイコンが無いやつら
-
-          row.find('.dps').text(combatant.encdps);
-          //名前を1文字だけにする（配信等用）
-          //combatant.name = combatant.name.slice(0,1);
-          row.find('.name').text(combatant.name);
-
-          if(pvpzone !== 0){
-            if(icon == 0){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toLowerCase() + '.png"  width="20px"  onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
-            }
-            else if(icon == 1){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  width="20px"  onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
-            }
-            else if(icon == 2){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/opp.png"  width="20px"  onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
-            }
-
-              row.find('.data1').css('width', 0);
-              row.find('.number').css('width', 70);
-              row.find('.data2').css('font-size', 15);
-              row.find('.data3').css('font-size', 15);
-              //row.find('.data3').css('width', 40);
-              row.find('.data2').text('K:'+ combatant.kills);
-              row.find('.data3').text('D:'+ combatant.deaths);
-          }
-          else{
-            row.find('.data1').text(crit + '%');
-            row.find('.data2').text(combatant.DirectHitPct);
-            row.find('.data3').text(combatant.CritDirectHitPct);
-          }
-          //ジョブアイコン
-          if(icon == 0){
-            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toLowerCase() + '.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
-          }
-          else if(icon == 1){
-            row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/che.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
-          }
-          else if(icon == 4){
-              row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/lib.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
-          }
-          if(encounter.CurrentZoneName.indexOf('Hidden Gorge')!== -1
-          ){
-
-            row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
-            row.find('.Robot').css('height',0);
-            for(var t = 0; t < Robots.length ; t++){
-              if(Robots[t][0].indexOf(combatant.name)!== -1){
-                row.find('.bar').css('width',0);
-                row.find('.bar').css('height',18);
-                row.find('.Robot').css('height',18);
-                row.find('.Robot').css('width',Robots[t][3].length * 12);
-                row.find('.Robot').html(RoborImage(Robots[t][3]));
-                t = Robots.length;
-              }
-              else{
-              }
-            }
-          }
-          else{//ゴージ以外
-            row.find('.Robot').css('height',0);
-            row.find('.bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
-          }
-          container.append(row);
-          }
-        }
-
-        $('#overlay').replaceWith(container);
-        const endTime = performance.now(); // 終了時間
-        console.log(endTime - startTime + ' ms');
-        }
-
       });
