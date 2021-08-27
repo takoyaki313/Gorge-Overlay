@@ -33,7 +33,11 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 その場合ダウンロードはGorge-Onerlay.htmlのみで大丈夫です。  
 ## 動作例
 プライバシー保護のため、この画像では名前を途中まで表示させています。
-![image](https://user-images.githubusercontent.com/40759792/130108442-c10fe405-ad29-4617-b163-25b3a61d6920.png)
+RWでの表示の例  
+![image](https://user-images.githubusercontent.com/40759792/131143834-ffc006a2-26bc-4379-9126-54e8e27b4187.png)
+FLでの表示例  
+![image](https://user-images.githubusercontent.com/40759792/131143823-eea9f374-12af-4610-a7cb-5623fc6bc43c.png)
+PvEエリアでの表示例  
 ![](https://user-images.githubusercontent.com/40759792/130814741-8b890e4e-3b5e-492b-9146-7dc87c4d1ce7.png)
 
 
