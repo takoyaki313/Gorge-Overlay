@@ -34,6 +34,8 @@ function Area_Gorge(e) {
     header.find('.job-icon').text('D');
     header.find('.job-icon').css('width',20);
   }
+  header.find('.data1').css('width',0);
+  header.find('.data2').css('width',0);
   header.find('.data3').text(encounter.duration);
   header.find('.bar').css('width', ((rdps / rdps_max) * 100) + '%');
   // set inactive

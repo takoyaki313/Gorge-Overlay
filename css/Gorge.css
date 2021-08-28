@@ -20,7 +20,9 @@ html {
 #source {
     display: none;
 }
-
+body {
+  margin: 0;
+}
 ol {
     list-style-type: none;
     margin: 0;
@@ -138,7 +140,7 @@ li .bar {
     background-color: #d8dadb;
 }
 li.aliance0{
-  border-left: 4px solid rgba(0,0,0,0.3);
+  border-left: 4px solid rgba(0,0,0,0);
 }
 li.aliance1{
   border-left: 4px solid #0D7094;
