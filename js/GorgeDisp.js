@@ -23,8 +23,7 @@ function Area_Gorge(e) {
     header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvp.png" width="20px" height="20px" hspace="1px">')
   }
   else if (sort_rule == 1) {
-    header.find('.job-icon').text('P');
-    header.find('.job-icon').css('width',20);
+    header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/party.png" width="20px" height="20px" hspace="1px">')
   }
   else if (sort_rule == 2) {
     header.find('.job-icon').text('K');
@@ -47,7 +46,6 @@ function Area_Gorge(e) {
   }
 
   header.addClass('aliance0');
-
   container.append(header);
   //
   //ヘッダーの処理終了
@@ -58,7 +56,7 @@ function Area_Gorge(e) {
   var maxdps = false;
   var e_sonomama = combatants;
   var GorgeData = margedata(e_sonomama,names,myname);
-   header.addClass('aliance0');
+
   if(encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 ||encounter.CurrentZoneName.indexOf('The Goblet') !== -1){
     GorgeData = DammyData(GorgeData);
     Tensyon = 1;
@@ -67,6 +65,8 @@ function Area_Gorge(e) {
   GorgeData.sort((a,b) => {
       return(b[1] - a[1])
   })
+  marged_data = GorgeData;
+
   if(GorgeData.length > 0){
     maxdps = GorgeData[0][1];
   }
@@ -125,7 +125,12 @@ function Area_Gorge(e) {
 
     row.find('.dps').text(Dps.toFixed(2));
     row.find('.name').text(GorgeData[i][0]);
-    row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + GorgeData[i][2].toLowerCase() + '.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+    if(GorgeData[i][2] !== ''){
+      row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + GorgeData[i][2].toLowerCase() + '.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+    }
+    else{
+      row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/empty.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');
+    }
     row.find('.data1').css('width', 0);
     row.find('.number').css('width', 70);
     row.find('.data2').css('font-size', 15);

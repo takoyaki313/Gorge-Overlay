@@ -11,6 +11,7 @@
         var rdps_max = 0;
         var team = [];
         var backup;
+        var marged_data;
         $(document).on("click", "#obj1", function(){
           if(sort_rule == 0){
             sort_rule = 1;
@@ -24,7 +25,12 @@
           else{
             sort_rule = 0;
           }
+          if(backup.Encounter.CurrentZoneName == 'Hidden Gorge'||backup.Encounter.CurrentZoneName == 'The Goblet'){
+            click_refresh(marged_data,backup);
+          }
+          else{
             update(backup);
+          }
         });
 
         $(function() {
