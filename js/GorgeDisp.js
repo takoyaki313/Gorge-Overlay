@@ -95,14 +95,10 @@ function Area_Gorge(e) {
 
 
     var Dps = GorgeData[i][1];
-
-    for (var q = 0; q < 4 && q < team.length; q++) {
+    for (var q = 0; q < team.length; q++) {
       if(GorgeData[i][0] == team [q]){
         row.addClass('party');
       }
-    }
-    if (GorgeData[i][0] == myname) {
-    row.addClass('me');
     }
     if(GorgeData[i][7] == 1){
       row.addClass('aliance1');
@@ -122,7 +118,9 @@ function Area_Gorge(e) {
     else if(GorgeData[i][7] == 6){
       row.addClass('aliance6');
     }
-
+    if (GorgeData[i][0] == myname) {
+    row.addClass('me');
+    }
     row.find('.dps').text(Dps.toFixed(2));
     row.find('.name').text(GorgeData[i][0]);
     if(GorgeData[i][2] !== ''){

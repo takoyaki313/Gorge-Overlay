@@ -1,6 +1,6 @@
 function click_refresh(Data,e){
-  console.log(Data);
-  console.log(e);
+  //console.log(Data);
+  //console.log(e);
   var encounter = e.Encounter;
   var template = $('#source li');
   var container = $('#overlay').clone();
@@ -87,17 +87,15 @@ function click_refresh(Data,e){
 
 
     var Dps = GorgeData[i][1];
-
-    for (var q = 0; q < 4 && q < team.length; q++) {
+    for (var q = 0; q < team.length; q++) {
       if(GorgeData[i][0] == team [q]){
         row.addClass('party');
       }
     }
-    if (GorgeData[i][0] == myname) {
-    row.addClass('me');
-    }
+
     if(GorgeData[i][7] == 1){
       row.addClass('aliance1');
+      row.addClass('party');
     }
     else if(GorgeData[i][7] == 2){
       row.addClass('aliance2');
@@ -114,7 +112,9 @@ function click_refresh(Data,e){
     else if(GorgeData[i][7] == 6){
       row.addClass('aliance6');
     }
-
+    if (GorgeData[i][0] == myname) {
+    row.addClass('me');
+    }
     row.find('.dps').text(Dps.toFixed(2));
     row.find('.name').text(GorgeData[i][0]);
     if(GorgeData[i][2] !== ''){

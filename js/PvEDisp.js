@@ -64,7 +64,6 @@ function Area_PvE(e){
      if (combatant.encdps.length > 7) {
      combatant.encdps = combatant.encdps.substring(0,combatant.encdps.length-1);
      }
-
      row.find('.dps').text(combatant.encdps);
      if(icon == 0){
        row.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/' + combatant.Job.toLowerCase() + '.png"  width="20px" onerror="$(this).attr(\'src\', \'https://takoyaki313.github.io/Gorge-Overlay/images/error.png\');">');

@@ -12,6 +12,7 @@
         var team = [];
         var backup;
         var marged_data;
+
         $(document).on("click", "#obj1", function(){
           if(sort_rule == 0){
             sort_rule = 1;
@@ -44,7 +45,7 @@
           myname = MyName.charName;
         });
         addOverlayListener('PartyChanged', (p) => {
-
+          //console.warn(p);
           if(p.party.length == 24){
             $(document).ready(function(){setTimeout(function(){
               var aliance = 1;
@@ -56,7 +57,7 @@
                 }
                 Aliance[z] =  [p.party[z].name,aliance];
               }
-              console.log(Aliance);
+              //console.log(Aliance);
 
             }, 10000);
             });
@@ -64,16 +65,14 @@
           }
           if(p.party.length > 7){
             team = [];
-            var Partymember = p.party.slice(0,8);
-
             //console.log(CurrentPartyNum);
-
             for (var n = 0; n < 8; n++) {
-              var temp = Partymember[n].name;
-              team.push(temp);
+              if(p.party[n].inParty){
+                team[n] = p.party[n].name;
+              }
               //console.log(test);
             }
-              //console.log(team);
+              //console.warn(team);
           }
         });
         addOverlayListener("ChangeZone",(Area) => {
@@ -100,6 +99,7 @@
             Aliance = [];
           }
           Tensyon = 0;
+          /*
           $(document).ready(function(){setTimeout(function(){
             console.log('40sReset');
             console.log(Aliance);
@@ -109,7 +109,7 @@
 
           }, 40000);
           });
-
+          */
         });
 
         addOverlayListener("LogLine", (log) => {
@@ -118,10 +118,8 @@
             //console.warn(log);
             if(log.line.length == 14){
               if(log.line[3] == 'テンションマックス'){
-                for(var j = 0; j < 4 ;j++){
-                  if(log.line[8] == team[j]){
-                    Tensyon = 1;
-                  }
+                if(log.line[8] == myname){
+                  Tensyon = 1;
                 }
               }
             }
