@@ -1,5 +1,5 @@
 # Gorge-Overlay
-![image](https://user-images.githubusercontent.com/40759792/130110429-12ca66b8-f797-4673-994d-1ba54e557bfa.png)
+![image](https://user-images.githubusercontent.com/40759792/131285213-e1d75cc5-020a-4cc1-bc20-de317ff3c85b.png)
 ## ！！注意！！
 このオーバーレイはあくまで参考です。100％正確ではないので、注意してください。  
 また、アップデートにより、告知なく一部機能の削除やデザインの変更があります。  
