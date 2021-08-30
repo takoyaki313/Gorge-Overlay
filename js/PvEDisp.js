@@ -18,7 +18,7 @@ function Area_PvE(e){
    } else {
    header.find('.dps').text(encounter.ENCDPS);
    }
-   header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/empty.png" width="20px" height="20px" hspace="1px">')
+   header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Overlay/images/glow/pvei.png" width="20px" height="20px" hspace="1px">')
    header.find('.name').text(encounter.title);
    header.find('.data3').text(encounter.duration);
    header.find('.bar').css('width', ((rdps / rdps_max) * 100) + '%');
