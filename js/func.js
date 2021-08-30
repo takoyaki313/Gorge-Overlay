@@ -1,8 +1,8 @@
 function update(e) {
   backup = e;
-  const startTime = performance.now(); // 開始時間
+  //const startTime = performance.now(); // 開始時間
   pvpzone = AreaCheck(e.Encounter);
-  if(e.Encounter.CurrentZoneName == 'Hidden Gorge'||e.Encounter.CurrentZoneName == 'The Goblet'){//ゴージエリア内の場合
+  if(e.Encounter.CurrentZoneName == 'Hidden Gorge'||e.Encounter.CurrentZoneName == 'The Goblet'||e.Encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 ){//ゴージエリア内の場合
     Area_Gorge(e);
   }
   else if(pvpzone !== 0){//FLエリアの場合
@@ -11,8 +11,8 @@ function update(e) {
   else{
     Area_PvE(e);
   }
-  const endTime = performance.now(); // 開始時間
-  console.log(endTime - startTime +'ms');
+  //const endTime = performance.now(); // 開始時間
+  //console.log(endTime - startTime +'ms');
 }
 
 function AreaCheck(encounter){
@@ -23,8 +23,7 @@ function AreaCheck(encounter){
   ||encounter.CurrentZoneName.indexOf('The Borderland Ruins')!== -1
   ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
   ||encounter.CurrentZoneName.indexOf('Fields Of Glory')!== -1
-  ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1
-  ||encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1){
+  ||encounter.CurrentZoneName.indexOf('Onsal Hakair')!== -1){
     if(encounter.CurrentZoneName.indexOf('The Borderland Ruins')!== -1
     ||encounter.CurrentZoneName.indexOf('Seal Rock')!== -1
     ||encounter.CurrentZoneName.indexOf('Fields Of Glory')!== -1

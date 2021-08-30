@@ -52,7 +52,6 @@ function Area_Gorge(e) {
   //
   var limit = Math.max(combatants.length, rows);
   var names = Object.keys(combatants).slice(0,rows-1);
-  var PTmax = pvpzone;
   var maxdps = false;
   var e_sonomama = combatants;
   var GorgeData = margedata(e_sonomama,names,myname);

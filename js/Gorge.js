@@ -1,5 +1,4 @@
         var Aliance = [];
-        var PTMAX = 0;
         var Robots = [];
         var T_Kills = [];
         var pvpzone = 0;

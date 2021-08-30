@@ -52,7 +52,6 @@ function click_refresh(Data,e){
   //
   //ヘッダーの処理終了
   //
-  var PTmax = pvpzone;
   var maxdps = false;
   var GorgeData = Data;
 

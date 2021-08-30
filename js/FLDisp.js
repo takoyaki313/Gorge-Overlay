@@ -53,15 +53,16 @@ header.find('.job-icon').html('<img src="https://takoyaki313.github.io/Gorge-Ove
   //
   var limit = Math.max(combatants.length, rows);
   var names = Object.keys(combatants).slice(0,rows-1);
-  var PTmax = pvpzone;
   var maxdps = false;
   var e_sonomama = combatants;
   var GorgeData = margedata(e_sonomama,names,myname);
+  /*
   if(encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 ||encounter.CurrentZoneName.indexOf('The Goblet') !== -1){
     GorgeData = DammyData(GorgeData);
     Tensyon = 1;
     team =[myname,'Justice Suzuki','Daniel Tepesh','Raphael Tachibana'];
   }
+  */
   GorgeData = fl_alliance(GorgeData);
   GorgeData.sort((a,b) => {
       return(b[1] - a[1])
