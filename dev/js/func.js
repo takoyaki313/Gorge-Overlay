@@ -184,8 +184,8 @@ function margedata(c,maxrow,myname){
       }
     }
   }
-  console.log('結合済みデータ');
-  console.log(GorgeData);
+  //console.log('結合済みデータ');
+  //console.log(GorgeData);
   //test用データ
 
 
