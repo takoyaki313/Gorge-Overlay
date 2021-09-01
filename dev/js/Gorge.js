@@ -44,7 +44,7 @@
           myname = MyName.charName;
         });
         addOverlayListener('PartyChanged', (p) => {
-          //console.log(p);
+          console.log(p);
           if(p.party.length == 24){
             $(document).ready(function(){setTimeout(function(){
               var aliance = 1;
