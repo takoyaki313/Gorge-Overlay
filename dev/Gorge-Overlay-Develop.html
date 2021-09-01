@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="css/Gorge.css">
+    <script>
+    var ACTName ='Takoyaki';
+    var DispMax = 30;//オーバーレイの最大表示行数
+    var Zyaki = 'True';//テンション20以降のキルサウンド
+    var KillSound = new Audio('https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
+    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+    <script type="text/javascript" src="js/func.js"></script>
+    <script type="text/javascript" src="js/Gorge.js"></script>
+    <script type="text/javascript" src="js/GorgeDisp.js"></script>
+    <script type="text/javascript" src="js/FLDisp.js"></script>
+    <script type="text/javascript" src="js/PvEDisp.js"></script>
+    <script type="text/javascript" src="js/ClickReflesh.js"></script>
+</head>
+<body>
+<ol id="source">
+    <li>
+        <div class="dpsjob">
+          <span class="dps"></span>
+          <span class="robotdps"></span>
+        </div>
+        <div class="job-icon"></div>
+        <div class="detail">
+            <span class="title">
+                <span class="name"></span>
+                <span class="number">
+                  <span class="data3"></span>
+                  <span class="data2"></span>
+                  <span class="data1"></span>
+                </span>
+            </span>
+            <span class="bar">
+            <span class="Robot">
+            </span>
+        </div>
+    </li>
+</ol>
+<button id="obj1">ボタン１</button>
+<ol id="overlay">
+    <li>wait...</li>
+</ol>
+</body>
+</html>
