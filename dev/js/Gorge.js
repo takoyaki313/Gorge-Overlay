@@ -76,7 +76,7 @@
           }
         });
         addOverlayListener("ChangeZone",(Area) => {
-          //console.log(Area);
+          console.log(Area);
           if(Area.zoneName == 'Hidden Gorge'
         ||Area.zoneName == 'Middle La Noscea'){
             Log_listen = 1;
