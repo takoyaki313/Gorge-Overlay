@@ -46,7 +46,6 @@
         addOverlayListener('PartyChanged', (p) => {
           console.log(p);
           if(p.party.length == 24){
-            $(document).ready(function(){setTimeout(function(){
               var aliance = 1;
               for(var z = 0;z < 24; z++){
                 if(z > 3){
@@ -58,9 +57,6 @@
               }
               console.warn('アライアンス表示用配列作成');
               console.warn(Aliance);
-            }, 10000);
-            });
-
           }
           if(p.party.length > 7){
             team = [];
