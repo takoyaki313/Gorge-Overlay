@@ -1,6 +1,8 @@
 function click_refresh(Data,e){
   //console.log(Data);
   //console.log(e);
+  //console.log(Aliance);
+  //console.log(T_Kills);
   var encounter = e.Encounter;
   var template = $('#source li');
   var container = $('#overlay').clone();
