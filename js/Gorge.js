@@ -44,7 +44,7 @@
           myname = MyName.charName;
         });
         addOverlayListener('PartyChanged', (p) => {
-          console.log(p);
+          //console.log(p);
           if(p.party.length == 24){
             $(document).ready(function(){setTimeout(function(){
               var aliance = 1;
@@ -56,7 +56,7 @@
                 }
                 Aliance[z] =  [p.party[z].name,aliance];
               }
-              console.warn(Aliance);
+              //console.warn(Aliance);
             }, 10000);
             });
 
@@ -70,8 +70,8 @@
               }
               //console.log(test);
             }
-              console.log('inParty');
-              console.log(team);
+              //console.log('inParty');
+              //console.log(team);
           }
         });
         addOverlayListener("ChangeZone",(Area) => {
