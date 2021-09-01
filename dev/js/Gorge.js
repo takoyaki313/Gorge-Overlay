@@ -56,7 +56,8 @@
                 }
                 Aliance[z] =  [p.party[z].name,aliance];
               }
-              //console.warn(Aliance);
+              console.warn('アライアンス表示用配列作成');
+              console.warn(Aliance);
             }, 10000);
             });
 
@@ -84,7 +85,7 @@
             Log_listen = 0;
           }
           if(Area.zoneName == 'Hidden Gorge'){//戦闘が始まる前に戦闘データを初期化する
-            Aliance = [];
+            //Aliance = [];
             $(document).ready(function(){setTimeout(function(){
               Robots = [];
               T_Kills = [];
@@ -95,7 +96,7 @@
           ||Area.zoneName.indexOf('Seal Rock')!== -1
           ||Area.zoneName.indexOf('Fields Of Glory')!== -1
           ||Area.zoneName.indexOf('Onsal Hakair')!== -1){
-            Aliance = [];
+            //Aliance = [];
           }
           Tensyon = 0;
           /*
