@@ -44,7 +44,7 @@
           myname = MyName.charName;
         });
         addOverlayListener('PartyChanged', (p) => {
-          //console.warn(p);
+          //console.log(p);
           if(p.party.length == 24){
             $(document).ready(function(){setTimeout(function(){
               var aliance = 1;
@@ -56,8 +56,7 @@
                 }
                 Aliance[z] =  [p.party[z].name,aliance];
               }
-              //console.log(Aliance);
-
+              //console.warn(Aliance);
             }, 10000);
             });
 
@@ -71,11 +70,12 @@
               }
               //console.log(test);
             }
-              //console.warn(team);
+              //console.log('inParty');
+              //console.log(team);
           }
         });
         addOverlayListener("ChangeZone",(Area) => {
-          console.log(Area);
+          //console.log(Area);
           if(Area.zoneName == 'Hidden Gorge'
         ||Area.zoneName == 'Middle La Noscea'){
             Log_listen = 1;
