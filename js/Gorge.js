@@ -15,15 +15,19 @@
         $(document).on("click", "#obj1", function(){
           if(sort_rule == 0){
             sort_rule = 1;
+            localStorage.setItem('sort_rule', 1);
           }
           else if(sort_rule == 1){
             sort_rule = 2;
+            localStorage.setItem('sort_rule', 2);
           }
           else if(sort_rule == 2){
             sort_rule = 3;
+            localStorage.setItem('sort_rule', 3);
           }
           else{
             sort_rule = 0;
+            localStorage.setItem('sort_rule', 0);
           }
           if(backup.Encounter.CurrentZoneName == 'Hidden Gorge'||backup.Encounter.CurrentZoneName == 'The Goblet'){
             click_refresh(marged_data,backup);
@@ -34,10 +38,14 @@
         });
 
         $(function() {
-
         "use strict";
-
-
+        //ローカルストレージ内のデータが存在するかを確認する
+        if(localStorage.getItem('sort_rule') === null){
+          localStorage.setItem('sort_rule', 0);
+        }
+        else{
+          sort_rule = localStorage.getItem('sort_rule');
+        }
 
         addOverlayListener("CombatData", (e) => update(e));
         addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
