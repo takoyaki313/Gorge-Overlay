@@ -27,7 +27,7 @@ function reflesh_overlay(){
 
 function localStorage_restore(){
   //ローカルストレージ内のデータが存在するかを確認する
-  if(localStorage.getItem('sort_rule') === null){
+  if(localStorage.getItem('Zyaki') === null){
     localStorage.setItem('sort_rule', 0);
     localStorage.setItem('Zyaki', 'True');
     localStorage.setItem('ACTName', 'YOU');
