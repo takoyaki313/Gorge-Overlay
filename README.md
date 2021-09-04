@@ -27,7 +27,7 @@ FLとRWエリアでのデータは、総DPSが表示されている部分をク�
 表示は左から「Crit%」「Direct%」「CritDirect%」です。  
 詳細は動作例を確認してください。
   
-バグだらけですが、大目に見てください。
+バグだらけですが、大目に見てください。  
 オーバーレイにあるボタン  
 ![image](https://user-images.githubusercontent.com/40759792/132099616-ad0d6813-233a-433e-aa28-10e70ef82ae2.png)
 ## インストール
@@ -35,9 +35,6 @@ Overlayを追加し、CustomからMiniParceを選択し、表示するURLに以�
 ```
 https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay.html
 ```
-もし、ACT側のDefault character nameを変更している場合は初期値「YOU」に戻す、もしくはGorge-Onerlay.htmlのACTNameを書き換えてください。  
-その場合ダウンロードはGorge-Onerlay.htmlのみで大丈夫です。  
-[ダウンロード](https://github.com/takoyaki313/Gorge-Overlay/releases)
 
 ## 動作例
 プライバシー保護のため、この画像では名前を途中まで表示させています。  
