@@ -14,6 +14,38 @@ function update(e) {
   //const endTime = performance.now(); // 開始時間
   //console.log(endTime - startTime +'ms');
 }
+function reflesh_overlay(){
+  if(backup !== 0){
+    if(backup.Encounter.CurrentZoneName == 'Hidden Gorge'||backup.Encounter.CurrentZoneName == 'The Goblet'){
+      click_refresh(marged_data,backup);
+    }
+    else{
+      update(backup);
+    }
+  }
+}
+
+function localStorage_restore(){
+  //ローカルストレージ内のデータが存在するかを確認する
+  if(localStorage.getItem('sort_rule') === null){
+    localStorage.setItem('sort_rule', 0);
+    localStorage.setItem('Zyaki', 'True');
+    localStorage.setItem('ACTName', 'YOU');
+    localStorage.setItem('Disp-max', 30);
+  }
+  else{
+    sort_rule = localStorage.getItem('sort_rule');
+    Zyaki = localStorage.getItem('Zyaki');
+    ACTName = localStorage.getItem('ACTName');
+    DispMax = localStorage.getItem('Disp-max');
+  }
+  $('#act-name').val(ACTName);
+  $('#p-max').val(Number(DispMax));
+  if(Zyaki == 'True'){
+    $('#setting-item-1').prop('checked',true);
+  }
+
+}
 
 function AreaCheck(encounter){
   if(encounter.CurrentZoneName.indexOf('Crystal Tower Training Grounds')!== -1

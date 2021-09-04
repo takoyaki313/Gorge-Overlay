@@ -9,8 +9,12 @@
         var myname = '';
         var rdps_max = 0;
         var team = [];
-        var backup;
+        var backup = 0;
         var marged_data;
+
+        var ACTName = 'YOU';
+        var DispMax = 30;//オーバーレイの最大表示行数
+        var Zyaki = 'True';//テンション20以降のキルサウンド
 
         $(document).on("click", "#obj1", function(){
           if(sort_rule == 0){
@@ -29,23 +33,52 @@
             sort_rule = 0;
             localStorage.setItem('sort_rule', 0);
           }
-          if(backup.Encounter.CurrentZoneName == 'Hidden Gorge'||backup.Encounter.CurrentZoneName == 'The Goblet'){
-            click_refresh(marged_data,backup);
+          reflesh_overlay();
+        });
+
+        $(document).on("click", "#obj2", function(){
+          localStorage_restore();
+          if($("#setting").css('display') == 'none'){
+            $("#overlay").css('display','none');
+            $("#setting").css('display','flex');
+            $("#arrow").css('display','flex');
+            $("#obj1").css('display','none');
+            $("#obj2").css('opacity',1);
           }
           else{
-            update(backup);
+            $("#overlay").css('display','flex');
+            $("#setting").css('display','none');
+            $("#arrow").css('display','none');
+            $("#obj1").css('display','flex');
+            $("#obj2").css('opacity',0);
+            reflesh_overlay();
           }
+        });
+        $(document).on("click", "#setting-item-1",function () {
+          if ($("#setting-item-1").prop("checked") == true) {
+            Zyaki = 'True';
+            localStorage.setItem('Zyaki', 'True');
+          } else {
+            Zyaki = 'False';
+            localStorage.setItem('Zyaki', 'False');
+          }
+        });
+
+        $(document).on("click", "#name-apply", function(){
+          ACTName = $('#act-name').val();
+          localStorage.setItem('ACTName',ACTName);
+        });
+
+        $(document).on("click", "#max-apply", function(){
+          DispMax= $('#p-max').val();
+          DispMax = Number(DispMax);
+          localStorage.setItem('Disp-max',DispMax);
         });
 
         $(function() {
         "use strict";
-        //ローカルストレージ内のデータが存在するかを確認する
-        if(localStorage.getItem('sort_rule') === null){
-          localStorage.setItem('sort_rule', 0);
-        }
-        else{
-          sort_rule = localStorage.getItem('sort_rule');
-        }
+
+        localStorage_restore();
 
         addOverlayListener("CombatData", (e) => update(e));
         addOverlayListener("ChangePrimaryPlayer",(MyName) =>{

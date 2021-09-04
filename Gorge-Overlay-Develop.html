@@ -5,9 +5,6 @@
     <title></title>
     <link rel="stylesheet" href="css/Gorge.css">
     <script>
-    var ACTName ='Takoyaki';
-    var DispMax = 30;//オーバーレイの最大表示行数
-    var Zyaki = 'True';//テンション20以降のキルサウンド
     var KillSound = new Audio('https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
     </script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -42,7 +39,46 @@
         </div>
     </li>
 </ol>
-<button class="sortbtn" id="obj1">ボタン１</button>
+<div class="topbtn">
+  <button class="sortbtn" id="obj1">Sort</button>
+  <button class="setbtn" id="obj2">
+    <div class="arrow" id="arrow"></div>
+  </button>
+</div>
+<div class="setting" id='setting'>
+  <h3>Setting</h3>
+  <div class="text-frame">
+    <input type='text' id='act-name' class="textbox" value="None"/>
+    <label class="text-textbox" for='act-name'>ACT上の名前：</label>
+    <button class="hidden-button-1" id="name-apply"></button>
+    <label class="apply" for="name-apply">Apply</label>
+  </div>
+  <div class="item-frame">
+    <input type='checkbox' id='setting-item-1' class="checkbox" />
+    <label class="switch" for='setting-item-1'></label>
+    <label class="text" for='setting-item-1'>20キル以降のサウンド</label>
+  </div>
+  <!--
+  <div class="item-frame">
+    <input type='checkbox' id='setting-item-2' class="checkbox" />
+    <label class="switch" for='setting-item-2'></label>
+    <label class="text" for='setting-item-2'>PvEモードでのHPS表示（未実装）</label>
+  </div>
+  -->
+  <div class="text-frame">
+    <button class="hidden-button-2" id="max-apply"></button>
+    <label class="apply" for='max-apply'>Apply</label>
+    <input type="number" id="p-max" class="input-number" value="8" required max="30" min="4">
+    <label class="text">オーバーレイ最大表示人数</label>
+  </div>
+  <!--
+  <div class="item-frame">
+    <input type='checkbox' id='setting-item-3' class="checkbox" />
+    <label class="switch" for='setting-item-3'></label>
+    <label class="text" for='setting-item-3'>PTメンバーの優先表示（未実装）</label>
+  </div>
+  -->
+</div>
 <ol id="overlay">
     <li>wait...</li>
 </ol>
