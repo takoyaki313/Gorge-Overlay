@@ -28,6 +28,8 @@ FLとRWエリアでのデータは、総DPSが表示されている部分をク�
 詳細は動作例を確認してください。
   
 バグだらけですが、大目に見てください。
+オーバーレイにあるボタン  
+![image](https://user-images.githubusercontent.com/40759792/132099616-ad0d6813-233a-433e-aa28-10e70ef82ae2.png)
 ## インストール
 Overlayを追加し、CustomからMiniParceを選択し、表示するURLに以下をコピペしてください。
 ```
