@@ -20,13 +20,14 @@ html {
 #source {
     display: none;
 }
-.setting {
+#setting {
   font-family: 'Noto Sans JP', sans-serif;
   color: #ded7be;
   background-color: rgba(0,0,0,0.3);
   border-radius: 10px;
   display: none;
   flex-direction: column;
+  overflow: hidden;
 }
 .setting h3 {
   font-size: 1.5rem;
@@ -41,6 +42,14 @@ html {
   display: flex;
   flex-direction: row-reverse;
 }
+.setting .version{
+  width: -webkit-fill-available;
+  position: relative;
+  left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .setting .text-frame {
   width: -webkit-fill-available;
   margin: 1rem auto;
@@ -53,6 +62,16 @@ html {
   width: 80%;
   position: absolute;
   left: 10px;
+}
+.setting .sound_link{
+  display: flex;
+  background-color: transparent;
+  color: #ded7be;
+  font-size: unset;
+  position: relative;
+  right: 10px;
+  width: calc(100% - 67px);
+  top: 28px;
 }
 .setting .text-textbox {
   vertical-align: middle;
@@ -69,11 +88,20 @@ html {
   background-color: darkslategray;
   padding: 5px;
 }
+.setting .reset{
+  border-radius: 22px;
+  position: relative;
+  right: 5px;
+  font-size: 10pt;
+  background-color: darkslategray;
+  padding: 5px;
+}
+
 .setting label {
   cursor: pointer;
 }
 .setting .switch {
-  position: relative;
+  position: absolute;
   width: 17%;
   min-width: 55px;
 }
@@ -150,6 +178,12 @@ button.hidden-button-1{
   display: none;
 }
 button.hidden-button-2{
+  display: none;
+}
+button.hidden-button-3{
+  display: none;
+}
+button.hidden-button-4{
   display: none;
 }
 button.sortbtn {

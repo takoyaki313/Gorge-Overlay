@@ -15,6 +15,9 @@
         var ACTName = 'YOU';
         var DispMax = 30;//オーバーレイの最大表示行数
         var Zyaki = 'True';//テンション20以降のキルサウンド
+        var PTyusen = new Boolean(true);
+        var KillSound ;
+        var kill_sound_path ='';
 
         $(document).on("click", "#obj1", function(){
           if(sort_rule == 0){
@@ -46,6 +49,7 @@
             $("#obj2").css('opacity',1);
           }
           else{
+            //console.log($("#kill-sound").prop('files')[0].name);
             $("#overlay").css('display','flex');
             $("#setting").css('display','none');
             $("#arrow").css('display','none');
@@ -64,9 +68,29 @@
           }
         });
 
+        $(document).on("click", "#setting-item-3",function () {
+          if ($("#setting-item-3").prop("checked") == true) {
+            PTyusen = 'True';
+            localStorage.setItem('Yusen', 'True');
+          } else {
+            PTyusen = 'False';
+            localStorage.setItem('Yusen', 'False');
+          }
+        });
+
         $(document).on("click", "#name-apply", function(){
           ACTName = $('#act-name').val();
           localStorage.setItem('ACTName',ACTName);
+        });
+        $(document).on("click", "#reset", function(){
+          localStorage_reset();
+        });
+
+        $(document).on("click", "#kill-apply", function(){
+          kill_sound_path = $('#kill-sound').val();
+          localStorage.setItem('kill_sound_path',kill_sound_path);
+          KillSound = new Audio(kill_sound_path);
+          KillSound.play();
         });
 
         $(document).on("click", "#max-apply", function(){
@@ -190,7 +214,7 @@
                             if(log.line[4].substr(0 ,log.line[4].indexOf('は、')) == T_Kills[z][0]){
                               T_Kills[z][1] = T_Kills[z][1] + 1;
                               //console.log(T_Kills[z][0] + 'が1kill');
-                              KillAudio(Tensyon,team,T_Kills[z][0]);
+                              KillAudio(Tensyon,team,T_s[z][0]);
                               z = T_Kills.length;
                               //console.log(T_Kills);
                             }

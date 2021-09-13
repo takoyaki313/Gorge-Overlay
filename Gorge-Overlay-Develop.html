@@ -4,9 +4,6 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="css/Gorge.css">
-    <script>
-    var KillSound = new Audio('https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
-    </script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
     <script type="text/javascript" src="js/func.js"></script>
@@ -53,10 +50,14 @@
     <button class="hidden-button-1" id="name-apply"></button>
     <label class="apply" for="name-apply">Apply</label>
   </div>
-  <div class="item-frame">
+  <div class="text-frame">
+    <button class="hidden-button-3" id="kill-apply"></button>
+    <label class="apply" for='kill-apply'>Apply</label>
+    <input type='text' id='kill-sound' class="sound_link" value="None">
     <input type='checkbox' id='setting-item-1' class="checkbox" />
     <label class="switch" for='setting-item-1'></label>
     <label class="text" for='setting-item-1'>20キル以降のサウンド</label>
+    </input>
   </div>
   <!--
   <div class="item-frame">
@@ -71,13 +72,16 @@
     <input type="number" id="p-max" class="input-number" value="8" required max="30" min="4">
     <label class="text">オーバーレイ最大表示人数</label>
   </div>
-  <!--
   <div class="item-frame">
     <input type='checkbox' id='setting-item-3' class="checkbox" />
     <label class="switch" for='setting-item-3'></label>
-    <label class="text" for='setting-item-3'>PTメンバーの優先表示（未実装）</label>
+    <label class="text" for='setting-item-3'>PTメンバーの優先表示</label>
   </div>
-  -->
+  <div class="item-frame">
+    <button class="hidden-button-4" id="reset"></button>
+    <label class="reset" for='reset'>Reset</label>
+    <label class='version'> Gorge-Overlay 1.1</label>
+  </div>
 </div>
 <ol id="overlay">
     <li>wait...</li>

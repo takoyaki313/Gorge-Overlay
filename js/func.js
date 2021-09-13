@@ -2,7 +2,7 @@ function update(e) {
   backup = e;
   //const startTime = performance.now(); // 開始時間
   pvpzone = AreaCheck(e.Encounter);
-  if(e.Encounter.CurrentZoneName == 'Hidden Gorge'||e.Encounter.CurrentZoneName == 'The Goblet'||e.Encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 ){//ゴージエリア内の場合
+  if(e.Encounter.CurrentZoneName == 'Hidden Gorge'||e.Encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1 ||e.Encounter.CurrentZoneName == 'The Goblet'){//ゴージエリア内の場合
     Area_Gorge(e);
   }
   else if(pvpzone !== 0){//FLエリアの場合
@@ -14,9 +14,44 @@ function update(e) {
   //const endTime = performance.now(); // 開始時間
   //console.log(endTime - startTime +'ms');
 }
+
+function priority_display(old_data){
+  var party_position = [];
+  var party_push = 0;
+  if(old_data.length > DispMax){//戦闘データが最大表示人数より多い場合
+    for(var i = 0; i < old_data.length;i++){
+      for(var p = 0; p < team.length;p++){
+        if(old_data[i][0] == team[p]){
+          party_position.push(i);
+          p = team.length;
+        }
+      }
+    }//パーティメンバーの位置を確認する
+    var after_data =[];
+    for(var i = 0;i < party_position.length ;i++){//自PTのデータを戦闘に入れる
+      after_data.push(old_data[party_position[i]]);
+    }
+    for(var i = 0;i < old_data.length && after_data.length < DispMax ;i++){
+      var noparty = 0;
+      for(var p = 0; p < party_position.length;p++){
+        if(i == party_position[p]){
+          noparty = 1;
+        }
+      }
+      if(noparty == 0){//パーティメンバーのデータでないとき
+        after_data.push(old_data[i]);
+      }
+    }
+    return after_data;
+  }
+  else{
+    return old_data;
+  }
+}
+
 function reflesh_overlay(){
   if(backup !== 0){
-    if(backup.Encounter.CurrentZoneName == 'Hidden Gorge'||backup.Encounter.CurrentZoneName == 'The Goblet'){
+    if(backup.Encounter.CurrentZoneName == 'Hidden Gorge'||backup.Encounter.CurrentZoneName.indexOf('Middle La Noscea') !== -1||backup.Encounter.CurrentZoneName == 'The Goblet'){
       click_refresh(marged_data,backup);
     }
     else{
@@ -24,27 +59,55 @@ function reflesh_overlay(){
     }
   }
 }
-
+function localStorage_reset(){
+  localStorage.clear();
+  //ローカル保存をリセット
+  localStorage.setItem('Yusen', 'True');
+  localStorage.setItem('Zyaki', 'False');
+  localStorage.setItem('sort_rule', 0);
+  localStorage.setItem('ACTName', 'YOU');
+  localStorage.setItem('Disp-max', 30);
+  localStorage.setItem('kill_sound_path','C:/Windows/Media/Windows Proximity Notification.wav');
+  //データ更新
+  localStorage_restore();
+}
 function localStorage_restore(){
   //ローカルストレージ内のデータが存在するかを確認する
-  if(localStorage.getItem('Zyaki') === null){
+  if(localStorage.getItem('Yusen') === null){
+    localStorage.setItem('Yusen', 'True');
+    localStorage.setItem('Zyaki', 'False');
+    localStorage.setItem('kill_sound_path','C:/Windows/Media/Windows Proximity Notification.wav');
+  }
+
+  if(localStorage.getItem('ACTName') === null){
     localStorage.setItem('sort_rule', 0);
-    localStorage.setItem('Zyaki', 'True');
     localStorage.setItem('ACTName', 'YOU');
     localStorage.setItem('Disp-max', 30);
+    localStorage.setItem('Yusen', 'True');
   }
   else{
     sort_rule = localStorage.getItem('sort_rule');
     Zyaki = localStorage.getItem('Zyaki');
     ACTName = localStorage.getItem('ACTName');
     DispMax = localStorage.getItem('Disp-max');
+    PTyusen = localStorage.getItem('Yusen');
+    kill_sound_path = localStorage.getItem('kill_sound_path');
   }
   $('#act-name').val(ACTName);
   $('#p-max').val(Number(DispMax));
+  $('#kill-sound').val(kill_sound_path);
   if(Zyaki == 'True'){
     $('#setting-item-1').prop('checked',true);
   }
-
+  if(Zyaki == 'False'){
+    $('#setting-item-1').prop('checked',false);
+  }
+  if(PTyusen == 'True'){
+    $('#setting-item-3').prop('checked',true);
+  }
+  if(PTyusen == 'False'){
+    $('#setting-item-3').prop('checked',false);
+  }
 }
 
 function AreaCheck(encounter){

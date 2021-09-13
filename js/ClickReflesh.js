@@ -78,7 +78,31 @@ function click_refresh(Data,e){
         return(b[4] - a[4])
     })
   }
+  if(PTyusen == 'True'){//PTメンバーを優先表示する場合
+    GorgeData = priority_display(GorgeData);
 
+    GorgeData.sort((a,b) => {
+        return(b[1] - a[1])
+    })
+    if(GorgeData.length > 0){
+      maxdps = GorgeData[0][1];
+    }
+    if(sort_rule == 1){
+      GorgeData.sort((a,b) => {
+          return(a[7] - b[7])
+      })
+    }
+    if(sort_rule == 2){
+      GorgeData.sort((a,b) => {
+          return(b[5] - a[5])
+      })
+    }
+    else if(sort_rule == 3){
+      GorgeData.sort((a,b) => {
+          return(b[4] - a[4])
+      })
+    }
+  }
   //
   //プレイヤーのデータを追加していく
   //
