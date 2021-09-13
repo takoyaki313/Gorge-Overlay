@@ -67,7 +67,7 @@ function localStorage_reset(){
   localStorage.setItem('sort_rule', 0);
   localStorage.setItem('ACTName', 'YOU');
   localStorage.setItem('Disp-max', 30);
-  localStorage.setItem('kill_sound_path','C:/Windows/Media/Windows Proximity Notification.wav');
+  localStorage.setItem('kill_sound_path','https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
   //データ更新
   localStorage_restore();
 }
@@ -76,7 +76,7 @@ function localStorage_restore(){
   if(localStorage.getItem('Yusen') === null){
     localStorage.setItem('Yusen', 'True');
     localStorage.setItem('Zyaki', 'False');
-    localStorage.setItem('kill_sound_path','C:/Windows/Media/Windows Proximity Notification.wav');
+    localStorage.setItem('kill_sound_path','https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
   }
 
   if(localStorage.getItem('ACTName') === null){
