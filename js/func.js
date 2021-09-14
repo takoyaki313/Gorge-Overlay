@@ -59,24 +59,31 @@ function reflesh_overlay(){
     }
   }
 }
-function localStorage_reset(){
-  localStorage.clear();
-  //ローカル保存をリセット
+function localStorage_defalt(){
+  localStorage.setItem('Version','1.1')
   localStorage.setItem('Yusen', 'True');
   localStorage.setItem('Zyaki', 'False');
   localStorage.setItem('sort_rule', 0);
   localStorage.setItem('ACTName', 'YOU');
   localStorage.setItem('Disp-max', 30);
-  localStorage.setItem('kill_sound_path','https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
+  localStorage.setItem('kill_sound_path','https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3');
+}
+function localStorage_reset(){
+  localStorage.clear();
+  //ローカル保存をリセット
+  localStorage_defalt();
   //データ更新
   localStorage_restore();
 }
 function localStorage_restore(){
   //ローカルストレージ内のデータが存在するかを確認する
+  if(localStorage.getItem('Version') === null){
+    localStorage_defalt();
+  }/*
   if(localStorage.getItem('Yusen') === null){
     localStorage.setItem('Yusen', 'True');
     localStorage.setItem('Zyaki', 'False');
-    localStorage.setItem('kill_sound_path','https://takoyaki313.github.io/Gorge-Overlay/sound/rin.wav');
+    localStorage.setItem('kill_sound_path','https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3');
   }
 
   if(localStorage.getItem('ACTName') === null){
@@ -84,7 +91,7 @@ function localStorage_restore(){
     localStorage.setItem('ACTName', 'YOU');
     localStorage.setItem('Disp-max', 30);
     localStorage.setItem('Yusen', 'True');
-  }
+  }*/
   else{
     sort_rule = localStorage.getItem('sort_rule');
     Zyaki = localStorage.getItem('Zyaki');
