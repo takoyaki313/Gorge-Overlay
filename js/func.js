@@ -99,6 +99,7 @@ function localStorage_restore(){
     DispMax = localStorage.getItem('Disp-max');
     PTyusen = localStorage.getItem('Yusen');
     kill_sound_path = localStorage.getItem('kill_sound_path');
+    KillSound = new Audio(kill_sound_path);
   }
   $('#act-name').val(ACTName);
   $('#p-max').val(Number(DispMax));
