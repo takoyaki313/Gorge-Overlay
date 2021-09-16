@@ -214,7 +214,7 @@
                             if(log.line[4].substr(0 ,log.line[4].indexOf('は、')) == T_Kills[z][0]){
                               T_Kills[z][1] = T_Kills[z][1] + 1;
                               //console.log(T_Kills[z][0] + 'が1kill');
-                              KillAudio(Tensyon,team,T_s[z][0]);
+                              KillAudio(Tensyon,team,T_kills[z][0]);
                               z = T_Kills.length;
                               //console.log(T_Kills);
                             }
