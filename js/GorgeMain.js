@@ -132,6 +132,7 @@ function gorge_overlay_update_process(){
         else{
           let reject_damage = LIMITED_DATA[i].realobjectdamage + LIMITED_DATA[i].realpersondamage + LIMITED_DATA[i].realToRobotdamage;
           reject_damage = LIMITED_DATA[i].totaloutdamage - reject_damage;
+          row.find('.g-robot-history').css('display','none');
           row.find('.g-block-number').text(damage_to_dps(reject_damage,LIMITED_DATA[i].combatantDuration));
         }
         container.append(row);
