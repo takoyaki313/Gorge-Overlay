@@ -67,7 +67,10 @@ function area_check(area){
   }
 }
 function overlay_update_start(e){
-  if(NOW_AREA === 255||true){//Gorge no ID ga nazo
+  if(e.Encounter.CurrentZoneName === 'Hidden Gorge'){//Gorge no ID ga nazo
+    gorge_overlay_update(e);
+  }
+  else if (e.Encounter.CurrentZoneName === 'The Goblet') {
     gorge_overlay_update(e);
   }
 }
