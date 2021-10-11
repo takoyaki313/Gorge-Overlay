@@ -64,6 +64,7 @@ function area_check(area){
   }
   else {
     NOW_AREA = 0;
+    ALIANCE_DATA = false;
   }
 }
 function overlay_update_start(e){
@@ -95,7 +96,7 @@ function gorge_overlay_update_process(){
     for(let i = 0 ; i < maxrow ; i++){
       if (LIMITED_DATA[i].combatantjob !== null){
         var row = template.clone();
-        row.find('.g-total-dps-number').text(damage_to_dps(LIMITED_DATA[i].combatantdamage,LIMITED_DATA[i].combatantDuration));
+        row.find('.g-total-dps-number').text(LIMITED_DATA[i].combatantdps);
         row.find('.g-total-hps-number').text(damage_to_dps(LIMITED_DATA[i].combatantheal,LIMITED_DATA[i].combatantDuration));
         row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
         row.find('.g-name').text(LIMITED_DATA[i].name);
@@ -208,13 +209,13 @@ function limited_data_combatant_marge(e,time){
 
 function party(p){
   if(TEST_MODE){
-    console.log(p);
+    console.warn(p);
   }
   //party_data= ['300','nameID','name','aliance'];
   if(p.length === 24){
     ALIANCE_DATA = true;
     let aliance = 1;
-    for(let i = 0 ; i < p.length ; p++){
+    for(let i = 0 ; i < p.length ; i++){
       if(i > 3){
         if(i % 4 == 0){
           aliance++;

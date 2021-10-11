@@ -11,6 +11,9 @@ function logline_start(log){
     }
     else {
       LOG_PROCESS = true;
+      if(TEST_MODE){
+        console.warn('40 -> grobal array reset');
+      }
       grobal_array_reset();
     }
     //if(log[4] === 'Hidden Gorge')
@@ -18,18 +21,13 @@ function logline_start(log){
   LOG_ARRAY.push(log);
 }
 function grobal_array_reset(){
-  if(TEST_MODE === false){
-    MAIN_DATA = [];
-    ABILITY_TEMP = [];
-    PROMISE_ARRAY = [];
-    LOG_ARRAY = [];
-    LOG_PROCESS = true;
-    ALIANCE_DATA = false;
-    NOW_AREA = 0;
-  }
-  else{
-    console.log('( not working )Grobal Data Reset');
-  }
+  MAIN_DATA = [];
+  ABILITY_TEMP = [];
+  PROMISE_ARRAY = [];
+  LOG_ARRAY = [];
+  LOG_PROCESS = true;
+  ALIANCE_DATA = false;
+  NOW_AREA = 0;
 }
 
 function calc(){
@@ -54,6 +52,10 @@ function calc(){
     .then(() => LOG_PROCESS = false);
   }
   else if (LOG_PROCESS && NOW_AREA === 0) {
+    //console.log('reset (calc)');
+    if(TEST_MODE){
+      console.warn('calc -> global arrya reset');
+    }
     grobal_array_reset();
   }
 }
@@ -217,7 +219,7 @@ async function logline_main(log){
       return data;
     }
   }
-  async function robot_history(old_hp,old_hpmax,new_hp,new_hpmax){
+  function robot_history(old_hp,old_hpmax,new_hp,new_hpmax){
     //old hp old hpmax
     //new hp new hpmax
     if(new_hpmax === Chaiser_HP){
