@@ -1,0 +1,125 @@
+/*
+https://fonts.google.com/share?selection.family=Lexend%20Deca%7CMartel:wght@600%7CRoboto
+font-family: 'Lexend Deca', sans-serif;
+font-family: 'Martel', serif;
+font-family: 'Roboto', sans-serif;
+*/
+html {
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    height: 100%;
+    font-size: 16px;
+    background-color: rgba(0,0,0,1);
+    /*
+    background-color: rgba(0,0,0,0.3);
+    */
+    color: #ded7be;
+    font-family: 'Roboto', sans-serif;
+}
+
+#gorge-source {
+    display: none;
+}
+#overlay {
+    display: flex;
+}
+body {
+  margin: 0;
+  user-select: none;
+}
+ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+    flex-direction: column;
+}
+li {
+  display: flex;
+  flex-direction: column;
+  width: -webkit-fill-available;
+  margin: 0.4rem 0.2rem;
+}
+.g-basic{
+  flex-direction: row;
+  width: -webkit-fill-available;
+}
+[class^="-number"], [class*="-number"] {
+
+}
+[class^="g-"], [class*="g-"] {
+  display: flex;
+}
+.g-basic .g-dps-area{
+  align-items: center;
+  width: 8rem;
+  justify-content: flex-end;
+}
+.g-basic .g-dps{
+  flex-direction: column;
+}
+.g-basic .g-total-dps-number{
+  font-size: 1.5rem;
+}
+.g-basic .g-total-hps-number{
+  justify-content: flex-end;
+  font-size: 0.8rem;
+}
+.g-basic .g-job-icon{
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+  font-size: 1.5rem;
+}
+.g-basic .g-main-area{
+  flex-direction: column;
+  width: -webkit-fill-available;
+}
+.g-basic .g-name-area{
+  width: -webkit-fill-available;
+}
+.g-basic .g-name{
+  width: calc(100vw - 13.6rem);
+  min-width: 0;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.g-basic .g-kill-death{
+  width: 6rem;
+  font-size: 1.1rem;
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
+  align-items: center;
+}
+.g-basic .g-k-string,.g-basic .g-d-string{
+  width: 1.3rem;
+}
+.g-basic .g-kill-number,.g-basic .g-death-number{
+  width:1.7rem;
+}
+.g-basic .g-line,.g-basic .g-line2{
+  width: 100%;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+  border-width: 0.15rem 0px 0px 0px;
+  border-style: solid;
+  border-color: #ded7be;
+}
+.g-basic .g-damage-area{
+  width: -webkit-fill-available;
+}
+.g-basic .g-damage-div {
+  max-width: 5rem;
+  min-width: 5rem;
+  align-items: center;
+}
+.g-basic .g-robot-history{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.g-additional {
+  display: none;
+  flex-direction: column;
+}
