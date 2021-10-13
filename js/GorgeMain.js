@@ -63,7 +63,7 @@ function area_check(area){
     SET_BATTLE_TIME = 1200;//20min
     LOG_PROCESS = false;
   }
-  else if (area.zoneName.indexOf('Middle La Noscea')!== -1/*||area.zoneName.indexOf('The Goblet')!== -1*/){
+  else if (area.zoneName.indexOf('Middle La Noscea')!== -1||area.zoneName.indexOf("Wolves' Den Pier")!== -1/*||area.zoneName.indexOf('The Goblet')!== -1*/){
     NOW_AREA = 3;//Test Area_FL
     SET_BATTLE_TIME = 300;//test
     LOG_PROCESS = false;
@@ -162,7 +162,7 @@ function overlay_update_start(e){
       //FL is not create... in a few days...
     gorge_overlay_update(e);
   }
-  else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'/*||e.Encounter.CurrentZoneName === 'The Goblet'*/){
+  else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||e.Encounter.CurrentZoneName === 'The Goblet'*/){
     gorge_overlay_update(e);
   }
   else {

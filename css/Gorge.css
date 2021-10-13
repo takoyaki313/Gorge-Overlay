@@ -1,4 +1,4 @@
-<style >
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 html {
     background-position: bottom right;
@@ -315,22 +315,22 @@ li.aliance0{
   border-left: 4px solid rgba(0,0,0,0);
 }
 li.aliance1{
-  border-left: 4px solid #0D7094;
+  border-left: 4px solid #25F5F4;
 }
 li.aliance2{
-  border-left: 4px solid #9333AC;
+  border-left: 4px solid #72A873;
 }
 li.aliance3{
-  border-left: 4px solid #00BC69;
+  border-left: 4px solid #A8451E;
 }
 li.aliance4{
-  border-left: 4px solid #FCDB4C;
+  border-left: 4px solid #F5C9B8;
 }
 li.aliance5{
-  border-left: 4px solid #FF4B18;
+  border-left: 4px solid #A81489;
 }
 li.aliance6{
-  border-left: 4px solid #FF9728;
+  border-left: 4px solid #F5B8E8;
 }
 li.party {
     background-color: rgba(37,92,80,0.5);
@@ -338,10 +338,6 @@ li.party {
 
 li.me {
     background-color: rgba(93,81,37,0.7);
-}
-
-li.robot {
-    background-color: rgba(20,94,7,0.2);
 }
 
 </style >

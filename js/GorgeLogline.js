@@ -5,10 +5,11 @@ function logline_start(log){
     //341 is The Goblet (my home)
     //242 is Seal Rock
     //15 is Middle La Noscea
+    //51 is Wolves' Den Pier
     if (log[2] === '488'||log[2] === '242'||log[2] === '296'){
       LOG_PROCESS = false;
     }
-    else if (log[2] === '15') {
+    else if (log[2] === '15'||log[2] === '51') {
       //other Area
       LOG_PROCESS = false;
     }
@@ -139,7 +140,9 @@ async function logline_main(log){
       break;
     case '13':
       break;
-
+    case '33':
+    console.log(log);
+      break;
     default:
     if(TEST_MODE){
       console.debug(log);

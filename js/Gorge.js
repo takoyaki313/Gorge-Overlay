@@ -103,7 +103,6 @@
         "use strict";
 
         localStorage_restore();
-
         addOverlayListener("CombatData", (e) => update(e));
         addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
           myname = MyName.charName;
