@@ -2,7 +2,10 @@ function logline_start(log){
   if(log[0] === '40'){
     console.debug('Area changed =>'+log[2]+' : '+log[4]);
     //488 is Hidden Gorge
-    if (log[2] === '488'){
+    //341 is The Goblet (my home)
+    //242 is Seal Rock
+    //15 is Middle La Noscea
+    if (log[2] === '488'||log[2] === '242'){
       LOG_PROCESS = false;
     }
     else if (log[2] === '15') {
@@ -26,12 +29,13 @@ function grobal_array_reset(){
   PROMISE_ARRAY = [];
   LOG_ARRAY = [];
   LOG_PROCESS = true;
+  KILL_DATA = [];
   ALIANCE_DATA = false;
   NOW_AREA = 0;
 }
 
 function calc(){
-  if(LOG_PROCESS === false){
+  if(LOG_PROCESS === false||FORCE_LOG_LISTEN){
     LOG_PROCESS = true;
     PROMISE_ARRAY = [];
     //PROMISE_ARRAY = [];
@@ -148,19 +152,100 @@ async function logline_main(log){
     if (log[2].slice(0,2) === '10'){//death->player
       if(log[4].slice(0,2) === '10'){//kill->player
         await one_main_data_add(log[4],'kills',1,false);
+        //general pvp kill / death
+        victim = get_name_job(log[2]);
+        attacker = get_name_job(log[4]);
+        if(victim[0] == ''||victim[0] === null){
+          victim[0] = log[3];
+        }
+        if(attacker[0] == ''||attacker[0] === null){
+          attacker[0] = log[5];
+        }
+        let data = {
+          victimName:victim[0],
+          victimjob:victim[1],
+          victimaliance:victim[2],
+          attackerName:attacker[0],
+          attackerjob:attacker[1],
+          attackeraliance:attacker[2],
+          time:Date.now()
+        }
+          KILL_DATA.push(data);
       }
       else{//death ->player & kill -> npc
-
+        //DoT death / AoE death / Bunsin
+        //名前解決
+        let true_ID = null;
+        let victim = [];
+        let attacker = [];
+        let position = MAIN_DATA.findIndex(({nameID}) => nameID == log[4]);
+        if (position === -1 ){
+          if(TEST_MODE){
+            console.warn('Error SearchBase (owner_check(kill log)) =>' + log[4]);
+          }
+        }
+        else{
+          true_ID = MAIN_DATA[position].ownerID;
+        }
+        if(true_ID === null){
+          if(log[5] == ''||log[5] === null){
+            if(log[4] == ''||log[4] === null){
+              attacker = ['Unknown',0,0];
+            }
+            else{
+              attacker = [log[4],0,0];
+            }
+          }
+          else{
+            attacker = [log[5],0,0];
+          }
+        }
+        else{
+          attacker = get_name_job(log[4]);
+          if(attacker[0] == ''||attacker[0] === null){
+            attacker[0] = log[5];
+          }
+        }
+        victim = get_name_job(log[2]);
+        if(victim[0] == ''||victim[0] === null){
+          victim[0] = log[3];
+        }
+        let data = {
+          victimName:victim[0],
+          victimjob:victim[1],
+          victimaliance:victim[2],
+          attackerName:attacker[0],
+          attackerjob:attacker[1],
+          attackeraliance:attacker[2],
+          time:Date.now()
+        }
+          KILL_DATA.push(data);
       }
     }
-    else if(log[2].slice(0,2) === '40'){
-      if(log[4].slice(0,2) === '10'){
-        //
+    else if(log[2].slice(0,2) === '40'&& TEST_MODE){
+      await one_main_data_add(log[4],'kills',1,false);
+      victim = get_name_job(log[2]);
+      attacker = get_name_job(log[4]);
+      if(victim[0] == ''||victim[0] === null){
+        victim[0] = log[3];
       }
+      if(attacker[0] == ''||attacker[0] === null){
+        attacker[0] = log[5];
+      }
+      let data = {
+        victimName:victim[0],
+        victimjob:victim[1],
+        victimaliance:victim[2],
+        attackerName:attacker[0],
+        attackerjob:attacker[1],
+        attackeraliance:attacker[2],
+        time:Date.now()
+      }
+        KILL_DATA.push(data);
     }
     else{
       if(TEST_MODE){
-        console.warn('Error :what is kill!?? ->' + log[2]);
+        console.log('log :your object kill? ->' + log[3] +':'+log[4] + 'is kill ->'+ log[1] + ':' + log[2]);
       }
     }
   }
@@ -206,7 +291,6 @@ async function logline_main(log){
     await main_data_push_update('nameID',nameID,array_object,array_data,array_replace);
   }
   async function get_hp(basedata){
-    let array = 0;
     let position = MAIN_DATA.findIndex(({nameID}) => nameID == basedata);
     if (position === -1 ){
       if(TEST_MODE){
@@ -217,6 +301,34 @@ async function logline_main(log){
     else {
       let data = [MAIN_DATA[position].currentHP,MAIN_DATA[position].maxHP];
       return data;
+    }
+  }
+  function get_name_job(basedata){
+    let position = MAIN_DATA.findIndex(({nameID}) => nameID == basedata);
+    if (position === -1 ){
+      if(TEST_MODE){
+        console.warn('Error SearchBase (name/job) =>' + basedata);
+      }
+      return ['Unknown',0];
+    }
+    else {
+      let job = 0;
+      if(MAIN_DATA[position].maxHP === Oppresor_HP){
+        let data = [MAIN_DATA[position].name,50,MAIN_DATA[position].aliance];
+        return data;
+      }
+      else if (MAIN_DATA[position].maxHP === Chaiser_HP) {
+        let data = [MAIN_DATA[position].name,51,MAIN_DATA[position].aliance];
+        return data;
+      }
+      else if (MAIN_DATA[position].maxHP === Justice_HP) {
+        let data = [MAIN_DATA[position].name,52,MAIN_DATA[position].aliance];
+        return data;
+      }
+      else{
+        let data = [MAIN_DATA[position].name,MAIN_DATA[position].currentjob,MAIN_DATA[position].aliance];
+        return data;
+      }
     }
   }
   function robot_history(old_hp,old_hpmax,new_hp,new_hpmax){
@@ -259,7 +371,19 @@ async function logline_main(log){
     //Check attackerID attackerName victimID victimName skillID skillName
     //await hp_update(log[2],log[34],log[35],log[37]);//attacker
     //await hp_update(log[6],log[24],log[25],log[27]);//victim
-    let damage = parseInt(log[9].slice(0,log[9].length - 4 ),16);//16
+    let damage_mask = log[9].slice(log[9].length - 4 , log[9].length);
+    let damage = 0;
+    if(damage_mask === '0000'){//normal damage
+      damage = parseInt(log[9].slice(0,log[9].length - 4 ),16);//16
+    }
+    else if (damage_mask.slice(0,1) === '4') {
+      let a = log[9].slice(0,2);
+      let b = log[9].slice(2,4);
+      let d = log[9].slice(6,8);
+      let bd = parseInt(b,16) - parseInt(d,16);
+      bd = bd.toString(16);
+      damage = parseInt(d + a + bd ,16);
+    }
     if(damage >= 0 ){
     }
     else{
@@ -269,8 +393,9 @@ async function logline_main(log){
       damage = 0;
     }
     if(TEST_MODE){
-      console.debug(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]);
+      console.debug(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     }
+    console.debug(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     await damage_add(damage,'actual',log[2],log[4],log[8],log[6],Number(log[25]));
 
       await ability_push(log);
@@ -366,7 +491,12 @@ async function logline_main(log){
     }
     if(caluc_setting === '3'){
       if(victimID.slice(0,2) === '40'){
-        await one_main_data_add(attackerID,damage_type + 'objectdamage',damage,false);
+        if(victimHP > 200000){
+          await one_main_data_add(attackerID,damage_type + 'towerdamage',damage,false);
+        }
+        else {
+          await one_main_data_add(attackerID,damage_type + 'objectdamage',damage,false);
+        }
       }
       else if (victimID.slice(0,2) === '10') {
         if (victimHP=== Oppresor_HP ||victimHP === Justice_HP || victimHP === Chaiser_HP){
@@ -539,10 +669,12 @@ async function main_data_new(base,data){
     realobjectdamage: 0,
     realpersondamage: 0,
     realToRobotdamage: 0,
+    realtowerdamage: 0,
     realRobotdamage: 0,
     actualobjectdamage: 0,
     actualpersondamage: 0,
     actualToRobotdamage: 0,
+    actualtowerdamage: 0,
     actualRobotdamage: 0,
     kills: 0,
     death: 0,
@@ -620,11 +752,13 @@ async function main_data_marge_to_child(child_position,owner_position){
   MAIN_DATA[owner_position].realRobotdamage += MAIN_DATA[child_position].realRobotdamage;
   MAIN_DATA[owner_position].realobjectdamage += MAIN_DATA[child_position].realobjectdamage;
   MAIN_DATA[owner_position].realpersondamage += MAIN_DATA[child_position].realpersondamage;
+  MAIN_DATA[owner_position].realtowerdamage += MAIN_DATA[child_position].realtowerdamage;
 
   MAIN_DATA[owner_position].actualToRobotdamage += MAIN_DATA[child_position].actualToRobotdamage;
   MAIN_DATA[owner_position].actualRobotdamage += MAIN_DATA[child_position].actualRobotdamage;
   MAIN_DATA[owner_position].actualobjectdamage += MAIN_DATA[child_position].actualobjectdamage;
   MAIN_DATA[owner_position].actualpersondamage += MAIN_DATA[child_position].actualpersondamage;
+  MAIN_DATA[owner_position].actualtowerdamage += MAIN_DATA[child_position].actualtowerdamage;
 
   MAIN_DATA[owner_position].kills += MAIN_DATA[child_position].kills;
   MAIN_DATA[owner_position].death += MAIN_DATA[child_position].death;
@@ -642,11 +776,13 @@ async function marge_to_child_to_reset(position){
   MAIN_DATA[position].realRobotdamage = 0;
   MAIN_DATA[position].realobjectdamage = 0;
   MAIN_DATA[position].realpersondamage = 0;
+  MAIN_DATA[position].realtowerdamage = 0;
 
   MAIN_DATA[position].actualToRobotdamage = 0;
   MAIN_DATA[position].actualRobotdamage = 0;
   MAIN_DATA[position].actualobjectdamage = 0;
   MAIN_DATA[position].actualpersondamage = 0;
+  MAIN_DATA[position].actualtowerdamage = 0;
 
   MAIN_DATA[position].kills = 0;
   MAIN_DATA[position].death = 0;

@@ -1,0 +1,178 @@
+.header {
+  color: #ded7be;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 0;
+  display: flex;
+  font-size: 1.5rem;
+  padding: 0.1875rem;
+  flex-direction: column;
+  font-family: 'Bebas Neue', cursive;
+}
+.header .header-top {
+  display: flex;
+  width: -webkit-fill-available;
+}
+.header .header-under {
+  display: flex;
+  width: -webkit-fill-available;
+}
+.header .header-top .mypage{
+  width: 3.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header .header-top .setting{
+  width: 1.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header .header-under .all-kd {
+  display: flex;
+  width: -webkit-fill-available;
+  overflow: hidden;
+  white-space: nowrap;
+  align-items: center;
+}
+.header .header-under .all-kd .kill-num,.header .header-under .all-kd .death-num{
+  padding-left: 0.5rem;
+}
+.header .header-under .all-kd-percent {
+  width: 6.25rem;
+  align-items: center;
+  justify-content: center;
+}
+.header .header-top .areaname {
+  width: calc(100% - 8.75rem);
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 1.125rem;
+  align-items: flex-end;
+}
+.header .header-top .clockicon {
+}
+.header .header-top .time {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-left: 0.3125rem;
+  width: 3.75rem;
+  font-size: 1.25rem;
+}
+.header .header-top .time .time-min {
+  width: 1.5625rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.header .header-top .time .time-coron {
+  width: 0.625rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.header .header-top .time .time-sec {
+  width: 1.5625rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+.header .header-under .header-data {
+  display: flex;
+  font-size: 1.125rem;
+  width: -webkit-fill-available;
+}
+.header .header-under .header-kd {
+  display: flex;
+}
+.header .header-under .header-data .what-header-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0.1875rem;
+  padding-right: 0.1875rem;
+  width: 9.5rem;
+}
+.header .header-line {
+  width: -webkit-fill-available;
+  margin:  0.1875rem;
+}
+[class^="button-"], [class*=" button-"] {
+  display: none;
+}
+.set-data {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  display: none;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  background-color: rgba(0,0,0,0.3);
+  flex-direction: column;
+  color: #ded7be;
+  user-select:none;
+}
+.set-space {
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.set-data .set-header{
+  padding-bottom: 1rem;
+  font-size: 4rem;
+  display: flex;
+  padding-right: 0.3125rem;
+}
+.set-data .set-header .set-header-text{
+  width: calc(100% - 3.125rem);
+  font-size: 1.625rem;
+  padding-top: 0.625rem;
+  font-family: 'Bebas Neue', cursive;
+}
+.set-data .switch:before, .set-data .switch:after {
+  content: '';
+  vertical-align: middle;
+  display: inline-block;
+}
+.set-data .switch:before {
+  width: 2rem;
+  height: 1rem;
+  border: 0.125rem solid #C4C9FF;
+  border-radius: 2rem;
+  background: #999;
+}
+.set-data .switch:after {
+  position: relative;
+  width: 1em;
+  height: 1em;
+  background:#C4C9FF;
+  border-radius: 50%;
+  left: -2.2em;
+}
+.set-data input.checkbox {
+  display: none;
+}
+.set-data input:checked ~ .switch:before {
+  background:#00b715;
+  border-color:#84ff92;
+}
+.set-data input:checked ~ .switch:after {
+  background:#84ff92;
+  left: -1.1em;
+}
+.explain {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+}
+.number {
+  width: 5rem;
+  margin-left: 1rem;
+  background-color: transparent;
+  color: #ded7be;
+}
+.version {
+  width: -webkit-fill-available;
+  text-align: right;
+  display: inline-block;
+}
