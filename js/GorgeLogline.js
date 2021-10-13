@@ -398,7 +398,6 @@ async function logline_main(log){
     if(TEST_MODE){
       console.debug(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     }
-    console.debug(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     await damage_add(damage,'actual',log[2],log[4],log[8],log[6],Number(log[25]));
 
       await ability_push(log);
