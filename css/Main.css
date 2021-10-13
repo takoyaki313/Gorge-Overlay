@@ -12,7 +12,7 @@ html {
     box-sizing: border-box;
     height: 100%;
     font-size: 16px;
-    /**/
+    /*
     background-color: rgba(0,0,0,1);
     /*
     background-color: rgba(0,0,0,0.3);
@@ -33,6 +33,7 @@ html {
 #overlay {
     display: flex;
     border-radius: 0.7rem;
+    background-color: rgba(0,0,0,0.3);
 }
 
 body {

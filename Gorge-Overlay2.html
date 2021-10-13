@@ -4,9 +4,10 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/Main.css">
+    <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/Header.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Martel:wght@600&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lexend+Deca&family=Noto+Serif+JP:wght@500&family=Roboto&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
     <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeLogline.js"></script>
@@ -14,11 +15,33 @@
     <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeSub.js"></script>
     <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeMain.js"></script>
     <script type="text/javascript">
-    var ACT_NAME = 'YOU';
-    var MAX_ROW = 10;
+    var ACT_NAME = 'Takoyaki';
+    var MAX_ROW = 30;
+    var PVE_MAX_ROW = 10;
     </script>
 </head>
 <body>
+<ol id="pve-source">
+  <li>
+    <div class="n-basic">
+      <div class="n-dps-space">
+        <span class="n-dps"></span>
+        <span class="n-job icon-blm"></span>
+      </div>
+      <div class="n-title">
+        <div class="n-top">
+          <span class="n-name"></span>
+          <span class="n-crit"></span>
+          <span class="n-direct"></span>
+          <span class="n-cridirect"></span>
+        </div>
+        <div class="n-sub">
+          <span class="n-bar"></span>
+        </div>
+      </div>
+    </div>
+  </li>
+</ol>
 <ol id="gorge-source">
     <li>
       <div class="g-basic">
@@ -32,15 +55,18 @@
         <div class="g-main-area">
           <div class="g-name-area">
             <span class="g-name"></span>
-            <span class="g-kill-death">
-              <span class="g-k-string">K:</span><span class="g-kill-number"></span>
-              <span class="g-d-string">D:</span><span class="g-death-number"></span>
-            </span>
+            <div class="g-robot-history">
+              <span class='icon-robots'/>
+            </div>
+            <div class="g-hit">
+              <span class='g- icon-app_block'/>
+              <span class='g-hit-number'></span>
+            </div>
           </div>
           <hr class ='g-line' id='g-line'>
           <div class="g-damage-area">
             <div class="g-damage-div">
-              <span class="g-player-string icon-app_world_wanderer"></span><span class="g-player-number"></span>
+              <span class="g-player-string icon-app_world_wanderer"></span><span class="g-player-number"></span>    　
             </div>
             <div class="g-damage-div">
               <span class="g-player-string icon-ViewMove"></span><span class="g-torobot-number"></span>
@@ -48,25 +74,111 @@
             <div class="g-damage-div">
               <span class="g-player-string icon-app_fc"></span><span class="g-object-number"></span>
             </div>
-            <div class="g-damage-div g-damage-block">
-              <span class="g-player-string icon-app_block"></span><span class="g-block-number"></span>
+            <div class="g-damage-div">
+              <span class="g-player-string icon-ViewMove"></span><span class="g-tower-number"></span>
             </div>
-            <div class="g-robot-history">
-              <span class='icon-robots'/>
-            </div>
-          </div>
-          <div class="g-additional" id="g-additional">
-            <hr class ='g-line2' id='g-line2'>
-            <div class="g-robot-area">
-              <span class="g-robot-history">
-                <span class="icon-opp"/><span class="icon-opp"/><span class="icon-opp"/><span class="icon-che"/><span class="icon-jas"/>
-              </span>
-            </div>
+            <span class="g-kill-death">
+              <span class="g-k-string">K:</span><span class="g-kill-number"></span>
+              <span class="g-d-string">D:</span><span class="g-death-number"></span>
+            </span>
           </div>
         </div>
       </div>
     </li>
 </ol>
+<div class="header" id="header_space">
+  <div class ="header-top">
+    <span class='mypage'>
+      <label for='button-1' class='icon-app_fc'></label>
+      <button class='button-1' id='button-1'></button>
+    </span>
+    <span class='areaname'>Unknown Area</span>
+    <span class='clockicon'>
+      <!--
+      <span class='icon-ScheduleTime'></span>
+      -->
+      <span class='time'>
+        <label class='time-min' for='button-2'>0</label>
+        <label class='time-coron' for='button-2'>:</label>
+        <label class='time-sec' for='button-2'>00</label>
+        <button class='button-2' id='button-2'></button>
+      </span>
+    </span>
+    <span class='setting'>
+      <label for='button-4' class='icon-app_drawer_setting'></label>
+      <button class='button-4' id='button-4'></button>
+    </span>
+  </div>
+  <hr class='header-line' size='4px' noshade>
+  <div class='header-under'>
+    <span class='header-data' id='header-data'>
+      <span class='what-header-data'>total : -</span>
+      <span class='all-kd'>
+        <span class='kill-num'>K : 0 [0]</span>
+        <span class='death-num'>D : 0 [0]</span>
+      </span>
+      <span class='all-kd-percent'>K/D : 1.00</span>
+    </span>
+  </div>
+</div>
+<div class='set-data'>
+  <div class="set-header">
+    <span class='set-header-text'>　Setting (Not Working)</span>
+    <label for='button-5' class='icon-NaviUp'></label>
+    <button class='button-5' id='button-5'></button>
+  </div>
+  <div class="set-space">
+    <div>
+      <input type='checkbox' id='setting-item-2-1' class="checkbox" />
+      <label class="switch" for='setting-item-2-1'></label>
+      <label class="s-text" for='setting-item-2-1'>ヘッダーの表示</label>
+    </div>
+    <div class="explain">ヘッダーが不要な場合はオン/起動直後は表示します。</div>
+  </div>
+  <!--
+  <div class="set-space">
+    <div>
+      <label for='setting-item-1-2'>キルログの表示位置</label>
+      <div>
+        <input type='radio' id='killrog-left' name='killrog-position' value='left'><label for='killrog-left'>Left</label>
+        <input type='radio' id='killrog-center' name='killrog-position' value='center'><label for='killrog-center'>Center</label>
+        <input type='radio' id='killrog-right' name='killrog-position' value='right'><label for='killrog-right'>Right</label>
+      </div>
+    </div>
+    <div class="explain">キルログの寄せ位置を指定する。デフォルトは右揃え</div>
+  </div>
+-->
+  <div class="set-space">
+    <div>
+      <input type='checkbox' id='setting-item-2-2' class="checkbox" />
+      <label class="switch" for='setting-item-2-2'></label>
+      <label class="s-text" for='setting-item-2-2'>PvEエリアでのヘッダーの表示</label>
+    </div>
+    <div class="explain">起動後エリア変更すると消える。PvPエリアからPvEエリアに入ると表示する。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <label class="s-text" for='setting-item-100'>オーバーレイの最大表示行数</label>
+      <input type='number' id='setting-item-100' class="number" min="4" max="50"/>
+    </div>
+    <div class="explain">オーバーレイの最大表示行数を設定する。</div>
+  </div>
+  <div class="set-space">
+    <div class="set-one">
+      <input type='button' id='setting-item-8-2' class="checkbox"/>
+      <span class="icon-ViewMove" for='setting-item-8-2'/>
+      <label class="s-text" for='setting-item-8-2'>ダミーデータを読み込み（最大10行）</label>
+    </div>
+  </div>
+  <div class="set-space">
+    <div class= "set-one">
+      <input type='button' id='setting-item-9' class="checkbox"/>
+      <span class="icon-ViewMove" for='setting-item-9'/>
+      <label class="s-text" for='setting-item-9'>初期化</label>
+      <span class='version'>kill-feed-core 1.02</span>
+    </div>
+  </div>
+</div>
 <ol id="overlay">
     <li>wait...</li>
 </ol>

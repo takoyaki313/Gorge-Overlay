@@ -5,7 +5,7 @@ function logline_start(log){
     //341 is The Goblet (my home)
     //242 is Seal Rock
     //15 is Middle La Noscea
-    if (log[2] === '488'||log[2] === '242'){
+    if (log[2] === '488'||log[2] === '242'||log[2] === '296'){
       LOG_PROCESS = false;
     }
     else if (log[2] === '15') {

@@ -63,7 +63,7 @@ function area_check(area){
     SET_BATTLE_TIME = 1200;//20min
     LOG_PROCESS = false;
   }
-  else if (area.zoneName.indexOf('Middle La Noscea')!== -1){
+  else if (area.zoneName.indexOf('Middle La Noscea')!== -1/*||area.zoneName.indexOf('The Goblet')!== -1*/){
     NOW_AREA = 3;//Test Area_FL
     SET_BATTLE_TIME = 300;//test
     LOG_PROCESS = false;
@@ -74,6 +74,30 @@ function area_check(area){
     ALIANCE_DATA = false;
   }
   header_update_timer();
+  if(HEADER_TEMP === 0){//First start up
+    header_disp(true);
+    HEADER_TEMP = 1;
+  }
+  else{//second or later
+    if(PVE_HEADER){//Disp anytime
+      header_disp(true);
+    }
+    else if (NOW_AREA > 0 && !PVE_HEADER) {//PvPArea
+      header_disp(true);
+      HEADER_TEMP = 0;
+    }
+    else{
+      header_disp(false);
+    }
+  }
+}
+function header_disp(disp){
+  if(disp){
+    $("#header_space").css('display','flex');
+  }
+  else{
+    $("#header_space").css('display','none');
+  }
 }
 function header_update_zone(area_name){
   $('.areaname').text(area_name);
@@ -127,11 +151,18 @@ function overlay_update_start(e){
     header_update_battle_data(e.Encounter);
   }
   if(e.Encounter.CurrentZoneName === 'Hidden Gorge'){
-  }
-  else if (e.Encounter.CurrentZoneName === 'The Goblet') {
     gorge_overlay_update(e);
   }
-  else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'){
+  else if (
+    e.Encounter.CurrentZoneName === 'The Borderland Ruins (Secure)'||
+    e.Encounter.CurrentZoneName === 'Seal Rock (Seize)'||
+    e.Encounter.CurrentZoneName === 'The Fields Of Glory (Shatter)'||
+    e.Encounter.CurrentZoneName === 'Onsal Hakair (Danshig Naadam)'
+    ) {
+      //FL is not create... in a few days...
+    gorge_overlay_update(e);
+  }
+  else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'/*||e.Encounter.CurrentZoneName === 'The Goblet'*/){
     gorge_overlay_update(e);
   }
   else {
@@ -162,7 +193,6 @@ function pve_overlay_update(e){
     if (combatant.name === ACT_NAME) {
       //addclass me
     }
-    console.log(combatant.encdps.length);
     let dps = Number(combatant.encdps);
     if(combatant.encdps.length >= 9){//100,000
       row.find('.n-dps').text(dps.toFixed(0));

@@ -129,12 +129,13 @@
   </div>
   <div class="set-space">
     <div>
-      <input type='checkbox' id='setting-item-1' class="checkbox" />
-      <label class="switch" for='setting-item-1'></label>
-      <label class="text" for='setting-item-1'>キルログの表示</label>
+      <input type='checkbox' id='setting-item-2-1' class="checkbox" />
+      <label class="switch" for='setting-item-2-1'></label>
+      <label class="s-text" for='setting-item-2-1'>ヘッダーの表示</label>
     </div>
-    <div class="explain">ヘッダーのみで使用する/キルログを分割して別に表示している場合はオフ</div>
+    <div class="explain">ヘッダーが不要な場合はオン/起動直後は表示します。</div>
   </div>
+  <!--
   <div class="set-space">
     <div>
       <label for='setting-item-1-2'>キルログの表示位置</label>
@@ -146,72 +147,34 @@
     </div>
     <div class="explain">キルログの寄せ位置を指定する。デフォルトは右揃え</div>
   </div>
-  <div class="set-space">
-    <div>
-      <input type='checkbox' id='setting-item-2-1' class="checkbox" />
-      <label class="switch" for='setting-item-2-1'></label>
-      <label class="text" for='setting-item-2-1'>ヘッダーの表示</label>
-    </div>
-    <div class="explain">ヘッダーが要らない場合はオフ。起動後エリア変更すると消える</div>
-  </div>
+-->
   <div class="set-space">
     <div>
       <input type='checkbox' id='setting-item-2-2' class="checkbox" />
       <label class="switch" for='setting-item-2-2'></label>
-      <label class="text" for='setting-item-2-2'>PvEエリアでのヘッダーの表示</label>
+      <label class="s-text" for='setting-item-2-2'>PvEエリアでのヘッダーの表示</label>
     </div>
-    <div class="explain">起動後エリア変更すると消える。<br>PvPエリアからPvEエリアに入ると表示する。</div>
+    <div class="explain">起動後エリア変更すると消える。PvPエリアからPvEエリアに入ると表示する。</div>
   </div>
   <div class="set-space">
     <div>
-      <input type='checkbox' id='setting-item-10' class="checkbox" />
-      <label class="switch" for='setting-item-10'></label>
-      <label class="text" for='setting-item-10'>分割オーバーレイを使用する</label>
+      <label class="s-text" for='setting-item-100'>オーバーレイの最大表示行数</label>
+      <input type='number' id='setting-item-100' class="number" min="4" max="50"/>
     </div>
-    <div class="explain">キルログを分割して別オーバーレイとして表示するかどうか。反映にはリロードが必要</div>
+    <div class="explain">オーバーレイの最大表示行数を設定する。</div>
   </div>
   <div class="set-space">
-    <div>
-      <label class="text" for='setting-item-4'>最大表示行数</label>
-      <input type='number' id='setting-item-4' class="number" min="1" max="100"/>
-    </div>
-    <div class="explain">キルログの最大表示行数を設定する。</div>
-  </div>
-  <div class="set-space">
-    <div>
-      <input type='checkbox' id='setting-item-5' class="checkbox" />
-      <label class="switch" for='setting-item-5'></label>
-      <label class="text" for='setting-item-5'>アニメーションの表示</label>
-    </div>
-    <div class="explain">キルログがゆっくり消えるかどうか。点滅してしまうときはオフに。</div>
-  </div>
-  <div class="set-space">
-    <div>
-      <label class="text" for='setting-item-6'>キルログの表示時間</label>
-      <input type='number' id='setting-item-6' class="number" min='1' max='60'/>
-    </div>
-    <div class="explain">キルログが表示されてから消えるまでを設定する。推奨は30秒</div>
-  </div>
-  <div class="set-space">
-    <div>
-      <label class="text" for='setting-item-7'>FLのタイマーオフセット</label>
-      <input type='number' id='setting-item-7' class="number"/>
-    </div>
-    <div class="explain">デフォルトでは、フロントライン参加後に表示される
-      <br>「フロントラインにxx団として参加しました！」から<br>43000ms後(45秒-2秒)からタイマーが作動するようになっています。</div>
-  </div>
-  <div class="set-space">
-    <div>
+    <div class="set-one">
       <input type='button' id='setting-item-8-2' class="checkbox"/>
-      <label class="icon-ViewMove" for='setting-item-8-2'></label>
-      <label class="text" for='setting-item-8-2'>ダミーデータを読み込み（最大10行）</label>
+      <span class="icon-ViewMove" for='setting-item-8-2'/>
+      <label class="s-text" for='setting-item-8-2'>ダミーデータを読み込み（最大10行）</label>
     </div>
   </div>
   <div class="set-space">
-    <div>
+    <div class= "set-one">
       <input type='button' id='setting-item-9' class="checkbox"/>
-      <label class="icon-ViewMove" for='setting-item-9'></label>
-      <label class="text" for='setting-item-9'>初期化</label>
+      <span class="icon-ViewMove" for='setting-item-9'/>
+      <label class="s-text" for='setting-item-9'>初期化</label>
       <span class='version'>kill-feed-core 1.02</span>
     </div>
   </div>
