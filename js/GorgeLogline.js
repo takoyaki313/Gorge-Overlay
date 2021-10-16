@@ -148,7 +148,9 @@ async function logline_main(log){
       break;
     case '33':
     logline_battle_start_check(log);
-    console.log(log);
+    if(TEST_MODE){
+      console.log(log);
+    }
       break;
     default:
     if(TEST_MODE){

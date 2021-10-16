@@ -291,15 +291,15 @@ function fl_overlay_update(e){
       row.find('.f-dps').text(dps);
       let job = jobID_to_string(LIMITED_DATA[i].currentjob);
       if(job !== null){
-        row.find('.g-job-icon').addClass('icon-' + job);
+        row.find('.f-job').addClass('icon-' + job);
       }
       else{
-        row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
+        row.find('.f-job').addClass('icon-' + LIMITED_DATA[i].combatantjob);
       }
       ///////////////////////////title
       row.find('.f-name').text(LIMITED_DATA[i].name);
       row.find('.f-kill-number').text(LIMITED_DATA[i].kills);
-      row.find('.n-death-number').text(LIMITED_DATA[i].death);
+      row.find('.f-death-number').text(LIMITED_DATA[i].death);
 
       row.find('.f-bar').css('width', ((dps / maxdps) * 100) + '%');
       if(LIMITED_DATA[i].aliance !== 10){
@@ -345,16 +345,17 @@ function fl_overlay_update(e){
       }
       if(position === -1){
         row.find('.f-kill-number').text(combatant.kills);
-        row.find('.n-death-number').text(combatant.deaths);
+        row.find('.f-death-number').text(combatant.deaths);
       }
       else{
         row.find('.f-kill-number').text(LIMITED_DATA[position].kills);
-        row.find('.n-death-number').text(LIMITED_DATA[position].death);
+        row.find('.f-death-number').text(LIMITED_DATA[position].death);
+        if(LIMITED_DATA[i].aliance !== 10){
+          row.addClass('aliance-bar-' + LIMITED_DATA[position].aliance);
+        }
       }
       row.find('.f-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
-      if(LIMITED_DATA[i].aliance !== 10){
-        row.addClass('aliance-bar-' + LIMITED_DATA[position].aliance);
-      }
+
       if(ACT_NAME === combatant.name){
         row.addClass('me');
       }

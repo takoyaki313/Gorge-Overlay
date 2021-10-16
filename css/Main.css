@@ -195,6 +195,7 @@ li {
   align-items: center;
 }
 .f-basic .f-dps{
+  width: 3.3rem;
   font-size: 1.3rem;
   align-items: center;
   justify-content: flex-end;
