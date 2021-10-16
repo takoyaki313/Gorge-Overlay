@@ -13,6 +13,22 @@ var MYCHARACTOR_ID = '';
 var MYCHARACTOR_NAME = '';
 var NOW_AREA = 0;
 var SET_BATTLE_TIME = 0;
+var ENCOUNTER_START = false;
+var ENCOUNTER_START_TIME = 0;
+var PVP_DURATION = 0;
+//Setting///////////////////////////////
+var ACT_NAME = 'Takoyaki';
+var MAX_ROW = 30;
+var PVE_MAX_ROW = 10;
+var FL_MAX_ROW = 24;
+var FONT_SIZE = 16;
+////////////////////////////////////////
+var DECIMAL_POINT_DISPLAY = true;
+var PARTY_PRIORITY = true;
+var COMBATANT_ONLY = true;
+var ENCOUNTER_TIME = false;//true is battletime = encounter time
+var VERSION = 'Gorge-overlay2 xxx'
+////////////////////////////////////////
 //DATA//////////////////////////////////
 const Oppresor_HP = 100000;
 const Justice_HP = 75000;
@@ -20,6 +36,12 @@ const Chaiser_HP = 50000;
 ////////////////////////////////////////
 $(function() {
 "use strict";
+  if(localStorage.getItem('Gorge-Overlay2') === null){
+    localstorage_defalt();
+  }
+  else{
+    localstorage_restore();
+  }
   addOverlayListener('ChangeZone', (zone) => area_check(zone));
   addOverlayListener("LogLine", (log) => logline_start(log.line));
   if(TEST_MODE||true){
@@ -42,8 +64,6 @@ $(function() {
   //let array_data = ['Takoyaki',3,1];
   //let array_object = ['name','kills','death'];
   //main_data_push_update('nameID','101020AF',array_object,array_data);
-  dammy();
-  gorge_overlay_update_process();
 });
 function area_check(area){
   header_update_zone(area.zoneName);
@@ -54,6 +74,8 @@ function area_check(area){
     NOW_AREA = 1;//Hiddengorge
     SET_BATTLE_TIME = 900;//15min
     LOG_PROCESS = false;
+    KILL_DATA = [];
+    header_update_timer();
   }
   else if (area.zoneID == 376
   ||area.zoneName.indexOf('Seal Rock')!== -1
@@ -62,18 +84,22 @@ function area_check(area){
     NOW_AREA = 2;//FL
     SET_BATTLE_TIME = 1200;//20min
     LOG_PROCESS = false;
+    KILL_DATA = [];
+    header_update_timer();
   }
   else if (area.zoneName.indexOf('Middle La Noscea')!== -1||area.zoneName.indexOf("Wolves' Den Pier")!== -1/*||area.zoneName.indexOf('The Goblet')!== -1*/){
     NOW_AREA = 3;//Test Area_FL
     SET_BATTLE_TIME = 300;//test
     LOG_PROCESS = false;
+    KILL_DATA = [];
+    header_update_timer();
   }
   else {
     NOW_AREA = 0;
+    ENCOUNTER_START = false;
     SET_BATTLE_TIME = 0;
     ALIANCE_DATA = false;
   }
-  header_update_timer();
   if(HEADER_TEMP === 0){//First start up
     header_disp(true);
     HEADER_TEMP = 1;
@@ -125,13 +151,13 @@ function header_update_battle_data(e){
   let min_kill = 0;
   let now = Date.now();
   for(let i = 0 ; i < KILL_DATA.length ; i++){
-    if(KILL_DATA[i].victimaliance === 0){
+    if(KILL_DATA[i].attackeraliance !== 0){
       total_kill++;
       if(now - KILL_DATA[i].time < 60000){
         min_kill++;
       }
     }
-    else{
+    if(KILL_DATA[i].victimaliance !== 0){
       total_death++;
       if(now - KILL_DATA[i].time < 60000){
         min_death++;
@@ -151,6 +177,10 @@ function overlay_update_start(e){
     header_update_battle_data(e.Encounter);
   }
   if(e.Encounter.CurrentZoneName === 'Hidden Gorge'){
+    if(!ENCOUNTER_START && NOW_AREA !== 0){
+      ENCOUNTER_START_TIME = Date.now();
+      ENCOUNTER_START = true;
+    }
     gorge_overlay_update(e);
   }
   else if (
@@ -160,9 +190,17 @@ function overlay_update_start(e){
     e.Encounter.CurrentZoneName === 'Onsal Hakair (Danshig Naadam)'
     ) {
       //FL is not create... in a few days...
-    gorge_overlay_update(e);
+      if(!ENCOUNTER_START && NOW_AREA !== 0){
+        ENCOUNTER_START_TIME = Date.now();
+        ENCOUNTER_START = true;
+      }
+      fl_overlay_update(e);
   }
   else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||e.Encounter.CurrentZoneName === 'The Goblet'*/){
+    if(!ENCOUNTER_START && NOW_AREA !== 0){
+      ENCOUNTER_START_TIME = Date.now();
+      ENCOUNTER_START = true;
+    }
     gorge_overlay_update(e);
   }
   else {
@@ -194,14 +232,19 @@ function pve_overlay_update(e){
       //addclass me
     }
     let dps = Number(combatant.encdps);
-    if(combatant.encdps.length >= 9){//100,000
-      row.find('.n-dps').text(dps.toFixed(0));
-    }
-    else if (combatant.encdps.length === 8){//10,000
-      row.find('.n-dps').text(Number(combatant.encdps).toFixed(1));
+    if(DECIMAL_POINT_DISPLAY){
+      if(combatant.encdps.length >= 9){//100,000
+        row.find('.n-dps').text(dps.toFixed(0));
+      }
+      else if (combatant.encdps.length === 8){//10,000
+        row.find('.n-dps').text(dps.toFixed(1));
+      }
+      else{
+        row.find('.n-dps').text(dps.toFixed(2));
+      }
     }
     else{
-      row.find('.n-dps').text(dps);
+      row.find('.n-dps').text(dps.toFixed(0));
     }
     row.find('.n-job').addClass('icon-' + combatant.Job.toLowerCase());
     ///////////////////////////title
@@ -210,89 +253,202 @@ function pve_overlay_update(e){
     row.find('.n-direct').text(combatant.DirectHitPct);
     row.find('.n-cridirect').text(combatant.CritDirectHitPct);
     row.find('.n-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
+    if(ACT_NAME === combatant.name){
+      row.addClass('me');
+    }
     container.append(row);
   }
+  $('#overlay').replaceWith(container);
+}
+function fl_overlay_update(e){
+  var encounter = e.Encounter;
+  var combatants = e.Combatant;
+  var template = $('#fl-source li');
+  var container = $('#overlay').clone();
+  var maxdps = 0;
+  container.html('');
+  var names = Object.keys(combatants).slice(0,FL_MAX_ROW);
+  if (!e.isActive) {
+    rdps_max = 0;
+    $('body').addClass('inactive');
+  } else {
+    $('body').removeClass('inactive');
+  }
+  var limit = Math.min(names.length,FL_MAX_ROW);
+  fl_alliance();
+  if(ENCOUNTER_TIME){//use LIMITED_DATA
+    limited_data_combatant_marge(combatants,encounter.DURATION,'fl');
+    LIMITED_DATA.sort(function (a,b) {
+      return b.totaloutdamage - a.totaloutdamage ;
+    });
+    limited_data_party_cut(FL_MAX_ROW);
+    for(let i = 0 ; i < limit ; i++){
+      var row = template.clone();
+      if (!maxdps) {
+      maxdps = parseFloat(damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION));
+      }
+      let dps = damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION);
+      row.find('.f-dps').text(dps);
+      row.find('.f-job').addClass('icon-' + combatant.Job.toLowerCase());
+      ///////////////////////////title
+      row.find('.f-name').text(LIMITED_DATA[i].name);
+      row.find('.f-kill-number').text(LIMITED_DATA[i].kills);
+      row.find('.n-death-number').text(LIMITED_DATA[i].death);
+
+      row.find('.f-bar').css('width', ((dps / maxdps) * 100) + '%');
+      if(LIMITED_DATA[i].aliance !== 10){
+
+        row.addClass('aliance-bar-' + LIMITED_DATA[i].aliance);
+      }
+      if(ACT_NAME === LIMITED_DATA[i].name){
+        row.addClass('me');
+      }
+      container.append(row);
+    }
+  }else{
+    for(let i = 0 ; i < limit ; i++){
+      var combatant = combatants[names[i]];
+      var row = template.clone();
+      if (!maxdps) {
+      maxdps = parseFloat(combatant.encdps);
+      }
+      let dps = Number(combatant.encdps);
+      if(DECIMAL_POINT_DISPLAY){
+        if(combatant.encdps.length >= 7){//100,000.25
+          row.find('.f-dps').text(dps.toFixed(0));
+        }
+        else if (combatant.encdps.length === 6){//10,000
+          row.find('.f-dps').text(dps.toFixed(1));
+        }
+        else{
+          row.find('.f-dps').text(dps.toFixed(2));
+        }
+      }
+      else{
+        row.find('.f-dps').text(dps.toFixed(0));
+      }
+      row.find('.f-job').addClass('icon-' + combatant.Job.toLowerCase());
+      ///////////////////////////title
+      row.find('.f-name').text(combatant.name);
+      let position = 0;
+      if(ACT_NAME === combatant.name){
+        position = LIMITED_DATA.findIndex(({name}) => name == MYCHARACTOR_NAME);
+      }
+      else{
+        position = LIMITED_DATA.findIndex(({name}) => name == combatant.name);
+      }
+      if(position === -1){
+        row.find('.f-kill-number').text(combatant.kills);
+        row.find('.n-death-number').text(combatant.deaths);
+      }
+      else{
+        row.find('.f-kill-number').text(LIMITED_DATA[position].kills);
+        row.find('.n-death-number').text(LIMITED_DATA[position].death);
+      }
+      row.find('.f-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
+      if(LIMITED_DATA[i].aliance !== 10){
+        row.addClass('aliance-bar-' + LIMITED_DATA[position].aliance);
+      }
+      if(ACT_NAME === combatant.name){
+        row.addClass('me');
+      }
+      container.append(row);
+    }
+  }
+
   $('#overlay').replaceWith(container);
 }
 function gorge_overlay_update(e){
   var encounter = e.Encounter;
   var combatants = e.Combatant;
-  limited_data_combatant_marge(combatants,encounter.DURATION);
+  limited_data_combatant_marge(combatants,encounter.DURATION,'rw');
 
   gorge_overlay_update_process();
 }
 function gorge_overlay_update_process(){
     LIMITED_DATA.sort(function (a,b) {
-      return b.combatantdps - a.combatantdps ;
+      return b.totaloutdamage - a.totaloutdamage ;
     });
     var template = $('#gorge-source li');
     var container = $('#overlay').clone();
     container.html('');
+    limited_data_party_cut(MAX_ROW);
     let maxrow = LIMITED_DATA.length;
     if(maxrow > MAX_ROW){
       maxrow = MAX_ROW;
     }
     for(let i = 0 ; i < maxrow ; i++){
-      if (LIMITED_DATA[i].combatantjob !== null){
-        var row = template.clone();
-        row.find('.g-total-dps-number').text(LIMITED_DATA[i].combatantdps);
-        row.find('.g-total-hps-number').text(damage_to_dps(LIMITED_DATA[i].combatantheal,LIMITED_DATA[i].combatantDuration));
-        row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
-        row.find('.g-name').text(LIMITED_DATA[i].name);
-        row.find('.g-kill-number').text(LIMITED_DATA[i].kills);
-        row.find('.g-death-number').text(LIMITED_DATA[i].death);
-        row.find('.g-player-number').text(damage_to_dps(LIMITED_DATA[i].actualpersondamage,LIMITED_DATA[i].combatantDuration));
-        row.find('.g-torobot-number').text(damage_to_dps(LIMITED_DATA[i].actualToRobotdamage,LIMITED_DATA[i].combatantDuration));
-        row.find('.g-object-number').text(damage_to_dps(LIMITED_DATA[i].actualobjectdamage,LIMITED_DATA[i].combatantDuration));
-        row.find('.g-tower-number').text(damage_to_dps(LIMITED_DATA[i].actualtowerdamage,LIMITED_DATA[i].combatantDuration));
-        function robot_history_fonts(robhistory){
-          let data = '';
-          if(robhistory === null){
-            return '';
-          }
-          else {
-            let num = robhistory.length / 3;
-            for(let i = 0 ; i < num ; i++){
-              if('jas' === robhistory.substr(0,3)){
-                data = data + String.fromCodePoint(0xe90d);
-                robhistory = robhistory.substr(3,robhistory.length);
-              }
-              else if ('che' === robhistory.substr(0,3)) {
-                data = data + String.fromCodePoint(0xe908);
-                robhistory = robhistory.substr(3,robhistory.length);
-              }
-              else if ('opp' === robhistory.substr(0,3)) {
-                data = data + String.fromCodePoint(0xe914);
-                robhistory = robhistory.substr(3,robhistory.length);
-              }
-            }
-            return data;
-          }
-        }
-        if(LIMITED_DATA[i].robhistory === null||LIMITED_DATA[i].robhistory === ''){
-          let reject_damage = LIMITED_DATA[i].realobjectdamage + LIMITED_DATA[i].realpersondamage + LIMITED_DATA[i].realToRobotdamage;
-          reject_damage = LIMITED_DATA[i].totaloutdamage - reject_damage;
-          row.find('.g-robot-history').css('display','none');
-          row.find('.g-hit').css('display','none');
-        }
-        else{
-          row.find('.icon-robots').text(robot_history_fonts(LIMITED_DATA[i].robhistory));
-          if(LIMITED_DATA[i].robhistory.indexOf('jas') !== -1){
-            row.find('.g-hit-number').text('xx(xx.x%)');
-          }
-          else {
-            row.find('.g-hit').css('display','none');
-            row.find('.g-robot-history').css('width','calc(100vw - 40% - 9rem)');
-          }
-        }
-        if(LIMITED_DATA[i].aliance !== 10){
-          row.addClass('aliance-bar-' + LIMITED_DATA[i].aliance);
-        }
+      if (LIMITED_DATA[i].combatantjob !== null||COMBATANT_ONLY){
+        var row = gorge_row_create(template.clone(),i);
+        container.append(row);
+      }
+      else{
+        var row = gorge_row_create(template.clone(),i);
         container.append(row);
       }
     }
     $('#overlay').replaceWith(container);
 }
+function gorge_row_create(row,i){
+  row.find('.g-total-dps-number').text(damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION));
+  row.find('.g-total-hps-number').text(damage_to_dps(LIMITED_DATA[i].combatantheal,PVP_DURATION));
+  row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
+  row.find('.g-name').text(LIMITED_DATA[i].name);
+  row.find('.g-kill-number').text(LIMITED_DATA[i].kills);
+  row.find('.g-death-number').text(LIMITED_DATA[i].death);
+  row.find('.g-player-number').text(damage_to_dps(LIMITED_DATA[i].actualpersondamage,PVP_DURATION));
+  row.find('.g-torobot-number').text(damage_to_dps(LIMITED_DATA[i].actualToRobotdamage,PVP_DURATION));
+  row.find('.g-object-number').text(damage_to_dps(LIMITED_DATA[i].actualobjectdamage,PVP_DURATION));
+  row.find('.g-tower-number').text(damage_to_dps(LIMITED_DATA[i].actualtowerdamage,PVP_DURATION));
+
+  if(LIMITED_DATA[i].robhistory === null||LIMITED_DATA[i].robhistory === ''){
+    //let reject_damage = LIMITED_DATA[i].realobjectdamage + LIMITED_DATA[i].realpersondamage + LIMITED_DATA[i].realToRobotdamage;
+    //reject_damage = LIMITED_DATA[i].totaloutdamage - reject_damage;
+    row.find('.g-robot-history').css('display','none');
+    row.find('.g-name').css('max-width','100%');
+  }
+  else{
+    row.find('.icon-robots').text(robot_history_fonts(LIMITED_DATA[i].robhistory));
+    if(LIMITED_DATA[i].robhistory.indexOf('jas') !== -1){
+      //row.find('.g-hit-number').text('xx(xx.x%)');
+    }
+  }
+  if(LIMITED_DATA[i].aliance !== 10){
+    row.addClass('aliance-bar-' + LIMITED_DATA[i].aliance);
+  }
+  if(LIMITED_DATA[i].aliance === 1){
+    row.addClass('party');
+  }
+  if(ACT_NAME === LIMITED_DATA[i].name){
+    row.addClass('me');
+  }
+  return row;
+}
+function robot_history_fonts(robhistory){
+  let data = '';
+  if(robhistory === null){
+    return '';
+  }
+  else {
+    let num = robhistory.length / 3;
+    for(let i = 0 ; i < num ; i++){
+      if('jas' === robhistory.substr(0,3)){
+        data = data + String.fromCodePoint(0xe90d);
+        robhistory = robhistory.substr(3,robhistory.length);
+      }
+      else if ('che' === robhistory.substr(0,3)) {
+        data = data + String.fromCodePoint(0xe908);
+        robhistory = robhistory.substr(3,robhistory.length);
+      }
+      else if ('opp' === robhistory.substr(0,3)) {
+        data = data + String.fromCodePoint(0xe914);
+        robhistory = robhistory.substr(3,robhistory.length);
+      }
+    }
+    return data;
+  }
+}
+
 function damage_to_dps(damage,time){
   damage = Number(damage);
   time = Number(time);
@@ -307,22 +463,38 @@ function damage_to_dps(damage,time){
   return dps;
 }
 function dps_round(dps){
-  if (dps.toFixed(0).length <= 3) {
-    dps = dps.toFixed(2);
+  if(DECIMAL_POINT_DISPLAY){
+    if (dps.toFixed(0).length <= 2) {
+      dps = dps.toFixed(2);
+    }
+    else if (dps.toFixed(0).length === 3){
+      dps = dps.toFixed(1);
+    }
+    else if (dps.toFixed(0).length >= 4) {
+      dps = dps.toFixed(0);
+    }
+    return dps;
   }
-  else if (dps.toFixed(0).length === 4){
-    dps = dps.toFixed(1);
-  }
-  else if (dps.toFixed(0).length >= 5) {
-    dps = dps.toFixed(0);
-  }
-  return dps;
+else{
+  return dps.toFixed(0);
 }
-function limited_data_combatant_marge(e,time){
+}
+function limited_data_combatant_marge(e,time,area){
   //combatantDuration: 0,
   //combatantdamage: 0,
   //combatantjob: null,
+  let time_now = Date.now();
+  let combatant_time_ms = time_now - ENCOUNTER_START_TIME;
+  let caluc_time = Math.floor(combatant_time_ms/1000);
   time = Number(time);
+  if(time >= caluc_time){
+    //nothing
+  }
+  else if (time < caluc_time) {
+    time = caluc_time;
+  }
+
+  PVP_DURATION = time;
   let position = LIMITED_DATA.findIndex(({name}) => name == MYCHARACTOR_NAME);
   if(position !== -1){
     LIMITED_DATA[position].name = ACT_NAME;
@@ -347,7 +519,12 @@ function limited_data_combatant_marge(e,time){
           LIMITED_DATA[i].combatantdamage = e[combatants_name].damage;
           LIMITED_DATA[i].combatantDuration = time;
           LIMITED_DATA[i].combatantheal = e[combatants_name].healed;
-          LIMITED_DATA[i].totaloutdamage = LIMITED_DATA[i].actualToRobotdamage + LIMITED_DATA[i].actualpersondamage + LIMITED_DATA[i].actualobjectdamage;
+          if(area === 'rw'){
+            LIMITED_DATA[i].totaloutdamage = LIMITED_DATA[i].actualToRobotdamage + LIMITED_DATA[i].actualpersondamage + LIMITED_DATA[i].actualobjectdamage;
+          }
+          else if (area === 'fl') {
+            LIMITED_DATA[i].totaloutdamage = LIMITED_DATA[i].actualToRobotdamage + LIMITED_DATA[i].actualpersondamage + LIMITED_DATA[i].actualobjectdamage + LIMITED_DATA[i].actualtowerdamage;
+          }
           LIMITED_DATA[i].combatantdps = damage_to_dps(LIMITED_DATA[i].totaloutdamage,time);
           break;
         }
@@ -355,7 +532,48 @@ function limited_data_combatant_marge(e,time){
     }
   }
 }
-
+function fl_alliance(){
+  for(var i = 0; i < LIMITED_DATA.length; i++){
+    if(LIMITED_DATA[i].aliance === 2){
+      LIMITED_DATA[i].aliance = 1;
+    }
+    else if(LIMITED_DATA[i].aliance === 4){
+      LIMITED_DATA[i].aliance = 3;
+    }
+    else if(LIMITED_DATA[i].aliance === 6){
+      LIMITED_DATA[i].aliance = 5;
+    }
+  }
+}
+function limited_data_party_cut(cut){
+  let replace_data = [];
+  let party_member_position = [];
+  if(PARTY_PRIORITY){
+    if(LIMITED_DATA.length >= cut){
+      for(let i = 0 ; i < LIMITED_DATA.length ; i++){
+        if(LIMITED_DATA[i].aliance === 1) {
+          party_member_position.push(i);
+          replace_data.push(LIMITED_DATA[i]);
+        }
+      }
+      for(let i = 0;i < LIMITED_DATA.length && replace_data.length < cut ;i++){
+        let noparty = 0;
+        for(let p = 0; p < party_member_position.length;p++){
+          if(i == party_member_position[p]){
+            noparty = 1;
+          }
+        }
+        if(noparty == 0){//パーティメンバーのデータでないとき
+          replace_data.push(LIMITED_DATA[i]);
+        }
+      }
+      LIMITED_DATA = replace_data;
+      LIMITED_DATA.sort(function (a,b) {
+        return b.totaloutdamage - a.totaloutdamage ;
+      });
+    }
+  }
+}
 function party(p){
   if(TEST_MODE){
     console.warn(p);
@@ -395,6 +613,7 @@ function import_log_division(log){
   }
 }
 function dammy(){
+  PVP_DURATION = 30;
   LIMITED_DATA = [{
     nameID: 'SAMPLE',
     name: 'Justice Suzuki',
@@ -412,20 +631,20 @@ function dammy(){
     realToRobotdamage: 4521,
     realtowerdamage: 0,
     realRobotdamage: 0,
-    actualobjectdamage: 78441,
-    actualpersondamage: 984212,
-    actualToRobotdamage: 134583,
-    actualtowerdamage: 13583,
+    actualobjectdamage: Math.floor( Math.random() * 11000 ),
+    actualpersondamage: Math.floor( Math.random() * 91000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 71000 ),
+    actualtowerdamage: Math.floor( Math.random() * 11000 ),
     actualRobotdamage: 0,
     kills: 15,
     death: 2,
     totalheal: 0,
     selfheal: 0,
     totalincomedamage: 0,
-    combatantDuration: 500,
-    combatantdps:2394.5,
+    combatantDuration: 50,
+    combatantdps:0,
     combatantdamage: 1197236,
-    combatantheal:4511,
+    combatantheal:Math.floor( Math.random() * 10000 ),
     combatantjob: 'rdm',
   },{
     nameID: 'SAMPLE',
@@ -443,10 +662,10 @@ function dammy(){
     realpersondamage: 78103,
     realToRobotdamage: 4521,
     realRobotdamage: 0,
-    actualobjectdamage: 7841,
-    actualpersondamage: 98412,
-    actualToRobotdamage: 4583,
-    actualtowerdamage: 34583,
+    actualobjectdamage: Math.floor( Math.random() * 1000 ),
+    actualpersondamage: Math.floor( Math.random() * 1000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 1000 ),
+    actualtowerdamage: Math.floor( Math.random() * 101000 ),
     actualRobotdamage: 0,
     kills: 5,
     death: 2,
@@ -454,7 +673,7 @@ function dammy(){
     selfheal: 0,
     totalincomedamage: 0,
     combatantDuration: 45,
-    combatantdps:3507.6,
+    combatantdps:0,
     combatantdamage: 157841,
     combatantheal:4511,
     combatantjob: 'pld',
@@ -474,10 +693,10 @@ function dammy(){
     realpersondamage: 78103,
     realToRobotdamage: 4521,
     realRobotdamage: 0,
-    actualobjectdamage: 7841,
+    actualobjectdamage: Math.floor( Math.random() * 31000 ),
     actualpersondamage: 98412,
-    actualToRobotdamage: 4583,
-    actualtowerdamage: 13453,
+    actualToRobotdamage: Math.floor( Math.random() * 101000 ),
+    actualtowerdamage: 125,
     actualRobotdamage: 0,
     kills: 9,
     death: 10,
@@ -485,9 +704,9 @@ function dammy(){
     selfheal: 0,
     totalincomedamage: 0,
     combatantDuration: 45,
-    combatantdps:5729.8,
+    combatantdps:0,
     combatantdamage: 257841,
-    combatantheal:4511,
+    combatantheal:Math.floor( Math.random() * 51000 ),
     combatantjob: 'blm',
   },{
     nameID: 'SAMPLE',
@@ -505,10 +724,10 @@ function dammy(){
     realpersondamage: 178103,
     realToRobotdamage: 12521,
     realRobotdamage: 0,
-    actualobjectdamage: 7841,
-    actualpersondamage: 98412,
-    actualToRobotdamage: 4583,
-    actualtowerdamage: 13458,
+    actualobjectdamage: Math.floor( Math.random() * 21000 ),
+    actualpersondamage: Math.floor( Math.random() * 21000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 21000 ),
+    actualtowerdamage: Math.floor( Math.random() * 21000 ),
     actualRobotdamage: 0,
     kills: 9,
     death: 10,
@@ -516,9 +735,9 @@ function dammy(){
     selfheal: 0,
     totalincomedamage: 0,
     combatantDuration: 45,
-    combatantdps:4840.9,
+    combatantdps:0,
     combatantdamage: 217841,
-    combatantheal:154101,
+    combatantheal:Math.floor( Math.random() * 11000 ),
     combatantjob: 'ast',
   },{
     nameID: 'SAMPLE',
@@ -547,9 +766,605 @@ function dammy(){
     selfheal: 0,
     totalincomedamage: 0,
     combatantDuration: 45,
-    combatantdps:35.15,
+    combatantdps:0,
     combatantdamage: 0,
     combatantheal:154101,
     combatantjob: 'ast',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Samuel Takano',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 2,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 11000 ),
+    actualpersondamage: Math.floor( Math.random() * 11000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 11000 ),
+    actualtowerdamage: Math.floor( Math.random() * 11000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:154101,
+    combatantjob: 'whm',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Gabriel Tepes',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 2,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 11000 ),
+    actualpersondamage: Math.floor( Math.random() * 11000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 1000 ),
+    actualtowerdamage: Math.floor( Math.random() * 11000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:154101,
+    combatantjob: 'drg',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Nathaniel Tamwood',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 2,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 11000 ),
+    actualpersondamage: Math.floor( Math.random() * 11000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 1000 ),
+    actualtowerdamage: Math.floor( Math.random() * 11000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:154101,
+    combatantjob: 'mnk',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Yoshi Da',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 3,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 89000 ),
+    actualpersondamage: Math.floor( Math.random() * 65000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 154000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'blm',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Raphael Tachibana',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 3,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'smn',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Carl Tanner',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 3,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 89000 ),
+    actualpersondamage: Math.floor( Math.random() * 65000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 154000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'sch',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Ansel Tod',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 3,
+    robhistory: 'oppoppjasche',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'sam',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Angel Twist',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 4,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'sam',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Carmel tae-yeon',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 4,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'brd',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Karl Touya',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 4,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'mch',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Mendel Thornton',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 4,
+    robhistory: 'cheoppche',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'dnc',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Saul Todman',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 5,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'sam',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Paul Talos',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 5,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'sam',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Maxwell Tudor',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 5,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'sam',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Abdul Trenton',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 5,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 9000 ),
+    actualpersondamage: Math.floor( Math.random() * 5000 ),
+    actualToRobotdamage: Math.floor( Math.random() * 15000 ),
+    actualtowerdamage: Math.floor( Math.random() * 54000 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 11 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 14000 ),
+    combatantjob: 'sam',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Joel Toussaint',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 6,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 400 ),
+    actualpersondamage: Math.floor( Math.random() * 500 ),
+    actualToRobotdamage: Math.floor( Math.random() * 1500 ),
+    actualtowerdamage: Math.floor( Math.random() * 5400 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 1 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 1400 ),
+    combatantjob: 'pld',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Niall Talbot',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 6,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 400 ),
+    actualpersondamage: Math.floor( Math.random() * 500 ),
+    actualToRobotdamage: Math.floor( Math.random() * 1500 ),
+    actualtowerdamage: Math.floor( Math.random() * 5400 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 1 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 1400 ),
+    combatantjob: 'pld',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Nicolas Gutchi',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 6,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 400 ),
+    actualpersondamage: Math.floor( Math.random() * 500 ),
+    actualToRobotdamage: Math.floor( Math.random() * 1500 ),
+    actualtowerdamage: Math.floor( Math.random() * 5400 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 1 ),
+    death: Math.floor( Math.random() * 11 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 1400 ),
+    combatantjob: 'pld',
+  },{
+    nameID: 'SAMPLE',
+    name: 'Hime Chan',
+    ownerID: null,
+    battle:null,
+    currentHP: 0,
+    maxHP: 0,
+    currentEP: 10000,
+    currentjob: 20,
+    aliance: 6,
+    robhistory: '',
+    totaloutdamage: 0,
+    realobjectdamage: 15141,
+    realpersondamage: 178103,
+    realToRobotdamage: 12521,
+    realRobotdamage: 0,
+    actualobjectdamage: Math.floor( Math.random() * 400 ),
+    actualpersondamage: Math.floor( Math.random() * 500 ),
+    actualToRobotdamage: Math.floor( Math.random() * 1500 ),
+    actualtowerdamage: Math.floor( Math.random() * 5400 ),
+    actualRobotdamage: 0,
+    kills: Math.floor( Math.random() * 1 ),
+    death: Math.floor( Math.random() * 15 ),
+    totalheal: 0,
+    selfheal: 0,
+    totalincomedamage: 0,
+    combatantDuration: 45,
+    combatantdps:0,
+    combatantdamage: 0,
+    combatantheal:Math.floor( Math.random() * 1400 ),
+    combatantjob: 'whm',
   }];
+  dammy_data_add();
+}
+function dammy_data_add(){
+  for(let i = 0 ; i < LIMITED_DATA.length ; i++){
+    LIMITED_DATA[i].totaloutdamage = LIMITED_DATA[i].actualToRobotdamage + LIMITED_DATA[i].actualpersondamage + LIMITED_DATA[i].actualobjectdamage;
+    LIMITED_DATA[i].combatantdps = damage_to_dps(LIMITED_DATA[i].totaloutdamage,LIMITED_DATA[i].combatantDuration);
+  }
 }

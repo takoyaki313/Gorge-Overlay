@@ -43,6 +43,9 @@
   width: 6.25rem;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .header .header-top .areaname {
   width: calc(100% - 8.75rem);

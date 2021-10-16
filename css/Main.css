@@ -30,6 +30,9 @@ html {
 #pve-source {
     display: none;
 }
+#fl-source {
+    display: none;
+}
 #overlay {
     display: flex;
     border-radius: 0.7rem;
@@ -50,7 +53,8 @@ li {
   display: flex;
   flex-direction: column;
   width: -webkit-fill-available;
-  margin: 0.25rem 0.2rem;
+  padding: 0.1rem 0.1rem;
+  margin: 0.15rem 0.1rem;
 }
 .g-basic{
   flex-direction: row;
@@ -59,13 +63,13 @@ li {
 [class^="-number"], [class*="-number"] {
 
 }
-[class^="g-"], [class*="g-"],[class^="n-"], [class*="n-"] {
+[class^="g-"], [class*="g-"],[class^="n-"], [class*="n-"],[class^="f-"], [class*="f-"]{
   display: flex;
 }
 .g-basic .g-dps-area{
   align-items: center;
   justify-content: flex-end;
-  min-width: 6.8rem;
+  min-width: 5.8rem;
 }
 .g-basic .g-dps{
   flex-direction: column;
@@ -73,6 +77,7 @@ li {
 }
 .g-basic .g-total-dps-number{
   font-size: 1.5rem;
+  justify-content: flex-end;
 }
 .g-basic .g-total-hps-number{
   justify-content: flex-end;
@@ -91,18 +96,11 @@ li {
   flex-direction: row;
   width: -webkit-fill-available;
 }
-.g-basic .g-name{
-  width: 40%;
-  align-items: center;
-  justify-content: flex-start;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 .g-basic .g-kill-death{
-  width: calc(100vw - 29rem);
+  max-width: 6rem;
   min-width: 6rem;
   font-size: 1.1rem;
+  padding: 0.2rem;
   margin-left: 0.2rem;
   margin-right: 0.2rem;
   justify-content: center;
@@ -118,7 +116,7 @@ li {
   justify-content: center;
 }
 .g-basic .g-line,.g-basic .g-line2{
-  width: calc(100vw - 8.4rem);
+  width: calc(100vw - 7.4rem);
   margin-top: 0rem;
   margin-bottom: 0rem;
   margin-inline-start: 0;
@@ -131,12 +129,20 @@ li {
   width: -webkit-fill-available;
 }
 .g-basic .g-damage-div {
-  max-width: 5rem;
-  min-width: 5rem;
+  width: calc(25vw - 3.45rem);
   align-items: center;
 }
+.g-basic .g-name{
+  max-width: calc(100vw - 17rem);
+  min-width: calc(100vw - 17rem);
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .g-basic .g-robot-history{
-  width: calc(100vw - 40%  - 14.3rem);
+  width: calc(100vw - 9rem - (100vw - 18rem));
   align-items: center;
   padding-left: 0.2rem;
   white-space:nowrap;
@@ -144,17 +150,10 @@ li {
   text-overflow:ellipsis;
   border-left: 0.15rem solid #ded7be;
 }
-.g-basic .g-hit{
-  width: 5.5rem;
-  flex-direction: row;
-  font-size: 0.8rem;
-  align-items: center;
-  justify-content: flex-end;
-}
-.n-basic {
+.n-basic ,.f-basic{
   flex-direction: row;
 }
-.n-basic .n-title{
+.n-basic .n-title,.f-basic .f-title{
   flex-direction: column;
   width: -webkit-fill-available;
 }
@@ -164,7 +163,7 @@ li {
   align-items: center;
   justify-content: flex-end;
 }
-.n-basic .n-job {
+.n-basic .n-job ,.f-basic .f-job{
   width: 1.7rem;
   font-size: 1.4rem;
   align-items: center;
@@ -185,32 +184,68 @@ li {
 .n-basic .n-cridirect{
   margin-right: 0.2rem;
 }
-.n-basic .n-bar {
+.n-basic .n-bar ,.f-basic .f-bar{
     /*display: inline-block;*/
     height: 4px;
     background-color: rgba(157,145,101,0.7);
+}
+.f-basic .f-dps-space{
+  min-width: 5.8rem;
+  max-width: 5.8rem;
+  align-items: center;
+}
+.f-basic .f-dps{
+  font-size: 1.3rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+.f-basic .f-top{
+  padding-right: 0.3rem;
+}
+.f-basic .f-name{
+  width: calc(100vw - 13rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.f-basic .f-kill-string,.f-basic .f-death-string{
+  font-size: 1.1rem;
+  max-width: 1.7rem;
+  min-width: 1.7rem;
+  justify-content: flex-end;
+}
+.f-basic .f-kill-number,.f-basic .f-death-number{
+  font-size: 1.1rem;
+  max-width: 1.3rem;
+  min-width: 1.3rem;
 }
 .inactive li .bar {
     background-color: #d8dadb;
 }
 .aliance-bar-4 {
-  border-left: 4px solid #E5895B;
+  border-left: 0.25rem solid #E5895B;
 }
 .aliance-bar-5 {
-  border-left: 4px solid #B7E55B;
+  border-left: 0.25rem solid #B7E55B;
 }
 .aliance-bar-6 {
-  border-left: 4px solid #5BE589;
+  border-left: 0.25rem solid #5BE589;
 }
 .aliance-bar-1 {
-  border-left: 4px solid #5BB7E5;
+  border-left: 0.25rem solid #5BB7E5;
 }
 .aliance-bar-2 {
-  border-left: 4px solid #895BE5;
+  border-left: 0.25rem solid #895BE5;
 }
 .aliance-bar-3 {
-  border-left: 4px solid #E55BB7;
+  border-left: 0.25rem solid #E55BB7;
+}/*
+.me {
+  background-color: #F5D94E;
+}*/
+.party {
+    background-color: rgba(37,92,80,0.5);
 }
-li .me {
-  color: #F5D94E;
+.me {
+    background-color: rgba(93,81,37,0.7);
 }

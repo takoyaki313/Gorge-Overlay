@@ -4,9 +4,12 @@ function logline_start(log){
     //488 is Hidden Gorge
     //341 is The Goblet (my home)
     //242 is Seal Rock
+    //296 is Field of Groly
+    //568 is Onsal Hakair
+    //167 is The Borderland Luins
     //15 is Middle La Noscea
     //51 is Wolves' Den Pier
-    if (log[2] === '488'||log[2] === '242'||log[2] === '296'){
+    if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'){
       LOG_PROCESS = false;
     }
     else if (log[2] === '15'||log[2] === '51') {
@@ -30,7 +33,6 @@ function grobal_array_reset(){
   PROMISE_ARRAY = [];
   LOG_ARRAY = [];
   LOG_PROCESS = true;
-  KILL_DATA = [];
   ALIANCE_DATA = false;
   NOW_AREA = 0;
 }
@@ -50,6 +52,10 @@ function calc(){
       PROMISE_ARRAY.push(promise);
     }
     promise = promise.then(() => ability_reflesh(5000));
+    PROMISE_ARRAY.push(promise);
+    promise = promise.then(() => main_data_reflesh());
+    PROMISE_ARRAY.push(promise);
+    promise = promise.then(() => main_data_output());
     PROMISE_ARRAY.push(promise);
     //console.debug(promise);
     //console.debug(PROMISE_ARRAY);
@@ -141,6 +147,7 @@ async function logline_main(log){
     case '13':
       break;
     case '33':
+    logline_battle_start_check(log);
     console.log(log);
       break;
     default:
@@ -149,6 +156,19 @@ async function logline_main(log){
     }
       break;
 
+  }
+  function logline_battle_start_check(log){
+    if(log[3] === '40000001'){
+      let time = parseInt(log[4],16);
+      battle_counter(time);
+    }
+    else if (log[3] === '40000002') {
+      setTimeout(() => {
+        clearInterval(Battle_Timer_interval);
+        Battle_Current_Time = 0;
+        Battle_start = false;
+      }, 1000);
+    }
   }
   async function kill_type_check(log){
     await one_main_data_add(log[2],'death',1,false);//death data is anytime ok
@@ -191,25 +211,15 @@ async function logline_main(log){
           true_ID = MAIN_DATA[position].ownerID;
         }
         if(true_ID === null){
-          if(log[5] == ''||log[5] === null){
-            if(log[4] == ''||log[4] === null){
-              attacker = ['Unknown',0,0];
-            }
-            else{
-              attacker = [log[4],0,0];
-            }
-          }
-          else{
-            attacker = [log[5],0,0];
-          }
+          attacker = get_name_job(log[4]);
         }
         else{
-          attacker = get_name_job(log[4]);
-          if(attacker[0] == ''||attacker[0] === null){
-            attacker[0] = log[5];
-          }
+          attacker = get_name_job(true_ID);
         }
         victim = get_name_job(log[2]);
+        if(attacker[0] == ''||attacker[0] === null){
+          attacker[0] = log[5];
+        }
         if(victim[0] == ''||victim[0] === null){
           victim[0] = log[3];
         }
@@ -227,14 +237,32 @@ async function logline_main(log){
     }
     else if(log[2].slice(0,2) === '40'&& TEST_MODE){
       await one_main_data_add(log[4],'kills',1,false);
-      victim = get_name_job(log[2]);
-      attacker = get_name_job(log[4]);
-      if(victim[0] == ''||victim[0] === null){
-        victim[0] = log[3];
+      let true_ID = null;
+      let victim = [];
+      let attacker = [];
+      let position = MAIN_DATA.findIndex(({nameID}) => nameID == log[4]);
+      if (position === -1 ){
+        if(TEST_MODE){
+          console.warn('Error SearchBase (owner_check(kill log)) =>' + log[4]);
+        }
       }
+      else{
+        true_ID = MAIN_DATA[position].ownerID;
+      }
+      if(true_ID === null){
+        attacker = get_name_job(log[4]);
+      }
+      else{
+        attacker = get_name_job(true_ID);
+      }
+      victim = get_name_job(log[2]);
       if(attacker[0] == ''||attacker[0] === null){
         attacker[0] = log[5];
       }
+      if(victim[0] == ''||victim[0] === null){
+        victim[0] = log[3];
+      }
+      console.log(attacker);
       let data = {
         victimName:victim[0],
         victimjob:victim[1],
@@ -244,7 +272,8 @@ async function logline_main(log){
         attackeraliance:attacker[2],
         time:Date.now()
       }
-        KILL_DATA.push(data);
+      console.log(data);
+      KILL_DATA.push(data);
     }
     else{
       if(TEST_MODE){
@@ -688,6 +717,7 @@ async function main_data_new(base,data){
     combatantdamage: 0,
     combatantheal:0,
     combatantjob: null,
+    deletetime: null,
     }
   }
 }
@@ -728,10 +758,10 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
   let owner = MAIN_DATA[position].ownerID;
   if(owner !== null){//もしペット系のデータだった場合
     let owner_position = MAIN_DATA.findIndex(({nameID}) => nameID == owner);
-    if(TEST_MODE){
-      console.debug(position +'のデータを'+owner_position + 'にmarge');
-    }
     if(owner_position !== -1){
+      if(TEST_MODE){
+        console.debug(position +'のデータを'+owner_position + 'にmarge');
+      }
       await main_data_marge_to_child(position,owner_position);
     }
     else{
@@ -739,13 +769,13 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
         console.warn('Error owner_position not found =>'+ owner_position);
       }
     }
-  }
+  }/*
   if(MAIN_DATA[position].battle === false && MAIN_DATA[position].nameID.slice(0,2) === '40'){
     if(TEST_MODE){
       console.debug('Delete'+ MAIN_DATA[position].nameID + '(' + MAIN_DATA[position].name + ')');
     }
-    MAIN_DATA.splice(position,1);
-  }
+    //MAIN_DATA.splice(position,1);
+  }*/
 }
 async function main_data_marge_to_child(child_position,owner_position){
   MAIN_DATA[owner_position].totaloutdamage += MAIN_DATA[child_position].totaloutdamage;
@@ -805,12 +835,14 @@ async function ability_reflesh(time){
   for (let i = 0; i < delete_position.length; i++) {
     await delete_ability_array(delete_position[i]);
   }
-  await main_data_output();
 }
 async function delete_ability_array(ability_position){
   ABILITY_TEMP.splice(ability_position,1);
   //ABILITY_TEMP = ABILITY_TEMP.slice(0,ability_position - 1).concat(ABILITY_TEMP.slice(ability_position));
   //ABILITY_TEMP[ability_position] = {checkID: null};
+}
+async function delete_maindate_array(maindata_position){
+  MAIN_DATA.splice(maindata_position,1);
 }
 async function main_data_output(){
   let data = [];
@@ -820,5 +852,25 @@ async function main_data_output(){
       data.push(temp);
     }
   LIMITED_DATA = data;
+  }
+}
+async function main_data_reflesh(){
+  let array_length = MAIN_DATA.length;
+  let delete_position = [];
+  let time = Date.now();
+  for(let i = 0 ; i < array_length ; i++){
+    if(MAIN_DATA[i].nameID.slice(0,2) === '40'){
+      if(!MAIN_DATA[i].battle||MAIN_DATA[i].death !== 0){
+        if(MAIN_DATA[i].deletetime === null){
+          MAIN_DATA[i].deletetime = time;
+        }
+        else if (time - MAIN_DATA[i].deletetime >= 5000) {//5000 is delete time
+          delete_position.push(i);
+        }
+      }
+    }
+  }
+  for (let i = 0; i < delete_position.length; i++) {
+    await delete_maindate_array(delete_position[i]);
   }
 }

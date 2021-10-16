@@ -26,7 +26,7 @@
     <div class="n-basic">
       <div class="n-dps-space">
         <span class="n-dps"></span>
-        <span class="n-job icon-blm"></span>
+        <span class="n-job"></span>
       </div>
       <div class="n-title">
         <div class="n-top">
@@ -37,6 +37,28 @@
         </div>
         <div class="n-sub">
           <span class="n-bar"></span>
+        </div>
+      </div>
+    </div>
+  </li>
+</ol>
+<ol id="fl-source">
+  <li>
+    <div class="f-basic">
+      <div class="f-dps-space">
+        <span class="f-dps"></span>
+        <span class="f-job"></span>
+      </div>
+      <div class="f-title">
+        <div class="f-top">
+          <span class="f-name"></span>
+          <span class="f-kill-string">K : </span>
+          <span class="f-kill-number"></span>
+          <span class="f-death-string">D : </span>
+          <span class="f-death-number"></span>
+        </div>
+        <div class="f-sub">
+          <span class="f-bar"></span>
         </div>
       </div>
     </div>
@@ -57,10 +79,6 @@
             <span class="g-name"></span>
             <div class="g-robot-history">
               <span class='icon-robots'/>
-            </div>
-            <div class="g-hit">
-              <span class='g- icon-app_block'/>
-              <span class='g-hit-number'></span>
             </div>
           </div>
           <hr class ='g-line' id='g-line'>
@@ -123,7 +141,7 @@
 </div>
 <div class='set-data'>
   <div class="set-header">
-    <span class='set-header-text'>　Setting (Not Working)</span>
+    <span class='set-header-text'>　Setting</span>
     <label for='button-5' class='icon-NaviUp'></label>
     <button class='button-5' id='button-5'></button>
   </div>
@@ -158,24 +176,85 @@
   </div>
   <div class="set-space">
     <div>
-      <label class="s-text" for='setting-item-100'>オーバーレイの最大表示行数</label>
-      <input type='number' id='setting-item-100' class="number" min="4" max="50"/>
+      <input type='checkbox' id='setting-item-103-1' class="checkbox" />
+      <label class="switch" for='setting-item-103-1'></label>
+      <label class="s-text" for='setting-item-103-1'>小数点の表示（RW）</label>
     </div>
-    <div class="explain">オーバーレイの最大表示行数を設定する。</div>
+    <div class="explain">RW(Hidden Gorge)でのオーバーレイのDPS表記に小数点をつける。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <input type='checkbox' id='setting-item-107' class="checkbox" />
+      <label class="switch" for='setting-item-107'></label>
+      <label class="s-text" for='setting-item-107'>ACTの戦闘人数を無視</label>
+    </div>
+    <div class="explain">ACTから得られる人数を無視してこれまでの戦闘データを表示する。（最後だけ別行動とかする時に便利）</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <input type='checkbox' id='setting-item-104' class="checkbox" />
+      <label class="switch" for='setting-item-104'></label>
+      <label class="s-text" for='setting-item-104'>パーティメンバーの優先表示</label>
+    </div>
+    <div class="explain">パーティメンバーが最大表示行数以下のDPSでも割り込みして表示させる。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <input type='checkbox' id='setting-item-108' class="checkbox" />
+      <label class="switch" for='setting-item-108'></label>
+      <label class="s-text" for='setting-item-108'>FLでのDPS計算</label>
+    </div>
+    <div class="explain">エンカウント時間もしくは、試合時間に合わせてDPSを計算するか。デフォルトはオフ（エンカウント時間）</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <label class="s-text" for='setting-item-100'>(RW)オーバーレイの最大表示行数</label>
+      <input type='number' id='setting-item-100' class="number" min="4" max="24"/>
+    </div>
+    <div class="explain">RWでのオーバーレイの最大表示行数を設定する。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <label class="s-text" for='setting-item-100-2'>(FL)オーバーレイの最大表示行数</label>
+      <input type='number' id='setting-item-100-2' class="number" min="4" max="24"/>
+    </div>
+    <div class="explain">FLでのオーバーレイの最大表示行数を設定する。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <label class="s-text" for='setting-item-100-3'>(PvE)オーバーレイの最大表示行数</label>
+      <input type='number' id='setting-item-100-3' class="number" min="4" max="24"/>
+    </div>
+    <div class="explain">PvEでのオーバーレイの最大表示行数を設定する。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <label class="s-text" for='setting-item-105'>オーバーレイのフォントサイズ</label>
+      <input type='number' id='setting-item-105' class="number" min="1" max="200"/>
+    </div>
+    <div class="explain">プラグイン側の拡大縮小とは別で処理されます。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <label class="s-text" for='setting-item-106'>ACTの名前</label>
+      <input type='text' id='setting-item-106' class="number" min="1" max="200"/>
+    </div>
+    <div class="explain">自分の名前をACTで変更している場合は入力。</div>
   </div>
   <div class="set-space">
     <div class="set-one">
       <input type='button' id='setting-item-8-2' class="checkbox"/>
       <span class="icon-ViewMove" for='setting-item-8-2'/>
-      <label class="s-text" for='setting-item-8-2'>ダミーデータを読み込み（最大10行）</label>
+      <label class="s-text" for='setting-item-8-2'>ダミーデータを読み込み</label>
     </div>
+    <div class="explain">既に表示されている戦闘データは上書きされます。</div>
   </div>
   <div class="set-space">
     <div class= "set-one">
       <input type='button' id='setting-item-9' class="checkbox"/>
       <span class="icon-ViewMove" for='setting-item-9'/>
       <label class="s-text" for='setting-item-9'>初期化</label>
-      <span class='version'>kill-feed-core 1.02</span>
+      <span class='version'>Not loaded...?</span>
     </div>
   </div>
 </div>
