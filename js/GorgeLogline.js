@@ -186,10 +186,10 @@ async function logline_main(log){
         }
         let data = {
           victimName:victim[0],
-          victimjob:victim[1],
+          victimjob:jobID_to_string(victim[1]),
           victimaliance:victim[2],
           attackerName:attacker[0],
-          attackerjob:attacker[1],
+          attackerjob:jobID_to_string(attacker[1]),
           attackeraliance:attacker[2],
           time:Date.now()
         }
@@ -226,10 +226,10 @@ async function logline_main(log){
         }
         let data = {
           victimName:victim[0],
-          victimjob:victim[1],
+          victimjob:jobID_to_string(victim[1]),
           victimaliance:victim[2],
           attackerName:attacker[0],
-          attackerjob:attacker[1],
+          attackerjob:jobID_to_string(attacker[1]),
           attackeraliance:attacker[2],
           time:Date.now()
         }
@@ -266,10 +266,10 @@ async function logline_main(log){
       console.log(attacker);
       let data = {
         victimName:victim[0],
-        victimjob:victim[1],
+        victimjob:jobID_to_string(victim[1]),
         victimaliance:victim[2],
         attackerName:attacker[0],
-        attackerjob:attacker[1],
+        attackerjob:jobID_to_string(attacker[1]),
         attackeraliance:attacker[2],
         time:Date.now()
       }

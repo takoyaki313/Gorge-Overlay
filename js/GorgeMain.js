@@ -246,7 +246,7 @@ function pve_overlay_update(e){
     else{
       row.find('.n-dps').text(dps.toFixed(0));
     }
-    row.find('.n-job').addClass('icon-' + combatant.Job.toLowerCase());
+    row.find('.n-job').addClass('icon-' + combatant.Job);
     ///////////////////////////title
     row.find('.n-name').text(combatant.name);
     row.find('.n-crit').text(combatant['crithit%']);
@@ -289,7 +289,13 @@ function fl_overlay_update(e){
       }
       let dps = damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION);
       row.find('.f-dps').text(dps);
-      row.find('.f-job').addClass('icon-' + combatant.Job.toLowerCase());
+      let job = jobID_to_string(LIMITED_DATA[i].currentjob);
+      if(job !== null){
+        row.find('.g-job-icon').addClass('icon-' + job);
+      }
+      else{
+        row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
+      }
       ///////////////////////////title
       row.find('.f-name').text(LIMITED_DATA[i].name);
       row.find('.f-kill-number').text(LIMITED_DATA[i].kills);
@@ -392,7 +398,14 @@ function gorge_overlay_update_process(){
 function gorge_row_create(row,i){
   row.find('.g-total-dps-number').text(damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION));
   row.find('.g-total-hps-number').text(damage_to_dps(LIMITED_DATA[i].combatantheal,PVP_DURATION));
-  row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
+  let job = jobID_to_string(LIMITED_DATA[i].currentjob);
+  if(job !== null){
+    row.find('.g-job-icon').addClass('icon-' + job);
+  }
+  else{
+    row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
+  }
+
   row.find('.g-name').text(LIMITED_DATA[i].name);
   row.find('.g-kill-number').text(LIMITED_DATA[i].kills);
   row.find('.g-death-number').text(LIMITED_DATA[i].death);

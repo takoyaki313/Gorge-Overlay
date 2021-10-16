@@ -186,6 +186,7 @@ function gorge_overlay_decimal_point(){
     $('.g-damage-div').css('width','calc(25vw - 3.3rem)');
   }
 }
+
 //////////////////////////////////////////////
 //Header Disp
 //////////////////////////////////////////////
@@ -257,4 +258,142 @@ function time_change(set_time,current_time){
     division_time[1] = "0" + division_time[1];
   }
   return division_time;
+}
+//////////////////////////////////////////////
+//Job
+//////////////////////////////////////////////
+function jobID_to_string(id){
+  id = parseInt(id,16);
+  let job = null;
+  switch (id) {
+    case 0:
+      job = null;
+      break;
+    case 1:
+      job = 'gla';
+      break;
+    case 2:
+      job = 'pgl';
+      break;
+    case 3:
+      job = 'mrd';
+      break;
+    case 4:
+      job = 'lnc';
+      break;
+    case 5:
+      job = 'arc';
+      break;
+    case 6:
+      job = 'cnj';
+      break;
+    case 7:
+      job = 'thm';
+      break;
+    case 8:
+      job = 'crp';
+      break;
+    case 9:
+      job = 'bsm';
+      break;
+    case 10:
+      job = 'arm';
+      break;
+    case 11:
+      job = 'gsm';
+      break;
+    case 12:
+      job = 'ltw';
+      break;
+    case 13:
+      job = 'wvr';
+      break;
+    case 14:
+      job = 'alc';
+      break;
+    case 15:
+      job = 'cul';
+      break;
+    case 16:
+      job = 'nin';
+      break;
+    case 17:
+      job = 'btn';
+      break;
+    case 18:
+      job = 'fsh';
+      break;
+    case 19:
+      job = 'pld';
+      break;
+    case 20:
+      job = 'mnk';
+      break;
+    case 21:
+      job = 'war';
+      break;
+    case 22:
+      job = 'drg';
+      break;
+    case 23:
+      job = 'brd';
+      break;
+    case 24:
+      job = 'whm';
+      break;
+    case 25:
+      job = 'blm';
+      break;
+    case 26:
+      job = 'acn';
+      break;
+    case 27:
+      job = 'smn';
+      break;
+    case 28:
+      job = 'sch';
+      break;
+    case 29:
+      job = 'rog';
+      break;
+    case 30:
+      job = 'nin';
+      break;
+    case 31:
+      job = 'mch';
+      break;
+    case 32:
+      job = 'drk';
+      break;
+    case 33:
+      job = 'ast';
+      break;
+    case 34:
+      job = 'sam';
+      break;
+    case 35:
+      job = 'rdm';
+      break;
+    case 36:
+      job = 'blu';
+      break;
+    case 37:
+      job = 'gnb';
+      break;
+    case 38:
+      job = 'dnc';
+      break;
+    case 50:
+      job = 'opp';
+      break;
+    case 51:
+      job = 'che';
+      break;
+    case 52:
+      job = 'jas';
+      break;
+    default:
+      job = null;
+  }
+  return job;
 }
