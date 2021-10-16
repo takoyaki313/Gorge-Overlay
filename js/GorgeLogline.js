@@ -198,6 +198,7 @@ async function logline_main(log){
       else{//death ->player & kill -> npc
         //DoT death / AoE death / Bunsin
         //名前解決
+        await one_main_data_add(log[4],'kills',1,false);
         let true_ID = null;
         let victim = [];
         let attacker = [];
