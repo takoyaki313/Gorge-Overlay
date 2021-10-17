@@ -1,0 +1,210 @@
+@font-face {
+  font-family: 'iconset';
+  src:  url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.eot?2phw0z');
+  src:  url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.eot?2phw0z#iefix') format('embedded-opentype'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.ttf?2phw0z') format('truetype'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.woff?2phw0z') format('woff'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.svg?2phw0z#iconset') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'iconset' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-hammer:before {
+  content: "\e919";
+}
+.icon-geo-fill:before {
+  content: "\e91f";
+}
+.icon-person-fill:before {
+  content: "\e920";
+}
+.icon-acn:before {
+  content: "\e921";
+}
+.icon-alc:before {
+  content: "\e922";
+}
+.icon-arc:before {
+  content: "\e923";
+}
+.icon-arm:before {
+  content: "\e924";
+}
+.icon-bsm:before {
+  content: "\e925";
+}
+.icon-btn:before {
+  content: "\e926";
+}
+.icon-che3:before {
+  content: "\e927";
+}
+.icon-cnj:before {
+  content: "\e928";
+}
+.icon-crp:before {
+  content: "\e929";
+}
+.icon-cul:before {
+  content: "\e92a";
+}
+.icon-fsh:before {
+  content: "\e92b";
+}
+.icon-gla:before {
+  content: "\e92c";
+}
+.icon-gsm:before {
+  content: "\e92d";
+}
+.icon-jas3:before {
+  content: "\e92e";
+}
+.icon-lnc:before {
+  content: "\e92f";
+}
+.icon-ltw:before {
+  content: "\e930";
+}
+.icon-min:before {
+  content: "\e931";
+}
+.icon-mrd:before {
+  content: "\e932";
+}
+.icon-opp3:before {
+  content: "\e933";
+}
+.icon-person:before {
+  content: "\e934";
+}
+.icon-pgl:before {
+  content: "\e935";
+}
+.icon-rob:before {
+  content: "\e936";
+}
+.icon-rog:before {
+  content: "\e937";
+}
+.icon-thm:before {
+  content: "\e938";
+}
+.icon-tower:before {
+  content: "\e939";
+}
+.icon-tower2:before {
+  content: "\e93a";
+}
+.icon-wvr:before {
+  content: "\e93b";
+}
+.icon-app_block:before {
+  content: "\e900";
+}
+.icon-app_drawer_setting:before {
+  content: "\e901";
+}
+.icon-app_fc:before {
+  content: "\e902";
+}
+.icon-app_world_wanderer:before {
+  content: "\e903";
+}
+.icon-ast:before {
+  content: "\e904";
+}
+.icon-bdm:before {
+  content: "\e905";
+}
+.icon-blm:before {
+  content: "\e906";
+}
+.icon-brd:before {
+  content: "\e907";
+}
+.icon-che:before {
+  content: "\e908";
+}
+.icon-dnc:before {
+  content: "\e909";
+}
+.icon-drg:before {
+  content: "\e90a";
+}
+.icon-drk:before {
+  content: "\e90b";
+}
+.icon-gnb:before {
+  content: "\e90c";
+}
+.icon-jas:before {
+  content: "\e90d";
+}
+.icon-mch:before {
+  content: "\e90e";
+}
+.icon-mnk:before {
+  content: "\e90f";
+}
+.icon-NaviArrowLeft:before {
+  content: "\e910";
+}
+.icon-NaviArrowRight:before {
+  content: "\e911";
+}
+.icon-NaviUp:before {
+  content: "\e912";
+}
+.icon-nin:before {
+  content: "\e913";
+}
+.icon-opp:before {
+  content: "\e914";
+}
+.icon-pld:before {
+  content: "\e915";
+}
+.icon-rdm:before {
+  content: "\e916";
+}
+.icon-sam:before {
+  content: "\e917";
+}
+.icon-sch:before {
+  content: "\e918";
+}
+.icon-ScheduleTime:before {
+  content: "\1f30a";
+}
+.icon-smn:before {
+  content: "\e91a";
+}
+.icon-trn:before {
+  content: "\e91b";
+}
+.icon-ViewMove:before {
+  content: "\e91c";
+}
+.icon-war:before {
+  content: "\e91d";
+}
+.icon-whm:before {
+  content: "\e91e";
+}
