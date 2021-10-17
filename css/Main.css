@@ -240,6 +240,9 @@ li {
 }
 .aliance-bar-3 {
   border-left: 0.25rem solid #E55BB7;
+}
+.aliance-bar-10 {
+  border-left: 0.25rem solid transparent;
 }/*
 .me {
   background-color: #F5D94E;
