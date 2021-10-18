@@ -25,6 +25,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-maton:before {
+  content: "\e93c";
+}
 .icon-hammer:before {
   content: "\e919";
 }

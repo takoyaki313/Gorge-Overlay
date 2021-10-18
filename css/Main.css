@@ -243,7 +243,11 @@ li {
 }
 .aliance-bar-10 {
   border-left: 0.25rem solid transparent;
-}/*
+}
+li.death-too-much {
+  background-color: rgba(255,0,0,0.3);
+}
+/*
 .me {
   background-color: #F5D94E;
 }*/
