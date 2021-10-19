@@ -11,11 +11,11 @@ function logline_start(log){
     //51 is Wolves' Den Pier
     if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'){
       LOG_PROCESS = false;
-    }
+    }/*
     else if (log[2] === '15'||log[2] === '51') {
       //other Area
       LOG_PROCESS = false;
-    }
+    }*/
     else {
       LOG_PROCESS = true;
       if(TEST_MODE){
@@ -86,22 +86,31 @@ async function logline_main(log){
     }
       break;
 
+    case '11':
+    await log_party_push(log);
+    if(TEST_MODE){
+      console.debug(log);
+    }
+      break;
+
     case '21':
     await networkAbility(log);
     if(TEST_MODE){
       console.debug(log);
     }
+    //console.debug(log);
       break;
+
     case '22':
     await networkAbility(log);
     if(TEST_MODE){
       console.debug(log);
     }
+    //console.debug(log);
         break;
 
     case '37':
       await networkAbility_receve(log);
-
     if(TEST_MODE){
       console.debug(log);
     }
@@ -122,7 +131,12 @@ async function logline_main(log){
       break;
 
     case '39':
-    await hp_update(log[2],log[4],log[5],log[7]);
+    if(log[5] === ''){
+      //await one_main_data_add(log[2],'currentHP',Number(log[4]),true);
+    }
+    else {
+      await hp_update(log[2],log[4],log[5],log[7]);
+    }
     if(TEST_MODE){
       console.debug(log);
     }
@@ -152,12 +166,27 @@ async function logline_main(log){
       console.log(log);
     }
       break;
+
+    case '30':
+      break;
+
+    case '26':
+    tensyon_max_check(log);
+      break;
+
     default:
     if(TEST_MODE){
       console.debug(log);
     }
       break;
 
+  }
+  function tensyon_max_check(log){
+    if(log[2] === '6c2'){
+      if(log[7].toUpperCase() === MYCHARACTOR_ID.toUpperCase()){
+        TENSYON_MAX = true;
+      }
+    }
   }
   function logline_battle_start_check(log){
     if(log[3] === '40000001'){
@@ -170,6 +199,37 @@ async function logline_main(log){
         Battle_Current_Time = 0;
         Battle_start = false;
       }, 1000);
+    }
+  }
+  async function log_party_push(log) {
+    let party_num = Number(log[2]);
+    if(log.length - 4 > 0){
+      let aliance = 1;
+      if(log.length === 28){//24
+        ALIANCE_DATA = true;
+        for(let i = 0 ; i < log.length - 4 ; i++){
+          if(i > 3){
+            if(i % 4 == 0){
+              aliance++;
+            }
+          }
+          let data = ['300',log[i + 3].toUpperCase(),null,aliance];
+          await party_update(data);
+          //log 300 //party_data= ['300','nameID','name','aliance'];
+        }
+      }
+      else{
+        if(ALIANCE_DATA === false){
+          for(let i = 0 ; i < log.length - 4 ; i++){
+            if(i > party_num ){
+              aliance = 10;
+            }
+            let data = ['300',log[i + 3].toUpperCase(),null,aliance];
+            await party_update(data);
+            //log 300 //party_data= ['300','nameID','name','aliance'];
+          }
+        }
+      }
     }
   }
   async function kill_type_check(log){
@@ -196,6 +256,11 @@ async function logline_main(log){
           time:Date.now()
         }
           KILL_DATA.push(data);
+          if(TENSYON_MAX && attacker[2] === 1){
+            if(KILLSOUND){
+              KILLSOUND_PLAY.play();
+            }
+          }
       }
       else{//death ->player & kill -> npc
         //DoT death / AoE death / Bunsin
@@ -293,9 +358,11 @@ async function logline_main(log){
     array_data.push(log[1]);
     array_object.push('nameID');
     array_replace.push(true);
-    array_data.push(log[2]);
-    array_object.push('name');
-    array_replace.push(true);
+    if(log[2] !== null){
+      array_data.push(log[2]);
+      array_object.push('name');
+      array_replace.push(true);
+    }
     array_data.push(Number(log[3]));
     array_object.push('aliance');
     array_replace.push(true);
@@ -308,24 +375,25 @@ async function logline_main(log){
     array_data.push(Number(currentHP));
     array_object.push('currentHP');
     array_replace.push(true);
-    array_data.push(Number(maxHP));
-    array_object.push('maxHP');
-    array_replace.push(true);
-    array_data.push(Number(currentEP));
-    array_object.push('currentEP');
-    array_replace.push(true);
-    if(NOW_AREA === 1){//if Hidden Gorge
-      data = await get_hp(nameID);
-      let rob = robot_history(data[0],data[1],Number(currentHP),Number(maxHP));
-      if(rob !== null){
-        array_data.push(rob);
-        array_object.push('robhistory');
-        array_replace.push(false);
+    if(maxHP !== '0'||maxHP !== 0||maxHP !== ''){
+      array_data.push(Number(maxHP));
+      array_object.push('maxHP');
+      array_replace.push(true);
+      if(NOW_AREA === 1 && nameID.slice(0,2).toUpperCase() !== '40'){//if Hidden Gorge
+        data = await get_hp(nameID);
+        let rob = robot_history(data[0],data[1],Number(currentHP),Number(maxHP));
+        if(rob !== null){
+          console.log('hp_update:'+nameID + '->'+rob);
+          array_data.push(rob);
+          array_object.push('robhistory');
+          array_replace.push(false);
+        }
       }
     }
     await main_data_push_update('nameID',nameID,array_object,array_data,array_replace);
   }
-  async function get_hp(basedata){
+  async function get_hp(oldbasedata){
+    let basedata = oldbasedata.toUpperCase();
     let position = MAIN_DATA.findIndex(({nameID}) => nameID == basedata);
     if (position === -1 ){
       if(TEST_MODE){
@@ -349,15 +417,15 @@ async function logline_main(log){
     else {
       let job = 0;
       if(MAIN_DATA[position].maxHP === Oppresor_HP){
-        let data = [MAIN_DATA[position].name,50,MAIN_DATA[position].aliance];
+        let data = [MAIN_DATA[position].name,'32',MAIN_DATA[position].aliance];
         return data;
       }
       else if (MAIN_DATA[position].maxHP === Chaiser_HP) {
-        let data = [MAIN_DATA[position].name,51,MAIN_DATA[position].aliance];
+        let data = [MAIN_DATA[position].name,'33',MAIN_DATA[position].aliance];
         return data;
       }
       else if (MAIN_DATA[position].maxHP === Justice_HP) {
-        let data = [MAIN_DATA[position].name,52,MAIN_DATA[position].aliance];
+        let data = [MAIN_DATA[position].name,'34',MAIN_DATA[position].aliance];
         return data;
       }
       else{
@@ -372,30 +440,36 @@ async function logline_main(log){
     if(new_hpmax === Chaiser_HP){
       if(old_hpmax !== new_hpmax){
         //new robot
+        console.log('Hpmax is cahnge' + old_hpmax + '!=' + new_hpmax);
         return 'che';
       }
       else if (new_hp > old_hp) {
         //new tobot
+        console.log('currenthp is raise' + old_hp + '->' + new_hp);
         return 'che';
       }
     }
     else if (new_hpmax === Oppresor_HP) {
       if(old_hpmax !== new_hpmax){
         //new robot
+          console.log('Hpmax is cahnge' + old_hpmax + '!=' + new_hpmax);
         return 'opp';
       }
       else if (new_hp > old_hp) {
         //new tobot
+        console.log('currenthp is raise?' + old_hp + '->' + new_hp);
         return 'opp';
       }
     }
     else if (new_hpmax === Justice_HP) {
       if(old_hpmax !== new_hpmax){
         //new robot
+          console.log('Hpmax is cahnge' + old_hpmax + '!=' + new_hpmax);
         return 'jas';
       }
       else if (new_hp > old_hp) {
         //new tobot
+        console.log('currenthp is raise?' + old_hp + '->' + new_hp);
         return 'jas';
       }
     }
@@ -430,9 +504,23 @@ async function logline_main(log){
     if(TEST_MODE){
       console.debug(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     }
+    //damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP
     await damage_add(damage,'actual',log[2],log[4],log[8],log[6],Number(log[25]));
-
-      await ability_push(log);
+    if(log[10].slice(-1) === '4'){
+      let additional_damage = 0;
+      let additional_damage_mask = log[11].slice(log[9].length - 4 , log[11].length);
+      if(additional_damage_mask === '8000'){//normal damage
+        additional_damage = parseInt(log[11].slice(0,log[11].length - 4 ),16);//16
+      }
+      if(additional_damage <= 0){
+        additional_damage = 0;
+      }
+        await damage_add(additional_damage,'actual',log[2],log[4],log[10],log[6],Number(log[25]));
+        if(TEST_MODE){
+          console.debug(log[44] + ':2!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + additional_damage + '/ '+ log[10]  +'/ '+ log[11]);
+        }
+    }
+    await ability_push(log);
 
     //console.debug(ABILITY_TEMP);
   }
@@ -471,7 +559,7 @@ async function logline_main(log){
     let this_ability_checkID = log[4].toUpperCase();;
 
     let ability_position = ABILITY_TEMP.findIndex(({checkID}) => checkID === this_ability_checkID);
-    let old_hp_array = await get_hp(log[2])
+    let old_hp_array = await get_hp(log[2]);
     let damage =  old_hp_array[0] - log[5];
     await hp_update(log[2],log[5],log[6],log[8]);
     if (ability_position === -1){
@@ -558,6 +646,9 @@ async function logline_main(log){
       //if(ABILITY_TEMP[ability_position].skillID === '')
       //await one_main_data_add(ABILITY_TEMP[ability_position].attackerID,'totalheal',damage = damage * -1,false);
     }
+    else if (caluc_setting === '4' && damage_type === 'actual') {
+      await one_main_data_add(attackerID,'actualheal',damage,false);
+    }
   }
   async function networkDot(log){
     //24(DOT or HOT)
@@ -604,24 +695,30 @@ async function logline_main(log){
         array_object.push('ownerID');
         array_replace.push(true);
       }
-      if(log[11] !== '0'){
+      if(log[11] !== '0'||log[11] !== 0||log[11] !== ''){
         array_data.push(Number(log[11]));
         array_object.push('currentHP');
         array_replace.push(true);
       }
-      if(log[12] !== '0'){
+      if(log[12] !== '0'||log[12] !== 0||log[12] !== ''){
         array_data.push(Number(log[12]));
         array_object.push('maxHP');
-        array_replace.push(true);
-      }
-      if(log[14] !== '0'){
-        array_data.push(Number(log[14]));
-        array_object.push('currentEP');
         array_replace.push(true);
       }
       array_data.push(true);
       array_object.push('battle');
       array_replace.push(true);
+      if(NOW_AREA === 1){//if Hidden Gorge
+        let data = await get_hp(base.toUpperCase());
+        //robot_history(old_hp,old_hpmax,new_hp,new_hpmax);
+        let rob = robot_history(data[0],data[1],Number(log[11]),Number(log[12]));
+        if(rob !== null){
+          console.log('addcombatant->' + log[3] + ':' + rob);
+          array_data.push(rob);
+          array_object.push('robhistory');
+          array_replace.push(false);
+        }
+      }
       if(array_data.length !== 0){
         await main_data_push_update('nameID',base,array_object,array_data,array_replace);
       }
@@ -655,19 +752,14 @@ async function logline_main(log){
         array_object.push('ownerID');
         array_replace.push(true);
       }
-      if(log[11] !== '0'){
+      if(log[11] !== '0'||log[11] !== 0||log[11] !== ''){
         array_data.push(Number(log[11]));
         array_object.push('currentHP');
         array_replace.push(true);
       }
-      if(log[12] !== '0'){
+      if(log[12] !== '0'||log[12] !== 0||log[12] !== ''){
         array_data.push(Number(log[12]));
         array_object.push('maxHP');
-        array_replace.push(true);
-      }
-      if(log[14] !== '0'){
-        array_data.push(Number(log[14]));
-        array_object.push('currentEP');
         array_replace.push(true);
       }
       array_data.push(false);
@@ -695,7 +787,6 @@ async function main_data_new(base,data){
     battle:null,
     currentHP: 0,
     maxHP: 0,
-    currentEP: 10000,
     currentjob: null,
     aliance: 0,
     robhistory: '',
@@ -710,6 +801,7 @@ async function main_data_new(base,data){
     actualToRobotdamage: 0,
     actualtowerdamage: 0,
     actualRobotdamage: 0,
+    actualheal: 0,
     kills: 0,
     death: 0,
     totalheal: 0,
@@ -747,11 +839,18 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
   }
   for(let i = 0 ; i < objectname.length ; i++){
     if(replace[i]){//replace
-      if(objectname[i] === 'nameID'||objectname[i] === 'ownerID'){
-        MAIN_DATA[position][objectname[i]] = data[i].toUpperCase();
+      if(objectname[i] === 'maxHP' && data[i] === 0){
+        console.warn('maxHP add 0 ->' + basedata);
+        console.warn(objectname);
+        console.warn(data);
       }
       else{
-        MAIN_DATA[position][objectname[i]] = data[i];
+        if(objectname[i] === 'nameID'||objectname[i] === 'ownerID'){
+          MAIN_DATA[position][objectname[i]] = data[i].toUpperCase();
+        }
+        else{
+          MAIN_DATA[position][objectname[i]] = data[i];
+        }
       }
     }
     else{//add

@@ -11,7 +11,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
     <script type="text/javascript" src="js/GorgeLogline.js"></script>
-    <link rel="stylesheet" href="https://takoyaki313.github.io/killfeed/css/icon.css">
+    <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/icon.css">
     <script type="text/javascript" src="js/GorgeSub.js"></script>
     <script type="text/javascript" src="js/GorgeMain.js"></script>
     <script type="text/javascript">
@@ -82,16 +82,16 @@
           <hr class ='g-line' id='g-line'>
           <div class="g-damage-area">
             <div class="g-damage-div">
-              <span class="g-player-string icon-app_world_wanderer"></span><span class="g-player-number"></span>    　
+              <span class="g-player-string icon-person"></span><span class="g-player-number"></span>    　
             </div>
             <div class="g-damage-div">
-              <span class="g-player-string icon-ViewMove"></span><span class="g-torobot-number"></span>
+              <span class="g-player-string icon-hammer"></span><span class="g-torobot-number"></span>
             </div>
             <div class="g-damage-div">
-              <span class="g-player-string icon-app_fc"></span><span class="g-object-number"></span>
+              <span class="g-player-string icon-maton"></span><span class="g-object-number"></span>
             </div>
             <div class="g-damage-div">
-              <span class="g-player-string icon-ViewMove"></span><span class="g-tower-number"></span>
+              <span class="g-player-string icon-tower2"></span><span class="g-tower-number"></span>
             </div>
             <span class="g-kill-death">
               <span class="g-k-string">K:</span><span class="g-kill-number"></span>
@@ -227,6 +227,28 @@
   </div>
   <div class="set-space">
     <div>
+      <label class="s-text" for='setting-item-109'>死にまくっている人を強調する</label>
+      <input type='number' id='setting-item-109' class="number" min="1" max="200"/>
+    </div>
+    <div class="explain">必要ない場合は大きい数字にしてください。</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <input type='checkbox' id='setting-item-110' class="checkbox" />
+      <label class="switch" for='setting-item-110'></label>
+      <label class="s-text" for='setting-item-110'>（RW）キルサウンドを流す</label>
+    </div>
+    <div class="explain">テンションマックス以降のキルサウンドを再生するか</div>
+  </div>
+  <div class="set-space">
+    <div>
+      <label class="s-text" for='setting-item-110-1'>再生するサウンド</label>
+      <input type='text' id='setting-item-110-1' class="number"/>
+    </div>
+    <div class="explain">オンライン上にあるファイルでないと再生できません。</div>
+  </div>
+  <div class="set-space">
+    <div>
       <label class="s-text" for='setting-item-105'>オーバーレイのフォントサイズ</label>
       <input type='number' id='setting-item-105' class="number" min="1" max="200"/>
     </div>
@@ -235,7 +257,7 @@
   <div class="set-space">
     <div>
       <label class="s-text" for='setting-item-106'>ACTの名前</label>
-      <input type='text' id='setting-item-106' class="number" min="1" max="200"/>
+      <input type='text' id='setting-item-106' class="number"/>
     </div>
     <div class="explain">自分の名前をACTで変更している場合は入力。</div>
   </div>

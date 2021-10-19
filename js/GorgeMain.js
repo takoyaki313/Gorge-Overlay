@@ -16,14 +16,19 @@ var SET_BATTLE_TIME = 0;
 var ENCOUNTER_START = false;
 var ENCOUNTER_START_TIME = 0;
 var PVP_DURATION = 0;
+var TENSYON_MAX = false;
+var KILLSOUND_PLAY = new Audio('');
 //Setting///////////////////////////////
-var ACT_NAME = 'Takoyaki';
+var ACT_NAME = 'YOU';
 var MAX_ROW = 30;
 var PVE_MAX_ROW = 10;
 var FL_MAX_ROW = 24;
 var FONT_SIZE = 16;
+var DEATH_TOO_MUCH = 8;
 ////////////////////////////////////////
 var DECIMAL_POINT_DISPLAY = true;
+var KILLSOUND = false;
+var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3';
 var PARTY_PRIORITY = true;
 var COMBATANT_ONLY = true;
 var ENCOUNTER_TIME = false;//true is battletime = encounter time
@@ -36,15 +41,11 @@ const Chaiser_HP = 50000;
 ////////////////////////////////////////
 $(function() {
 "use strict";
-  if(localStorage.getItem('Gorge-Overlay2') === null){
-    localstorage_defalt();
-  }
-  else{
-    localstorage_restore();
-  }
+  version_check();
+
   addOverlayListener('ChangeZone', (zone) => area_check(zone));
   addOverlayListener("LogLine", (log) => logline_start(log.line));
-  if(TEST_MODE||true){
+  if(TEST_MODE){
     addOverlayListener("ImportedLogLines", (log) => import_log_division(log.logLines));
   }
   addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
@@ -96,6 +97,7 @@ function area_check(area){
   }
   else {
     NOW_AREA = 0;
+    TENSYON_MAX = false;
     ENCOUNTER_START = false;
     SET_BATTLE_TIME = 0;
     ALIANCE_DATA = false;
@@ -195,14 +197,14 @@ function overlay_update_start(e){
         ENCOUNTER_START = true;
       }
       fl_overlay_update(e);
-  }
-  else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||e.Encounter.CurrentZoneName === 'The Goblet'*/){
+  }/*
+  else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||e.Encounter.CurrentZoneName === "Wolves' Den Pier"||e.Encounter.CurrentZoneName === 'The Goblet'){
     if(!ENCOUNTER_START && NOW_AREA !== 0){
       ENCOUNTER_START_TIME = Date.now();
       ENCOUNTER_START = true;
     }
     gorge_overlay_update(e);
-  }
+  }*/
   else {
     pve_overlay_update(e);
   }
@@ -246,7 +248,7 @@ function pve_overlay_update(e){
     else{
       row.find('.n-dps').text(dps.toFixed(0));
     }
-    row.find('.n-job').addClass('icon-' + combatant.Job);
+    row.find('.n-job').addClass('icon-' + combatant.Job.toLowerCase());
     ///////////////////////////title
     row.find('.n-name').text(combatant.name);
     row.find('.n-crit').text(combatant['crithit%']);
@@ -268,12 +270,6 @@ function fl_overlay_update(e){
   var maxdps = 0;
   container.html('');
   var names = Object.keys(combatants).slice(0,FL_MAX_ROW);
-  if (!e.isActive) {
-    rdps_max = 0;
-    $('body').addClass('inactive');
-  } else {
-    $('body').removeClass('inactive');
-  }
   var limit = Math.min(names.length,FL_MAX_ROW);
   fl_alliance();
   if(ENCOUNTER_TIME){//use LIMITED_DATA
@@ -305,6 +301,9 @@ function fl_overlay_update(e){
       if(LIMITED_DATA[i].aliance !== 10){
 
         row.addClass('aliance-bar-' + LIMITED_DATA[i].aliance);
+      }
+      if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
+        row.addClass('death-too-much');
       }
       if(ACT_NAME === LIMITED_DATA[i].name){
         row.addClass('me');
@@ -355,7 +354,9 @@ function fl_overlay_update(e){
         }
       }
       row.find('.f-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
-
+      if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
+        row.addClass('death-too-much');
+      }
       if(ACT_NAME === combatant.name){
         row.addClass('me');
       }
@@ -398,7 +399,7 @@ function gorge_overlay_update_process(){
 }
 function gorge_row_create(row,i){
   row.find('.g-total-dps-number').text(damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION));
-  row.find('.g-total-hps-number').text(damage_to_dps(LIMITED_DATA[i].combatantheal,PVP_DURATION));
+  row.find('.g-total-hps-number').text(damage_to_dps(LIMITED_DATA[i].actualheal,PVP_DURATION));
   let job = jobID_to_string(LIMITED_DATA[i].currentjob);
   if(job !== null){
     row.find('.g-job-icon').addClass('icon-' + job);
@@ -430,6 +431,9 @@ function gorge_row_create(row,i){
   if(LIMITED_DATA[i].aliance !== 10){
     row.addClass('aliance-bar-' + LIMITED_DATA[i].aliance);
   }
+  if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
+    row.addClass('death-too-much');
+  }
   if(LIMITED_DATA[i].aliance === 1){
     row.addClass('party');
   }
@@ -439,6 +443,10 @@ function gorge_row_create(row,i){
   return row;
 }
 function robot_history_fonts(robhistory){
+  //   outline  fill
+  //jas 0xe90d 0xe92e
+  //opp 0xe914 0xe933
+  //che 0xe908 0xe927
   let data = '';
   if(robhistory === null){
     return '';
@@ -447,15 +455,15 @@ function robot_history_fonts(robhistory){
     let num = robhistory.length / 3;
     for(let i = 0 ; i < num ; i++){
       if('jas' === robhistory.substr(0,3)){
-        data = data + String.fromCodePoint(0xe90d);
+        data = data + String.fromCodePoint(0xe92e);
         robhistory = robhistory.substr(3,robhistory.length);
       }
       else if ('che' === robhistory.substr(0,3)) {
-        data = data + String.fromCodePoint(0xe908);
+        data = data + String.fromCodePoint(0xe927);
         robhistory = robhistory.substr(3,robhistory.length);
       }
       else if ('opp' === robhistory.substr(0,3)) {
-        data = data + String.fromCodePoint(0xe914);
+        data = data + String.fromCodePoint(0xe933);
         robhistory = robhistory.substr(3,robhistory.length);
       }
     }
@@ -650,6 +658,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 71000 ),
     actualtowerdamage: Math.floor( Math.random() * 11000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: 15,
     death: 2,
     totalheal: 0,
@@ -681,6 +690,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 1000 ),
     actualtowerdamage: Math.floor( Math.random() * 101000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: 5,
     death: 2,
     totalheal: 0,
@@ -712,6 +722,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 101000 ),
     actualtowerdamage: 125,
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: 9,
     death: 10,
     totalheal: 0,
@@ -743,6 +754,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 21000 ),
     actualtowerdamage: Math.floor( Math.random() * 21000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: 9,
     death: 10,
     totalheal: 0,
@@ -774,6 +786,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 11000 ),
     actualtowerdamage: Math.floor( Math.random() * 11000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -800,6 +813,7 @@ function dammy(){
     realpersondamage: 178103,
     realToRobotdamage: 12521,
     realRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     actualobjectdamage: Math.floor( Math.random() * 11000 ),
     actualpersondamage: Math.floor( Math.random() * 11000 ),
     actualToRobotdamage: Math.floor( Math.random() * 11000 ),
@@ -836,6 +850,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 1000 ),
     actualtowerdamage: Math.floor( Math.random() * 11000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -867,6 +882,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 1000 ),
     actualtowerdamage: Math.floor( Math.random() * 11000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -898,6 +914,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 154000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -929,6 +946,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -960,6 +978,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 154000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -991,6 +1010,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1022,6 +1042,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1053,6 +1074,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1084,6 +1106,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1115,6 +1138,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *50000),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1146,6 +1170,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1177,6 +1202,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1208,6 +1234,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1239,6 +1266,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 15000 ),
     actualtowerdamage: Math.floor( Math.random() * 54000 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 11 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1270,6 +1298,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 1500 ),
     actualtowerdamage: Math.floor( Math.random() * 5400 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 1 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1301,6 +1330,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 1500 ),
     actualtowerdamage: Math.floor( Math.random() * 5400 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 1 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1332,6 +1362,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 1500 ),
     actualtowerdamage: Math.floor( Math.random() * 5400 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 1 ),
     death: Math.floor( Math.random() * 11 ),
     totalheal: 0,
@@ -1363,6 +1394,7 @@ function dammy(){
     actualToRobotdamage: Math.floor( Math.random() * 1500 ),
     actualtowerdamage: Math.floor( Math.random() * 5400 ),
     actualRobotdamage: 0,
+    actualheal: Math.floor( Math.random() *6500),
     kills: Math.floor( Math.random() * 1 ),
     death: Math.floor( Math.random() * 15 ),
     totalheal: 0,

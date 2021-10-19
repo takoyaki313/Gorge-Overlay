@@ -29,11 +29,41 @@ $(document).on("click", "#setting-item-8-2", function(){
   localstorage_save();
   dammy();
   gorge_overlay_update_process();
+  if(KILLSOUND){
+    KILLSOUND_PLAY.play();
+  }
   });//click button-5 end (setting-button-close)
 //////////////////////////////////////////////////////////
 //localStorage////////////////////////////////////////////
 //////////////////////////////////////////////////////////
-
+function version_check(){
+  if(localStorage.getItem('Gorge-Overlay2') === null){
+    localstorage_defalt();
+  }
+  else{
+    let saved = JSON.parse(localStorage.getItem('Gorge-Overlay2'));
+    let saved_array = Object.keys(saved);
+    let default_localstrage = localstorage_data();
+    let default_localstrage_array = Object.keys(default_localstrage);
+    if(saved['VERSION'] === default_localstrage['VERSION']){
+      console.log('Version match!');
+          localstorage_restore();
+    }
+    else{
+      console.log('New update');
+      for(let i = 0 ; i < default_localstrage_array.length ; i++){
+        if(saved_array.indexOf(default_localstrage_array[i]) === -1){
+          saved[default_localstrage_array[i]] = default_localstrage[default_localstrage_array[i]];
+        }
+      }
+      saved['VERSION'] = default_localstrage['VERSION'];
+      //save
+      let json = JSON.stringify(saved);
+      localStorage.setItem('Gorge-Overlay2',json);
+      localstorage_restore();
+    }
+  }
+}
 function localstorage_save(){
   //setting display data get
   let data = localstorage_data();
@@ -74,12 +104,20 @@ function localstorage_save(){
   else {
     data.ENCOUNTER_TIME = false;
   }
+  if ($("#setting-item-110").prop("checked") === true){
+    data.KILLSOUND = true;
+  }
+  else {
+    data.KILLSOUND = false;
+  }
   ///number  or  strings
-  data.MAX_ROW= $('#setting-item-100').val();
-  data.FL_MAX_ROW= $('#setting-item-100-2').val();
-  data.PVE_MAX_ROW= $('#setting-item-100-3').val();
-  data.FONT_SIZE= $('#setting-item-105').val();
+  data.MAX_ROW = Number($('#setting-item-100').val());
+  data.FL_MAX_ROW= Number($('#setting-item-100-2').val());
+  data.PVE_MAX_ROW= Number($('#setting-item-100-3').val());
+  data.FONT_SIZE= Number($('#setting-item-105').val());
   data.ACT_NAME= $('#setting-item-106').val();
+  data.DEATH_TOO_MUCH= Number($('#setting-item-109').val());
+  data.KILLSOUND_PATH= $('#setting-item-110-1').val();
   //save
   let json = JSON.stringify(data);
   localStorage.setItem('Gorge-Overlay2',json);
@@ -93,13 +131,16 @@ function localstorage_data(){
     PVE_MAX_ROW : 10,
     FL_MAX_ROW : 24,
     FONT_SIZE : 16,
+    DEATH_TOO_MUCH : 8,
     HEADER : true,
     PVE_HEADER : true,
+    KILLSOUND : false,
+    KILLSOUND_PATH : 'https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3',
     DECIMAL_POINT_DISPLAY : true,
     PARTY_PRIORITY : true,
     COMBATANT_ONLY : true,
     ENCOUNTER_TIME : false,
-    VERSION : 'Gorge-overlay2 1.0.0'
+    VERSION : 'Gorge-overlay2 1.2.0'
   };
   return data;
 }
@@ -121,6 +162,8 @@ function localstorage_to_settingdisp(data){
   $('#setting-item-100-3').val(data.PVE_MAX_ROW);
   $('#setting-item-105').val(data.FONT_SIZE);
   $('#setting-item-106').val(data.ACT_NAME);
+  $('#setting-item-109').val(data.DEATH_TOO_MUCH);
+  $('#setting-item-110-1').val(data.KILLSOUND_PATH);
   if(data.HEADER){
     $('#setting-item-2-1').prop('checked',true);
   }
@@ -157,6 +200,12 @@ function localstorage_to_settingdisp(data){
   else{
     $('#setting-item-104').prop('checked',false);
   }
+  if(data.KILLSOUND){
+    $('#setting-item-110').prop('checked',true);
+  }
+  else{
+    $('#setting-item-110').prop('checked',false);
+  }
   $(".version").text(data.VERSION);
 }
 function localstorage_to_grobal(data){
@@ -165,10 +214,14 @@ function localstorage_to_grobal(data){
     window[string[i]] = data[string[i]];
   }
   font_size_change();
+  audio_load();
   gorge_overlay_decimal_point();
 }
 function font_size_change(){
   $('html').css('font-size',FONT_SIZE +'px');
+}
+function audio_load(){
+  KILLSOUND_PLAY = new Audio(KILLSOUND_PATH);
 }
 function gorge_overlay_decimal_point(){
   if(DECIMAL_POINT_DISPLAY){
