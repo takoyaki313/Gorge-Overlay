@@ -140,7 +140,7 @@ function localstorage_data(){
     PARTY_PRIORITY : true,
     COMBATANT_ONLY : true,
     ENCOUNTER_TIME : false,
-    VERSION : 'Gorge-overlay2 1.2.0'
+    VERSION : 'Gorge-overlay2 1.2.1'
   };
   return data;
 }

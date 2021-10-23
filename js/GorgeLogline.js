@@ -383,7 +383,9 @@ async function logline_main(log){
         data = await get_hp(nameID);
         let rob = robot_history(data[0],data[1],Number(currentHP),Number(maxHP));
         if(rob !== null){
-          console.log('hp_update:'+nameID + '->'+rob);
+          if (TEST_MODE) {
+            console.log('hp_update:'+nameID + '->'+rob);
+          }
           array_data.push(rob);
           array_object.push('robhistory');
           array_replace.push(false);
@@ -440,36 +442,48 @@ async function logline_main(log){
     if(new_hpmax === Chaiser_HP){
       if(old_hpmax !== new_hpmax){
         //new robot
-        console.log('Hpmax is cahnge' + old_hpmax + '!=' + new_hpmax);
+        if (TEST_MODE) {
+          console.log('Hpmax is cahnge' + old_hpmax + '!=' + new_hpmax);
+        }
         return 'che';
       }
       else if (new_hp > old_hp) {
         //new tobot
-        console.log('currenthp is raise' + old_hp + '->' + new_hp);
+        if (TEST_MODE) {
+          console.log('currenthp is raise' + old_hp + '->' + new_hp);
+        }
         return 'che';
       }
     }
     else if (new_hpmax === Oppresor_HP) {
       if(old_hpmax !== new_hpmax){
         //new robot
+        if (TEST_MODE) {
           console.log('Hpmax is cahnge' + old_hpmax + '!=' + new_hpmax);
+        }
         return 'opp';
       }
       else if (new_hp > old_hp) {
         //new tobot
-        console.log('currenthp is raise?' + old_hp + '->' + new_hp);
+        if (TEST_MODE) {
+          console.log('currenthp is raise?' + old_hp + '->' + new_hp);
+        }
         return 'opp';
       }
     }
     else if (new_hpmax === Justice_HP) {
       if(old_hpmax !== new_hpmax){
         //new robot
+        if (TEST_MODE) {
           console.log('Hpmax is cahnge' + old_hpmax + '!=' + new_hpmax);
+        }
         return 'jas';
       }
       else if (new_hp > old_hp) {
         //new tobot
-        console.log('currenthp is raise?' + old_hp + '->' + new_hp);
+        if (TEST_MODE) {
+          console.log('currenthp is raise?' + old_hp + '->' + new_hp);
+        }
         return 'jas';
       }
     }
@@ -713,7 +727,9 @@ async function logline_main(log){
         //robot_history(old_hp,old_hpmax,new_hp,new_hpmax);
         let rob = robot_history(data[0],data[1],Number(log[11]),Number(log[12]));
         if(rob !== null){
-          console.log('addcombatant->' + log[3] + ':' + rob);
+          if (TEST_MODE) {
+            console.log('addcombatant->' + log[3] + ':' + rob);
+          }
           array_data.push(rob);
           array_object.push('robhistory');
           array_replace.push(false);
