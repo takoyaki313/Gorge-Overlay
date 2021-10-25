@@ -673,7 +673,11 @@ async function logline_main(log){
       //await one_main_data_add(ABILITY_TEMP[ability_position].attackerID,'totalheal',damage = damage * -1,false);
     }
     else if (caluc_setting === '4' && damage_type === 'actual') {
+      //(damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP){
       await one_main_data_add(attackerID,'actualheal',damage,false);
+      if(attackerID === victimID){
+        await one_main_data_add(attackerID,'actualselfheal',damage,false);
+      }
     }
   }
   async function networkDot(log){
@@ -830,6 +834,7 @@ async function main_data_new(base,data){
     actualtowerdamage: 0,
     actualRobotdamage: 0,
     actualheal: 0,
+    actualselfheal: 0,
     kills: 0,
     death: 0,
     totalheal: 0,
