@@ -147,7 +147,7 @@ function localstorage_data(){
     COMBATANT_ONLY : true,
     ENCOUNTER_TIME : false,
     JUSTICE_PUNTCH : true,
-    VERSION : 'Gorge-overlay2 1.2.5'
+    VERSION : 'Gorge-overlay2 1.2.6'
   };
   return data;
 }

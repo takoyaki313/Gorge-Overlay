@@ -11,11 +11,11 @@ function logline_start(log){
     //51 is Wolves' Den Pier
     if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'){
       LOG_PROCESS = false;
-    }
-    else if (TEST_MODE && log[2] === '15'||log[2] === '51') {
+    }/*
+    else if (log[2] === '15'||log[2] === '51') {
       //other Area
       LOG_PROCESS = false;
-    }
+    }*/
     else {
       LOG_PROCESS = true;
       if(TEST_MODE){

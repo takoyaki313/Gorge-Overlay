@@ -88,14 +88,14 @@ function area_check(area){
     LOG_PROCESS = false;
     KILL_DATA = [];
     header_update_timer();
-  }
+  }/*
   else if (TEST_MODE && area.zoneName.indexOf('Middle La Noscea')!== -1||area.zoneName.indexOf("Wolves' Den Pier")!== -1||area.zoneName.indexOf('The Goblet')!== -1){
     NOW_AREA = 3;//Test Area_FL
     SET_BATTLE_TIME = 300;//test
     LOG_PROCESS = false;
     KILL_DATA = [];
     header_update_timer();
-  }
+  }*/
   else {
     NOW_AREA = 0;
     TENSYON_MAX = false;
