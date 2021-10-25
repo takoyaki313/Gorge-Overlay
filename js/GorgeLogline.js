@@ -11,11 +11,11 @@ function logline_start(log){
     //51 is Wolves' Den Pier
     if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'){
       LOG_PROCESS = false;
-    }/*
-    else if (log[2] === '15'||log[2] === '51') {
+    }
+    else if (TEST_MODE && log[2] === '15'||log[2] === '51') {
       //other Area
       LOG_PROCESS = false;
-    }*/
+    }
     else {
       LOG_PROCESS = true;
       if(TEST_MODE){
@@ -303,7 +303,7 @@ async function logline_main(log){
           KILL_DATA.push(data);
       }
     }
-    else if(log[2].slice(0,2) === '40'&& TEST_MODE){
+    else if(log[2].slice(0,2) === '40'&& TEST_MODE && false){//other kill
       await one_main_data_add(log[4],'kills',1,false);
       let true_ID = null;
       let victim = [];
@@ -534,9 +534,21 @@ async function logline_main(log){
           console.debug(log[44] + ':2!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + additional_damage + '/ '+ log[10]  +'/ '+ log[11]);
         }
     }
+    await justice_punch(log);
     await ability_push(log);
 
     //console.debug(ABILITY_TEMP);
+  }
+  //d(nameID,type,data,replace){
+  async function justice_punch(log){
+    if (log[4] === '26FB') {
+      if(log[6] === 'E0000000'){
+        await one_main_data_add(log[2],'rocketpuntchmiss',1,false);
+      }
+      else{
+        await one_main_data_add(log[2],'rocketpuntchhit',1,false);
+      }
+    }
   }
   async function ability_push(log){
     let searchID = log[44].toUpperCase();
@@ -828,6 +840,8 @@ async function main_data_new(base,data){
     combatantdamage: 0,
     combatantheal:0,
     combatantjob: null,
+    rocketpuntchhit: 0,
+    rocketpuntchmiss: 0,
     deletetime: null,
     }
   }

@@ -32,6 +32,7 @@ var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/soundeff
 var PARTY_PRIORITY = true;
 var COMBATANT_ONLY = true;
 var ENCOUNTER_TIME = false;//true is battletime = encounter time
+var JUSTICE_PUNTCH = true;
 var VERSION = 'Gorge-overlay2 xxx'
 ////////////////////////////////////////
 //DATA//////////////////////////////////
@@ -87,14 +88,14 @@ function area_check(area){
     LOG_PROCESS = false;
     KILL_DATA = [];
     header_update_timer();
-  }/*
-  else if (area.zoneName.indexOf('Middle La Noscea')!== -1||area.zoneName.indexOf("Wolves' Den Pier")!== -1/*||area.zoneName.indexOf('The Goblet')!== -1){
+  }
+  else if (TEST_MODE && area.zoneName.indexOf('Middle La Noscea')!== -1||area.zoneName.indexOf("Wolves' Den Pier")!== -1||area.zoneName.indexOf('The Goblet')!== -1){
     NOW_AREA = 3;//Test Area_FL
     SET_BATTLE_TIME = 300;//test
     LOG_PROCESS = false;
     KILL_DATA = [];
     header_update_timer();
-  }*/
+  }
   else {
     NOW_AREA = 0;
     TENSYON_MAX = false;
@@ -387,13 +388,13 @@ function gorge_overlay_update_process(){
     }
     for(let i = 0 ; i < maxrow ; i++){
       if (LIMITED_DATA[i].combatantjob !== null||COMBATANT_ONLY){
-        if(LIMITED_DATA[i].alliance !== 0){
+        if(LIMITED_DATA[i].name !== ''){
           let row = gorge_row_create(template.clone(),i);
           container.append(row);
         }
       }
       else{
-        if(LIMITED_DATA[i].alliance !== 0){
+        if(LIMITED_DATA[i].name !== ''){
           let row = gorge_row_create(template.clone(),i);
           container.append(row);
         }
@@ -428,8 +429,16 @@ function gorge_row_create(row,i){
   }
   else{
     row.find('.icon-robots').text(robot_history_fonts(LIMITED_DATA[i].robhistory));
-    if(LIMITED_DATA[i].robhistory.indexOf('jas') !== -1){
-      //row.find('.g-hit-number').text('xx(xx.x%)');
+    if(LIMITED_DATA[i].robhistory.indexOf('jas') !== -1 && JUSTICE_PUNTCH){
+      let hit = LIMITED_DATA[i].rocketpuntchhit;
+      let miss = LIMITED_DATA[i].rocketpuntchmiss;
+      let total = hit + miss;
+      let percent = hit / total;
+      if(percent === Infinity){
+        percent = 0;
+      }
+      percent = percent.toFixed(2)*100;
+      row.find('.g-total-hps-number').text(total + '/'+ percent +'%');
     }
   }
   if(LIMITED_DATA[i].aliance !== 10){
@@ -737,6 +746,8 @@ function dammy(){
     combatantdamage: 257841,
     combatantheal:Math.floor( Math.random() * 51000 ),
     combatantjob: 'blm',
+    rocketpuntchhit: 50,
+    rocketpuntchmiss: 15
   },{
     nameID: 'SAMPLE',
     name: 'Daniel Tepesh',
@@ -799,6 +810,8 @@ function dammy(){
     combatantDuration: 45,
     combatantdps:0,
     combatantdamage: 0,
+    rocketpuntchhit: 100,
+    rocketpuntchmiss: 105,
     combatantheal:154101,
     combatantjob: 'ast',
   },{

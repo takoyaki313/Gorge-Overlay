@@ -110,6 +110,12 @@ function localstorage_save(){
   else {
     data.KILLSOUND = false;
   }
+  if ($("#setting-item-111").prop("checked") === true){
+    data.JUSTICE_PUNTCH = true;
+  }
+  else {
+    data.JUSTICE_PUNTCH = false;
+  }
   ///number  or  strings
   data.MAX_ROW = Number($('#setting-item-100').val());
   data.FL_MAX_ROW= Number($('#setting-item-100-2').val());
@@ -140,7 +146,8 @@ function localstorage_data(){
     PARTY_PRIORITY : true,
     COMBATANT_ONLY : true,
     ENCOUNTER_TIME : false,
-    VERSION : 'Gorge-overlay2 1.2.1'
+    JUSTICE_PUNTCH : true,
+    VERSION : 'Gorge-overlay2 1.2.5'
   };
   return data;
 }
@@ -205,6 +212,12 @@ function localstorage_to_settingdisp(data){
   }
   else{
     $('#setting-item-110').prop('checked',false);
+  }
+  if(data.JUSTICE_PUNTCH){
+    $('#setting-item-111').prop('checked',true);
+  }
+  else{
+    $('#setting-item-111').prop('checked',false);
   }
   $(".version").text(data.VERSION);
 }
