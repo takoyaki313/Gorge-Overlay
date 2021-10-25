@@ -434,11 +434,11 @@ function gorge_row_create(row,i){
       let miss = LIMITED_DATA[i].rocketpuntchmiss;
       let total = hit + miss;
       let percent = hit / total;
-      if(percent === Infinity){
+      if(percent === Infinity ||percent === isNaN){
         percent = 0;
       }
-      percent = percent.toFixed(2)*100;
-      row.find('.g-total-hps-number').text(total + '/'+ percent +'%');
+      percent = percent*100;
+      row.find('.g-total-hps-number').text(total + '/'+ percent.toFixed(0) +'%');
     }
   }
   if(LIMITED_DATA[i].aliance !== 10){
