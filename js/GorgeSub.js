@@ -161,7 +161,7 @@ function localstorage_data(){
     AROUND_MEMBER_ONLY : false,
     SPENT_NEARBY_TIME : false,
     IGNORE_MAX_AFTER_BATTLE : false,
-    VERSION : 'Gorge-overlay2 1.3.1'
+    VERSION : 'Gorge-overlay2 1.3.2'
   };
   return data;
 }
