@@ -46,14 +46,14 @@ function calc(){
     //let promise = ability_reflesh(5000);
     let log_num = LOG_ARRAY.length;
     for(let i = 0 ; i < log_num; i++) {
-    // promiseにthenで繋ぎ再代入
-    // これでどんどんthenをチェーンしていける
       promise = promise.then(() => logline_main(LOG_ARRAY.shift()));
       PROMISE_ARRAY.push(promise);
     }
     promise = promise.then(() => ability_reflesh(5000));
     PROMISE_ARRAY.push(promise);
     promise = promise.then(() => main_data_reflesh());
+    PROMISE_ARRAY.push(promise);
+    promise = promise.then(() => main_data_time_add());
     PROMISE_ARRAY.push(promise);
     promise = promise.then(() => main_data_output());
     PROMISE_ARRAY.push(promise);
@@ -65,7 +65,7 @@ function calc(){
   else if (LOG_PROCESS && NOW_AREA === 0) {
     //console.log('reset (calc)');
     if(TEST_MODE){
-      console.warn('calc -> global arrya reset');
+      console.warn('calc -> global array reset');
     }
     grobal_array_reset();
   }
@@ -506,6 +506,7 @@ async function logline_main(log){
       let bd = parseInt(b,16) - parseInt(d,16);
       bd = bd.toString(16);
       damage = parseInt(d + a + bd ,16);
+      //damage = parseInt(d + a + b ,16);
     }
     if(damage >= 0 ){
     }
@@ -516,10 +517,10 @@ async function logline_main(log){
       damage = 0;
     }
     if(TEST_MODE){
-      console.debug(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
+      console.log(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     }
     //damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP
-    await damage_add(damage,'actual',log[2],log[4],log[8],log[6],Number(log[25]));
+    await damage_add(damage,'actual',log[2],log[4],log[8],log[6],Number(log[25]),Number(log[24]));
     if(log[10].slice(-1) === '4'){
       let additional_damage = 0;
       let additional_damage_mask = log[11].slice(log[9].length - 4 , log[11].length);
@@ -528,10 +529,10 @@ async function logline_main(log){
       }
       if(additional_damage <= 0){
         additional_damage = 0;
-      }
-        await damage_add(additional_damage,'actual',log[2],log[4],log[10],log[6],Number(log[25]));
+      }//This Data is Self Heal Only//////////////////////////////////////log[6]////////log[25]/////////log[35]///
+        await damage_add(additional_damage,'actual',log[2],log[4],log[10],log[2],Number(log[35]),Number(log[34]));
         if(TEST_MODE){
-          console.debug(log[44] + ':2!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + additional_damage + '/ '+ log[10]  +'/ '+ log[11]);
+          console.log(log[44] + ':2!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + additional_damage + '/ '+ log[10]  +'/ '+ log[11]);
         }
     }
     await justice_punch(log);
@@ -577,7 +578,7 @@ async function logline_main(log){
     }
     else{
       console.warn('Yey retry sucsess');
-      await damage_add(damage,'real',ABILITY_TEMP[ability_position].attackerID,ABILITY_TEMP[ability_position].skillID,ABILITY_TEMP[ability_position].victimID,Number(log[5]));
+      await damage_add(damage,'real',ABILITY_TEMP[ability_position].attackerID,ABILITY_TEMP[ability_position].skillID,ABILITY_TEMP[ability_position].victimID,Number(log[5]),null);
     }
   }
   async function networkAbility_receve(log){
@@ -610,14 +611,14 @@ async function logline_main(log){
         console.log('ID->'+ this_ability_checkID + ':'+ ABILITY_TEMP[ability_position].attackerName + ' damege '+ ABILITY_TEMP[ability_position].skillName +'=>'+ damage);
       }
     }
-    await damage_add(damage,'real',ABILITY_TEMP[ability_position].attackerID,ABILITY_TEMP[ability_position].skillID,null,ABILITY_TEMP[ability_position].victimID,Number(log[6]));
+    await damage_add(damage,'real',ABILITY_TEMP[ability_position].attackerID,ABILITY_TEMP[ability_position].skillID,null,ABILITY_TEMP[ability_position].victimID,Number(log[6]),null);
     if(TEST_MODE){
       console.debug(ABILITY_TEMP[ability_position]);
     }
     //ABILITY_TEMP = ABILITY_TEMP.slice(0,ability_position - 1).concat(ABILITY_TEMP.slice(ability_position));
     //await delete_ability_array(ability_position);
   }
-  async function damage_add(damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP){
+  async function damage_add(damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP,victimCurrentHP){
     let caluc_setting =  '';
     if(skill_type !== null){
       caluc_setting = skill_type.slice(-1);
@@ -674,9 +675,16 @@ async function logline_main(log){
     }
     else if (caluc_setting === '4' && damage_type === 'actual') {
       //(damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP){
+      let over_heal = damage + victimCurrentHP - victimHP;
+      if(over_heal > 0){
+        await one_main_data_add(attackerID,'actualoverheal',over_heal,false);
+      }
       await one_main_data_add(attackerID,'actualheal',damage,false);
       if(attackerID === victimID){
         await one_main_data_add(attackerID,'actualselfheal',damage,false);
+      }
+      else if (victimID.slice(0,2) === '40') {
+        await one_main_data_add(attackerID,'actualobjectheal',damage,false);
       }
     }
   }
@@ -812,49 +820,66 @@ async function one_main_data_add(nameID,type,data,replace){
 }
 async function main_data_new(base,data){
   if(base === 'nameID'){
-    MAIN_DATA[MAIN_DATA.length]={
-    nameID: data,
-    name: null,
-    ownerID: null,
-    battle:null,
-    currentHP: 0,
-    maxHP: 0,
-    currentjob: null,
-    aliance: 0,
-    robhistory: '',
-    totaloutdamage: 0,
-    realobjectdamage: 0,
-    realpersondamage: 0,
-    realToRobotdamage: 0,
-    realtowerdamage: 0,
-    realRobotdamage: 0,
-    actualobjectdamage: 0,
-    actualpersondamage: 0,
-    actualToRobotdamage: 0,
-    actualtowerdamage: 0,
-    actualRobotdamage: 0,
-    actualheal: 0,
-    actualselfheal: 0,
-    kills: 0,
-    death: 0,
-    totalheal: 0,
-    selfheal: 0,
-    totalincomedamage: 0,
-    combatantDuration: 0,
-    combatantdps:0,
-    combatantdamage: 0,
-    combatantheal:0,
-    combatantjob: null,
-    rocketpuntchhit: 0,
-    rocketpuntchmiss: 0,
-    deletetime: null,
-    }
+    MAIN_DATA[MAIN_DATA.length] = main_data_format(data);
   }
 }
-
+function main_data_format(iD){
+  let data = {
+  nameID: iD,
+  name: null,
+  ownerID: null,
+  aliance: 0,
+  battle:null,
+  currentHP: 0,
+  maxHP: 0,
+  currentjob: null,
+  robhistory: '',
+  totaloutdamage: 0,
+  totaloutdps: 0,
+  realobjectdamage: 0,
+  realpersondamage: 0,
+  realToRobotdamage: 0,
+  realtowerdamage: 0,
+  realRobotdamage: 0,
+  actualobjectdamage: 0,
+  actualpersondamage: 0,
+  actualToRobotdamage: 0,
+  actualtowerdamage: 0,
+  actualRobotdamage: 0,
+  actualheal: 0,
+  actualselfheal: 0,
+  actualobjectheal: 0,
+  actualoverheal: 0,
+  kills: 0,
+  death: 0,
+  totalheal: 0,
+  selfheal: 0,
+  totalincomedamage: 0,
+  combatantDuration: 0,
+  combatantdps:0,
+  combatantdamage: 0,
+  combatantheal:0,
+  combatantjob: null,
+  rocketpuntchhit: 0,
+  rocketpuntchmiss: 0,
+  deletetime: null,
+  totalbattletime: 0,
+  }
+  return data;
+}
 async function main_data_push_update(objectbase,oldbasedata,objectname,data,replace){
   let position ;
-  let basedata = oldbasedata.toUpperCase();
+  let basedata = '';
+  if (oldbasedata.length !== 8) {
+    if(TEST_MODE){
+      console.warn('Error Basedata is none =>' + objectbase + ':->'+ oldbasedata + '<-:');
+    }
+    console.warn('Error Basedata is none =>' + objectbase + ':->'+ oldbasedata + '<-:');
+    return -1;
+  }
+  else{
+    basedata = oldbasedata.toUpperCase();
+  }
   if (objectbase === 'nameID'){
     position = MAIN_DATA.findIndex(({nameID}) => nameID == basedata);
   }
@@ -1009,5 +1034,30 @@ async function main_data_reflesh(){
   }
   for (let i = 0; i < delete_position.length; i++) {
     await delete_maindate_array(delete_position[i]);
+  }
+}
+async function main_data_time_add(){
+  if(ENCOUNTER_START && Battle_start){
+    for(let i = 0 ; i < MAIN_DATA.length ; i++){
+      if(MAIN_DATA[i].battle){
+        MAIN_DATA[i].totalbattletime++;
+      }
+    }
+  }
+  else if (ENCOUNTER_START) {//途中参加用
+    if(TEST_MODE){
+      console.log('log Encounter olready started. but Timer not started...');
+    }
+    let position = MAIN_DATA.findIndex(({nameID}) => nameID == MYCHARACTOR_ID);
+    if(position !== -1){
+      if(MAIN_DATA[position].totalbattletime === 0){
+        battle_counter(0);
+        for(let i = 0 ; i < MAIN_DATA.length ; i++){
+          if(MAIN_DATA[i].battle){
+            MAIN_DATA[i].totalbattletime++;
+          }
+        }
+      }
+    }
   }
 }

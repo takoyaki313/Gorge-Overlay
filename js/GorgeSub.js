@@ -92,12 +92,6 @@ function localstorage_save(){
   else {
     data.PARTY_PRIORITY = false;
   }
-  if ($("#setting-item-107").prop("checked") === true){
-    data.COMBATANT_ONLY = true;
-  }
-  else {
-    data.COMBATANT_ONLY = false;
-  }
   if ($("#setting-item-108").prop("checked") === true){
     data.ENCOUNTER_TIME = true;
   }
@@ -115,6 +109,24 @@ function localstorage_save(){
   }
   else {
     data.JUSTICE_PUNTCH = false;
+  }
+  if ($("#setting-item-112").prop("checked") === true){
+    data.AROUND_MEMBER_ONLY = true;
+  }
+  else {
+    data.AROUND_MEMBER_ONLY = false;
+  }
+  if ($("#setting-item-113").prop("checked") === true){
+    data.SPENT_NEARBY_TIME = true;
+  }
+  else {
+    data.SPENT_NEARBY_TIME = false;
+  }
+  if ($("#setting-item-114").prop("checked") === true){
+    data.IGNORE_MAX_AFTER_BATTLE = true;
+  }
+  else {
+    data.IGNORE_MAX_AFTER_BATTLE = false;
   }
   ///number  or  strings
   data.MAX_ROW = Number($('#setting-item-100').val());
@@ -144,10 +156,12 @@ function localstorage_data(){
     KILLSOUND_PATH : 'https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3',
     DECIMAL_POINT_DISPLAY : true,
     PARTY_PRIORITY : true,
-    COMBATANT_ONLY : true,
     ENCOUNTER_TIME : false,
     JUSTICE_PUNTCH : true,
-    VERSION : 'Gorge-overlay2 1.2.6'
+    AROUND_MEMBER_ONLY : false,
+    SPENT_NEARBY_TIME : false,
+    IGNORE_MAX_AFTER_BATTLE : false,
+    VERSION : 'Gorge-overlay2 1.3.1'
   };
   return data;
 }
@@ -189,12 +203,6 @@ function localstorage_to_settingdisp(data){
   else{
     $('#setting-item-103-1').prop('checked',false);
   }
-  if(data.COMBATANT_ONLY){
-    $('#setting-item-107').prop('checked',true);
-  }
-  else{
-    $('#setting-item-107').prop('checked',false);
-  }
   if(data.ENCOUNTER_TIME){
     $('#setting-item-108').prop('checked',true);
   }
@@ -218,6 +226,24 @@ function localstorage_to_settingdisp(data){
   }
   else{
     $('#setting-item-111').prop('checked',false);
+  }
+  if(data.AROUND_MEMBER_ONLY){
+    $('#setting-item-112').prop('checked',true);
+  }
+  else{
+    $('#setting-item-112').prop('checked',false);
+  }
+  if(data.SPENT_NEARBY_TIME){
+    $('#setting-item-113').prop('checked',true);
+  }
+  else{
+    $('#setting-item-113').prop('checked',false);
+  }
+  if(data.IGNORE_MAX_AFTER_BATTLE){
+    $('#setting-item-114').prop('checked',true);
+  }
+  else{
+    $('#setting-item-114').prop('checked',false);
   }
   $(".version").text(data.VERSION);
 }
@@ -271,7 +297,6 @@ var Battle_Start_Time = null;
 var Battle_Current_Time = 0;
 //////////////////////////////////////////////
 function battle_counter(time){
-  console.log(Battle_start);
   if(time > 0){
     SET_BATTLE_TIME = time;
   }
@@ -441,7 +466,7 @@ function jobID_to_string(id){
       job = 'rdm';
       break;
     case 36:
-      job = 'blu';
+      job = 'bdm';
       break;
     case 37:
       job = 'gnb';
