@@ -412,14 +412,8 @@ function gorge_overlay_update_process(){
         base_time = PVP_DURATION;
       }
       if(Battle_start){//Timerが動いている時。
-        if(!AROUND_MEMBER_ONLY){
-          let row = gorge_row_create(template.clone(),i,base_time);
-          container.append(row);
-        }
-        else if (LIMITED_DATA[i].battle){
-          let row = gorge_row_create(template.clone(),i,base_time);
-          container.append(row);
-        }
+        let row = gorge_row_create(template.clone(),i,base_time);
+        container.append(row);
       }
       else{//Timerが止まってるとき。
         let row = gorge_row_create(template.clone(),i,base_time);
@@ -608,6 +602,15 @@ function fl_alliance(){
 function limited_data_party_cut(cut){
   let replace_data = [];
   let party_member_position = [];
+  if(AROUND_MEMBER_ONLY){
+    let around_ally = [];
+    for(let i = 0 ; i < LIMITED_DATA.length ; i++){
+      if(LIMITED_DATA[i].battle){
+        around_ally.push(LIMITED_DATA[i]);
+      }
+    }
+    LIMITED_DATA = around_ally;
+  }
   if(PARTY_PRIORITY){
     if(LIMITED_DATA.length >= cut){
       for(let i = 0 ; i < LIMITED_DATA.length ; i++){

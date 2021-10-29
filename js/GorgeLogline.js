@@ -897,6 +897,19 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
     position = MAIN_DATA.length;
     await main_data_new(objectbase,basedata);
   }
+  if(!MAIN_DATA[position].battle){
+    if(objectname.indexOf('battle') === -1){
+      if(objectname.indexOf('aliance') === -1){
+        if(MAIN_DATA[position].nameID.slice(0,2) === '10'){
+          if (TEST_MODE) {
+            console.warn('This Charactor is not battled... ->'+MAIN_DATA[position].name+'(' + MAIN_DATA[position].nameID+')' + '->' + objectname);
+          }
+          objectname.push('battle');
+          data.push(true);
+        }
+      }
+    }
+  }
   for(let i = 0 ; i < objectname.length ; i++){
     if(replace[i]){//replace
       if(objectname[i] === 'maxHP' && data[i] === 0){
