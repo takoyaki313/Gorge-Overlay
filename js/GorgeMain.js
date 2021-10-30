@@ -3,6 +3,7 @@ var MAIN_DATA = [];
 var LIMITED_DATA = [];
 var ABILITY_TEMP = [];
 var KILL_DATA = [];
+var SKILL_KILL_DATA = [];
 var PROMISE_ARRAY = [];
 var LOG_ARRAY = [];
 var LOG_PROCESS = true;
@@ -25,6 +26,7 @@ var PVE_MAX_ROW = 10;
 var FL_MAX_ROW = 24;
 var FONT_SIZE = 16;
 var DEATH_TOO_MUCH = 8;
+var KILLSOUND_VOLUME = 100;
 ////////////////////////////////////////
 var DECIMAL_POINT_DISPLAY = true;
 var KILLSOUND = false;
@@ -35,6 +37,7 @@ var SPENT_NEARBY_TIME = false;
 var IGNORE_MAX_AFTER_BATTLE = false;
 var ENCOUNTER_TIME = false;//true is battletime = encounter time
 var JUSTICE_PUNTCH = true;
+var FAST_KILLSOUND = false;
 var VERSION = 'Gorge-overlay2 xxx'
 ////////////////////////////////////////
 //DATA//////////////////////////////////
@@ -79,6 +82,7 @@ function area_check(area){
     SET_BATTLE_TIME = 900;//15min
     LOG_PROCESS = false;
     KILL_DATA = [];
+    SKILL_KILL_DATA = [];
     header_update_timer();
   }
   else if (area.zoneID == 376
@@ -89,6 +93,7 @@ function area_check(area){
     SET_BATTLE_TIME = 1200;//20min
     LOG_PROCESS = false;
     KILL_DATA = [];
+    SKILL_KILL_DATA = [];
     header_update_timer();
   }/*
   else if (TEST_MODE && area.zoneName.indexOf('Middle La Noscea')!== -1||area.zoneName.indexOf("Wolves' Den Pier")!== -1||area.zoneName.indexOf('The Goblet')!== -1){
@@ -96,6 +101,7 @@ function area_check(area){
     SET_BATTLE_TIME = 300;//test
     LOG_PROCESS = false;
     KILL_DATA = [];
+    SKILL_KILL_DATA = [];
     header_update_timer();
   }*/
   else {

@@ -257,7 +257,7 @@ async function logline_main(log){
         }
           KILL_DATA.push(data);
           if(TENSYON_MAX && attacker[2] === 1){
-            if(KILLSOUND){
+            if(KILLSOUND && !FAST_KILLSOUND){
               KILLSOUND_PLAY.play();
             }
           }
@@ -414,7 +414,7 @@ async function logline_main(log){
       if(TEST_MODE){
         console.warn('Error SearchBase (name/job) =>' + basedata);
       }
-      return ['Unknown',0];
+      return ['Unknown',0,0];
     }
     else {
       let job = 0;
@@ -611,12 +611,51 @@ async function logline_main(log){
         console.log('ID->'+ this_ability_checkID + ':'+ ABILITY_TEMP[ability_position].attackerName + ' damege '+ ABILITY_TEMP[ability_position].skillName +'=>'+ damage);
       }
     }
+    hp_kill_check(old_hp_array[0],Number(log[5]),ABILITY_TEMP[ability_position].victimID,ABILITY_TEMP[ability_position].attackerID,ABILITY_TEMP[ability_position].skillName);
     await damage_add(damage,'real',ABILITY_TEMP[ability_position].attackerID,ABILITY_TEMP[ability_position].skillID,null,ABILITY_TEMP[ability_position].victimID,Number(log[6]),null);
     if(TEST_MODE){
       console.debug(ABILITY_TEMP[ability_position]);
     }
-    //ABILITY_TEMP = ABILITY_TEMP.slice(0,ability_position - 1).concat(ABILITY_TEMP.slice(ability_position));
-    //await delete_ability_array(ability_position);
+  }
+  function hp_kill_check(old_hp,new_hp,victimID,attackerID,skillname){
+    if(victimID.slice(0,2) === '10'){
+      if(old_hp > new_hp && new_hp === 0 && victimID !== attackerID){
+        let position = MAIN_DATA.findIndex(({nameID}) => nameID == attackerID);
+        let true_ID = null;
+        let attacker = [];
+        if (position === -1 ){
+          if(TEST_MODE){
+            console.warn('Error SearchBase (HP_owner_check(kill log )) =>' + attackerID);
+          }
+        }
+        else{
+          true_ID = MAIN_DATA[position].ownerID;
+        }
+        if(true_ID === null){
+          attacker = get_name_job(attackerID);
+        }
+        else{
+          attacker = get_name_job(true_ID);
+        }
+        let victim = get_name_job(victimID);
+        let array = {
+          victimName:victim[0],
+          victimjob:jobID_to_string(victim[1]),
+          victimaliance:victim[2],
+          attackerName:attacker[0],
+          attackerjob:jobID_to_string(attacker[1]),
+          attackeraliance:attacker[2],
+          time:Date.now(),
+          killskill: skillname,
+        }
+        SKILL_KILL_DATA.push(array);
+        if(array.attackeraliance === 1){
+          if(KILLSOUND && TENSYON_MAX&&FAST_KILLSOUND){
+            KILLSOUND_PLAY.play();
+          }
+        }
+      }
+    }
   }
   async function damage_add(damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP,victimCurrentHP){
     let caluc_setting =  '';

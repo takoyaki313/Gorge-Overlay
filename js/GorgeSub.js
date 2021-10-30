@@ -17,6 +17,13 @@ $(document).on("click", "#button-5", function(){
 //Disappearance//$("#setting-item-3").prop("checked") == true
 //click button-5 start (setting-button-close)
 //$('#p-max').val(Number(DispMax));
+$(document).on("click", "#setting-item-110-2", function(){
+  //volume button
+  localstorage_save();
+  if(KILLSOUND){
+    KILLSOUND_PLAY.play();
+  }
+});//click end volume )
 $(document).on("click", "#button-2", function(){
   //timet button
   console.log('button2');
@@ -104,6 +111,12 @@ function localstorage_save(){
   else {
     data.KILLSOUND = false;
   }
+  if ($("#setting-item-110-3").prop("checked") === true){
+    data.FAST_KILLSOUND = true;
+  }
+  else {
+    data.FAST_KILLSOUND = false;
+  }
   if ($("#setting-item-111").prop("checked") === true){
     data.JUSTICE_PUNTCH = true;
   }
@@ -136,6 +149,7 @@ function localstorage_save(){
   data.ACT_NAME= $('#setting-item-106').val();
   data.DEATH_TOO_MUCH= Number($('#setting-item-109').val());
   data.KILLSOUND_PATH= $('#setting-item-110-1').val();
+  data.KILLSOUND_VOLUME = Number($('#setting-item-110-2').val());
   //save
   let json = JSON.stringify(data);
   localStorage.setItem('Gorge-Overlay2',json);
@@ -161,7 +175,9 @@ function localstorage_data(){
     AROUND_MEMBER_ONLY : false,
     SPENT_NEARBY_TIME : false,
     IGNORE_MAX_AFTER_BATTLE : false,
-    VERSION : 'Gorge-overlay2 1.3.6'
+    KILLSOUND_VOLUME : 100,
+    FAST_KILLSOUND : false,
+    VERSION : 'Gorge-overlay2 1.3.9'
   };
   return data;
 }
@@ -185,6 +201,7 @@ function localstorage_to_settingdisp(data){
   $('#setting-item-106').val(data.ACT_NAME);
   $('#setting-item-109').val(data.DEATH_TOO_MUCH);
   $('#setting-item-110-1').val(data.KILLSOUND_PATH);
+  $('#setting-item-110-2').val(data.KILLSOUND_VOLUME);
   if(data.HEADER){
     $('#setting-item-2-1').prop('checked',true);
   }
@@ -220,6 +237,12 @@ function localstorage_to_settingdisp(data){
   }
   else{
     $('#setting-item-110').prop('checked',false);
+  }
+  if(data.FAST_KILLSOUND){
+    $('#setting-item-110-3').prop('checked',true);
+  }
+  else{
+    $('#setting-item-110-3').prop('checked',false);
   }
   if(data.JUSTICE_PUNTCH){
     $('#setting-item-111').prop('checked',true);
@@ -261,6 +284,7 @@ function font_size_change(){
 }
 function audio_load(){
   KILLSOUND_PLAY = new Audio(KILLSOUND_PATH);
+  KILLSOUND_PLAY.volume = KILLSOUND_VOLUME/100;
 }
 function gorge_overlay_decimal_point(){
   if(DECIMAL_POINT_DISPLAY){
