@@ -27,6 +27,8 @@ var FL_MAX_ROW = 24;
 var FONT_SIZE = 16;
 var DEATH_TOO_MUCH = 8;
 var KILLSOUND_VOLUME = 100;
+var RAINBOW_DPS = 2000;
+var RAINBOW_DAMAGE_TOWER = 1000000;
 ////////////////////////////////////////
 var DECIMAL_POINT_DISPLAY = true;
 var KILLSOUND = false;
@@ -313,6 +315,9 @@ function fl_overlay_update(e){
       if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
         row.addClass('death-too-much');
       }
+      if(dps >= RAINBOW_DPS){
+        row.find('.f-dps').addClass('gaming');
+      }
       if(ACT_NAME === LIMITED_DATA[i].name){
         row.addClass('me');
       }
@@ -362,6 +367,9 @@ function fl_overlay_update(e){
         }
       }
       row.find('.f-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
+      if(dps >= RAINBOW_DPS){
+        row.find('.f-dps').addClass('gaming');
+      }
       if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
         row.addClass('death-too-much');
       }
@@ -478,6 +486,13 @@ function gorge_row_create(row,i,base_time){
   }
   if(ACT_NAME === LIMITED_DATA[i].name){
     row.addClass('me');
+  }
+  if(damage_to_dps(LIMITED_DATA[i].totaloutdamage,base_time) >= RAINBOW_DPS){
+    row.find('.g-total-dps-number').addClass('gaming');
+  }
+  if(LIMITED_DATA[i].actualtowerdamage >= RAINBOW_DAMAGE_TOWER){
+    row.find('.icon-tower2').addClass('gaming');
+    row.find('.g-tower-number').addClass('gaming');
   }
   return row;
 }
