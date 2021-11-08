@@ -1,79 +1,3 @@
-
-var MAIN_DATA = [];
-var LIMITED_DATA = [];
-var ABILITY_TEMP = [];
-var KILL_DATA = [];
-var SKILL_KILL_DATA = [];
-var PROMISE_ARRAY = [];
-var LOG_ARRAY = [];
-var LOG_PROCESS = true;
-var TEST_MODE = false;
-var FORCE_LOG_LISTEN = false;
-var ALIANCE_DATA = false;
-var MYCHARACTOR_ID = '';
-var MYCHARACTOR_NAME = '';
-var NOW_AREA = 0;
-var SET_BATTLE_TIME = 0;
-var ENCOUNTER_START = false;
-var ENCOUNTER_START_TIME = 0;
-var PVP_DURATION = 0;
-var TENSYON_MAX = false;
-var KILLSOUND_PLAY = new Audio('');
-//Setting///////////////////////////////
-var ACT_NAME = 'YOU';
-var MAX_ROW = 30;
-var PVE_MAX_ROW = 10;
-var FL_MAX_ROW = 24;
-var FONT_SIZE = 16;
-var DEATH_TOO_MUCH = 8;
-var KILLSOUND_VOLUME = 100;
-var RAINBOW_DPS = 2000;
-var RAINBOW_DAMAGE_TOWER = 1000000;
-////////////////////////////////////////
-var DECIMAL_POINT_DISPLAY = true;
-var KILLSOUND = false;
-var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3';
-var PARTY_PRIORITY = true;
-var AROUND_MEMBER_ONLY = false;
-var SPENT_NEARBY_TIME = false;
-var IGNORE_MAX_AFTER_BATTLE = false;
-var ENCOUNTER_TIME = false;//true is battletime = encounter time
-var JUSTICE_PUNTCH = true;
-var FAST_KILLSOUND = false;
-var VERSION = 'Gorge-overlay2 xxx'
-////////////////////////////////////////
-//DATA//////////////////////////////////
-const Oppresor_HP = 100000;
-const Justice_HP = 75000;
-const Chaiser_HP = 50000;
-////////////////////////////////////////
-$(function() {
-"use strict";
-  version_check();
-
-  addOverlayListener('ChangeZone', (zone) => area_check(zone));
-  addOverlayListener("LogLine", (log) => logline_start(log.line));
-  if(TEST_MODE){
-    addOverlayListener("ImportedLogLines", (log) => import_log_division(log.logLines));
-  }
-  addOverlayListener("ChangePrimaryPlayer",(MyName) =>{
-    MYCHARACTOR_ID = MyName.charID.toString(16);
-    MYCHARACTOR_NAME = MyName.charName;
-    let party_data = ['300',MYCHARACTOR_ID,MYCHARACTOR_NAME,1];
-    if(TEST_MODE){
-      console.log(MyName);
-    }
-    logline_start(party_data);
-  });
-  addOverlayListener('PartyChanged', (p) => party(p.party));
-  addOverlayListener("CombatData", (e) => overlay_update_start(e));
-  startOverlayEvents();
-  setInterval(calc,1000);
-  //sample_data();
-  //let array_data = ['Takoyaki',3,1];
-  //let array_object = ['name','kills','death'];
-  //main_data_push_update('nameID','101020AF',array_object,array_data);
-});
 function area_check(area){
   header_update_zone(area.zoneName);
   if(TEST_MODE){
@@ -218,6 +142,7 @@ function overlay_update_start(e){
   else {
     pve_overlay_update(e);
   }
+  overlay_css_append(COLOR_DATA);
 }
 function pve_overlay_update(e){
   var encounter = e.Encounter;
@@ -234,6 +159,7 @@ function pve_overlay_update(e){
     $('body').removeClass('inactive');
   }
   var limit = Math.min(names.length,PVE_MAX_ROW);
+  let special_color = special_color_check();
   for(let i = 0 ; i < limit ; i++){
     var combatant = combatants[names[i]];
     var row = template.clone();
@@ -259,6 +185,8 @@ function pve_overlay_update(e){
       row.find('.n-dps').text(dps.toFixed(0));
     }
     row.find('.n-job').addClass('icon-' + combatant.Job.toLowerCase());
+    let role = job_to_role(combatant.Job.toLowerCase());
+    let aliance = 10;
     ///////////////////////////title
     row.find('.n-name').text(combatant.name);
     row.find('.n-crit').text(combatant['crithit%']);
@@ -266,8 +194,15 @@ function pve_overlay_update(e){
     row.find('.n-cridirect').text(combatant.CritDirectHitPct);
     row.find('.n-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
     if(ACT_NAME === combatant.name){
-      row.addClass('me');
+      row.find('.n-basic').addClass('me');
     }
+    row = special_color_addclass(row,'.n-dps',special_color.n_dps,'font',role,aliance);
+    row = special_color_addclass(row,'.n-job',special_color.n_job_icon,'font',role,aliance);
+    row = special_color_addclass(row,'.n-name',special_color.n_name,'font',role,aliance);
+    row = special_color_addclass(row,'.n-crit',special_color.n_crit,'font',role,aliance);
+    row = special_color_addclass(row,'.n-direct',special_color.n_direct,'font',role,aliance);
+    row = special_color_addclass(row,'.n-cridirect',special_color.n_cridirect,'font',role,aliance);
+    row = special_color_addclass(row,'.n-bar',special_color.n_dps_bar,'background',role,aliance);
     container.append(row);
   }
   $('#overlay').replaceWith(container);
@@ -277,283 +212,109 @@ function fl_overlay_update(e){
   var combatants = e.Combatant;
   var template = $('#fl-source li');
   var container = $('#overlay').clone();
-  var maxdps = 0;
   container.html('');
   var names = Object.keys(combatants).slice(0,FL_MAX_ROW);
-  var limit = Math.min(names.length,FL_MAX_ROW);
-  fl_alliance();
+  var limit = 0;
+  let color_data = special_color_check();
   if(ENCOUNTER_TIME){//use LIMITED_DATA
-    limited_data_combatant_marge(combatants,encounter.DURATION,'fl');
+    //limited_data_combatant_marge(combatants,encounter.DURATION,'fl');
     LIMITED_DATA.sort(function (a,b) {
       return b.totaloutdamage - a.totaloutdamage ;
     });
-    limited_data_party_cut(FL_MAX_ROW);
-    for(let i = 0 ; i < limit ; i++){
-      var row = template.clone();
-      if (!maxdps) {
-      maxdps = parseFloat(damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION));
-      }
-      let dps = damage_to_dps(LIMITED_DATA[i].totaloutdamage,PVP_DURATION);
-      row.find('.f-dps').text(dps);
-      let job = jobID_to_string(LIMITED_DATA[i].currentjob);
-      if(job !== null){
-        row.find('.f-job').addClass('icon-' + job);
-      }
-      else{
-        row.find('.f-job').addClass('icon-' + LIMITED_DATA[i].combatantjob);
-      }
-      ///////////////////////////title
-      row.find('.f-name').text(LIMITED_DATA[i].name);
-      row.find('.f-kill-number').text(LIMITED_DATA[i].kills);
-      row.find('.f-death-number').text(LIMITED_DATA[i].death);
-
-      row.find('.f-bar').css('width', ((dps / maxdps) * 100) + '%');
-      if(LIMITED_DATA[i].aliance !== 10){
-
-        row.addClass('aliance-bar-' + LIMITED_DATA[i].aliance);
-      }
-      if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
-        row.addClass('death-too-much');
-      }
-      if(dps >= RAINBOW_DPS){
-        row.find('.f-dps').addClass('gaming');
-      }
-      if(ACT_NAME === LIMITED_DATA[i].name){
-        row.addClass('me');
-      }
+    if(Battle_start){
+      limited_data_party_cut(FL_MAX_ROW,'fl');
+    }
+    else if (!IGNORE_MAX_AFTER_BATTLE) {
+      limited_data_party_cut(FL_MAX_ROW,'fl');
+    }
+    for(let i = 0 ; i < LIMITED_DATA.length ; i++){
+      let row = fl_overlay_update_process(LIMITED_DATA[i],template,PVP_DURATION,color_data);
       container.append(row);
     }
   }else{
+    let limited_data = combatant_data_to_limited_data(combatants);
+    limit = Math.min(names.length,FL_MAX_ROW,limited_data.length);
     for(let i = 0 ; i < limit ; i++){
-      var combatant = combatants[names[i]];
-      var row = template.clone();
-      if (!maxdps) {
-      maxdps = parseFloat(combatant.encdps);
-      }
-      let dps = Number(combatant.encdps);
-      if(DECIMAL_POINT_DISPLAY){
-        if(combatant.encdps.length >= 7){//100,000.25
-          row.find('.f-dps').text(dps.toFixed(0));
-        }
-        else if (combatant.encdps.length === 6){//10,000
-          row.find('.f-dps').text(dps.toFixed(1));
-        }
-        else{
-          row.find('.f-dps').text(dps.toFixed(2));
-        }
-      }
-      else{
-        row.find('.f-dps').text(dps.toFixed(0));
-      }
-      row.find('.f-job').addClass('icon-' + combatant.Job.toLowerCase());
-      ///////////////////////////title
-      row.find('.f-name').text(combatant.name);
-      let position = 0;
-      if(ACT_NAME === combatant.name){
-        position = LIMITED_DATA.findIndex(({name}) => name == MYCHARACTOR_NAME);
-      }
-      else{
-        position = LIMITED_DATA.findIndex(({name}) => name == combatant.name);
-      }
-      if(position === -1){
-        row.find('.f-kill-number').text(combatant.kills);
-        row.find('.f-death-number').text(combatant.deaths);
-      }
-      else{
-        row.find('.f-kill-number').text(LIMITED_DATA[position].kills);
-        row.find('.f-death-number').text(LIMITED_DATA[position].death);
-        if(LIMITED_DATA[i].aliance !== 10){
-          row.addClass('aliance-bar-' + LIMITED_DATA[position].aliance);
-        }
-      }
-      row.find('.f-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
-      if(dps >= RAINBOW_DPS){
-        row.find('.f-dps').addClass('gaming');
-      }
-      if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
-        row.addClass('death-too-much');
-      }
-      if(ACT_NAME === combatant.name){
-        row.addClass('me');
-      }
+      let row = fl_overlay_update_process(limited_data[i],template,Number(encounter.DURATION),color_data);
       container.append(row);
     }
   }
-
   $('#overlay').replaceWith(container);
 }
-function gorge_overlay_update(e){
-  var encounter = e.Encounter;
-  var combatants = e.Combatant;
-  limited_data_combatant_marge(combatants,encounter.DURATION,'rw');
 
-  gorge_overlay_update_process();
-}
-function gorge_overlay_update_process(){
-    total_damage_calc();
-    if(SPENT_NEARBY_TIME){
-      LIMITED_DATA.sort(function (a,b) {
-        return b.totaloutdps - a.totaloutdps ;
-      });
-    }
-    else{
-      LIMITED_DATA.sort(function (a,b) {
-        return b.totaloutdamage - a.totaloutdamage ;
-      });
-    }
-    var template = $('#gorge-source li');
-    var container = $('#overlay').clone();
-    container.html('');
-    if(Battle_start){
-      limited_data_party_cut(MAX_ROW);
-    }
-    else if (!IGNORE_MAX_AFTER_BATTLE) {
-      limited_data_party_cut(MAX_ROW);
-    }
-    let maxrow = LIMITED_DATA.length;
-    if(maxrow > MAX_ROW){
-      maxrow = MAX_ROW;
-    }
-    if(!Battle_start && IGNORE_MAX_AFTER_BATTLE){
-      maxrow = LIMITED_DATA.length;
-    }
-    for(let i = 0 ; i < maxrow ; i++){
-      let base_time = 0;
-      if(SPENT_NEARBY_TIME){
-        base_time = LIMITED_DATA[i].totalbattletime;
-      }
-      else{
-        base_time = PVP_DURATION;
-      }
-      if(Battle_start){//Timerが動いている時。
-        let row = gorge_row_create(template.clone(),i,base_time);
-        container.append(row);
-      }
-      else{//Timerが止まってるとき。
-        let row = gorge_row_create(template.clone(),i,base_time);
-        container.append(row);
-      }
-    }
-    $('#overlay').replaceWith(container);
-}
-function gorge_row_create(row,i,base_time){
-  row.find('.g-total-dps-number').text(damage_to_dps(LIMITED_DATA[i].totaloutdamage,base_time));
-  row.find('.g-total-hps-number').text(damage_to_dps(LIMITED_DATA[i].actualheal,base_time));
-  let job = jobID_to_string(LIMITED_DATA[i].currentjob);
-  if(job !== null){
-    row.find('.g-job-icon').addClass('icon-' + job);
+function fl_overlay_update_process(data,template,time,special_color){
+  var row = template.clone();
+  let aliance = fl_alliance(data.aliance);
+  if (!MAX_DPS) {
+  MAX_DPS = parseFloat(damage_to_dps(data.totaloutdamage,time));
   }
-  else{
-    row.find('.g-job-icon').addClass('icon-' + LIMITED_DATA[i].combatantjob);
+  let dps = damage_to_dps(data.totaloutdamage,time);
+  row.find('.f-dps').text(dps);
+  let job = jobID_to_string(data.currentjob);
+  if(job === null){
+    job = data.combatantjob.toLowerCase();
   }
+  row.find('.f-job').addClass('icon-' + job);
+  let role = job_to_role(job);
+  ///////////////////////////title
+  row.find('.f-name').text(data.name);
+  row.find('.f-kill-number').text(data.kills);
+  row.find('.f-death-number').text(data.death);
 
-  row.find('.g-name').text(LIMITED_DATA[i].name);
-  row.find('.g-kill-number').text(LIMITED_DATA[i].kills);
-  row.find('.g-death-number').text(LIMITED_DATA[i].death);
-  row.find('.g-player-number').text(damage_to_dps(LIMITED_DATA[i].actualpersondamage,base_time));
-  row.find('.g-torobot-number').text(damage_to_dps(LIMITED_DATA[i].actualToRobotdamage,base_time));
-  row.find('.g-object-number').text(damage_to_dps(LIMITED_DATA[i].actualobjectdamage,base_time));
-  row.find('.g-tower-number').text(damage_to_dps(LIMITED_DATA[i].actualtowerdamage,base_time));
-
-  if(LIMITED_DATA[i].robhistory === null||LIMITED_DATA[i].robhistory === ''){
-    //let reject_damage = LIMITED_DATA[i].realobjectdamage + LIMITED_DATA[i].realpersondamage + LIMITED_DATA[i].realToRobotdamage;
-    //reject_damage = LIMITED_DATA[i].totaloutdamage - reject_damage;
-    row.find('.g-robot-history').css('display','none');
-    row.find('.g-name').css('max-width','100%');
+  row.find('.f-bar').css('width', ((dps / MAX_DPS) * 100) + '%');
+  /////////////////////
+  row = special_color_addclass(row,'.f-dps',special_color.f_dps,'font',role,aliance);
+  row = special_color_addclass(row,'.f-job',special_color.f_job_icon,'font',role,aliance);
+  row = special_color_addclass(row,'.f-name',special_color.f_name,'font',role,aliance);
+  row = special_color_addclass(row,'.f-kill-number',special_color.f_kill_number,'font',role,aliance);
+  row = special_color_addclass(row,'.f-death-number',special_color.f_death_number,'font',role,aliance);
+  row = special_color_addclass(row,'.f-kill-string',special_color.f_kill_string,'font',role,aliance);
+  row = special_color_addclass(row,'.f-death-string',special_color.f_death_string,'font',role,aliance);
+  row = special_color_addclass(row,'.f-bar',special_color.f_dps_bar,'background',role,aliance);
+  row = special_color_addclass(row,'.f-basic',special_color.f_aliance_bar,'border',role,aliance);
+  /////////////////////
+  if(data.death >= DEATH_TOO_MUCH){
+    row.find('.f-basic').addClass('death-too-much');
   }
-  else{
-    row.find('.icon-robots').text(robot_history_fonts(LIMITED_DATA[i].robhistory));
-    if(LIMITED_DATA[i].robhistory.indexOf('jas') !== -1 && JUSTICE_PUNTCH){
-      let hit = LIMITED_DATA[i].rocketpuntchhit;
-      let miss = LIMITED_DATA[i].rocketpuntchmiss;
-      let total = hit + miss;
-      let percent = hit / total;
-      if(isNaN(percent)){
-        percent = 0;
-      }
-      percent = percent*100;
-      row.find('.g-total-hps-number').text(total + '/'+ percent.toFixed(0) +'%');
-    }
+  if(dps >= RAINBOW_DPS){
+    row.find('.f-dps').addClass('gaming');
   }
-  if(LIMITED_DATA[i].aliance !== 10){
-    row.addClass('aliance-bar-' + LIMITED_DATA[i].aliance);
-  }
-  if(LIMITED_DATA[i].death >= DEATH_TOO_MUCH){
-    row.addClass('death-too-much');
-  }
-  if(LIMITED_DATA[i].aliance === 1){
-    row.addClass('party');
-  }
-  if(ACT_NAME === LIMITED_DATA[i].name){
-    row.addClass('me');
-  }
-  if(damage_to_dps(LIMITED_DATA[i].totaloutdamage,base_time) >= RAINBOW_DPS){
-    row.find('.g-total-dps-number').addClass('gaming');
-  }
-  if(LIMITED_DATA[i].actualtowerdamage >= RAINBOW_DAMAGE_TOWER){
-    row.find('.icon-tower2').addClass('gaming');
-    row.find('.g-tower-number').addClass('gaming');
+  if(ACT_NAME === data.name){
+    row.find('.f-basic').addClass('me');
   }
   return row;
 }
-function robot_history_fonts(robhistory){
-  //   outline  fill
-  //jas 0xe90d 0xe92e
-  //opp 0xe914 0xe933
-  //che 0xe908 0xe927
-  let data = '';
-  if(robhistory === null){
-    return '';
-  }
-  else {
-    let num = robhistory.length / 3;
-    for(let i = 0 ; i < num ; i++){
-      if('jas' === robhistory.substr(0,3)){
-        data = data + String.fromCodePoint(0xe92e);
-        robhistory = robhistory.substr(3,robhistory.length);
-      }
-      else if ('che' === robhistory.substr(0,3)) {
-        data = data + String.fromCodePoint(0xe927);
-        robhistory = robhistory.substr(3,robhistory.length);
-      }
-      else if ('opp' === robhistory.substr(0,3)) {
-        data = data + String.fromCodePoint(0xe933);
-        robhistory = robhistory.substr(3,robhistory.length);
-      }
+function combatant_data_to_limited_data(combatants){
+  let names = Object.keys(combatants);
+  let result = [];
+  for(let i = 0 ; i < names.length ; i++){
+    let return_data = {};
+    let combatant = combatants[names[i]];
+    return_data.totaloutdps = combatant.encdps;
+    return_data.totaloutdamage = combatant.damage;
+    return_data.name = combatant.name;
+    return_data.combatantjob = combatant.Job;
+    return_data.currentjob = 0;
+    if(ACT_NAME === combatant.name && MYCHARACTOR_NAME !== ''){
+      position = LIMITED_DATA.findIndex(({name}) => name == MYCHARACTOR_NAME);
     }
-    return data;
-  }
-}
-
-function damage_to_dps(damage,time){
-  damage = Number(damage);
-  time = Number(time);
-  let dps = 0;
-  if(time === 0) {
-    time = 1;
-  }
-  else {
-    dps = damage / time ;
-  }
-  dps = dps_round(dps);
-  return dps;
-}
-function dps_round(dps){
-  if(DECIMAL_POINT_DISPLAY){
-    if (dps.toFixed(0).length <= 2) {
-      dps = dps.toFixed(2);
+    else{
+      position = LIMITED_DATA.findIndex(({name}) => name == combatant.name);
     }
-    else if (dps.toFixed(0).length === 3){
-      dps = dps.toFixed(1);
+    if(position === -1){
+      return_data.kills = combatant.kills;
+      return_data.death = combatant.deaths;
+      return_data.aliance = 10;
     }
-    else if (dps.toFixed(0).length >= 4) {
-      dps = dps.toFixed(0);
+    else{
+      return_data.kills = LIMITED_DATA[position].kills;
+      return_data.death = LIMITED_DATA[position].death;
+      return_data.aliance = LIMITED_DATA[position].aliance;
     }
-    return dps;
+    result.push(return_data);
   }
-else{
-  return dps.toFixed(0);
-}
+  console.log(result);
+  return result;
 }
 function limited_data_combatant_marge(e,time,area){
   //combatantDuration: 0,
@@ -607,57 +368,21 @@ function limited_data_combatant_marge(e,time,area){
     }
   }
 }
-function fl_alliance(){
-  for(var i = 0; i < LIMITED_DATA.length; i++){
-    if(LIMITED_DATA[i].aliance === 2){
-      LIMITED_DATA[i].aliance = 1;
-    }
-    else if(LIMITED_DATA[i].aliance === 4){
-      LIMITED_DATA[i].aliance = 3;
-    }
-    else if(LIMITED_DATA[i].aliance === 6){
-      LIMITED_DATA[i].aliance = 5;
-    }
+function fl_alliance(data){
+  if(data === 2){
+    return 1;
+  }
+  else if (data === 4) {
+    return 3;
+  }
+  else if (data === 6) {
+    return 5
+  }
+  else {
+    return data;
   }
 }
-function limited_data_party_cut(cut){
-  let replace_data = [];
-  let party_member_position = [];
-  if(AROUND_MEMBER_ONLY){
-    let around_ally = [];
-    for(let i = 0 ; i < LIMITED_DATA.length ; i++){
-      if(LIMITED_DATA[i].battle){
-        around_ally.push(LIMITED_DATA[i]);
-      }
-    }
-    LIMITED_DATA = around_ally;
-  }
-  if(PARTY_PRIORITY){
-    if(LIMITED_DATA.length >= cut){
-      for(let i = 0 ; i < LIMITED_DATA.length ; i++){
-        if(LIMITED_DATA[i].aliance === 1) {
-          party_member_position.push(i);
-          replace_data.push(LIMITED_DATA[i]);
-        }
-      }
-      for(let i = 0;i < LIMITED_DATA.length && replace_data.length < cut ;i++){
-        let noparty = 0;
-        for(let p = 0; p < party_member_position.length;p++){
-          if(i == party_member_position[p]){
-            noparty = 1;
-          }
-        }
-        if(noparty == 0){//パーティメンバーのデータでないとき
-          replace_data.push(LIMITED_DATA[i]);
-        }
-      }
-      LIMITED_DATA = replace_data;
-      LIMITED_DATA.sort(function (a,b) {
-        return b.totaloutdamage - a.totaloutdamage ;
-      });
-    }
-  }
-}
+
 function party(p){
   if(TEST_MODE){
     console.warn(p);

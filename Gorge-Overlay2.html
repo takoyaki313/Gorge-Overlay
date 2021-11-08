@@ -10,16 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lexend+Deca&family=Noto+Serif+JP:wght@500&family=Roboto&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/Grobal.js"></script>
+    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/Gorge_row.js"></script>
     <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeLogline.js"></script>
     <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/icon.css">
     <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeSub.js"></script>
-    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeMain.js"></script>
     <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/Dammy-data.js"></script>
+    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/color_setting.js"></script>
+    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeMain.js"></script>
+    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/GorgeStart.js"></script>
     <script type="text/javascript">
-    //
+      //temp
     </script>
 </head>
-<body>
+<body id='body'>
 <ol id="pve-source">
   <li>
     <div class="n-basic">
@@ -76,11 +80,11 @@
         <div class="g-main-area">
           <div class="g-name-area">
             <span class="g-name"></span>
-            <div class="g-robot-history">
+            <div class="g-robot-history g-line-color">
               <span class='icon-robots'/>
             </div>
           </div>
-          <hr class ='g-line' id='g-line'>
+          <hr class ='g-line g-line-color' id='g-line'>
           <div class="g-damage-area">
             <div class="g-damage-div">
               <span class="g-player-string icon-person"></span><span class="g-player-number"></span>    　
@@ -94,7 +98,7 @@
             <div class="g-damage-div">
               <span class="g-player-string icon-tower2"></span><span class="g-tower-number"></span>
             </div>
-            <span class="g-kill-death">
+            <span class="g-kill-death g-line-color">
               <span class="g-k-string">K:</span><span class="g-kill-number"></span>
               <span class="g-d-string">D:</span><span class="g-death-number"></span>
             </span>
@@ -195,7 +199,7 @@
       <label class="switch" for='setting-item-108'></label>
       <label class="s-text" for='setting-item-108'>（FL）オーバーレイで計算したDPSを使用</label>
     </div>
-    <div class="explain">エンカウント時間もしくは、試合時間に合わせてDPSを計算するか。デフォルトはオフ</div>
+    <div class="explain">エンカウント時間もしくは、試合時間に合わせてDPSを計算するか。</div>
   </div>
   <div class="set-space">
     <div>
@@ -235,17 +239,17 @@
   <div class="set-space">
     <div>
       <label class="s-text" for='setting-item-115-2'>（RW）タワーdpsをレインボーにする。</label>
-      <input type='number' id='setting-item-115-2' class="number" min="1" max="100000"/>
+      <input type='number' id='setting-item-115-2' class="number" min="0" max="8000000"/>
     </div>
-    <div class="explain">タワーへのダメージが値以上をぴかぴかゲーミングオーバーレイ表示。</div>
+    <div class="explain">タワーへのダメージが一定以上をぴかぴかゲーミングオーバーレイ表示。</div>
   </div>
   <div class="set-space">
     <div>
       <input type='checkbox' id='setting-item-110' class="checkbox" />
       <label class="switch" for='setting-item-110'></label>
-      <label class="s-text" for='setting-item-110'>（RW）キルサウンドを有効にする。</label>
+      <label class="s-text" for='setting-item-110'>（RW）キルサウンドを流す。</label>
     </div>
-    <div class="explain">テンションマックス以降のキルサウンドを有効にするか。</div>
+    <div class="explain">テンションマックス以降のキルサウンドを再生するか。</div>
   </div>
   <div class="set-space">
     <div>
@@ -273,7 +277,7 @@
     <div>
       <input type='checkbox' id='setting-item-111' class="checkbox" />
       <label class="switch" for='setting-item-111'></label>
-      <label class="s-text" for='setting-item-111'>ジャスパン命中率</label>
+      <label class="s-text" for='setting-item-111'>ジャスパンの命中率表示</label>
     </div>
     <div class="explain">ジャスティスに搭乗した人のHPS表示部分を搭乗率に切り替える。</div>
   </div>
@@ -281,7 +285,7 @@
     <div>
       <input type='checkbox' id='setting-item-112' class="checkbox" />
       <label class="switch" for='setting-item-112'></label>
-      <label class="s-text" for='setting-item-112'>（RW）周囲のメンバーのみ表示する。</label>
+      <label class="s-text" for='setting-item-112'>（RW/FL）周囲のメンバーのみ表示する。</label>
     </div>
     <div class="explain">（テスト）描画範囲に入っている人物のみをオーバーレイに表示する。</div>
   </div>
@@ -297,7 +301,7 @@
     <div>
       <input type='checkbox' id='setting-item-114' class="checkbox" />
       <label class="switch" for='setting-item-114'></label>
-      <label class="s-text" for='setting-item-114'>（RW）戦闘終了後の表示</label>
+      <label class="s-text" for='setting-item-114'>（RW/FL）戦闘終了後の表示</label>
     </div>
     <div class="explain">戦闘終了後のオーバーレイの表示制限を無視して全員分表示する。</div>
   </div>
@@ -322,6 +326,22 @@
       <label class="s-text" for='setting-item-8-2'>ダミーデータを読み込み</label>
     </div>
     <div class="explain">既に表示されている戦闘データは上書きされます。</div>
+  </div>
+  <!--
+  <div class="set-space">
+    <div class="set-one">
+      <span class="icon-ViewMove"/>
+      <a href="リンク先のURL" target="_blank" rel="noopener noreferrer">killfeed_Setting</a>
+    </div>
+    <div class="explain">killfeedの設定（別オーバーレイ）</div>
+  </div>
+-->
+  <div class="set-space">
+    <div class="set-one">
+      <span class="icon-ViewMove"/>
+      <a href="https://takoyaki313.github.io/Gorge-Overlay/Color_Setting.html" target="_blank" rel="noopener noreferrer">Color_Setting</a>
+    </div>
+    <div class="explain">色の設定</div>
   </div>
   <div class="set-space">
     <div class= "set-one">
