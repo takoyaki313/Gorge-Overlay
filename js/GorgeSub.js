@@ -1,45 +1,3 @@
-$(document).on("click", "#button-4", function(){
-  $('body').css('background-color','black');
-  $('#overlay').css('display','none');
-  $('.header').css('display','none');
-  $('.set-data').css('display','flex');
-  localstorage_restore();
-});//click button-4 end (setting-button)
-//click button-5 start (setting-button-close)
-$(document).on("click", "#button-5", function(){
-  $('body').css('background-color','transparent');
-  $('#overlay').css('display','flex');
-  $('.header').css('display','flex');
-  $('.set-data').css('display','none');
-  localstorage_save();
-});//click button-5 end (setting-button-close)
-//  DispMax= $('#p-max').val();
-//Disappearance//$("#setting-item-3").prop("checked") == true
-//click button-5 start (setting-button-close)
-//$('#p-max').val(Number(DispMax));
-$(document).on("click", "#setting-item-110-2", function(){
-  //volume button
-  localstorage_save();
-  if(KILLSOUND){
-    KILLSOUND_PLAY.play();
-  }
-});//click end volume )
-$(document).on("click", "#button-2", function(){
-  //timet button
-  console.log('button2');
-  battle_counter();
-});//click button-2 end (timer button )
-$(document).on("click", "#setting-item-9", function(){
-  localstorage_defalt();
-  });//click button-5 end (setting-button-close)
-$(document).on("click", "#setting-item-8-2", function(){
-  localstorage_save();
-  dammy();
-  gorge_overlay_update_process();
-  if(KILLSOUND){
-    KILLSOUND_PLAY.play();
-  }
-  });//click button-5 end (setting-button-close)
 //////////////////////////////////////////////////////////
 //localStorage////////////////////////////////////////////
 //////////////////////////////////////////////////////////
@@ -181,7 +139,7 @@ function localstorage_data(){
     FAST_KILLSOUND : false,
     RAINBOW_DPS : 2000,
     RAINBOW_DAMAGE_TOWER : 1000000,
-    VERSION : 'Gorge-overlay2 1.4.3'
+    VERSION : 'Gorge-overlay2 1.5.0'
   };
   return data;
 }

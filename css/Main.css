@@ -6,6 +6,22 @@ font-family: 'Lexend Deca', sans-serif;
 font-family: 'Noto Serif JP', serif;
 font-family: 'Roboto', sans-serif;
 */
+:root {
+  --general-role-color : #ded7be;
+  --tank-role-color : #7586e0;
+  --healer-role-color : #76ab67;
+  --melee-role-color : #ad6161;
+  --physical-role-color : #ad6161;
+  --magical-role-color : #ad6161;
+  --aliance-color-general : transparent;
+  --aliance-color-1 :#5BB7E5;
+  --aliance-color-2 :#895BE5;
+  --aliance-color-3 :#E55BB7;
+  --aliance-color-4 :#E5895B;
+  --aliance-color-5 :#B7E55B;
+  --aliance-color-6 :#5BE589;
+  --aliance-color-10 :transparent;
+}
 html {
     background-position: bottom right;
     background-repeat: no-repeat;
@@ -54,11 +70,13 @@ li {
   flex-direction: column;
   width: -webkit-fill-available;
   padding: 0.1rem 0.1rem;
-  margin: 0.15rem 0.1rem;
+  margin: 0.1rem 0.1rem;
 }
 .g-basic{
   flex-direction: row;
   width: -webkit-fill-available;
+  border-left: 0.25rem solid;
+  border-color: var(--aliance-color-general);
 }
 [class^="-number"], [class*="-number"] {
 
@@ -126,7 +144,10 @@ li {
   margin-right: 0.2rem;
   justify-content: center;
   align-items: flex-end;
-  border-left: 0.15rem solid #ded7be;
+  border-left: 0.15rem solid;
+}
+.g-basic .g-line-color{
+  border-color: #ded7be;
 }
 .g-basic .g-k-string,.g-basic .g-d-string{
   width: 1.3rem;
@@ -137,7 +158,7 @@ li {
   justify-content: center;
 }
 .g-basic .g-line,.g-basic .g-line2{
-  width: calc(100vw - 7.4rem);
+  width: calc(100% - 7.4rem);
   margin-top: 0rem;
   margin-bottom: 0rem;
   margin-inline-start: 0;
@@ -150,12 +171,12 @@ li {
   width: -webkit-fill-available;
 }
 .g-basic .g-damage-div {
-  width: calc(25vw - 3.45rem);
+  width: calc(25% - 3.45rem);
   align-items: center;
 }
 .g-basic .g-name{
-  max-width: calc(100vw - 17rem);
-  min-width: calc(100vw - 17rem);
+  max-width: calc(100% - 17rem);
+  min-width: calc(100% - 17rem);
   align-items: center;
   justify-content: flex-start;
   overflow: hidden;
@@ -163,13 +184,13 @@ li {
   text-overflow: ellipsis;
 }
 .g-basic .g-robot-history{
-  width: calc(100vw - 9rem - (100vw - 18rem));
+  width: calc(100% - 9rem - (100% - 18rem));
   align-items: center;
   padding-left: 0.2rem;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  border-left: 0.15rem solid #ded7be;
+  border-left: 0.15rem solid;
 }
 .n-basic ,.f-basic{
   flex-direction: row;
@@ -207,8 +228,12 @@ li {
 }
 .n-basic .n-bar ,.f-basic .f-bar{
     /*display: inline-block;*/
-    height: 4px;
+    height: 0.25rem;
     background-color: rgba(157,145,101,0.7);
+}
+.f-basic {
+  border-left: 0.25rem solid;
+  border-color: var(--aliance-color-general);
 }
 .f-basic .f-dps-space{
   min-width: 5.8rem;
@@ -225,7 +250,7 @@ li {
   padding-right: 0.3rem;
 }
 .f-basic .f-name{
-  width: calc(100vw - 13rem);
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -244,27 +269,7 @@ li {
 .inactive li .bar {
     background-color: #d8dadb;
 }
-.aliance-bar-4 {
-  border-left: 0.25rem solid #E5895B;
-}
-.aliance-bar-5 {
-  border-left: 0.25rem solid #B7E55B;
-}
-.aliance-bar-6 {
-  border-left: 0.25rem solid #5BE589;
-}
-.aliance-bar-1 {
-  border-left: 0.25rem solid #5BB7E5;
-}
-.aliance-bar-2 {
-  border-left: 0.25rem solid #895BE5;
-}
-.aliance-bar-3 {
-  border-left: 0.25rem solid #E55BB7;
-}
-.aliance-bar-10 {
-  border-left: 0.25rem solid transparent;
-}
+
 li.death-too-much {
   background-color: rgba(255,0,0,0.3);
 }
@@ -277,4 +282,113 @@ li.death-too-much {
 }
 .me {
     background-color: rgba(93,81,37,0.7);
+}
+.aliance-border-1 {
+  border-color:  var(--aliance-color-1)!important;
+}
+.aliance-border-2 {
+  border-color:  var(--aliance-color-2)!important;
+}
+.aliance-border-3 {
+  border-color:  var(--aliance-color-3)!important;
+}
+.aliance-border-4 {
+  border-color:  var(--aliance-color-4)!important;
+}
+.aliance-border-5 {
+  border-color:  var(--aliance-color-5)!important;
+}
+.aliance-border-6 {
+  border-color:  var(--aliance-color-6)!important;
+}
+.aliance-background-1 {
+  background-color:  var(--aliance-color-1)!important;
+}
+.aliance-background-2 {
+  background-color:  var(--aliance-color-2)!important;
+}
+.aliance-background-3 {
+  background-color:  var(--aliance-color-3)!important;
+}
+.aliance-background-4 {
+  background-color:  var(--aliance-color-4)!important;
+}
+.aliance-background-5 {
+  background-color:  var(--aliance-color-5)!important;
+}
+.aliance-background-6 {
+  background-color:  var(--aliance-color-6)!important;
+}
+.aliance-font-1 {
+  color:  var(--aliance-color-1)!important;
+}
+.aliance-font-2 {
+  color:  var(--aliance-color-2)!important;
+}
+.aliance-font-3 {
+  color:  var(--aliance-color-3)!important;
+}
+.aliance-font-4 {
+  color:  var(--aliance-color-4)!important;
+}
+.aliance-font-5 {
+  color:  var(--aliance-color-5)!important;
+}
+.aliance-font-6 {
+  color:  var(--aliance-color-6)!important;
+}
+
+.role-font-tank {
+  color: var(--tank-role-color)!important;
+}
+.role-font-healer {
+  color: var(--healer-role-color)!important;
+}
+.role-font-melee {
+  color: var(--melee-role-color)!important;
+}
+.role-font-physical {
+  color: var(--physical-role-color)!important;
+}
+.role-font-magical {
+  color: var(--magical-role-color)!important;
+}
+.role-font-general {
+  color: var(--general-role-color)!important;
+}
+.role-border-tank {
+  border-color: var(--tank-role-color)!important;
+}
+.role-border-healer {
+  border-color: var(--healer-role-color)!important;
+}
+.role-border-melee {
+  border-color: var(--melee-role-color)!important;
+}
+.role-border-physical {
+  border-color: var(--physical-role-color)!important;
+}
+.role-border-magical {
+  border-color: var(--magical-role-color)!important;
+}
+.role-border-general {
+  border-color: var(--general-role-color)!important;
+}
+.role-background-tank {
+  background-color: var(--tank-role-color)!important;
+}
+.role-background-healer {
+  background-color: var(--healer-role-color)!important;
+}
+.role-background-melee {
+  background-color: var(--melee-role-color)!important;
+}
+.role-background-physical {
+  background-color: var(--physical-role-color)!important;
+}
+.role-background-magical {
+  background-color: var(--magical-role-color)!important;
+}
+.role-background-general {
+  background-color: var(--general-role-color)!important;
 }

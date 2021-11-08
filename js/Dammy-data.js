@@ -1,5 +1,4 @@
-function dammy(){
-  PVP_DURATION = 900;
+function dammy_name_array(){
   let dammy_array = [];
   dammy_array[0] = [ACT_NAME,5641.21,'blm',5,5,5,'cheoppjasoppjasche',1,777.77,7];
   dammy_array[1] = ['Justice Suzuki',8752.66,'Rdm',77,4,6,'cheoppchejasjasjasjasjascheche',1,35.12,5];
@@ -25,6 +24,11 @@ function dammy(){
   dammy_array[21] = ['Joel Toussaint',2874.26,'Drg',0,4,2,'cheoppcheoppoppoppopp',6,1741.36,1];
   dammy_array[22] = ['Niall Talbot',547.45,'Drg',3,2,1,'jas',5,0,1];
   dammy_array[23] = ['Nicolas Gutchi',4215.23,'Drg',12,9,1,'',4,0,1];
+  return dammy_array;
+}
+function dammy(){
+  PVP_DURATION = 900;
+  let dammy_array = dammy_name_array();
   LIMITED_DATA = [];
   for(let i = 0 ; i < 24 ; i++){
     let temp = main_data_format('sample');
@@ -76,5 +80,30 @@ function total_damage_calc(){
     LIMITED_DATA[i].totaloutdamage = LIMITED_DATA[i].actualToRobotdamage + LIMITED_DATA[i].actualpersondamage + LIMITED_DATA[i].actualobjectdamage;
     LIMITED_DATA[i].combatantdps = damage_to_dps(LIMITED_DATA[i].totaloutdamage,LIMITED_DATA[i].totalbattletime);
     LIMITED_DATA[i].totaloutdps = LIMITED_DATA[i].combatantdps;
+  }
+}
+function job_to_role(job){
+  let tank = ['pld','gla','war','mrd','drk','gnb'];
+  let healer = ['whm','sch','ast','cnj'];
+  let melee = ['mnk','drg','nin','sam','pgl','lnc','rog'];
+  let physical = ['brd','mch','dnc','arc'];
+  let magical = ['blm','smn','rdm','thm','acn'];
+  if(tank.indexOf(job) !== -1){
+    return 'tank';
+  }
+  else if (healer.indexOf(job) !== -1) {
+    return 'healer';
+  }
+  else if (melee.indexOf(job) !== -1) {
+    return 'melee';
+  }
+  else if (physical.indexOf(job) !== -1) {
+    return 'physical';
+  }
+  else if (magical.indexOf(job) !== -1) {
+    return 'magical';
+  }
+  else {
+    return 'general';
   }
 }
