@@ -112,7 +112,6 @@
   display: none;
   width: -webkit-fill-available;
   height: -webkit-fill-available;
-  background-color: rgba(0,0,0,0.3);
   flex-direction: column;
   color: #ded7be;
   user-select:none;
