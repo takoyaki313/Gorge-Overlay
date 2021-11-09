@@ -217,7 +217,7 @@ function fl_overlay_update(e){
   var limit = 0;
   let color_data = special_color_check();
   if(ENCOUNTER_TIME){//use LIMITED_DATA
-    //limited_data_combatant_marge(combatants,encounter.DURATION,'fl');
+    limited_data_combatant_marge(combatants,encounter.DURATION,'fl');
     LIMITED_DATA.sort(function (a,b) {
       return b.totaloutdamage - a.totaloutdamage ;
     });
