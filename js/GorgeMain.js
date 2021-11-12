@@ -218,6 +218,7 @@ function fl_overlay_update(e){
   let color_data = special_color_check();
   if(ENCOUNTER_TIME){//use LIMITED_DATA
     limited_data_combatant_marge(combatants,encounter.DURATION,'fl');
+    encounter_time_detected(encounter.DURATION);
     LIMITED_DATA.sort(function (a,b) {
       return b.totaloutdamage - a.totaloutdamage ;
     });
@@ -316,7 +317,7 @@ function combatant_data_to_limited_data(combatants){
   console.log(result);
   return result;
 }
-function limited_data_combatant_marge(e,time,area){
+function encounter_time_detected(time){
   //combatantDuration: 0,
   //combatantdamage: 0,
   //combatantjob: null,
@@ -330,8 +331,11 @@ function limited_data_combatant_marge(e,time,area){
   else if (time < caluc_time) {
     time = caluc_time;
   }
-
-  PVP_DURATION = time;
+  if(ENCOUNTER_START_TIME !== 0){
+    PVP_DURATION = time;
+  }
+}
+function limited_data_combatant_marge(e,time,area){
   let position = LIMITED_DATA.findIndex(({name}) => name == MYCHARACTOR_NAME);
   if(position !== -1){
     LIMITED_DATA[position].name = ACT_NAME;
@@ -361,7 +365,6 @@ function limited_data_combatant_marge(e,time,area){
           else if (area === 'fl') {
             LIMITED_DATA[i].totaloutdamage = LIMITED_DATA[i].actualToRobotdamage + LIMITED_DATA[i].actualpersondamage + LIMITED_DATA[i].actualobjectdamage + LIMITED_DATA[i].actualtowerdamage;
           }
-          LIMITED_DATA[i].combatantdps = damage_to_dps(LIMITED_DATA[i].totaloutdamage,time);
           break;
         }
       }

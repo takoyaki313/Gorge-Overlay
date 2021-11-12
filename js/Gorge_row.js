@@ -2,6 +2,7 @@ function gorge_overlay_update(e){
   var encounter = e.Encounter;
   var combatants = e.Combatant;
   limited_data_combatant_marge(combatants,encounter.DURATION,'rw');
+  encounter_time_detected(encounter.DURATION);
 
   gorge_overlay_update_process($('#gorge-source li'));
 }

@@ -5,7 +5,6 @@ body {
 }
 
 #overlay {
-  overflow-y: scroll;
   width: 31rem;
 }
 .color-setting-description {
