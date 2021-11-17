@@ -19,6 +19,7 @@ var PVP_DURATION = 0;
 var TENSYON_MAX = false;
 var KILLSOUND_PLAY = new Audio('');
 var MAX_DPS = 0;
+var MAX_DURATION = 0;
 var COLOR_DATA = {};
 //Setting///////////////////////////////
 var ACT_NAME = 'YOU';

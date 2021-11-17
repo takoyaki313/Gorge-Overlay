@@ -253,17 +253,9 @@ function audio_load(){
 function gorge_overlay_decimal_point(){
   if(DECIMAL_POINT_DISPLAY){
     $('.g-dps-area').css('min-width','5.8rem');
-    $('.g-name').css('min-width','calc(100vw - 17rem)');
-    $('.g-name').css('min-width','calc(100vw - 17rem)');
-    $('.g-line').css('width','calc(100vw - 7.4rem)');
-    $('.g-damage-div').css('width','calc(25vw - 3.45rem)');
   }
   else{
     $('.g-dps-area').css('min-width','5.2rem');
-    $('.g-name').css('min-width','calc(100vw - 15.6rem)');
-    $('.g-name').css('min-width','calc(100vw - 15.6rem)');
-    $('.g-line').css('width','calc(100vw - 6rem)');
-    $('.g-damage-div').css('width','calc(25vw - 3.3rem)');
   }
 }
 

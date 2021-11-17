@@ -21,9 +21,6 @@ body {
   overflow-y: scroll;
   background-color: rgb(38 38 38);
 }
-.g-basic {
-  width: 37rem;
-}
 .input-area {
   display: flex;
   flex-direction: row;

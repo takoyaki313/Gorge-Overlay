@@ -61,6 +61,7 @@ $(document).on("click","input[name='sample-data-type']",function(){
       $('.fl').css('display','none');
       $('.pve').css('display','none');
       $('.rw').css('display','flex');
+      gorge_overlay_decimal_point();
       gorge_overlay_update_process($("#source li"));
       overlay_css_append(local_data);
     }
@@ -117,6 +118,7 @@ $("#source").append("読込みに失敗しました");
 console.log('Failed...');
 }
 else{
+  gorge_overlay_decimal_point();
   gorge_overlay_update_process($("#source li"));
   overlay_css_append(local_data);
 }
