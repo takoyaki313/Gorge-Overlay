@@ -36,7 +36,6 @@ function grobal_array_reset(){
   ALIANCE_DATA = false;
   NOW_AREA = 0;
 }
-
 function calc(){
   if(LOG_PROCESS === false||FORCE_LOG_LISTEN){
     LOG_PROCESS = true;
@@ -182,18 +181,18 @@ async function logline_main(log){
 
   }
   function tensyon_max_check(log){
-    if(log[2] === '6c2'){
+    if(log[2] === Tenssyon_Buff_ID){
       if(log[7].toUpperCase() === MYCHARACTOR_ID.toUpperCase()){
         TENSYON_MAX = true;
       }
     }
   }
   function logline_battle_start_check(log){
-    if(log[3] === '40000001'){
+    if(log[3] === Battle_Start_Envioroment_ID){
       let time = parseInt(log[4],16);
       battle_counter(time);
     }
-    else if (log[3] === '40000002') {
+    else if (log[3] === Battle_End_Envioroment_ID) {
       setTimeout(() => {
         clearInterval(Battle_Timer_interval);
         Battle_Current_Time = 0;
@@ -519,6 +518,7 @@ async function logline_main(log){
     if(TEST_MODE){
       console.log(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     }
+    console.log(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     //damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP
     await damage_add(damage,'actual',log[2],log[4],log[8],log[6],Number(log[25]),Number(log[24]));
     if(log[10].slice(-1) === '4'){
@@ -542,7 +542,7 @@ async function logline_main(log){
   }
   //d(nameID,type,data,replace){
   async function justice_punch(log){
-    if (log[4] === '26FB') {
+    if (log[4] === Justice_Puntch_Skill_ID) {
       if(log[6] === 'E0000000'){
         await one_main_data_add(log[2],'rocketpuntchmiss',1,false);
       }
@@ -943,8 +943,9 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
           if (TEST_MODE) {
             console.warn('This Charactor is not battled... ->'+MAIN_DATA[position].name+'(' + MAIN_DATA[position].nameID+')' + '->' + objectname);
           }
-          objectname.push('battle');
-          data.push(true);
+          console.warn('This Charactor is not battled... ->'+MAIN_DATA[position].name+'(' + MAIN_DATA[position].nameID+')' + '->' + objectname);
+          //objectname.push('battle');
+          //data.push(true);
         }
       }
     }

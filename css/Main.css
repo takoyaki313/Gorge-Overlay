@@ -167,10 +167,6 @@ li {
   border-style: solid;
   border-color: #ded7be;
 }
-.g-basic .g-active-gage{
-  height: 0.15rem;
-  width: -webkit-fill-available;
-}
 .g-basic .g-activetime{
   width: 100%;
 }

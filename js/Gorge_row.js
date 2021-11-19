@@ -156,7 +156,6 @@ function gorge_row_create(row,i,base_time,special_color){
     row.find('.g-basic').addClass('party');
   }
   if(SPENT_NEARBY_TIME){
-    console.log(base_time + '/' +MAX_DURATION + '='+ ((base_time/MAX_DURATION) * 100).toFixed(2));
     row.find('.g-line').css('width',((base_time/MAX_DURATION)*100).toFixed(2) + '%');
   }
   if(damage_to_dps(LIMITED_DATA[i].totaloutdamage,base_time) >= RAINBOW_DPS){
