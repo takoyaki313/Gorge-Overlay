@@ -1,6 +1,8 @@
 function logline_start(log){
   if(log[0] === '40'){
-    console.debug('Area changed =>'+log[2]+' : '+log[4]);
+    if(TEST_MODE){
+      console.debug('Area changed =>'+log[2]+' : '+log[4]);
+    }
     //488 is Hidden Gorge
     //341 is The Goblet (my home)
     //242 is Seal Rock
@@ -502,10 +504,10 @@ async function logline_main(log){
       let a = log[9].slice(0,2);
       let b = log[9].slice(2,4);
       let d = log[9].slice(6,8);
-      let bd = parseInt(b,16) - parseInt(d,16);
-      bd = bd.toString(16);
-      damage = parseInt(d + a + bd ,16);
-      //damage = parseInt(d + a + b ,16);
+      //let bd = parseInt(b,16) - parseInt(d,16);
+      //bd = bd.toString(16);
+      //damage = parseInt(d + a + bd ,16);
+      damage = parseInt(d + a + b ,16);
     }
     if(damage >= 0 ){
     }
@@ -518,7 +520,6 @@ async function logline_main(log){
     if(TEST_MODE){
       console.log(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     }
-    console.log(log[44] + ':!!!! '+ log[3] + '→' + log[7] + ' (' + log[5] + ') ' + damage + '/ '+ log[8]  +'/ '+ log[9]);
     //damage,damage_type,attackerID,skillID,skill_type,victimID,victimHP
     await damage_add(damage,'actual',log[2],log[4],log[8],log[6],Number(log[25]),Number(log[24]));
     if(log[10].slice(-1) === '4'){
@@ -943,9 +944,8 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
           if (TEST_MODE) {
             console.warn('This Charactor is not battled... ->'+MAIN_DATA[position].name+'(' + MAIN_DATA[position].nameID+')' + '->' + objectname);
           }
-          console.warn('This Charactor is not battled... ->'+MAIN_DATA[position].name+'(' + MAIN_DATA[position].nameID+')' + '->' + objectname);
-          //objectname.push('battle');
-          //data.push(true);
+          objectname.push('battle');
+          data.push(true);
         }
       }
     }
@@ -979,12 +979,8 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
       }
       await main_data_marge_to_child(position,owner_position);
     }
-    else{
-      if(TEST_MODE){
-        console.warn('Error owner_position not found =>'+ owner_position);
-      }
-    }
-  }/*
+  }
+  /*
   if(MAIN_DATA[position].battle === false && MAIN_DATA[position].nameID.slice(0,2) === '40'){
     if(TEST_MODE){
       console.debug('Delete'+ MAIN_DATA[position].nameID + '(' + MAIN_DATA[position].name + ')');
