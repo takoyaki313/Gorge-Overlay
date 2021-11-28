@@ -19,6 +19,7 @@ var PVP_DURATION = 0;
 var TENSYON_MAX = false;
 var KILLSOUND_PLAY = new Audio('');
 var MAX_DPS = 0;
+var MAX_DURATION = 0;
 var COLOR_DATA = {};
 //Setting///////////////////////////////
 var ACT_NAME = 'YOU';
@@ -48,7 +49,11 @@ var VERSION = 'Gorge-overlay2 xxx'
 const Oppresor_HP = 100000;
 const Justice_HP = 75000;
 const Chaiser_HP = 50000;
+const Tenssyon_Buff_ID = '6c2';
+const Battle_Start_Envioroment_ID = '40000001';
+const Battle_End_Envioroment_ID = '40000002';
+const Justice_Puntch_Skill_ID = '26FB';
 ////////////////////////////////////////
 ///////////
-var LOCAL_SAVE_NAME = 'Gorge-Overlay2-Color';
+const LOCAL_SAVE_NAME = 'Gorge-Overlay2-Color';
 ///////////

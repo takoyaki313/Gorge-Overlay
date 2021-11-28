@@ -1,6 +1,8 @@
 function logline_start(log){
   if(log[0] === '40'){
-    console.debug('Area changed =>'+log[2]+' : '+log[4]);
+    if(TEST_MODE){
+      console.debug('Area changed =>'+log[2]+' : '+log[4]);
+    }
     //488 is Hidden Gorge
     //341 is The Goblet (my home)
     //242 is Seal Rock
@@ -36,7 +38,6 @@ function grobal_array_reset(){
   ALIANCE_DATA = false;
   NOW_AREA = 0;
 }
-
 function calc(){
   if(LOG_PROCESS === false||FORCE_LOG_LISTEN){
     LOG_PROCESS = true;
@@ -182,18 +183,18 @@ async function logline_main(log){
 
   }
   function tensyon_max_check(log){
-    if(log[2] === '6c2'){
+    if(log[2] === Tenssyon_Buff_ID){
       if(log[7].toUpperCase() === MYCHARACTOR_ID.toUpperCase()){
         TENSYON_MAX = true;
       }
     }
   }
   function logline_battle_start_check(log){
-    if(log[3] === '40000001'){
+    if(log[3] === Battle_Start_Envioroment_ID){
       let time = parseInt(log[4],16);
       battle_counter(time);
     }
-    else if (log[3] === '40000002') {
+    else if (log[3] === Battle_End_Envioroment_ID) {
       setTimeout(() => {
         clearInterval(Battle_Timer_interval);
         Battle_Current_Time = 0;
@@ -503,10 +504,10 @@ async function logline_main(log){
       let a = log[9].slice(0,2);
       let b = log[9].slice(2,4);
       let d = log[9].slice(6,8);
-      let bd = parseInt(b,16) - parseInt(d,16);
-      bd = bd.toString(16);
-      damage = parseInt(d + a + bd ,16);
-      //damage = parseInt(d + a + b ,16);
+      //let bd = parseInt(b,16) - parseInt(d,16);
+      //bd = bd.toString(16);
+      //damage = parseInt(d + a + bd ,16);
+      damage = parseInt(d + a + b ,16);
     }
     if(damage >= 0 ){
     }
@@ -542,7 +543,7 @@ async function logline_main(log){
   }
   //d(nameID,type,data,replace){
   async function justice_punch(log){
-    if (log[4] === '26FB') {
+    if (log[4] === Justice_Puntch_Skill_ID) {
       if(log[6] === 'E0000000'){
         await one_main_data_add(log[2],'rocketpuntchmiss',1,false);
       }
@@ -978,12 +979,8 @@ async function main_data_push_update(objectbase,oldbasedata,objectname,data,repl
       }
       await main_data_marge_to_child(position,owner_position);
     }
-    else{
-      if(TEST_MODE){
-        console.warn('Error owner_position not found =>'+ owner_position);
-      }
-    }
-  }/*
+  }
+  /*
   if(MAIN_DATA[position].battle === false && MAIN_DATA[position].nameID.slice(0,2) === '40'){
     if(TEST_MODE){
       console.debug('Delete'+ MAIN_DATA[position].nameID + '(' + MAIN_DATA[position].name + ')');

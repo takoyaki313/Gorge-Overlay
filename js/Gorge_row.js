@@ -34,6 +34,7 @@ function gorge_overlay_update_process(template){
       maxrow = LIMITED_DATA.length;
     }
     let special_color = special_color_check();
+    max_duration_global(LIMITED_DATA);
     for(let i = 0 ; i < maxrow ; i++){
       let base_time = 0;
       if(SPENT_NEARBY_TIME){
@@ -154,6 +155,9 @@ function gorge_row_create(row,i,base_time,special_color){
   else if(LIMITED_DATA[i].aliance === 1){
     row.find('.g-basic').addClass('party');
   }
+  if(SPENT_NEARBY_TIME){
+    row.find('.g-line').css('width',((base_time/MAX_DURATION)*100).toFixed(2) + '%');
+  }
   if(damage_to_dps(LIMITED_DATA[i].totaloutdamage,base_time) >= RAINBOW_DPS){
     row.find('.g-total-dps-number').addClass('gaming');
   }
@@ -220,6 +224,18 @@ function dps_round(dps){
   }
 else{
   return dps.toFixed(0);
+  }
+}
+function max_duration_global(data){
+  for(let i = 0 ; i < data.length ; i++){
+    if(data[i].name === ACT_NAME || data[i].name === MYCHARACTOR_NAME){
+      if(SPENT_NEARBY_TIME){
+        MAX_DURATION = data[i].totalbattletime;
+      }
+      else{
+        MAX_DURATION = PVP_DURATION;
+      }
+    }
   }
 }
 function limited_data_party_cut(cut,area){
