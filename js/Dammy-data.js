@@ -44,7 +44,7 @@ function dammy(){
     temp.actualpersondamage= Math.floor( Math.random() * 250000 * dammy_array[i][9]);
     temp.actualToRobotdamage = Math.floor( Math.random() * 120000 * dammy_array[i][9]);
     //////////
-    temp.currentjob = Math.floor( Math.random() * 19 + 19,16).toString(16);
+    temp.currentjob = Math.floor( Math.random() * 21 + 19,16).toString(16);
     /////////
     let healer_offset = 1;
     if(temp.currentjob === '18'||temp.currentjob === '1c'||temp.currentjob === '21'){
