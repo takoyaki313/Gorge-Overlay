@@ -25,6 +25,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-sge:before {
+  content: "\e93d";
+}
+.icon-rpr:before {
+  content: "\e93e";
+}
 .icon-maton:before {
   content: "\e93c";
 }

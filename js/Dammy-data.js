@@ -84,8 +84,8 @@ function total_damage_calc(){
 }
 function job_to_role(job){
   let tank = ['pld','gla','war','mrd','drk','gnb'];
-  let healer = ['whm','sch','ast','cnj'];
-  let melee = ['mnk','drg','nin','sam','pgl','lnc','rog'];
+  let healer = ['whm','sch','ast','cnj','sge'];
+  let melee = ['mnk','drg','nin','sam','pgl','lnc','rog','rpr'];
   let physical = ['brd','mch','dnc','arc'];
   let magical = ['blm','smn','rdm','thm','acn'];
   if(tank.indexOf(job) !== -1){

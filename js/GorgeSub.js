@@ -139,7 +139,7 @@ function localstorage_data(){
     FAST_KILLSOUND : false,
     RAINBOW_DPS : 2000,
     RAINBOW_DAMAGE_TOWER : 1000000,
-    VERSION : 'Gorge-overlay2 1.5.2'
+    VERSION : 'Gorge-overlay2 1.5.3'
   };
   return data;
 }
@@ -454,6 +454,12 @@ function jobID_to_string(id){
     case 38:
       job = 'dnc';
       break;
+    case 39:
+      job = 'rpr';
+      break;
+    case 40:
+      job = 'sge';
+    break;
     case 50:
       job = 'opp';
       break;
