@@ -123,7 +123,7 @@ function overlay_update_start(e){
   else if (
     e.Encounter.CurrentZoneName === 'the Borderland Ruins (Secure)'||
     e.Encounter.CurrentZoneName === 'Seal Rock (Seize)'||
-    e.Encounter.CurrentZoneName === 'the Fields Of Glory (Shatter)'||
+    e.Encounter.CurrentZoneName === 'the Fields of Glory (Shatter)'||
     e.Encounter.CurrentZoneName === 'Onsal Hakair (Danshig Naadam)'
     ) {
       if(!ENCOUNTER_START && NOW_AREA !== 0){
