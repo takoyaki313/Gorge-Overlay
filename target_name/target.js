@@ -44,7 +44,6 @@ function target_overlay_main(target){
       Temp = target.ID;
       //変更あり
       let target_ID = target.ID.toString(16);
-      console.log('target_ID->' + target_ID);
       if(Target_Player_Only){
         if(target_ID.substring(0,2) === '10'){
           if(Target_Ally_Only){
@@ -85,7 +84,6 @@ function target_overlay_fontsize(size){
 
 ////////////////
 function target_overlay_area_check(area){
-  console.log(area);
   if (area.zoneName === 'Hidden Gorge'
   ||area.zoneID == 376
   ||area.zoneName.indexOf('Seal Rock')!== -1
