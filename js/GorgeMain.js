@@ -121,7 +121,7 @@ function overlay_update_start(e){
     gorge_overlay_update(e);
   }
   else if (
-    e.Encounter.CurrentZoneName === 'The Borderland Ruins (Secure)'||
+    e.Encounter.CurrentZoneName === 'the Borderland Ruins (Secure)'||
     e.Encounter.CurrentZoneName === 'Seal Rock (Seize)'||
     e.Encounter.CurrentZoneName === 'The Fields Of Glory (Shatter)'||
     e.Encounter.CurrentZoneName === 'Onsal Hakair (Danshig Naadam)'

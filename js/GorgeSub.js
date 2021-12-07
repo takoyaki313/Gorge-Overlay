@@ -110,6 +110,7 @@ function localstorage_save(){
   data.KILLSOUND_VOLUME = Number($('#setting-item-110-2').val());
   data.RAINBOW_DPS = Number($('#setting-item-115').val());
   data.RAINBOW_DAMAGE_TOWER = Number($('#setting-item-115-2').val());
+  data.TARGET_NAME_FONTSIZE = Number($('#setting-item-120').val());
   //save
   let json = JSON.stringify(data);
   localStorage.setItem('Gorge-Overlay2',json);
@@ -123,6 +124,7 @@ function localstorage_data(){
     PVE_MAX_ROW : 10,
     FL_MAX_ROW : 24,
     FONT_SIZE : 16,
+    TARGET_NAME_FONTSIZE : 16,
     DEATH_TOO_MUCH : 8,
     HEADER : true,
     PVE_HEADER : true,
@@ -139,7 +141,7 @@ function localstorage_data(){
     FAST_KILLSOUND : false,
     RAINBOW_DPS : 2000,
     RAINBOW_DAMAGE_TOWER : 1000000,
-    VERSION : 'Gorge-overlay2 1.5.3'
+    VERSION : 'Gorge-overlay2 1.5.6'
   };
   return data;
 }
@@ -166,6 +168,7 @@ function localstorage_to_settingdisp(data){
   $('#setting-item-110-2').val(data.KILLSOUND_VOLUME);
   $('#setting-item-115').val(data.RAINBOW_DPS);
   $('#setting-item-115-2').val(data.RAINBOW_DAMAGE_TOWER);
+  $('#setting-item-120').val(data.TARGET_NAME_FONTSIZE);
   if(data.HEADER){
     $('#setting-item-2-1').prop('checked',true);
   }
