@@ -77,13 +77,14 @@ $(document).on("click","input[name='sample-data-type']",function(){
       $('.rw').css('display','none');
       $('.pve').css('display','none');
       $('.fl').css('display','flex');
+      gorge_overlay_decimal_point();
       fl_overlay_update(sample_encounter_data());
       overlay_css_append(local_data);
     }
     });
   }
   else if (select_type === 'PvE') {
-    $("#source").load("https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay2.html #pve-source", function(pve_source) {
+    $("#source").load("https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay2.html #pve-main-source", function(pve_source) {
     if(pve_source == null){
     $("#source").append("読込みに失敗しました");
     console.log('Failed...');
@@ -92,6 +93,7 @@ $(document).on("click","input[name='sample-data-type']",function(){
       $('.fl').css('display','none');
       $('.rw').css('display','none');
       $('.pve').css('display','flex');
+      gorge_overlay_decimal_point();
       pve_overlay_update(sample_encounter_data());
       overlay_css_append(local_data);
     }

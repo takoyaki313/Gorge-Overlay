@@ -113,7 +113,7 @@ function overlay_update_start(e){
   if(e.isActive){
     header_update_battle_data(e.Encounter);
   }
-  if(e.Encounter.CurrentZoneName === 'Hidden Gorge'){
+  if(e.Encounter.CurrentZoneName.toLowerCase() === 'hidden gorge'){
     if(!ENCOUNTER_START && NOW_AREA !== 0){
       ENCOUNTER_START_TIME = Date.now();
       ENCOUNTER_START = true;
@@ -121,10 +121,10 @@ function overlay_update_start(e){
     gorge_overlay_update(e);
   }
   else if (
-    e.Encounter.CurrentZoneName === 'the Borderland Ruins (Secure)'||
-    e.Encounter.CurrentZoneName === 'Seal Rock (Seize)'||
-    e.Encounter.CurrentZoneName === 'the Fields of Glory (Shatter)'||
-    e.Encounter.CurrentZoneName === 'Onsal Hakair (Danshig Naadam)'
+    e.Encounter.CurrentZoneName.toLowerCase() === 'the borderland ruins (secure)'||
+    e.Encounter.CurrentZoneName.toLowerCase() === 'seal rock (seize)'||
+    e.Encounter.CurrentZoneName.toLowerCase() === 'the fields of glory (shatter)'||
+    e.Encounter.CurrentZoneName.toLowerCase() === 'onsal hakair (danshig naadam)'
     ) {
       if(!ENCOUNTER_START && NOW_AREA !== 0){
         ENCOUNTER_START_TIME = Date.now();
@@ -149,9 +149,10 @@ function pve_overlay_update(e){
   var combatants = e.Combatant;
   var template = $('#pve-source li');
   var container = $('#overlay').clone();
-  var maxdps = 0;
+  var maxdps ;
   container.html('');
   var names = Object.keys(combatants).slice(0,PVE_MAX_ROW);
+  let healer_table_array = [];
   if (!e.isActive) {
     rdps_max = 0;
     $('body').addClass('inactive');
@@ -161,13 +162,10 @@ function pve_overlay_update(e){
   var limit = Math.min(names.length,PVE_MAX_ROW);
   let special_color = special_color_check();
   for(let i = 0 ; i < limit ; i++){
-    var combatant = combatants[names[i]];
-    var row = template.clone();
+    let combatant = combatants[names[i]];
+    let row = template.clone();
     if (!maxdps) {
     maxdps = parseFloat(combatant.encdps);
-    }
-    if (combatant.name === ACT_NAME) {
-      //addclass me
     }
     let dps = Number(combatant.encdps);
     if(DECIMAL_POINT_DISPLAY){
@@ -186,12 +184,23 @@ function pve_overlay_update(e){
     }
     row.find('.n-job').addClass('icon-' + combatant.Job.toLowerCase());
     let role = job_to_role(combatant.Job.toLowerCase());
+    if(role === 'healer'){
+      if(PVE_HEALER_TABLE&&combatant.healed !== '0'){
+        healer_table_array.push(combatant);
+      }
+    }
     let aliance = 10;
     ///////////////////////////title
     row.find('.n-name').text(combatant.name);
     row.find('.n-crit').text(combatant['crithit%']);
     row.find('.n-direct').text(combatant.DirectHitPct);
     row.find('.n-cridirect').text(combatant.CritDirectHitPct);
+    if(combatant.name === 'Limit Break'){
+      row.find('.n-job').addClass('icon-app_fc');
+      row.find('.n-crit').text('');
+      row.find('.n-direct').text('');
+      row.find('.n-cridirect').text('');
+    }
     row.find('.n-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
     if(ACT_NAME === combatant.name){
       row.find('.n-basic').addClass('me');
@@ -205,6 +214,53 @@ function pve_overlay_update(e){
     row = special_color_addclass(row,'.n-bar',special_color.n_dps_bar,'background',role,aliance);
     container.append(row);
   }
+  //HPS table
+  if(healer_table_array.length !== 0){
+    let line = $('#space-with-line li');
+    container.append(line.clone());
+    healer_table_array.sort(function(a, b) {
+      return b.enchps - a.enchps;
+    });
+    let maxhps;
+    for(let i = 0 ; i < healer_table_array.length ; i++){
+      let combatant = healer_table_array[i];
+      let row = template.clone();
+      //
+      if (!maxhps) {
+      maxhps = parseFloat(combatant.enchps);
+      }
+      let hps = Number(combatant.enchps);
+      if(DECIMAL_POINT_DISPLAY){
+        if(combatant.enchps.length >= 9){//100,000
+          row.find('.n-dps').text(hps.toFixed(0));
+        }
+        else if (combatant.enchps.length === 8){//10,000
+          row.find('.n-dps').text(hps.toFixed(1));
+        }
+        else{
+          row.find('.n-dps').text(hps.toFixed(2));
+        }
+      }
+      else{
+        row.find('.n-dps').text(hps.toFixed(0));
+      }
+      row.find('.n-name').text(combatant.name);
+      row.find('.n-job').addClass('icon-' + combatant.Job.toLowerCase());
+      row.find('.n-cridirect').text(((Number(combatant.overHeal) / Number(combatant.healed))*100).toFixed(0) + '%');
+      row.find('.n-bar').css('width', ((parseFloat(combatant.enchps) / maxhps) * 100) + '%');
+      let role = job_to_role(combatant.Job.toLowerCase());
+      let aliance = 10;
+      row = special_color_addclass(row,'.n-dps',special_color.n_dps,'font',role,aliance);
+      row = special_color_addclass(row,'.n-job',special_color.n_job_icon,'font',role,aliance);
+      row = special_color_addclass(row,'.n-name',special_color.n_name,'font',role,aliance);
+      row = special_color_addclass(row,'.n-bar',special_color.n_dps_bar,'background',role,aliance);
+      if(ACT_NAME === combatant.name){
+        row.find('.n-basic').addClass('me');
+      }
+      container.append(row);
+    }
+  }
+
   $('#overlay').replaceWith(container);
 }
 function fl_overlay_update(e){

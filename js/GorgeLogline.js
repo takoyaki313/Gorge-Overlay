@@ -376,8 +376,9 @@ async function logline_main(log){
     array_data.push(Number(currentHP));
     array_object.push('currentHP');
     array_replace.push(true);
-    if(maxHP !== '0'||maxHP !== 0||maxHP !== ''){
-      array_data.push(Number(maxHP));
+    maxHP = Number(maxHP);
+    if(maxHP !== 0){
+      array_data.push(maxHP);
       array_object.push('maxHP');
       array_replace.push(true);
       if(NOW_AREA === 1 && nameID.slice(0,2).toUpperCase() !== '40'){//if Hidden Gorge
