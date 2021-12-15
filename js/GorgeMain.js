@@ -195,6 +195,12 @@ function pve_overlay_update(e){
     row.find('.n-crit').text(combatant['crithit%']);
     row.find('.n-direct').text(combatant.DirectHitPct);
     row.find('.n-cridirect').text(combatant.CritDirectHitPct);
+    if(combatant.name === 'Limit Break'){
+      row.find('.n-job').addClass('icon-app_fc');
+      row.find('.n-crit').text('');
+      row.find('.n-direct').text('');
+      row.find('.n-cridirect').text('');
+    }
     row.find('.n-bar').css('width', ((parseFloat(combatant.encdps) / maxdps) * 100) + '%');
     if(ACT_NAME === combatant.name){
       row.find('.n-basic').addClass('me');

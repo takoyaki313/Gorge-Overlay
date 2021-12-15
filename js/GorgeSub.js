@@ -269,9 +269,15 @@ function audio_load(){
 function gorge_overlay_decimal_point(){
   if(DECIMAL_POINT_DISPLAY){
     $('.g-dps-area').css('min-width','5.8rem');
+    $('.n-dps').css('width','4.8rem');
+    $('.f-dps-apace').css('min-width','5.8rem');
+    $('.f-dps-apace').css('max-width','5.8rem');
   }
   else{
     $('.g-dps-area').css('min-width','5.2rem');
+    $('.n-dps').css('width','3.8rem');
+    $('.f-dps-space').css('min-width','4.8rem');
+    $('.f-dps-space').css('max-width','4.8rem');
   }
 }
 
