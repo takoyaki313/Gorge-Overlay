@@ -213,7 +213,7 @@ function pve_overlay_update(e){
     let line = $('#space-with-line li');
     container.append(line.clone());
     healer_table_array.sort(function(a, b) {
-      return a.enchps - b.enchps;
+      return b.enchps - a.enchps;
     });
     let maxhps;
     for(let i = 0 ; i < healer_table_array.length ; i++){
