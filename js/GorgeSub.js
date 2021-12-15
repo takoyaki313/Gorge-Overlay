@@ -99,6 +99,12 @@ function localstorage_save(){
   else {
     data.IGNORE_MAX_AFTER_BATTLE = false;
   }
+  if ($("#setting-item-121").prop("checked") === true){
+    data.PVE_HEALER_TABLE = true;
+  }
+  else {
+    data.PVE_HEALER_TABLE = false;
+  }
   ///number  or  strings
   data.MAX_ROW = Number($('#setting-item-100').val());
   data.FL_MAX_ROW= Number($('#setting-item-100-2').val());
@@ -128,6 +134,7 @@ function localstorage_data(){
     DEATH_TOO_MUCH : 8,
     HEADER : true,
     PVE_HEADER : true,
+    PVE_HEALER_TABLE : true,
     KILLSOUND : false,
     KILLSOUND_PATH : 'https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3',
     DECIMAL_POINT_DISPLAY : true,
@@ -141,7 +148,7 @@ function localstorage_data(){
     FAST_KILLSOUND : false,
     RAINBOW_DPS : 2000,
     RAINBOW_DAMAGE_TOWER : 1000000,
-    VERSION : 'Gorge-overlay2 1.5.6'
+    VERSION : 'Gorge-overlay2 1.5.8'
   };
   return data;
 }
@@ -234,6 +241,12 @@ function localstorage_to_settingdisp(data){
   }
   else{
     $('#setting-item-114').prop('checked',false);
+  }
+  if(data.PVE_HEALER_TABLE){
+    $('#setting-item-121').prop('checked',true);
+  }
+  else{
+    $('#setting-item-121').prop('checked',false);
   }
   $(".version").text(data.VERSION);
 }

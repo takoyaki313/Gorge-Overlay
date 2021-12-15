@@ -34,6 +34,7 @@ var RAINBOW_DPS = 2000;
 var RAINBOW_DAMAGE_TOWER = 1000000;
 ////////////////////////////////////////
 var DECIMAL_POINT_DISPLAY = true;
+var PVE_HEALER_TABLE = true;
 var KILLSOUND = false;
 var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/soundeffect-lab-金額表示.mp3';
 var PARTY_PRIORITY = true;

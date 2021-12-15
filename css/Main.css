@@ -41,18 +41,21 @@ html {
   display: none;
 }
 #gorge-source {
-    display: none;
+  display: none;
+}
+#space-with-line {
+  display: none;
 }
 #pve-source {
-    display: none;
+  display: none;
 }
 #fl-source {
-    display: none;
+  display: none;
 }
 #overlay {
-    display: flex;
-    border-radius: 0.7rem;
-    background-color: rgba(0,0,0,0.3);
+  display: flex;
+  border-radius: 0.7rem;
+  background-color: rgba(0,0,0,0.3);
 }
 
 body {
@@ -236,6 +239,11 @@ li {
     /*display: inline-block;*/
     height: 0.25rem;
     background-color: rgba(157,145,101,0.7);
+}
+.space-line{
+  height: 0.3rem;
+  width: 100%;
+  background-color: #ded7be;
 }
 .f-basic {
   border-left: 0.25rem solid;
