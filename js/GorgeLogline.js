@@ -769,7 +769,7 @@ async function logline_main(log){
         array_object.push('currentjob');
         array_replace.push(true);
       }
-      if(log[6] !== '0'){
+      if(log[6] !== '0000'){
         array_data.push(log[6]);
         array_object.push('ownerID');
         array_replace.push(true);
@@ -828,7 +828,7 @@ async function logline_main(log){
         array_object.push('currentjob');
         array_replace.push(true);
       }
-      if(log[6] !== '0'){
+      if(log[6] !== '0000'){
         array_data.push(log[6]);
         array_object.push('ownerID');
         array_replace.push(true);

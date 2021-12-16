@@ -246,7 +246,7 @@ function pve_overlay_update(e){
       }
       row.find('.n-name').text(combatant.name);
       row.find('.n-job').addClass('icon-' + combatant.Job.toLowerCase());
-      row.find('.n-cridirect').text(((Number(combatant.overHeal) / Number(combatant.healed))*100).toFixed(0) + '%');
+      row.find('.n-cridirect').text(combatant.OverHealPct);
       row.find('.n-bar').css('width', ((parseFloat(combatant.enchps) / maxhps) * 100) + '%');
       let role = job_to_role(combatant.Job.toLowerCase());
       let aliance = 10;
