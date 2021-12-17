@@ -39,20 +39,60 @@ function area_check(area){
   }
   if(HEADER_TEMP === 0){//First start up
     header_disp(true);
+    header_under_disp(true);
     HEADER_TEMP = 1;
   }
   else{//second or later
     if(PVE_HEADER){//Disp anytime
       header_disp(true);
+      header_under_disp(true);
     }
-    else if (NOW_AREA > 0 && !PVE_HEADER) {//PvPArea
-      header_disp(true);
-      HEADER_TEMP = 0;
+    else if (NOW_AREA > 0) {//PvPArea
+      header_under_disp(true);
+      if(!PVE_HEADER){
+        header_disp(true);
+        header_under_disp(true);
+        HEADER_TEMP = 0;
+      }
     }
     else{
       header_disp(false);
     }
   }
+  //console.log(LAST_AREA + '->' + NOW_AREA);
+  if(LAST_AREA === -1){//初回
+    header_under_disp(true);
+  }
+  else if (LAST_AREA === -1 && NOW_AREA === 0) {//初回起動後からPvEエリアへの移動
+    header_under_disp(false);
+  }
+  else if (LAST_AREA === -1 && NOW_AREA > 0) {//初回起動後からPvPエリアへの移動
+    header_under_disp(true);
+  }
+  else if(LAST_AREA === 0 && NOW_AREA === 0){//PvEエリア内の移動
+    header_under_disp(false);
+  }
+  else if (LAST_AREA > 0 && NOW_AREA === 0) {//PvPエリアからPvEエリアへの移動
+    header_under_disp(true);
+  }
+  else if (LAST_AREA === 0 && NOW_AREA > 0) {//PvEエリアからPvPエリアへの移動
+    header_under_disp(true);
+  }
+  else {//PvPエリア内の移動。恐らく回線落ち等。
+    header_under_disp(true);
+  }
+  LAST_AREA = NOW_AREA;
+}
+function header_under_disp(disp){
+  if(disp){
+    $(".header-under").css('display','flex');
+    $(".header-line").css('display','flex');
+  }else {
+    $(".header-under").css('display','none');
+    $(".header-line").css('display','none');
+  }
+
+
 }
 function header_disp(disp){
   if(disp){
@@ -79,6 +119,12 @@ function header_update_timer(){
     $('.time-min').text(0);
     $('.time-sec').text(0);
   }
+}
+function header_update_timer_pve(time){
+  let min = time.substring(0,2);
+  let sec = time.substring(3,5);
+  $('.time-min').text(min);
+  $('.time-sec').text(sec);
 }
 function header_update_battle_data(e){
   var header = $('#header-data');
@@ -159,6 +205,7 @@ function pve_overlay_update(e){
   } else {
     $('body').removeClass('inactive');
   }
+  header_update_timer_pve(encounter.duration);
   var limit = Math.min(names.length,PVE_MAX_ROW);
   let special_color = special_color_check();
   for(let i = 0 ; i < limit ; i++){

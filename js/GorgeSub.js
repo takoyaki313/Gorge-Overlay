@@ -148,7 +148,7 @@ function localstorage_data(){
     FAST_KILLSOUND : false,
     RAINBOW_DPS : 2000,
     RAINBOW_DAMAGE_TOWER : 1000000,
-    VERSION : 'Gorge-overlay2 1.5.9'
+    VERSION : 'Gorge-overlay2 1.6.0'
   };
   return data;
 }

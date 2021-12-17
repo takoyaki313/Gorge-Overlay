@@ -12,6 +12,7 @@ var ALIANCE_DATA = false;
 var MYCHARACTOR_ID = '';
 var MYCHARACTOR_NAME = '';
 var NOW_AREA = 0;
+var LAST_AREA = -1;
 var SET_BATTLE_TIME = 0;
 var ENCOUNTER_START = false;
 var ENCOUNTER_START_TIME = 0;
