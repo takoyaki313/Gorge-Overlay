@@ -417,7 +417,6 @@ function combatant_data_to_limited_data(combatants){
     }
     result.push(return_data);
   }
-  console.log(result);
   return result;
 }
 function encounter_time_detected(time){
