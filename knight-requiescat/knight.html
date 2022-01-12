@@ -14,11 +14,38 @@
         display: flex;
       }
       .box {
-        margin: 0 0.1rem;
+        margin: 0.2rem 0.2rem;
       	width: 1rem;
       	height: 1rem;
-      	transform: rotate(45deg) skew(15deg,15deg);
+      	transform: rotate(45deg) skew(5deg,5deg);
       	background: #d3ffff;
+      }
+      .gaming {
+        /* 横長で虹色を作る */
+        background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+        animation: gaming 1s linear infinite;
+      }
+      @keyframes gaming {
+        /* backgroundを移動させる */
+        100% { background-position-x: 200%; }
+      }
+      .gaming-color-font {
+      	background: linear-gradient(to right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;
+      	background: -webkit-linear-gradient(left, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;
+      	background: -o-linear-gradient(right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;
+      	background: -moz-linear-gradient(right, #f00 0%, #f80 14.28%, #dd0 28.56%, #0d0 42.85%, #0dd 57.14%, #00f 71.42%, #e0e 85.71%, #f00 100%) 0% center / 200% auto;
+      }
+      .noraml-animation {
+	       background-color: #d5ffff;
+	       animation: change-color-anim 1s linear infinite;
+      }
+      @keyframes change-color-anim {
+	       0%,100%{
+		        background-color: #d5ffff;
+	        }
+	       90%{
+		        background-color: #93c9ff;
+	        }
       }
     </style>
     <script type="text/javascript" src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
@@ -67,16 +94,20 @@
         }
       }
       function requies_overlay_update(){
-        let container = $('#overlay');
+        let container = $('#overlay').clone();
         if(REQUIES_CUT === 0){
           container.html('');
         $('#overlay').replaceWith(container);
         }
         else {
-          let template = '<div class="box"></div>';
+          let template = '<div class="box noraml-animation"></div>';
           let data = '';
           for(let i = 0 ; i < REQUIES_CUT ; i++){
-            data += template;
+            if(REQUIES_CUT === 1){
+              data += '<div class="box gaming"></div>';
+            }else {
+              data += template;
+            }
           }
           container.html(data);
           $('#overlay').replaceWith(container);
