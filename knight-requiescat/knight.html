@@ -75,7 +75,8 @@
       let REQUIES_CUT = 0;
       function requies_add(log){
         // レクイエスカット　558
-        if(log[2] === '558'){
+        // 連続魔　4BB
+        if(log[2] === '558'||log[2] === '4BB'){
           if(log[5] === MYCHARACTOR_ID){
 
             if(Number(log[9]) > 0){
@@ -86,7 +87,7 @@
         }
       }
       function requies_remove(log){
-        if(log[2] === '558'){
+        if(log[2] === '558'||log[2] === '4BB'){
           if(log[5] === MYCHARACTOR_ID){
             REQUIES_CUT = 0 ;
             requies_overlay_update();
