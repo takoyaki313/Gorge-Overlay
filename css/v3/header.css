@@ -1,0 +1,61 @@
+#header_space {
+  font-family: 'Bebas Neue', cursive;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  padding-right :0.3rem;
+  padding-left: 0.3rem;
+  padding-top: 0.1rem;
+  font-size: 1rem;
+  align-items: center;
+  flex-direction: column;
+  padding-bottom: 0.1rem;
+  background-color: rgba(0,0,0,0.3);
+}
+#header_space [class^="icon"]{
+  font-size: 1.3em;
+}
+#header_space .header-top ,#header_space .header-under{
+  width: -webkit-fill-available;
+}
+[class^="header"]{
+  display: flex;
+  align-items: center;
+}
+#header_space .header-top {
+  padding-top: 0.2rem;
+}
+#header_space .header-time {
+  font-size: 1.1rem;
+}
+#header_space .header-line{
+  width: 100%;
+  margin: 0.2em;
+}
+#header_space .header-mypage{
+  justify-content: left;
+  margin-right: 0.3em;
+}
+#header_space .header-areaname{
+  justify-content: left;
+  margin-right:auto;
+}
+#header_space .header-time{
+  justify-content: right;
+}
+#header_space .header-setting{
+  justify-content: right;
+  margin-left: 0.3em;
+}
+#header_space .what-header-data{
+  justify-content: left;
+  margin-right: auto;
+}
+#header_space .all-kd{
+  justify-content: right;
+}
+#header_space .all-kd .all-kd-percent{
+  margin-left: 0.2em;
+}
+#header-data{
+  display: none;
+}

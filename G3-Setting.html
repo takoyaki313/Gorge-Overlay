@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>GorgeOverlay Setting</title>
+    <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/v3/setting.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/localstorage.js"></script>
+    <script type="text/javascript" src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/settingtool.js"></script>
+    <script type="text/javascript">
+    //
+    </script>
+</head>
+<body>
+  <div id="setting-source" style="display: none">
+    <div class='setting-item' id='s-textbox'>
+      <h3 class="s-title"></h3>
+      <p class="s-description"></p>
+      <input type='text' class='general-textbox inputarea'></input>
+    </div>
+    <div class='setting-item' id='s-numberbox'>
+      <h3 class="s-title"></h3>
+      <p class="s-description"></p>
+      <input type='number' class='general-textbox inputarea'></input>
+    </div>
+    <div class='setting-item' id='s-pulldown'>
+      <h3 class="s-title"></h3>
+      <p class="s-description"></p>
+      <select required name="lang" class='general-pulldown option_c'>
+      </select>
+    </div>
+    <div class='setting-item' id='s-toggle'>
+      <h3 class="s-title">ssssssssssssss</h3>
+      <div class="switch">
+        <label class="toggle-label">
+          <input type="checkbox" class="toggle"/>
+          <span class="toggle-content"></span>
+          <span class="toggle-ci"></span>
+        </label>
+      </div>
+      <p class="s-description">aaaaaaaaaaaaa</p>
+
+    </div>
+  </div>
+  <header>
+    <h1>GorgeOverlay Setting</h1>
+    <hr class='cool-line'>
+  </header>
+
+<div class="grid-body">
+  <div class="grid-title">
+    title
+  </div>
+  <div class="grid-navi">
+    <div class="grid-tab">
+      <input id="navi-general" type="radio" name="TAB" class="tab-switch" />
+      <label class="tab-label" for="navi-general">general</label>
+    </div>
+    <div class="grid-tab">
+      <input id="navi-PvE-setting" type="radio" name="TAB" class="tab-switch" />
+      <label class="tab-label" for="navi-PvE-setting">PvE-setting</label>
+    </div>
+    <div class="grid-tab">
+      <input id="navi-FL-setting" type="radio" name="TAB" class="tab-switch" />
+      <label class="tab-label" for="navi-FL-setting">FL-setting</label>
+    </div>
+    <div class="grid-tab">
+      <input id="navi-Gorge-setting" type="radio" name="TAB" class="tab-switch" />
+      <label class="tab-label" for="navi-Gorge-setting">Gorge-setting</label>
+    </div>
+    <div class="grid-tab">
+      <input id="navi-other" type="radio" name="TAB" class="tab-switch" />
+      <label class="tab-label" for="navi-other">other</label>
+    </div>
+    <div class="grid-tab">
+      <input id="navi-import-export" type="radio" name="TAB" class="tab-switch" />
+      <label class="tab-label" for="navi-import-export">import-export</label>
+    </div>
+  </div>
+  <div class="grid-setting" id='main-setting'>
+
+  </div>
+</div>
+  <footer>
+    <hr class='cool-line'>
+    <div class='version-page'>
+      <span class='version' id='version'>version unknown</span>
+      <a href="https://takoyaki313.github.io/Gorge-Overlay/" style="color:#ded7be;" target="_blank" rel="noopener noreferrer">GitHub Page</a>
+    </div>
+  </footer>
+</body>
+</html>

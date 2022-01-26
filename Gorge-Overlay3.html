@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/v3/header.css">
+    <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/v3/main.css">
+    <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/v3/source.css">
+    <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/icon.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lexend+Deca&?family=Bitter&family=Bangers&family=Noto+Serif+JP:wght@500&family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-Start.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-Main.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-Sub.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-Logline.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-DB.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-DotCalc.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-Calc-Clock.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-NetworkActionSync.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/id-data.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-html-main.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/dot-hot-id.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/localstorage.js"></script>
+    <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorge3-fl.js"></script>
+    <!--<script src="js/v3/dammy_data.js"></script>
+    <script src="js/Gorge_json.js"></script>
+    <script src="js/sample_seiatu.js"></script>
+    <script src="js/sample_gorge3.js"></script>-->
+</head>
+<body>
+  <div class="header" id="header_space">
+    <div class ="header-top">
+      <span class='header-mypage'>
+        <label for='header-mypage-open' class='icon-app_fc'></label>
+        <button class='mypage-button' id='mypage-open'></button>
+      </span>
+      <span class='header-areaname'>UNKNOWN AREA</span>
+      <span class='header-time'>
+        <label class='time-min'>00</label>
+        <label class='time-coron' style="margin: 0 0.1rem"> : </label>
+        <label class='time-sec'>00</label>
+      </span>
+      <span class='header-setting'>
+        <div class='icon-app_drawer_setting' id='setting-open'></div>
+      </span>
+    </div>
+    <hr class='header-line' size='4px' noshade>
+    <div class='header-under' id='header-data'>
+      <span class='what-header-data'>total : -</span>
+      <span class='all-kd'>
+        <span class='kill-num'>K : 0 [0]</span>
+        <span class='death-num'>D : 0 [0]</span>
+        <span class='all-kd-percent'>K/D : 1.00</span>
+      </span>
+    </div>
+  </div>
+  <div class='source'>
+  <div id='fl-source'>
+  <div style="display: flex ;width: -webkit-fill-available;">
+  <div class='f-dps-area'>
+    <div class="f-dps">
+      <span class='f-dps-i'>0.</span><span class='f-dps-d'>0</span>
+    </div>
+    <span class='f-hps f-hide'>-</span>
+  </div>
+  <div class='f-job-icon'></div>
+  <div class='f-main-area'>
+    <div class='f-top'>
+      <span class='f-dunamis'></span>
+      <div class='f-name'>Name Unknown</div>
+      <span class='f-kda'>
+        <span class='f-kill'>0</span>
+        <span class='f-death'>0</span>
+        <span class='f-assist'>0</span>
+      </span>
+    </div>
+    <div class='f-middle'></div>
+    <div class='f-bottom f-hide'>
+      <span class='f-incomedamage'>0</span>
+      <div class='gage'>
+        <div class='f-incomedamage-gage'>
+          <div class='gage-input'></div>
+        </div>
+        <div class='f-incomeheal-gage'>
+          <div class='gage-input'></div>
+        </div>
+      </div>
+      <span class='f-incomeheal'>0</span>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<div class='source'>
+  <div id='basic-source'>
+  <div class="basic-dps-space">
+    <span class="basic-dps"></span>
+    <span class="basic-job"></span>
+  </div>
+  <div class="basic-title">
+    <div class="basic-top">
+      <span class='basic-dunamis'></span>
+      <span class="basic-name"></span>
+      <span class="basic-space1 basic-dataspace"></span>
+      <span class="basic-space2 basic-dataspace"></span>
+      <span class="basic-space3 basic-dataspace"></span>
+    </div>
+    <div class="basic-sub">
+      <span class="basic-bar"></span>
+    </div>
+  </div>
+</div>
+</div>
+<div id='overlay'>
+  wait...
+</div>
+</body>
+</html>
