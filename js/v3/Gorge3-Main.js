@@ -163,10 +163,10 @@ async function area_type_set(zoneID){
       AREA.Area_Type = 4;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;
       break;
-    case 341://The Goblet
+    /*case 341://The Goblet
       AREA.Area_Type = 10;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;
-      break;
+      break;*/
     default:
       AREA.Area_Type = 0;
       LOGLINE_ENCOUNTER.Battle_Max_Time = 0;

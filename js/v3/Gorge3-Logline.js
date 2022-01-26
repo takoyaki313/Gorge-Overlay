@@ -656,7 +656,7 @@ async function minimap_change_area_check(log){
   //167 is The Borderland Luins
   //15 is Middle La Noscea
   //51 is Wolves' Den Pier
-  if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'||log[2] === '341'){
+  if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'){
     if(AREA.Area_Type <= 0){
       if(DEBUG_LOG){
         console.error('Area Changed Event later logline event than');
