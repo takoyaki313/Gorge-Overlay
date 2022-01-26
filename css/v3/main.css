@@ -1,0 +1,236 @@
+:root{
+  --general-role-color : #ded7be;
+  --tank-role-color : #7586e0;
+  --healer-role-color : #76ab67;
+  --melee-role-color : #ad6161;
+  --physical-role-color : #ad6161;
+  --magical-role-color : #ad6161;
+  --aliance-color-general : transparent;
+  --aliance-color-1 :#5BB7E5;
+  --aliance-color-2 :#895BE5;
+  --aliance-color-3 :#E55BB7;
+  --aliance-color-4 :#E5895B;
+  --aliance-color-5 :#B7E55B;
+  --aliance-color-6 :#5BE589;
+  --aliance-color-10 :transparent;
+  --incomedamage-person : #f4f5f9;
+  --incomedamage-robot : #252c41;
+  --incomedamage-otherperson :#dddfe6;
+  --incomedamage-object : #f1404b;
+  --incomeheal-self :#005792;
+  --incomeheal-party:#f6f6e9;
+  --incomeheal-ally:#fd5f00;
+  --incomeheal-other:#13334c;
+}
+html{
+  font-size: 20px;
+}
+body{
+  user-select: none;
+  color: #ded7be;
+  font-family: 'Roboto', sans-serif;
+  /*background-color: rgb(38 38 38);*/
+
+  /*  background-color: rgba(0,0,0,0.3);*/
+}
+.source {
+  display: none;
+}
+#overlay{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0,0,0,0.3);
+  padding: 0 0.3rem 0.3rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+[class$="button"]{
+  display: none;
+}
+.ui-tooltip{
+  max-width: 16rem !important;
+  background: rgb(38 38 38) !important;
+}
+.underline-text {
+  text-decoration: underline;
+}
+.container::-webkit-scrollbar {
+    display:none;
+}
+.ui-tooltip-content {
+    color: #ded7be;
+    font-size: 0.6rem;
+    background-color: rgb(38 38 38);
+}
+.dunamis_tensyon1{
+  content: url("https://xivapi.com/i/061000/061351_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon2{
+  content: url("https://xivapi.com/i/061000/061352_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon3{
+  content: url("https://xivapi.com/i/061000/061353_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon4{
+  content: url("https://xivapi.com/i/061000/061354_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon5{
+  content: url("https://xivapi.com/i/061000/061355_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon6{
+  content: url("https://xivapi.com/i/061000/061356_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon7{
+  content: url("https://xivapi.com/i/061000/061357_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon8{
+  content: url("https://xivapi.com/i/061000/061358_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon9{
+  content: url("https://xivapi.com/i/061000/061359_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon10{
+  content: url("https://xivapi.com/i/061000/061360_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon11{
+  content: url("https://xivapi.com/i/061000/061361_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon12{
+  content: url("https://xivapi.com/i/061000/061362_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon13{
+  content: url("https://xivapi.com/i/061000/061363_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon14{
+  content: url("https://xivapi.com/i/061000/061364_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon15{
+  content: url("https://xivapi.com/i/061000/061365_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon16{
+  content: url("https://xivapi.com/i/061000/061366_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon17{
+  content: url("https://xivapi.com/i/061000/061367_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon18{
+  content: url("https://xivapi.com/i/061000/061368_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon19{
+  content: url("https://xivapi.com/i/061000/061369_hr1.png");
+  background-size: cover;
+}
+.dunamis_tensyon20{
+  content: url("https://xivapi.com/i/061000/061482_hr1.png");
+  background-size: cover;
+}
+.dunamis_kouyou1{
+  content: url("https://xivapi.com/i/061000/061483_hr1.png");
+  background-size: cover;
+}
+.dunamis_kouyou2{
+  content: url("https://xivapi.com/i/061000/061484_hr1.png");
+  background-size: cover;
+}
+.dunamis_kouyou3{
+  content: url("https://xivapi.com/i/061000/061485_hr1.png");
+  background-size: cover;
+}
+.dunamis_kouyou4{
+  content: url("https://xivapi.com/i/061000/061486_hr1.png");
+  background-size: cover;
+}
+.dunamis_kouyou5{
+  content: url("https://xivapi.com/i/061000/061487_hr1.png");
+  background-size: cover;
+}
+
+[class^="incomedamage-"],[class^="incomeheal-"]{
+  height: 0.2rem;
+}
+.incomeheal-self{
+  background-color: var(--incomeheal-self);
+}
+.incomeheal-party{
+  background-color: var(--incomeheal-party);
+}
+.incomeheal-ally{
+  background-color: var(--incomeheal-ally);
+}
+.incomeheal-object{
+  background-color: var(--incomeheal-other);
+}
+.incomedamage-player {
+  background-color: var(--incomedamage-person);
+}
+.incomedamage-robot {
+  background-color: var(--incomedamage-robot);
+}
+.incomedamage-object {
+  background-color: var(--incomedamage-object);
+}
+.incomedamage-other {
+  background-color: var(--incomedamage-otherperson);
+}
+/*  Aliance Color    */
+.aliance-border-1 {
+  border-color:  var(--aliance-color-1)!important;
+}
+.aliance-border-2 {
+  border-color:  var(--aliance-color-2)!important;
+}
+.aliance-border-3 {
+  border-color:  var(--aliance-color-3)!important;
+}
+.aliance-border-4 {
+  border-color:  var(--aliance-color-4)!important;
+}
+.aliance-border-5 {
+  border-color:  var(--aliance-color-5)!important;
+}
+.aliance-border-6 {
+  border-color:  var(--aliance-color-6)!important;
+}
+.aliance-border-10 {
+  border-color:  var(--aliance-color-10)!important;
+}
+/* role color*/
+.role-background-tank {
+  background-color: var(--tank-role-color)!important;
+}
+.role-background-healer {
+  background-color: var(--healer-role-color)!important;
+}
+.role-background-melee {
+  background-color: var(--melee-role-color)!important;
+}
+.role-background-physical {
+  background-color: var(--physical-role-color)!important;
+}
+.role-background-magical {
+  background-color: var(--magical-role-color)!important;
+}
+.role-background-general {
+  background-color: var(--general-role-color)!important;
+}
+.me {
+    background-color: rgba(93,81,37,0.7);
+}

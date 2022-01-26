@@ -1,0 +1,1482 @@
+//////////////////////////////////////////////
+const Field_ID = 'E0000000';
+const Battle_Start_Envioroment_ID = '40000001';
+const Battle_End_Envioroment_ID = '40000002';
+const Oppresor_HP = 100000;
+const Justice_HP = 75000;
+const Chaiser_HP = 50000;
+const Core_Tower_HP = 2000000;
+const Gorge_BattleTime = 900;
+const Fl_BattleTime = 1200;
+const Test_BattleTime = 300;
+//////////////////////////////////////////////
+//skilltype exclude action
+/////////////////////////////////////////////
+const DoubleRocketPuntch = '26FB';//ダブルロケットパンチ
+/////////////////////
+//////// Setting
+/////////////////////
+
+/////////////////
+///effect ID
+/////////////////
+let Lang_text = {
+  ja:{
+    Person:'人',
+    Robot:'ロボット',
+    Maton:'マトン',
+    Tower:'タワー・コア',
+    //
+    self:'自分',
+    party:'パーティ',
+    ally:'他アラ',
+    other:'オブジェクト',
+    //income
+    personincomedamage:'人',
+    robincomedamage:'ロボット',
+    objectincomedamage:'オブジェクト',
+    otherpersonincomedamage:'人（不明）',
+    //
+    incomeselfheal:'自分',
+    incomepartyheal:'パーティ',
+    incomeallyheal:'他アラ',
+    incomeotherheal:'オブジェクト',
+    //
+    overhealPct:'オーバーヒール%',
+    healed:'HPS',
+  },
+  en:{
+    Person:'Person',
+    Robot:'Robot',
+    Maton:'Maton',
+    Tower:'Tower/Core',
+    //
+    self:'Myself',
+    party:'Party',
+    ally:'Aliance',
+    other:'Object',
+    //income
+    personincomedamage:'Person',
+    robincomedamage:'Robot',
+    objectincomedamage:'Object',
+    otherpersonincomedamage:'Person (Unknown)',
+    //
+    incomeselfheal:'Myself',
+    incomepartyheal:'Party',
+    incomeallyheal:'Aliance',
+    incomeotherheal:'Object',
+    //
+    overhealPct:'OverHeal%',
+    healed:'HPS',
+  },
+};
+let Lang_select = Lang_text.ja;
+let EXCLUDE_BUFF = ['07EB','07EA','0B37','0B38'];//スタンス系　カルディア クローズドポジション
+let EFFECT_ID_LIST = [];
+let EFFECT_ID = {
+  /*'05B9':{
+    en_name:'Soaring',
+    name:'テンション',
+    // damage heal incomedamage incomeheal buff/debuff
+    type:[true,true,false,false,true],
+    effect:1.1/*2~40%,
+    cut:1,
+    cut_heal:1
+  },*/
+  '0105B9':{
+    name:'テンション1',
+    type:[true,true,false,false,true],
+    effect:1.02,
+    cut:1,
+    cut_heal:1
+  },
+  '0205B9':{
+    name:'テンション2',
+    type:[true,true,false,false,true],
+    effect:1.04,
+    cut:1,
+    cut_heal:1
+  },
+  '0305B9':{
+    name:'テンション3',
+    type:[true,true,false,false,true],
+    effect:1.06,
+    cut:1,
+    cut_heal:1
+  },
+  '0405B9':{
+    name:'テンション4',
+    type:[true,true,false,false,true],
+    effect:1.08,
+    cut:1,
+    cut_heal:1
+  },
+  '0505B9':{
+    name:'テンション5',
+    type:[true,true,false,false,true],
+    effect:1.1,
+    cut:1,
+    cut_heal:1
+  },
+  '0605B9':{
+    name:'テンション6',
+    type:[true,true,false,false,true],
+    effect:1.12,
+    cut:1,
+    cut_heal:1
+  },
+  '0705B9':{
+    name:'テンション7',
+    type:[true,true,false,false,true],
+    effect:1.14,
+    cut:1,
+    cut_heal:1
+  },
+  '0805B9':{
+    name:'テンション8',
+    type:[true,true,false,false,true],
+    effect:1.16,
+    cut:1,
+    cut_heal:1
+  },
+  '0905B9':{
+    name:'テンション9',
+    type:[true,true,false,false,true],
+    effect:1.18,
+    cut:1,
+    cut_heal:1
+  },
+  '0A05B9':{
+    name:'テンション10',
+    type:[true,true,false,false,true],
+    effect:1.2,
+    cut:1,
+    cut_heal:1
+  },
+  '0B05B9':{
+    name:'テンション11',
+    type:[true,true,false,false,true],
+    effect:1.22,
+    cut:1,
+    cut_heal:1
+  },
+  '0C05B9':{
+    name:'テンション12',
+    type:[true,true,false,false,true],
+    effect:1.24,
+    cut:1,
+    cut_heal:1
+  },
+  '0D05B9':{
+    name:'テンション13',
+    type:[true,true,false,false,true],
+    effect:1.26,
+    cut:1,
+    cut_heal:1
+  },
+  '0E05B9':{
+    name:'テンション14',
+    type:[true,true,false,false,true],
+    effect:1.28,
+    cut:1,
+    cut_heal:1
+  },
+  '0F05B9':{
+    name:'テンション15',
+    type:[true,true,false,false,true],
+    effect:1.3,
+    cut:1,
+    cut_heal:1
+  },
+  '1005B9':{
+    name:'テンション16',
+    type:[true,true,false,false,true],
+    effect:1.32,
+    cut:1,
+    cut_heal:1
+  },
+  '1105B9':{
+    name:'テンション17',
+    type:[true,true,false,false,true],
+    effect:1.34,
+    cut:1,
+    cut_heal:1
+  },
+  '1205B9':{
+    name:'テンション18',
+    type:[true,true,false,false,true],
+    effect:1.36,
+    cut:1,
+    cut_heal:1
+  },
+  '1305B9':{
+    name:'テンション19',
+    type:[true,true,false,false,true],
+    effect:1.38,
+    cut:1,
+    cut_heal:1
+  },
+  '0853':{
+    name:'士気高揚I',
+    type:[true,true,false,false,true],
+    effect:1.1,
+    cut:1,
+    cut_heal:1
+  },
+  '0854':{
+    name:'士気高揚II',
+    type:[true,true,false,false,true],
+    effect:1.2,
+    cut:1,
+    cut_heal:1
+  },
+  '0855':{
+    name:'士気高揚III',
+    type:[true,true,false,false,true],
+    effect:1.3,
+    cut:1,
+    cut_heal:1
+  },
+  '0856':{
+    name:'士気高揚IV',
+    type:[true,true,false,false,true],
+    effect:1.4,
+    cut:1,
+    cut_heal:1
+  },
+  '0857':{
+    name:'士気高揚V',
+    type:[true,true,false,false,true],
+    effect:1.5,
+    cut:1,
+    cut_heal:1
+  },
+  '037F':{
+    name:'無敵',
+    type:[false,false,true,true,true],
+    effect:1,
+    cut:0,
+    cut_heal:1
+  },
+  '0B38':{
+    name:'カルディア[被]',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B37':{
+    name:'カルディア',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07EB':{
+    name:'クローズドポジション[被]',
+    type:[false,false,true,false,true],
+    effect:1.1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '07EA':{
+    name:'クローズドポジション',
+    type:[false,false,true,true,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '018A':{
+    name:'無敵',
+    type:[false,false,true,true,true],
+    effect:1,
+    cut:0,
+    cut_heal:1
+  },
+  '0597':{
+    name:'タワーフィールド',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.5,
+    cut_heal:1
+  },
+  '0523':{
+    name:'隠身の術',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '053E':{
+    name:'疾走',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07C5':{
+    name:'マバリア',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07BE':{
+    name:'ブラッドバス',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0818':{
+    name:'精神統一の策',
+    type:[false,false,false,true,true],
+    effect:1,
+    cut:1,
+    cut_heal:1.2
+  },
+  '07BF':{
+    name:'フェターウォード',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07E7':{
+    name:'スタンダードステップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B2D':{
+    name:'守護のクレスト',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07F3':{
+    name:'ディア',
+    type:[false,false,true,false,false],
+    effect:0,
+    cut:1.1,
+    cut_heal:1
+  },
+  '0130':{
+    name:'エーテルフロー',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '052E':{
+    name:'バイオガ',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0524':{
+    name:'かくれる',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07F5':{
+    name:'テンパランス',
+    type:[true,true,false,false,true],
+    effect:1.2,
+    cut:1,
+    cut_heal:1
+  },
+  '07F6':{
+    name:'テンパランス：効果',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '0572':{
+    name:'移動速度低下',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0888':{
+    name:'逆襲',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B2C':{
+    name:'リターン実行可',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B2B':{
+    name:'ハルパー効果アップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0541':{
+    name:'バインド',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07C1':{
+    name:'プロトン',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07D6':{
+    name:'金剛の構え',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '07D8':{
+    name:'金剛の極意',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0517':{
+    name:'原初の解放',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '08A7':{
+    name:'旅神のメヌエット',
+    type:[true,false,false,false,true],
+    effect:1.05,
+    cut:1,
+    cut_heal:1
+  },
+  '07C8':{
+    name:'原初の混沌',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '7BE':{
+    name:'ブラッドバス',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0841':{
+    name:'スタンダードフィニッシュ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07E8':{
+    name:'スタンダードフィニッシュ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0547':{
+    name:'バインド無効',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '088A':{
+    name:'集中',
+    type:[true,false,false,false,true],
+    effect:1.5,
+    cut:1,
+    cut_heal:1
+  },
+  '0B2E':{
+    name:'活性のクレスト',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '081B':{
+    name:'サンダラ',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0805':{
+    name:'プロテス',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.8,
+    cut_heal:1
+  },
+  '07C9':{
+    name:'シェイクオフ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0881':{
+    name:'タクティシャン',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '0801':{
+    name:'テクニカルステップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1,
+  },
+  '07BA':{
+    name:'ランパート',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.8,
+    cut_heal:1
+  },
+  '07E3':{
+    name:'バイオブラスト',
+    type:[false,false,true,false,false],
+    effect:1,
+    cut:1.1,
+    cut_heal:1
+  },
+  '0B26':{
+    name:'妖異の鎌',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0533':{
+    name:'鼓舞',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0544':{
+    name:'睡眠',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07DE':{
+    name:'だまし討ち',
+    type:[false,false,true,false,false],
+    effect:1,
+    cut:1.1,
+    cut_heal:1
+  },
+  '054A':{
+    name:'睡眠無効',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '081E':{
+    name:'カオティックサイクロン',
+    type:[false,false,true,false,false],
+    effect:1,
+    cut:1.1,
+    cut_heal:1
+  },
+  '0525':{
+    name:'三印自在',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07F7':{
+    name:'蟲毒法',
+    type:[false,false,false,true,false],
+    effect:1,
+    cut:1,
+    cut_heal:1.1
+  },
+  '0815':{
+    name:'転化',
+    type:[true,true,false,false,true],
+    effect:1.25,
+    cut:1,
+    cut_heal:1
+  },
+  '07C2':{
+    name:'ファントムダート',
+    type:[false,false,true,false,false],
+    effect:1,
+    cut:1.2,
+    cut_heal:1
+  },
+  '0800':{
+    name:'アン・アヴァン',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0532':{
+    name:'リジェネ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0802':{
+    name:'テクニカルフィニッシュ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07E5':{
+    name:'扇の舞い[急]実行可',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0804':{
+    name:'扇の舞い[急]',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '07DA':{
+    name:'分身の術',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '053F':{
+    name:'スタン',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07E6':{
+    name:'剣の舞い',
+    type:[true,false,false,false,true],
+    effect:1.1,
+    cut:1,
+    cut_heal:1
+  },
+  '0543':{
+    name:'沈黙',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0545':{
+    name:'スタン無効',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0886':{
+    name:'深謀遠慮の策',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0549':{
+    name:'沈黙無効',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '087C':{
+    name:'アームズレングス',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '080E':{
+    name:'原初の猛り[被]',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '080D':{
+    name:'原初の猛り',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '088C':{
+    name:'慈愛',
+    type:[false,true,false,false,true],
+    effect:1.25,
+    cut:1,
+    cut_heal:1
+  },
+  '07DB':{
+    name:'残影',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '054B':{
+    name:'ノックバック無効',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0540':{
+    name:'ヘヴィ',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '08A6':{
+    name:'軍神のパイオン',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07C3':{
+    name:'迅速魔',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '05A3':{
+    name:'カラクリ仕掛け',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0546':{
+    name:'へヴィ無効',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07D5':{
+    name:'紅蓮の構え',
+    type:[true,false,false,false,true],
+    effect:1.1,
+    cut:1,
+    cut_heal:1
+  },
+  '0585':{
+    name:'紅蓮の極意',
+    type:[true,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0519':{
+    name:'ホルムギャング[被]',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0518':{
+    name:'ホルムギャング',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B28':{
+    name:'ギャロウズ効果アップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '052B':{
+    name:'ワイルドファイア',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '087D':{
+    name:'桃園結義：闘気',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '087E':{
+    name:'桃園結義：攻撃',
+    type:[true,false,false,false,true],
+    effect:1.05,
+    cut:1,
+    cut_heal:1
+  },
+  '0B27':{
+    name:'シビトゥ効果アップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0571':{
+    name:'連続魔',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B30':{
+    name:'エウクラシア・ドシスIII',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0889':{
+    name:'牽制',
+    type:[false,false,false,false,false],
+    effect:1,//自身からのみ対象 1.2
+    cut:1,
+    cut_heal:1
+  },
+  '0555':{
+    name:'サンダー系魔法効果アップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B2F':{
+    name:'レムール',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B2A':{
+    name:'クロスリーパー効果アップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B29':{
+    name:'ヴォイドリーパー効果アップ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0A2E':{
+    name:'エウクラシア',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B31':{
+    name:'エウクラシア・ディアグノシス',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '06C1':{
+    name:'不退転',
+    type:[true,true,false,false,true],
+    effect:1.3,
+    cut:1,
+    cut_heal:1
+  },
+  '087F':{
+    name:'ライフサージ',
+    type:[true,false,false,false,true],
+    effect:1.5,
+    cut:1,
+    cut_heal:1
+  },
+  '07C6':{
+    name:'調和',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.01,
+    cut_heal:1
+  },
+  '058C':{
+    name:'搭乗',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '087B':{
+    name:'ダークミッショナリー',
+    type:[false,false,true,true,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1.1
+  },
+  '028F':{
+    name:'イージスブーン',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.75,
+    cut_heal:1
+  },
+  '0885':{
+    name:'アームズレングス：効果',
+    type:[true,false,false,false,false],
+    effect:0.9,
+    cut:1,
+    cut_heal:1
+  },
+  '0836':{
+    name:'漆黒の剣',
+    type:[false,false,false,true,false],
+    effect:1,
+    cut:1,
+    cut_heal:0.9
+  },
+  '087A':{
+    name:'漆黒の波動',
+    type:[false,false,false,true,false],
+    effect:1,
+    cut:1,
+    cut_heal:0.9
+  },
+  '051C':{
+    name:'ブラックナイト',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '088B':{
+    name:'エーテルバースト',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0882':{
+    name:'地神のミンネ',
+    type:[false,false,true,true,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1.1
+  },
+  '07CC':{
+    name:'ブラッドデリリアム',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0580':{
+    name:'コメテオ',
+    type:[false,false,true,false,false],
+    effect:1,
+    cut:1.25,
+    cut_heal:1
+  },
+  '081D':{
+    name:'インナーカオス',
+    type:[false,false,true,false,false],
+    effect:1,
+    cut:1.1,
+    cut_heal:1
+  },
+  '0581':{
+    name:'ターミナルベロシティ',
+    type:[false,false,false,true,false],
+    effect:1,
+    cut:1,
+    cut_heal:0.75
+  },
+  '052C':{
+    name:'サンダー',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0598':{
+    name:'タワーフィールド',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '06C0':{
+    name:'契約期間',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '06C2':{
+    name:'テンションマックス',
+    type:[true,true,false,false,true],
+    effect:1.5,
+    cut:1,
+    cut_heal:1
+  },
+  '06E7':{
+    name:'魔道フィールド:弱',
+    type:[false,false,true,false,false],
+    effect:1,
+    cut:0.5,
+    cut_heal:1
+  },
+  '0B36':{
+    name:'ハイマの印',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B35':{
+    name:'ハイマ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B32':{
+    name:'エウクラシア・プログノシス',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0B34':{
+    name:'プネウマ',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '049F':{
+    name:'竜の右眼',
+    type:[true,false,false,false,true],
+    effect:1.1,
+    cut:1,
+    cut_heal:1
+  },
+  '04A0':{
+    name:'竜の左眼',
+    type:[true,false,false,false,true],
+    effect:1.1,
+    cut:1,
+    cut_heal:1
+  },
+  '010B':{
+    name:'火傷',
+    type:[false,false,false,false,false],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07C7':{
+    name:'忠義の剣',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0516':{
+    name:'インビンシブル',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0559':{
+    name:'レクイエスカット',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '081C':{
+    name:'コンフィテオル',
+    type:[false,false,true,true,false],
+    effect:1,
+    cut:1.1,
+    cut_heal:0.9
+  },
+  '07C4':{
+    name:'アドル',
+    type:[true,false,false,false,false],
+    effect:0.9,//物理0.95
+    cut:1,
+    cut_heal:1
+  },
+  '08EA':{
+    name:'エンボルデン',
+    type:[true,false,false,false,true],
+    effect:1.05,//10%->2s 2%
+    cut:1,
+    cut_heal:1
+  },
+  '07F1':{
+    name:'アンガジェマン',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07FC':{
+    name:'ニュートラルセクト',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07FA':{
+    name:'ニュートラルセクト[日]',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07FB':{
+    name:'ニュートラルセクト[夜]',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0537':{
+    name:'略式詠唱',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0807':{
+    name:'ドロー：クラウンレディ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '05AC':{
+    name:'クラウンレディ',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.8,
+    cut_heal:1
+  },
+  '0816':{
+    name:'星天対抗[日]',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0817':{
+    name:'星天対抗[夜]',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07F9':{
+    name:'コンバガ',
+    type:[true,true,false,false,false],
+    effect:0.9,
+    cut:1,
+    cut_heal:1
+  },
+  '07F2':{
+    name:'ディヴィネーション',
+    type:[true,false,true,false,true],
+    effect:1.1,
+    cut:0.9,
+    cut_heal:1
+  },
+  '0835':{
+    name:'リプライザル',
+    type:[true,false,false,false,false],
+    effect:0.8,
+    cut:1,
+    cut_heal:1
+  },
+  '0958':{
+    name:'サンダーバレット',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07CD':{
+    name:'ブルータルシェル',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0811':{
+    name:'オーロラ',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07D2':{
+    name:'ジャギュラーリップ実行可',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07D3':{
+    name:'アブドメンテアー実行可',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '07D4':{
+    name:'アイガウジ実行可',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '0806':{
+    name:'ドロー：クラウンロード',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  },
+  '05AB':{
+    name:'クラウンロード',
+    type:[true,false,false,false,true],
+    effect:1.2,
+    cut:1,
+    cut_heal:1
+  },
+  '0883':{
+    name:'テストゥド',
+    type:[false,false,false,false,true],
+    effect:1,
+    cut:1,
+    cut_heal:1
+  }
+};
+//////////////////////////////////////////////
+//Job
+//////////////////////////////////////////////
+function jobID_to_string(id){
+  if(typeof id === 'string'){
+    id = parseInt(id,16);
+  }
+  let job = null;
+  switch (id) {
+    case 0:
+      job = null;
+      break;
+    case 1:
+      job = 'gla';
+      break;
+    case 2:
+      job = 'pgl';
+      break;
+    case 3:
+      job = 'mrd';
+      break;
+    case 4:
+      job = 'lnc';
+      break;
+    case 5:
+      job = 'arc';
+      break;
+    case 6:
+      job = 'cnj';
+      break;
+    case 7:
+      job = 'thm';
+      break;
+    case 8:
+      job = 'crp';
+      break;
+    case 9:
+      job = 'bsm';
+      break;
+    case 10:
+      job = 'arm';
+      break;
+    case 11:
+      job = 'gsm';
+      break;
+    case 12:
+      job = 'ltw';
+      break;
+    case 13:
+      job = 'wvr';
+      break;
+    case 14:
+      job = 'alc';
+      break;
+    case 15:
+      job = 'cul';
+      break;
+    case 16:
+      job = 'nin';
+      break;
+    case 17:
+      job = 'btn';
+      break;
+    case 18:
+      job = 'fsh';
+      break;
+    case 19:
+      job = 'pld';
+      break;
+    case 20:
+      job = 'mnk';
+      break;
+    case 21:
+      job = 'war';
+      break;
+    case 22:
+      job = 'drg';
+      break;
+    case 23:
+      job = 'brd';
+      break;
+    case 24:
+      job = 'whm';
+      break;
+    case 25:
+      job = 'blm';
+      break;
+    case 26:
+      job = 'acn';
+      break;
+    case 27:
+      job = 'smn';
+      break;
+    case 28:
+      job = 'sch';
+      break;
+    case 29:
+      job = 'rog';
+      break;
+    case 30:
+      job = 'nin';
+      break;
+    case 31:
+      job = 'mch';
+      break;
+    case 32:
+      job = 'drk';
+      break;
+    case 33:
+      job = 'ast';
+      break;
+    case 34:
+      job = 'sam';
+      break;
+    case 35:
+      job = 'rdm';
+      break;
+    case 36:
+      job = 'bdm';
+      break;
+    case 37:
+      job = 'gnb';
+      break;
+    case 38:
+      job = 'dnc';
+      break;
+    case 39:
+      job = 'rpr';
+      break;
+    case 40:
+      job = 'sge';
+    break;
+    case 50:
+      job = 'opp';
+      break;
+    case 51:
+      job = 'che';
+      break;
+    case 52:
+      job = 'jas';
+      break;
+    default:
+      job = null;
+  }
+  return job;
+}
+function job_to_role(job){
+  let tank = ['pld','gla','war','mrd','drk','gnb'];
+  let healer = ['whm','sch','ast','cnj','sge'];
+  let melee = ['mnk','drg','nin','sam','pgl','lnc','rog','rpr'];
+  let physical = ['brd','mch','dnc','arc'];
+  let magical = ['blm','smn','rdm','thm','acn'];
+  if(tank.indexOf(job) !== -1){
+    return 'tank';
+  }
+  else if (healer.indexOf(job) !== -1) {
+    return 'healer';
+  }
+  else if (melee.indexOf(job) !== -1) {
+    return 'melee';
+  }
+  else if (physical.indexOf(job) !== -1) {
+    return 'physical';
+  }
+  else if (magical.indexOf(job) !== -1) {
+    return 'magical';
+  }
+  else {
+    return 'general';
+  }
+}
