@@ -60,7 +60,7 @@ $(document).on("click", "[id^=Overlay_]", function(t){
 });
 $(document).on("click", "#setting-open", function(t){
   if(t.detail === 3){
-    window.open( 'https://takoyaki313.github.io/Gorge-Overlay/G3-Setting.html' );
+    window.open( 'G3-Setting.html' ,'',"width=1080,height=840" );
   }
   else if (t.detail === 10) {
     window.location.reload(false);

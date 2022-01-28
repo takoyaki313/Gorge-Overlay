@@ -53,12 +53,27 @@ function log_queue_unshift(log){
 }
 let start = 0;
 
-function maindata_export(type){
+function maindata_export(type,duration,...add){
   let return_data = [];
+  let battle_time = true;
+  if(typeof duration === 'number'){
+    battle_time = false;
+  }
   if(type === 'ally'){
     let battle_data = TBD.Player_data;
     for(let i = 0 ; i < battle_data.length ; i++){
       if(battle_data[i].aliance > 0){
+        let dps = 0;
+        for(let p = 0 ; p < add.length ; p++){
+          if(typeof battle_data[i][add[p]] === 'number'){
+            dps += battle_data[i][add[p]];
+          }
+        }
+        if(battle_time){
+          battle_data[i].calcdps = damage_to_dps(dps,battle_data[i].battle_time);
+        }else {
+          battle_data[i].calcdps = damage_to_dps(dps,duration);
+        }
         return_data.push(battle_data[i]);
       }
     }
@@ -67,6 +82,17 @@ function maindata_export(type){
     let battle_data = TBD.Player_data;
     for(let i = 0 ; i < battle_data.length ; i++){
       if(battle_data[i].nameID.substring(0,2) === '10'){
+        let dps = 0;
+        for(let p = 0 ; p < add.length ; p++){
+          if(typeof battle_data[i][add[p]] === 'number'){
+            dps += battle_data[i][add[p]];
+          }
+        }
+        if(battle_time){
+          battle_data[i].calcdps = damage_to_dps(dps,battle_data[i].battle_time);
+        }else {
+          battle_data[i].calcdps = damage_to_dps(dps,duration);
+        }
         return_data.push(battle_data[i]);
       }
     }
@@ -75,6 +101,17 @@ function maindata_export(type){
     let battle_data = TBD.Player_data;
     for(let i = 0 ; i < battle_data.length ; i++){
       if(battle_data[i].aliance === 1){
+        let dps = 0;
+        for(let p = 0 ; p < add.length ; p++){
+          if(typeof battle_data[i][add[p]] === 'number'){
+            dps += battle_data[i][add[p]];
+          }
+        }
+        if(battle_time){
+          battle_data[i].calcdps = damage_to_dps(dps,battle_data[i].battle_time);
+        }else {
+          battle_data[i].calcdps = damage_to_dps(dps,duration);
+        }
         return_data.push(battle_data[i]);
       }
     }
@@ -83,6 +120,17 @@ function maindata_export(type){
     let battle_data = TBD.Player_data;
     for(let i = 0 ; i < battle_data.length ; i++){
       if(battle_data[i].aliance > 1){
+        let dps = 0;
+        for(let p = 0 ; p < add.length ; p++){
+          if(typeof battle_data[i][add[p]] === 'number'){
+            dps += battle_data[i][add[p]];
+          }
+        }
+        if(battle_time){
+          battle_data[i].calcdps = damage_to_dps(dps,battle_data[i].battle_time);
+        }else {
+          battle_data[i].calcdps = damage_to_dps(dps,duration);
+        }
         return_data.push(battle_data[i]);
       }
     }

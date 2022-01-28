@@ -8,7 +8,7 @@ var FL_RESULT_SHOW = true;
 var G_REPLACE_ACTNAME = true;
 let Overlay_Select = {};
 function fl_start(e){
-  let sort_target = 'totaldamage';
+  let sort_target = 'calcdps';
   //let encounter = e.Encounter;
   //let combatants = e.Combatant;
   let fl_template = $('#fl-source');
@@ -22,11 +22,11 @@ function fl_start(e){
   else {
     let battle_datas = [];
     if(FL_RESULT_SHOW && LOGLINE_ENCOUNTER.Result_Page){
-      battle_datas = maindata_export('ally');
+      battle_datas = maindata_export('ally',null,'totaldamage');
     }
     else if(FL_PARTYPRIORITY){
-      let party_member = maindata_export('party');
-      let other_member = maindata_export('ally-other');
+      let party_member = maindata_export('party',null,'totaldamage');
+      let other_member = maindata_export('ally-other',null,'totaldamage');
       if(FL_AROUND_ONLY){
         party_member = battled_only(party_member);
         other_member = battled_only(other_member);
@@ -35,7 +35,7 @@ function fl_start(e){
       battle_datas = party_priority(party_member,other_member,FL_MAXROW);
     }
     else {
-      battle_datas = maindata_export('ally');
+      battle_datas = maindata_export('ally',null,'totaldamage');
       if(FL_AROUND_ONLY){
         battle_datas = battled_only(battle_datas);
       }
@@ -125,7 +125,7 @@ function fl_create(template,battle_data,hide,selected){
   let row = template.clone();
   let time = battle_data.battle_time;
   row.addClass('aliance-border-' + battle_data.aliance);
-  let dps = damage_to_dps(battle_data.totaldamage,time).toFixed(1);
+  let dps = battle_data.calcdps.toFixed(1);
   row.find('.f-dps-i').text(dps.substring(0,dps.length - 2));
   if(dps.length < 6){
     row.find('.f-dps-d').text('.' + dps.slice(-1));
