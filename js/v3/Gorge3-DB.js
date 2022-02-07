@@ -1,5 +1,5 @@
 let TBD = {Player_data:[],Skill_data:[],DoT_data:[],Player_hp:[],Hp_data:[]};
-async function database_version_store(){
+/*async function database_version_store(){
   // バージョン1
   await DB.version(1).stores({
     Player_data: "&nameID, name, job, aliance, server, &hphistory, robhistory, kills, deaths, assist, water, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomeheal, incomeselfheal, incomeotherheal, incomepartyheal, incomeallyheal, totalincomedamage, personalincomedamage, robincomedamage, otherpersonincomedamage, objectincomedamage, mpheal",
@@ -10,11 +10,13 @@ async function database_version_store(){
   });
 
   // バージョン2 usersストアを追加
-  /*
+
   await DB.version(2).stores({
-    Player_data: "&nameID, name, job, *aliance, server, *rob, robhistory, kills, deaths, assist, water, *deathdata, *usedskill, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomedamage, personalincomedamage, objectincomedamage",
-    Skill_data: "&actionwithnameID, networkskill_id, name, victimname, skillname ,damage_type, add_target, skillID, nameID, victimID, time_send, time_accept, [networkskill_id+victimID]",
-    Hp_data: "++ , nameid , timestamp"
+    Player_data: "&nameID, name, job, aliance, server, &hphistory, robhistory, kills, deaths, assist, water, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomeheal, incomeselfheal, incomeotherheal, incomepartyheal, incomeallyheal, totalincomedamage, personalincomedamage, robincomedamage, otherpersonincomedamage, objectincomedamage, mpheal",
+    Skill_data: "&actionwithnameID, networkskill_id, name, victimname, skillname ,damage_type, add_target, skillID, nameID, victimID, time_send, time_accept, [networkskill_id+victimID], damage",
+    DoT_data: "&ID, victimID, lastupdate, effectID",
+    Player_hp: "&nameID, currenthp, maxhp, lastupdate",
+    Hp_data: "++ , nameID , time_number, lastupdate"
   });
   /*
   // バージョン3 notesストアにgoodを追加
@@ -28,7 +30,7 @@ async function database_version_store(){
         note.good = true;
       }
     });
-  });*/
+  });
   await DB_WORKSPACE.version(1).stores({
     Player_data: "&nameID, name, job, aliance, server, *rob, robhistory, kills, deaths, assist, water, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomeheal, incomeselfheal, incomeotherheal, incomepartyheal, incomeallyheal, totalincomedamage, personalincomedamage, robincomedamage, otherpersonincomedamage, objectincomedamage, mpheal",
     Skill_data: "&actionwithnameID, networkskill_id, name, victimname, skillname ,damage_type, add_target, skillID, nameID, victimID, time_send, time_accept, [networkskill_id+victimID]",
@@ -38,7 +40,7 @@ async function database_version_store(){
   await DB_BACKUP.version(1).stores({
     Battle : '++'
   });
-}
+}*/
 async function main_db_save_reset(){
   //await DB_BACKUP.Battle.add({Database : DB.Player_data.toArray()});
   await main_db_save();
@@ -123,7 +125,14 @@ async function initialize_playerdata(key){
   console.log(data);
   return data;
 }
-async function update_maindata(target,keyname,key,...data){
+async function insert_maindata(target,keyname,key,...data){//データの新規追加ONLY
+  let input = {[keyname]:key};
+  for(let i = 0 ; i <data.length ; i ++){
+    input[data[i][0]] = data[i][1];
+  }
+  TBD[target].push(input);
+}
+async function update_maindata(target,keyname,key,...data){//データの更新含む
   //let position = TBD[target].findIndex(({nameID}) => nameID === key);
   let position = await searched_maindata(target,keyname,key);
   if(position === -1){//存在しないとき
@@ -173,6 +182,53 @@ async function update_maindata(target,keyname,key,...data){
       else {
         console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1]);
         console.error(data);
+      }
+    }
+  }
+  //robot data を詳細にするためのもの
+  if(AREA.Area_Type === 2){//Hidden Gorge
+    if(target === 'Player_data'){
+      if(typeof TBD[target][position].robot === 'boolean'){
+        if(TBD[target][position].robot){//ロボ中のとき
+          //input
+          let data_robot = TBD[target][position].robot_data[TBD[target][position].robot_data.length - 1].data;
+          for(let i = 0 ; i < data.length ; i++){
+            if(data[i][2]){//replace
+              //TBD[target][position].robot_data[TBD[target][position].robot_data.length - 1].data[data[i][0]] = data[i][1];
+            }
+            else if (data[i][0] === 'robot_data') {
+              //Circular reference
+            }
+            else{//add
+              if(typeof data_robot[data[i][0]] === 'undefined'){
+                if(typeof data[i][1] === 'number'){
+                  data_robot[data[i][0]] = 0 ;
+                }
+                else if (typeof data[i][1] === 'string') {
+                  //db_data[data[i][0]] = '' ;
+                  data_robot[data[i][0]] = [];
+                }
+                else if (typeof data[i][1] === 'object') {
+                  data_robot[data[i][0]] = [];
+                }
+              }
+              if(typeof data[i][1] === 'number'){
+                data_robot[data[i][0]] += data[i][1];
+              }
+              else if (typeof data[i][1] === 'string') {
+                //db_data[data[i][0]] += data[i][1];
+                data_robot[data[i][0]].push(data[i][1]) ;
+              }
+              else if (typeof data[i][1] === 'object') {
+                data_robot[data[i][0]].push(data[i][1]) ;
+              }
+              else {
+                console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1]);
+                console.error(data);
+              }
+            }
+          }
+        }
       }
     }
   }

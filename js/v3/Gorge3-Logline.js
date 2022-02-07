@@ -1,5 +1,7 @@
 let LOGLINE_ENCOUNTER = {};
-
+var Assist_Debuff_Reset = false;
+var HP_Update_duplite_data = true;
+var HP_Update_duplite_robride_process = false;
 async function logline_firststep(log){
   if(log[0] === '40'){
     await minimap_change_area_check(log);
@@ -221,8 +223,8 @@ function log_party_push(log) {
 async function kill_death_main_25(log){
   let data = {
     attackerID : log[4],
-    attacker : log[3],
-    attcker_type : await npc_check_nameID(log[4]),
+    attacker : log[5],
+    attacker_type : await npc_check_nameID(log[4]),
     victimID : log[2],
     victim : log[3],
     victim_type : await npc_check_nameID(log[2]),
@@ -232,7 +234,7 @@ async function kill_death_main_25(log){
     let searched = await owner_id_list_search(data.attackerID);
     if(searched !== null){
       data.attackerID = searched;
-      data.attcker_type = await npc_check_nameID(searched);
+      data.attacker_type = await npc_check_nameID(searched);
       let db = await read_maindata('Player_data','nameID',data.attackerID,'name');
       if(db !== null){
         data.attacker = db.name;
@@ -246,8 +248,8 @@ async function kill_death_main_25(log){
     }
   }
   if(data.victim_type === 'player'){
-    await update_maindata('Player_data','nameID',data.attackerID,['kill',1,false],['lastupdate',data.lastupdate,true]);
-    await update_maindata('Player_data','nameID',data.victimID,['death',1,false],['lastupdate',data.lastupdate,true]);
+    await update_maindata('Player_data','nameID',data.attackerID,['kill',1,false],['kill_name',{toID:data.victimID,toname:data.victim,lastupdate:data.lastupdate,time_number : await timestamp_change(data.lastupdate)},false],['lastupdate',data.lastupdate,true]);
+    await update_maindata('Player_data','nameID',data.victimID,['death',1,false],['death_name',{fromID:data.attackerID,fromname:data.attacker,lastupdate:data.lastupdate,time_number : await timestamp_change(data.lastupdate)},false],['lastupdate',data.lastupdate,true]);
   }
 }
 async function npc_check_nameID(nameID){
@@ -342,7 +344,7 @@ async function incomeheal_main(uniqueID,nameID,attackerID,damage,add_target,last
   if(nameID === attackerID){//selfheal
     await update_maindata('Player_data','nameID',nameID,['totalincomeheal',damage,false],['incomeselfheal',damage,false],['incomeheal',uniqueID,false],['lastupdate',lastupdate,true]);
   }
-  else if (nameID.substring(0,2) === '40'){//From Object (NPC)
+  else if (attackerID.substring(0,2) === '40'||attackerID.substring(0,2) === 'E0'){//From Object (NPC)
     await update_maindata('Player_data','nameID',nameID,['totalincomeheal',damage,false],['incomeotherheal',damage,false],['incomeheal',uniqueID,false],['lastupdate',lastupdate,true]);
   }
   else {//From Player
@@ -378,7 +380,7 @@ async function incomedamage_data_create(incomedamage_damage_type,uniqueID,income
   return [incomedamage_damage_type,data_main,data_replace];
 }
 async function incomedamage_add_target(attackerID,attackermaxhp){
-  if(attackerID.substring(0,2) === '40'){
+  if(attackerID.substring(0,2) === '40'||attackerID.substring(0,2) === 'E0'){
     return ['totalincomedamage','objectincomedamage'];
   }
   else if (attackerID.substring(0,2) === '10') {
@@ -484,11 +486,11 @@ async function hpdata_add(nameID,player_data,attackerID){
     datavalue = [player_data.currenthp,player_data.maxhp,player_data.lastupdate,player_data.time_number];
     datareplace = [true,true,true,true];
   }
-  let include_attcker = false;
+  let include_attacker = false;
   if(attackerID === undefined || attackerID === ' log_38 ' || attackerID === 'unknown '|| attackerID === null|| attackerID === ' 37_heal'|| attackerID === nameID){
   }
   else {
-    include_attcker = true;
+    include_attacker = true;
     dataname.push('attacker');
     datavalue.push({attacker:attackerID,type:'action'});
     datareplace.push(false);
@@ -497,44 +499,100 @@ async function hpdata_add(nameID,player_data,attackerID){
   //await update_maindata('Player_data','nameID',nameID,['hphistory',position.toString(),false],['lastupdate',player_data.lastupdate,true]);
   let readed_data = await read_maindata('Player_hp','nameID',nameID,'nameID','currenthp','maxhp','time_number','effect','attacker');
   if(Object.keys(readed_data).length === 0){
-    //new create
+    //new create :data not found
     await update_maindata_change('Player_hp','nameID',nameID,dataname,datavalue,datareplace);
   }else {
-    if(player_data.currenthp === player_data.maxhp){
-      //デバフがかかった人はアシストのリストをリセットしない
-      //let debuff_list = await what_include_buff(readed_data.effect,'debuff');
-      if(/*debuff_list.length === 0 &&*/ true){
-        dataname.push('attacker');
-        datavalue.push([]);
-        datareplace.push(true);
+    let apply_hpupdate = false;
+    let temp_time = player_data.time_number - readed_data.time_number;
+    if(temp_time > 0){//timestamp OK
+      apply_hpupdate = true;
+    }else if (temp_time === 0) {//timestamp duplite
+      if(HP_Update_duplite_data){
+        apply_hpupdate = true;
       }
     }
-    if(readed_data.time_number < player_data.time_number){
+    else {//old data
+      //no action
+    }
+    ////
+
+    if(apply_hpupdate){
+      if(player_data.currenthp === player_data.maxhp){//HPMax時のアシスト リセット
+        //デバフがかかった人はアシストのリストをリセットしない
+        let debuff_list = await what_include_buff(readed_data.effect,'debuff');
+
+        if(debuff_list.length === 0){
+          dataname.push('attacker');
+          datavalue.push([]);
+          datareplace.push(true);
+        }
+        else if (Assist_Debuff_Reset) {
+          dataname.push('attacker');
+          datavalue.push([]);
+          datareplace.push(true);
+        }
+        else {
+          //console.error('デバフがかかっているのでリセットしない');
+        }
+      }
+
       await update_maindata_change('Player_hp','nameID',nameID,dataname,datavalue,datareplace);
       //////////////////////////////////
       ////
       ////////////////
       if(player_data.currenthp === 0 ){
         if(readed_data.currenthp === 0){
-          if(DEBUG_LOG){
-            console.debug('Enemy->' + attackerID + ' -> '+ player_data.nameID + ': '+ readed_data.currenthp+ ' / '+  readed_data.maxhp + ' -> '+player_data.currenthp + ' / ' + player_data.maxhp);
-          }
+          //既にHPが0になっている
         }
         else {
-          await update_maindata('Player_data','nameID',player_data.nameID,['s_death',1,false],['lastupdate',player_data.lastupdate,true]);
+          let victim_name = await read_maindata('Player_data','nameID',player_data.nameID,'aliance','name','job','robot','robot_data');
+          let victim_job = await robot_replace_job(victim_name);
+          let attacker_job = '';
+          let attacker_name = {};
           if(player_data.nameID.substring(0,2) === '10'){//死んだ人がプレイヤー
-            if(attackerID.substring(0,2) === '10'){
-              await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate);
+            if(attackerID.substring(0,2) === '10'){//キルした人がプレイヤー
+              attacker_name = await read_maindata('Player_data','nameID',attackerID,'aliance','name','job','robot','robot_data');
+              attacker_job = await robot_replace_job(attacker_name);
+              await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job);
+            }
+            else if (attackerID.substring(0,2) === '40') {//キルした人がNPC
+              if(readed_data.attacker.length > 0){
+                for(let i = 1 ; i < readed_data.attacker.length + 1; i++){
+                  if(readed_data.attacker.slice(i * -1)[0].attacker.substring(0,2) === '10'){
+                    attackerID = readed_data.attacker.slice(i * -1)[0].attacker;
+                    break;
+                  }
+                  else {
+                    if(readed_data.attacker.length === i){
+                      if(DEBUG_LOG){
+                        console.log('attacker is NPC? ->' + attackerID);
+                      }
+                    }
+                  }
+                }
+              }
+              attacker_name = await read_maindata('Player_data','nameID',attackerID,'aliance','name','job','robot','robot_data');
+              attacker_job = await robot_replace_job(attacker_name);
+              await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job);
             }
             else if (attackerID === ' log_38 ') {
               if(readed_data.attacker.length > 0){
-                attackerID = readed_data.attacker.slice(-1)[0].attacker;/*
-                if(readed_data.attacker.slice(-1)[0].type === 'DoT-damage'){
-                  if(readed_data.attacker.slice(-2)[0].type === 'DoT-damage'){
-                    console.error(readed_data.attacker);
+                for(let i = 1 ; i < readed_data.attacker.length + 1; i++){
+                  if(readed_data.attacker.slice(i * -1)[0].attacker.substring(0,2) === '10'){
+                    attackerID = readed_data.attacker.slice(i * -1)[0].attacker;
+                    break;
                   }
-                }*/
-                await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate);
+                  else {
+                    if(readed_data.attacker.length === i){
+                      if(DEBUG_LOG){
+                        console.log('attacker is NPC? ->' + attackerID);
+                      }
+                    }
+                  }
+                }
+                attacker_name = await read_maindata('Player_data','nameID',attackerID,'aliance','name','job','robot','robot_data');
+                attacker_job = await robot_replace_job(attacker_name);
+                await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job);
               }else {
                 if(DEBUG_LOG){
                   console.warn('Warn : Kill Player Unknown->' + attackerID +'->' + player_data.nameID);
@@ -547,23 +605,52 @@ async function hpdata_add(nameID,player_data,attackerID){
               }
             }
           }
+          await update_maindata('Player_data','nameID',player_data.nameID,['s_death',1,false],['s-death-name',{attackerID:attackerID,attacker:attacker_name.name,attacker_job:attacker_job,lastupdate:player_data.lastupdate,time_ms:player_data.time_number},false],['lastupdate',player_data.lastupdate,true]);
         }
       }
-
+      if(AREA.Area_Type === 2){//Hidden Gorge
+        if(temp_time > 0 ||HP_Update_duplite_robride_process){//duplite Hpdata exclude
+          await rob_ride_check(nameID,readed_data,player_data);
+        }
+        //readed_data
+        //player_data
+      }
       /////
       /////
       /////   Rob ride process
       /////
       /////
     }
-    else if (readed_data.time_number === player_data.time_number) {
-      //同一データ
-      //console.warn('This Data is duplite...?');
-      //console.warn(readed_data);
-      //console.warn(player_data);
+    else if (temp_time === 0) {
+      //同一データ?
+      if(readed_data.currenthp !== player_data.currenthp||readed_data.maxhp !== player_data.maxhp){
+        if(DEBUG_LOG){
+          console.warn('This Data is duplite...?,Not Applied'+attackerID);
+          console.warn(readed_data);
+          console.warn(player_data);
+        }
+      }
     }
     else if (readed_data.currenthp === undefined) {
-      //new create
+      //new create HP Data 未登録
+      if(player_data.currenthp === player_data.maxhp){//HPMax時のアシスト リセット
+        //デバフがかかった人はアシストのリストをリセットしない
+        let debuff_list = await what_include_buff(readed_data.effect,'debuff');
+
+        if(debuff_list.length === 0){
+          dataname.push('attacker');
+          datavalue.push([]);
+          datareplace.push(true);
+        }
+        else if (Assist_Debuff_Reset) {
+          dataname.push('attacker');
+          datavalue.push([]);
+          datareplace.push(true);
+        }
+        else {
+          //console.error('デバフがかかっているのでリセットしない');
+        }
+      }
       await update_maindata_change('Player_hp','nameID',nameID,dataname,datavalue,datareplace);
     }
     else {
@@ -575,39 +662,101 @@ async function hpdata_add(nameID,player_data,attackerID){
     }
   }
 }
-async function assist_main(kill_player,death_player,death_attcker,lastupdate){
-  let attacker_aliance = await read_maindata('Player_data','nameID',kill_player,'aliance');
+async function robot_replace_job(data){
+  if(typeof data.robot !== 'boolean'){
+    return data.job;
+  }else {
+    if(data.robot_data.slice(-1)[0].ride_type === 'person'){
+      return data.job;
+    }
+    else {
+      return data.robot_data.slice(-1)[0].ride_type;
+    }
+  }
+}
+async function rob_ride_check(nameID,old,now){
+  if(now.maxhp === 0||nameID.substring(0,2) === '40'){
+    return null;
+  }
+  let now_joutai = await rob_checker(now.maxhp);
+  if(old.maxhp !== now.maxhp){//undefined wo hukumu
+    if(now_joutai !== 'person'){//新規搭乗（最大HPの変更）
+      //console.log('Ride Robot->' + now_joutai + ':' + nameID);
+      await rob_ride_time_calc(nameID,now,now_joutai,true);
+    }
+    else {
+      let old_joutai = await rob_checker(old.maxhp);
+      if(old_joutai !== 'person'){//降りる　
+        //console.log('Get off the Robot->' + old_joutai + ':' + nameID);
+        await rob_ride_time_calc(nameID,now,now_joutai,false);
+      }
+    }
+  }
+  else if (now_joutai !== 'person') {//HP Regen received. probably changed robot
+    if(old.currenthp - now.currenthp < 0){
+      //console.log('HP_Regen->' + now_joutai + ':' + nameID + '  ' + old.currenthp + '->' + now.currenthp);
+      await rob_ride_time_calc(nameID,now,now_joutai,true);
+    }
+  }
+}
+async function rob_ride_time_calc(nameID,now,now_joutai,ride){
+  let searched = await read_maindata('Player_data','nameID',nameID,'robot_data');
+  if(typeof searched.robot_data !== 'undefined'){
+    let edit = searched.robot_data.length - 1;
+    searched.robot_data[edit].getoff = now.time_number;
+    searched.robot_data[edit].time = now.time_number - searched.robot_data[edit].ridetime;
+    searched.robot_data[edit + 1] = {ridetime:now.time_number,ride_type:now_joutai,getoff:0,time:0,data:{}};
+    await update_maindata('Player_data','nameID',nameID,['robot',ride,true],['robot_data',searched.robot_data,true],['lastupdate',now.lastupdate,true]);
+  }
+  else {
+    await update_maindata('Player_data','nameID',nameID,['robot',ride,true],['robot_data',{ridetime:now.time_number,ride_type:now_joutai,getoff:0,time:0,data:{}},false],['lastupdate',now.lastupdate,true]);
+  }
+}
+async function rob_checker(maxhp){
+  switch (maxhp) {
+    case Chaiser_HP:
+      return 'che';
+    case Oppresor_HP:
+      return 'opp';
+    case Justice_HP:
+      return 'jas';
+    default:
+      return 'person';
+  }
+}
+async function assist_main(kill_player,death_player,death_attacker,lastupdate,time_number,death_player_name,attacker_aliance,death_job,attacker_job){
   let ally_kill = false;
-  if(Object.keys(attacker_aliance).length === 1){
-    if(attacker_aliance.aliance > 0){
+  if(typeof attacker_aliance !== 'undefined'){
+    if(attacker_aliance > 0){
       ally_kill = true;
     }
   }
   //console.log('aliance->' + attacker_aliance.aliance + ' :result->' + ally_kill);
   if(ally_kill){
-    let damage_attcker = [];
-    for(let i = 0 ; i < death_attcker.length ; i++){
-      damage_attcker.push(death_attcker[i].attacker);
+    let damage_attacker = [];
+    for(let i = 0 ; i < death_attacker.length ; i++){
+      damage_attacker.push(death_attacker[i].attacker);
     }
     let assist_player = [];
-    let attcker_effect = await read_maindata('Player_hp','nameID',kill_player,'effect');
-    let kill_buff_list = await what_include_buff(attcker_effect.effect,'buff');
-    let assist_dupe = kill_buff_list.concat(damage_attcker);
+    let attacker_effect = await read_maindata('Player_hp','nameID',kill_player,'effect');
+    let kill_buff_list = await what_include_buff(attacker_effect.effect,'buff');
+    let assist_dupe = kill_buff_list.concat(damage_attacker);
     let A_test = false;
     for(let i = 0 ; i < assist_dupe.length ; i++){//
       if(assist_player.indexOf(assist_dupe[i]) === -1 && assist_dupe[i] !== kill_player){
         assist_player.push(assist_dupe[i]);
       }
     }
-    await assist_players_write(assist_player,'assist',lastupdate);
+    await assist_players_write(assist_player,'assist',lastupdate,death_player,death_player_name);
     //console.log('Ally ->'+kill_player + ' -> '+ death_player + '  :' + lastupdate);
     //console.log(assist_player);
   }
-  await update_maindata('Player_data','nameID',kill_player,['s_kill',1,false],['lastupdate',lastupdate,true]);
+  //kill list {}
+  await update_maindata('Player_data','nameID',kill_player,['s_kill',1,false],['s-kill-name',{victimID:death_player,victim:death_player_name,death_job:death_job,lastupdate:lastupdate,time_ms:time_number},false],['lastupdate',lastupdate,true]);
 }
-async function assist_players_write(nameID_array,type,lastupdate){
+async function assist_players_write(nameID_array,type,lastupdate,deathID,death_player_name){
   for(let i = 0 ; i < nameID_array.length ; i++){
-    update_maindata('Player_data','nameID',nameID_array[i],[type,1,false],['lastupdate',lastupdate,true]);
+    update_maindata('Player_data','nameID',nameID_array[i],[type,1,false],['s-'+type,{assist:deathID,assistname:death_player_name,lastupdate:lastupdate,time_number:await timestamp_change(lastupdate)},false],['lastupdate',lastupdate,true]);
   }
 }
 async function what_include_buff(effect,buff_type){

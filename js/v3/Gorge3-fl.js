@@ -1,12 +1,53 @@
-var FL_MAXROW = 24;
+var FL_MAXROW = 15;
+var RW_MAXROW = 15;
 var PVE_MAXROW = 8;
 var FL_EXTEND = {Aliance:false,Party:false,Me:true,near:true};
 var FL_ACT_Compatible_Mode = false;
+var GORGE_ACT_Compatible_Mode = false;
 var FL_PARTYPRIORITY = true;
 var FL_AROUND_ONLY = true;
 var FL_RESULT_SHOW = true;
+var RW_PARTYPRIORITY = true;
+var RW_AROUND_ONLY = true;
+var RW_RESULT_SHOW = true;
+
 var G_REPLACE_ACTNAME = true;
 let Overlay_Select = {};
+function gorge_start(e){
+  let sort_target = 'calcdps';
+  if(GORGE_ACT_Compatible_Mode){
+
+  }else {
+    //let battle_datas = maindata_export('ally',null,'persondamage','torobotdamage','matondamage');
+    let battle_datas = [];
+    if(RW_RESULT_SHOW && LOGLINE_ENCOUNTER.Result_Page){
+      battle_datas = maindata_export('ally',null,'persondamage','torobotdamage','matondamage');
+    }
+    else if(RW_PARTYPRIORITY){
+      let party_member = maindata_export('party',null,'persondamage','torobotdamage','matondamage');
+      let other_member = maindata_export('ally-other',null,'persondamage','torobotdamage','matondamage');
+      if(RW_AROUND_ONLY){
+        party_member = battled_only(party_member);
+        other_member = battled_only(other_member);
+      }
+      other_member = array_sort_module(other_member,sort_target);
+      battle_datas = party_priority(party_member,other_member,RW_MAXROW);
+    }
+    else {
+      battle_datas = maindata_export('ally',null,'persondamage','torobotdamage','matondamage');
+      if(RW_AROUND_ONLY){
+        battle_datas = battled_only(battle_datas);
+      }
+      battle_datas = party_priority([],battle_datas,RW_MAXROW);
+    }
+    ////////////////////////////////////////////////////////////
+    battle_datas = array_sort_module(battle_datas,sort_target);
+
+  }
+}
+function gorge_create(template,battle_data,hide,selected){
+  
+}
 function fl_start(e){
   let sort_target = 'totaldamage';
   //let encounter = e.Encounter;
@@ -42,6 +83,8 @@ function fl_start(e){
       battle_datas = party_priority([],battle_datas,FL_MAXROW);
     }
     battle_datas = array_sort_module(battle_datas,sort_target);
+    //////////////////////////////
+
     let max_data = damage_to_dps(battle_datas[0].totaldamage,battle_datas[0].battle_time);
     max_data = (typeof max_data === 'number')?max_data:0;
     let select_lock = Object.keys(Overlay_Select);
@@ -186,7 +229,6 @@ function simple_create(template,battle_data,max_data){
   if(battle_data.overhealPct !== null){
     row.find('.basic-dps').prop('title',tooltip_title_create([Lang_select.healed +' -> ',alignment_of_digits(battle_data.hpsarea)],[Lang_select.overhealPct +' -> ',battle_data.overhealPct]));
   }
-  row.find('.basic-job').addClass('icon-' + battle_data.job);
 
   if(typeof battle_data.data_area1 === 'number'){
     if(battle_data.dunamis !== undefined && battle_data.dunamis !== null){
@@ -216,6 +258,26 @@ function simple_create(template,battle_data,max_data){
   else if(battle_data.name === ACT_NAME){
     row.addClass('me');
   }
+  if(battle_data.job === ''){
+    if(battle_data.name === 'Limit Break'){
+      row.find('.basic-job').addClass('icon-app_fc');
+      row.find('.basic-space1').text('');
+      row.find('.basic-space2').text('');
+      row.find('.basic-space3').text('');
+    }
+    else if (battle_data.name.indexOf('(') !== -1) {
+      if(battle_data.name.indexOf(')') !== -1){
+        row.find('.basic-job').addClass('icon-app_world_wanderer');
+        row.find('.basic-space1').text('');
+        row.find('.basic-space2').text('');
+        row.find('.basic-space3').text('');
+      }
+    }
+  }
+  else {
+    row.find('.basic-job').addClass('icon-' + battle_data.job);
+  }
+
   return row;
 }
 function data_simple_exchange(type,data,enc_time){
