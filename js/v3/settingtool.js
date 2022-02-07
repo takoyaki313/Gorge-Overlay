@@ -5,28 +5,6 @@ $(function() {
   $("#version").text(localdata.VERSION);
   generate_settingpage('general',localdata);
 });
-function choose_settingpage(type){
-  switch (type) {
-    case 'general':
-
-      break;
-    case 'PvE-setting':
-
-      break;
-    case 'FL-setting':
-
-      break;
-    case 'Gorge-Setting':
-
-      break;
-    case 'import-export':
-
-      break;
-    default:
-
-  }
-}
-
 function generate_settingpage(type,data){
   let local_keyname = Object.keys(Localstorage_dictionary);
   $("#navi-" + type).prop('checked',true);

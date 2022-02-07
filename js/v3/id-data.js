@@ -24,7 +24,7 @@ let Lang_text = {
   ja:{
     Person:'人',
     Robot:'ロボット',
-    Maton:'マトン',
+    Maton:'オブジェクト',
     Tower:'タワー・コア',
     //
     self:'自分',
@@ -48,7 +48,7 @@ let Lang_text = {
   en:{
     Person:'Person',
     Robot:'Robot',
-    Maton:'Maton',
+    Maton:'Object',
     Tower:'Tower/Core',
     //
     self:'Myself',

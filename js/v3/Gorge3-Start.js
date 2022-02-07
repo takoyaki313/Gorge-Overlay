@@ -1,8 +1,8 @@
 $(function (){
   'use strict';
-  database_version_store(DB);
+  //database_version_store(DB);
   logline_battle_flag_reset();
-  DB.Player_hp.clear();
+  //DB.Player_hp.clear();
    $( document ).tooltip({
     content: function() {
         return $(this).attr('title');
@@ -14,9 +14,10 @@ $(function (){
       log_queue_insert(logline.line);
     }
   });
+  /*
   addOverlayListener('ImportedLogLines', (log) => {
     import_log_division(log.logLines);
-  });
+  });*/
   addOverlayListener('ChangeZone', (zone) => area_check(zone));
   /*
   addOverlayListener('EnmityTargetData', (e) => {
