@@ -46,7 +46,7 @@ function gorge_start(e){
   }
 }
 function gorge_create(template,battle_data,hide,selected){
-  
+
 }
 function fl_start(e){
   let sort_target = 'calcdps';
@@ -259,13 +259,7 @@ function simple_create(template,battle_data,max_data){
     row.addClass('me');
   }
   if(battle_data.job === ''){
-    if(battle_data.name === 'Limit Break'){
-      row.find('.basic-job').addClass('icon-app_fc');
-      row.find('.basic-space1').text('');
-      row.find('.basic-space2').text('');
-      row.find('.basic-space3').text('');
-    }
-    else if (battle_data.name.indexOf('(') !== -1) {
+    if (battle_data.name.indexOf('(') !== -1) {
       if(battle_data.name.indexOf(')') !== -1){
         row.find('.basic-job').addClass('icon-app_world_wanderer');
         row.find('.basic-space1').text('');
@@ -275,7 +269,14 @@ function simple_create(template,battle_data,max_data){
     }
   }
   else {
-    row.find('.basic-job').addClass('icon-' + battle_data.job);
+    if(battle_data.job === 'limit break'){
+      row.find('.basic-job').addClass('icon-app_fc');
+      row.find('.basic-space1').text('');
+      row.find('.basic-space2').text('');
+      row.find('.basic-space3').text('');
+    }else {
+      row.find('.basic-job').addClass('icon-' + battle_data.job);
+    }
   }
 
   return row;

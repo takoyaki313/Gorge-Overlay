@@ -1,7 +1,7 @@
 let POTENCIAL_DAMAGE = false;
 
 async function networkAbility_Skilldata_insert(uniqueID,damage,damage_type,additional_damage_type,abilityID,nameID,maxhp,victimID,skillID,name,victimname,skillname,lastupdate,add_target,overdamage,time_ms,victimmaxHP){
-  await update_maindata('Skill_data','actionwithnameID',uniqueID,
+  await insert_maindata('Skill_data','actionwithnameID',uniqueID,
   ['networkskill_id',abilityID,true],['nameID',nameID,true],['name',name,true],['maxHP',maxhp,true],
   ['victimID',victimID,true],['victimname',victimname,true],['victimmaxHP',victimmaxHP,true],
   ['skillID',skillID,true],['skillname',skillname,true],['damage_type',damage_type,true],['damage',damage,true],['overdamage',overdamage,true],['add_target',add_target,true],
@@ -212,6 +212,14 @@ async function networkAbility_damage_calc(damage_bit){
     return 0;
   }
 }
+async function doublerocketpuntch_hit_pct(nameID,victimID,hitnum,lastupdate){
+  if(victimID === Field_ID){//miss shot
+    await update_maindata('Player_data','nameID',nameID,['totalrocketpuntch',1,false],['missrocketpuntch',1,false],['lastupdate',lastupdate,true]);
+  }
+  else {//hit
+    await update_maindata('Player_data','nameID',nameID,['totalrocketpuntch',1,false],['hitrocketpuntch',1,false],['hitrocketpuntchavarage',hitnum,false],['lastupdate',lastupdate,true]);
+  }
+}
 async function networkactionsync_21_22(log){
   const logline_21_22_max = 48;
   if(log.length > logline_21_22_max ||log.length < logline_21_22_max - 1){
@@ -239,6 +247,14 @@ async function networkactionsync_21_22(log){
     lastupdate : log[1],
     time_ms : await timestamp_change(log[1])
   };
+
+  if(AREA.Area_Type === 2){//Hidden Gorge
+    if(data.actionID === DoubleRocketPuntch){
+      if(log[45] === '0'){
+        await doublerocketpuntch_hit_pct(data.attackerID,data.victimID,Number(log[46]),data.lastupdate);
+      }
+    }
+  }
   if(data.attackerID.substring(0,2) === '40'){//もしペットIDならIDと名前を本人に入れ替える。
     let searched = await owner_id_list_search(data.attackerID);
     if(searched !== null){
