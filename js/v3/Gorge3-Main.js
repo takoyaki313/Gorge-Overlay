@@ -1,6 +1,6 @@
-var DB = new Dexie('MAIN_DB');
-var DB_BACKUP = new Dexie('Battled');
-var DB_WORKSPACE = new Dexie('Workspace');
+//var DB = new Dexie('MAIN_DB');
+//var DB_BACKUP = new Dexie('Battled');
+//var DB_WORKSPACE = new Dexie('Workspace');
 var OWNER_LIST = [];
 var FORCE_LOF_OFF = false;
 var DEBUG_LOG = false;
@@ -27,7 +27,7 @@ function encounter_already_start_check(){
 function overlay_update_start(e){
   encounter_already_start_check();
   if(e.Encounter.CurrentZoneName.toLowerCase() === 'hidden gorge'){
-
+    gorge_start(e);
   }
   else if (
     e.Encounter.CurrentZoneName.toLowerCase() === 'the borderland ruins (secure)'||
@@ -40,7 +40,7 @@ function overlay_update_start(e){
   else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||
   e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||
   e.Encounter.CurrentZoneName === 'The Goblet'*/){
-    fl_start(e);
+    gorge_start(e);
   }
   else {
     timer_encounter(e);
@@ -185,6 +185,11 @@ async function sample_gorge_data_calc(type){
   }
   console.error('LOG_END');
 }
+function battle_time_set(){
+  for(let i = 0 ; i< TBD.Player_data.length ; i++){
+    TBD.Player_data[i].battle_time = 600;
+  }
+}
 async function sample_seiatu_data_calc(){
   let data = await seiatu_sample();
   AREA.Area_Type = 3;
@@ -194,13 +199,22 @@ async function sample_seiatu_data_calc(){
   }
   console.error('LOG_END');
 }
+async function sample_onsal_data_calc(){
+  let data = await onsal_sample();
+  AREA.Area_Type = 1;
+  for(let i = 0 ; i < data.length ; i ++){
+    //logline_firststep(data[i]);
+    log_queue_insert(data[i]);
+  }
+  console.error('LOG_END');
+}
+let data_array = [];
 function import_log_division(log){
-  let data_array = [];
   for(let i = 0 ;i < log.length;i++){
     let data = log[i].split('|');
     data_array.push(data);
   }
-  console.log(JSON.stringify(data_array));
+  //console.log(JSON.stringify(data_array));
 }
 function damage_to_dps(damage,time){
   if(typeof damage !== 'number'){

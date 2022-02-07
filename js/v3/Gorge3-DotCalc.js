@@ -41,8 +41,8 @@ async function networkDoT_24 (log){
     let effect = await read_maindata('Player_hp','nameID',data.victimID,'effect','dot_potencial');
     if(effect.effect === undefined){
       if(DEBUG_LOG){
-        console.error('DoT Simulation failed...');
-        console.error(log);
+        console.warn('DoT Simulation failed...');
+        console.warn(log);
       }
       return null;
     }
@@ -110,10 +110,10 @@ async function networkDoT_24 (log){
     }
     let simulation_data = await dot_damage_distribution(effect_position,sum,data.damage,data.overdamage);
     await dot_damage_cut(simulation_data,data.victimID,data.victimmaxhp,damage_type,data.lastupdate,uniqueID);
-    await update_maindata('DoT_data','ID',uniqueID,['victimID',data.victimID,true],['victim',data.victim,true],
+    await insert_maindata('DoT_data','ID',uniqueID,['victimID',data.victimID,true],['victim',data.victim,true],
     ['victimmaxhp',data.victimmaxhp,true],['DoTType',data.DoTType,true],['effectID',data.effectID,true],['damage_type',damage_type,true],['damage',data.damage,true],['overdamage',data.overdamage,true],['Simulation_data',simulation_data,true],['lastupdate',data.lastupdate,true]);
   }else if (Unique_DoT_ID_Array.indexOf(data.effectID) !== -1) {
-    await update_maindata('DoT_data','ID',uniqueID,['victimID',data.victimID,true],['victim',data.victim,true],
+    await insert_maindata('DoT_data','ID',uniqueID,['victimID',data.victimID,true],['victim',data.victim,true],
     ['victimmaxhp',data.victimmaxhp,true],['DoTType',data.DoTType,true],['effectID',data.effectID,true],['damage_type',damage_type,true],['damage',data.damage,true],['overdamage',data.overdamage,true],['Simulation_data',null,true],['lastupdate',data.lastupdate,true]);
     if(data.effectID === 'B34'){//プネウマ
       await puneuma_calc(data,uniqueID,log);

@@ -1,8 +1,12 @@
+var Process_time_console = false;
+var Process_time = {start:0,end:0};
 function calc(){
   if(!LOG_PROCESS && LOG_QUEUE.length > 0){
     LOG_PROCESS = true;
     PROMISE_ARRAY = [];
-    //start = performance.now();
+    if(Process_time_console){
+      Process_time.start = performance.now();
+    }
     let promise = Promise.resolve();
     let log_num = LOG_QUEUE.length;
     //console.log('START->'+log_num);
@@ -11,9 +15,11 @@ function calc(){
       PROMISE_ARRAY.push(promise);
     }
     promise = promise.then(async () => {
-      /*let end = performance.now();
-      let time = end - start;
-      console.debug('CLOCK_Sucsessed->' + time + 'ms');*/
+      if(Process_time_console){
+        Process_time.end = performance.now();
+        let time = Process_time.end - Process_time.start;
+        console.debug('CLOCK_Sucsessed->' + time + 'ms');
+      }
       await log_battle_time();
     });
     PROMISE_ARRAY.push(promise);

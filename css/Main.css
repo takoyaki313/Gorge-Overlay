@@ -8,11 +8,11 @@ font-family: 'Roboto', sans-serif;
 */
 :root {
   --general-role-color : #ded7be;
-  --tank-role-color : #7586e0;
-  --healer-role-color : #76ab67;
-  --melee-role-color : #ad6161;
-  --physical-role-color : #ad6161;
-  --magical-role-color : #ad6161;
+  --tank-role-color : #6B94E7;
+  --healer-role-color : #5AC629;
+  --melee-role-color : #CE5252;
+  --physical-role-color : #CE5252;
+  --magical-role-color : #CE5252;
   --aliance-color-general : transparent;
   --aliance-color-1 :#5BB7E5;
   --aliance-color-2 :#895BE5;
