@@ -608,7 +608,7 @@ async function network_action_datatype(log){
       }
     }
   }
-  console.log(return_data);
+  //?console.log(return_data);
   return return_data;
 }
 async function effect_flag_checker(flag) {

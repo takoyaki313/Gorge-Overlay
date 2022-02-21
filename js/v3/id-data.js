@@ -5,6 +5,7 @@ const Battle_End_Envioroment_ID = '40000002';
 const Oppresor_HP = 100000;
 const Justice_HP = 75000;
 const Chaiser_HP = 50000;
+const Robot_name = ['che','opp','jas'];
 const Core_Tower_HP = 2000000;
 const Gorge_BattleTime = 900;
 const Fl_BattleTime = 1200;
@@ -12,7 +13,8 @@ const Test_BattleTime = 300;
 //////////////////////////////////////////////
 //skilltype exclude action
 /////////////////////////////////////////////
-const DoubleRocketPuntch = '26FB';//ダブルロケットパンチ
+const DoubleRocketPuntch = '26FB';//ダブルロケットパンチ (SkillID)
+const TensyonMax = '06C2';　//テンションマックス (buffID)
 /////////////////////
 //////// Setting
 /////////////////////

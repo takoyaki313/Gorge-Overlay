@@ -22,6 +22,9 @@
   --incomeheal-ally:#fd5f00;
   --incomeheal-other:#13334c;
 }
+::-webkit-scrollbar {
+  display: none;
+}
 html{
   font-size: 20px;
 }
@@ -29,8 +32,7 @@ body{
   user-select: none;
   color: #ded7be;
   font-family: 'Roboto', sans-serif;
-  /*background-color: rgb(38 38 38);*/
-
+  /*background-color: rgb(38 38 38);
   /*  background-color: rgba(0,0,0,0.3);*/
 }
 .source {
@@ -61,6 +63,11 @@ body{
     color: #ded7be;
     font-size: 0.6rem;
     background-color: rgb(38 38 38);
+}
+.stickarrow {
+  border-bottom: 0.1rem solid #000;
+  border-right: 0.1rem solid #000;
+  transform: skew(45deg);
 }
 .dunamis_tensyon1{
   content: url("https://xivapi.com/i/061000/061351_hr1.png");

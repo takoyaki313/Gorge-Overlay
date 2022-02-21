@@ -481,7 +481,7 @@ function fl_alliance(data){
     return 3;
   }
   else if (data === 6) {
-    return 5
+    return 5;
   }
   else {
     return data;

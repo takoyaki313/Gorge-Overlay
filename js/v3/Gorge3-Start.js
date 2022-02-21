@@ -10,7 +10,7 @@ $(function (){
   });
   /////////////////////////////////////////////////////////
   addOverlayListener('LogLine', (logline) => {
-    if(!FORCE_LOF_OFF){
+    if(!FORCE_LOG_OFF){
       log_queue_insert(logline.line);
     }
   });
@@ -45,17 +45,22 @@ $(document).on("click", "[id^=Overlay_]", function(t){
     if(type === 'on'){
       target.find('.f-hide').css('display','none');
       target.find('.f-job-icon').addClass('underline-text');
+      target.find('.g-hide').css('display','none');
+      target.find('.g-job-icon').addClass('underline-text');
       target.attr('id','Overlay_' + click_name + 'of');
       Overlay_Select[click_name] = {click:true,extend:false};
     }
     else {
       target.find('.f-hide').css('display','flex');
       target.find('.f-job-icon').addClass('underline-text');
+      target.find('.g-hide').css('display','flex');
+      target.find('.g-job-icon').addClass('underline-text');
       target.attr('id','Overlay_' + click_name + 'on');
       Overlay_Select[click_name] = {click:true,extend:true};
     }
     if(t.detail % 2 === 0){
       target.find('.f-job-icon').removeClass('underline-text');
+      target.find('.g-job-icon').removeClass('underline-text');
       delete Overlay_Select[click_name];
     }
 });

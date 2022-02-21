@@ -26,6 +26,8 @@
 }
 #header_space .header-time {
   font-size: 1.1rem;
+  position: relative;
+  top: 0.07rem;
 }
 #header_space .header-line{
   width: 100%;
@@ -38,6 +40,8 @@
 #header_space .header-areaname{
   justify-content: left;
   margin-right:auto;
+  position: relative;
+  top: 0.07rem;
 }
 #header_space .header-time{
   justify-content: right;

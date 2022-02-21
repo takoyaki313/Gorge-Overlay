@@ -36,7 +36,7 @@ async function battle_counter(time){
       console.log('Start Timer');
     }
     LOGLINE_ENCOUNTER.Timer_Start = true;
-    LOGLINE_ENCOUNTER.Battle_Start_Time = Date.now();
+    LOGLINE_ENCOUNTER.Timer_Start_Time = Date.now();
     Battle_Current_Time = 0;
     Battle_Timer_interval = setInterval(countUp,1000);
   }
@@ -45,7 +45,7 @@ function stop_timer(){
   if(DEBUG_LOG){
     console.log('Stop Timer');
   }
-  LOGLINE_ENCOUNTER.Battle_Start_Time = 0;
+  LOGLINE_ENCOUNTER.Timer_Start_Time = 0;
   LOGLINE_ENCOUNTER.Timer_Start = false;
   clearInterval(Battle_Timer_interval);
   header_update_timer_pvp();
@@ -56,8 +56,8 @@ function countUp(){
   }
   else if(AREA.Area_Type !== 0){
     let nowtime = Date.now();
-    //Battle_Start_Time
-    let current_time_ms = nowtime - LOGLINE_ENCOUNTER.Battle_Start_Time;
+    //Timer_Start_Time
+    let current_time_ms = nowtime - LOGLINE_ENCOUNTER.Timer_Start_Time;
     Battle_Current_Time = Math.floor(current_time_ms/1000);
     //console.log('Timer->'+Battle_Current_Time);
   }

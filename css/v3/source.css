@@ -1,4 +1,8 @@
-#fl-source {
+[class^="f-"],[class^="basic-"],[class^="g-"]{
+  display: flex;
+  align-items: center;
+}
+#rw-source {
   margin-top: 0.15rem;
   width: -webkit-fill-available;
   display: flex;
@@ -6,9 +10,113 @@
   border-color: transparent;
   padding: 0.1rem 0;
 }
-[class^="f-"],[class^="basic-"] {
-  display: flex;
+#rw-source .g-dps-area{
+  flex-direction: column;
+  width: 3rem;
+  border-color: transparent;
+  justify-content: center;
+}
+#rw-source .g-dps {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+#rw-source .g-dps-i {
+  height: 100%;
   align-items: center;
+  font-size: 1.1rem;
+}
+#rw-source .g-dps-d {
+  height: 100%;
+  font-size: 0.8rem;
+  position: relative;
+  top: 0.1rem;
+}
+#rw-source .g-hps {
+  font-size: 0.8rem;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+#rw-source .g-job-icon {
+  font-size: 1.3rem;
+  margin: 0 0.2rem
+}
+#rw-source .g-main-area {
+  flex-direction: column;
+  width: 100%
+}
+#rw-source .g-top{
+  width: 100%;
+  font-size: 0.9rem;
+}
+#rw-source .g-dunamis {
+  height: 1rem;
+}
+#rw-source .g-name{
+  width: calc(100% - 4rem);
+  white-space: nowrap;
+  overflow: hidden;
+}
+#rw-source .g-kda {
+  justify-content: flex-end;
+  position: relative;
+  margin-left: 0.1rem
+}
+#rw-source .g-kill,#rw-source .g-death,#rw-source .g-assist{
+  width: 1rem;
+  justify-content: flex-end;
+  margin-right: 0.3rem
+}
+#rw-source .g-middle{
+  width: 100%;
+  margin-top: 0.05rem;
+  margin-bottom: 0.05rem;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  border-width: 0.1rem 0px 0px 0px;
+  border-style: solid;
+  border-color: #ded7be;
+}
+#rw-source .g-bottom {
+  width: 100%;
+  font-size: 0.7rem;
+}
+#rw-source .g-damage-div {
+  align-items: center;
+  width: 4rem;
+  margin-right: auto;
+}
+#rw-source .g-extra-bottom{
+  font-size: 0.8rem;
+  width: calc(100% - 1.4rem);
+}
+#rw-source .g-robot-data{
+  margin-right: auto;
+  width: -webkit-fill-available;
+}
+#rw-source .g-income-number{
+  min-width: 0.5rem;
+  max-width: 0.5rem;
+  justify-content: center;
+}
+#rw-source .g-incomedamage-number{
+  min-width: 3rem;
+  max-width: 3rem;
+  justify-content: flex-end;
+}
+#rw-source .incomeheal-number{
+  min-width: 3rem;
+  max-width: 3rem;
+  justify-content: flex-start;
+}
+
+/*   */
+#fl-source {
+  margin-top: 0.15rem;
+  width: -webkit-fill-available;
+  display: flex;
+  border-left: 0.2rem solid;
+  border-color: transparent;
+  padding: 0.1rem 0;
 }
 #fl-source .f-dps-area{
   flex-direction: column;

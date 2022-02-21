@@ -23,7 +23,13 @@ function calc(){
       await log_battle_time();
     });
     PROMISE_ARRAY.push(promise);
-    Promise.all(PROMISE_ARRAY).then(() => LOG_PROCESS = false);
+    Promise.all(PROMISE_ARRAY).then(() => LOG_PROCESS = false)
+    .catch(()=> {
+      console.error('Critical Error : Log_Calc_failed... log queue reset');
+      LOG_QUEUE = [];
+      LOG_PROCESS = false;
+    });
+
   }
   else{
     if(LOG_PROCESS){

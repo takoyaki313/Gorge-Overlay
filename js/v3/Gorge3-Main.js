@@ -2,7 +2,7 @@
 //var DB_BACKUP = new Dexie('Battled');
 //var DB_WORKSPACE = new Dexie('Workspace');
 var OWNER_LIST = [];
-var FORCE_LOF_OFF = false;
+var FORCE_LOG_OFF = false;
 var DEBUG_LOG = false;
 let DoT_Simulate_Debug_massage = false;
 
@@ -40,7 +40,7 @@ function overlay_update_start(e){
   else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||
   e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||
   e.Encounter.CurrentZoneName === 'The Goblet'*/){
-    gorge_start(e);
+    fl_start(e);
   }
   else {
     timer_encounter(e);

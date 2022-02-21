@@ -109,6 +109,7 @@ async function addcombatant(log){
   let maxhp = Number(log[10]);
   let battle = true;
   let lastupdate = log[1];
+  let time_ms = await timestamp_change(lastupdate);
   if(owner_id !== '0000'){
     await owner_id_list_add(owner_id,nameID,name);
   }
@@ -116,7 +117,7 @@ async function addcombatant(log){
     owner_id = null;
   }
   if(nameID !== Field_ID){
-    await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['server',server,true],['battle',battle,true],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
+    await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['server',server,true],['battle',battle,true],['add_combatant_time',{battle:true,time:time_ms,stamp:lastupdate},false],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
   }
   if(job !== null){
     await damage_revise(nameID,job,lastupdate);
@@ -175,11 +176,12 @@ async function removecombatant(log){
   let maxhp = Number(log[10]);
   let battle = false;
   let lastupdate = log[1];
+  let time_ms = await timestamp_change(lastupdate);
   //if(owner_id !== '0'){
   //  owner_id_list_add(owner_id,nameID,name);
   //}
   if(nameID !== Field_ID){
-    await update_maindata('Player_data','nameID',nameID,['battle',battle,true],['lastupdate',lastupdate,true]);
+    await update_maindata('Player_data','nameID',nameID,['battle',battle,true],['add_combatant_time',{battle:false,time:time_ms,stamp:lastupdate},false],['lastupdate',lastupdate,true]);
   }
   await update_maindata('Player_hp','nameID',nameID,['attacker',[],true]);
 }
@@ -688,7 +690,7 @@ async function rob_ride_check(nameID,old,now){
       let old_joutai = await rob_checker(old.maxhp);
       if(old_joutai !== 'person'){//降りる　
         //console.log('Get off the Robot->' + old_joutai + ':' + nameID);
-        await rob_ride_time_calc(nameID,now,now_joutai,false);
+        await rob_ride_time_calc(nameID,now,now_joutai,true);
       }
     }
   }
@@ -856,12 +858,15 @@ async function logline_battle_start_check(log){
   if(log[3] === Battle_Start_Envioroment_ID){
     let time = parseInt(log[4],16);
     LOGLINE_ENCOUNTER.Battle_Max_Time = time;
+    LOGLINE_ENCOUNTER.Battle_Start_Time = await timestamp_change(log[1]);
     await battle_counter(time);
     LOGLINE_ENCOUNTER.Engage = true;
+    console.log(log);
   }
   else if (log[3] === Battle_End_Envioroment_ID) {
     LOGLINE_ENCOUNTER.Engage = false;
     LOGLINE_ENCOUNTER.Result_Page = true;
+    LOGLINE_ENCOUNTER.Result_in_time = await timestamp_change(log[1]);
     stop_timer();
     //main_db_save();
     //console.log('Data_saved');
@@ -880,8 +885,10 @@ function logline_battle_flag_reset(){
   LOGLINE_ENCOUNTER = {
     Engage : false,
     Result_Page : false,
+    Result_in_time : 0,
     Timer_Start : false,
     Battle_Start_Time : 0,
+    Timer_Start_Time : 0,
     Battle_Max_Time : 0,
     Aliance_Data_24 : false,
   };
