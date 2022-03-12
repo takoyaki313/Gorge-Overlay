@@ -33,6 +33,7 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay3.html
 - パーティメンバーが受けた猛りがHPSに計算されない。
 - 全てのバリアヒール分が計算されない。
 - メモリの使用量が多い (最大で500MBほど)
+- 遠方の味方が敵を殴った場合、ロボ/タワーの判別ができない。（PCの場合人、NPCの場合、10000ダメージ以下はマトン側に計算されます。）
 ## 既知のバグ
 - 試合終了後のリザルトとオーバーレイのデータが完全に一致しない。
 - コンソールに'Critical Error : Log_Calc_failed... log queue reset'と出る場合がある。
