@@ -5,6 +5,7 @@ const Battle_End_Envioroment_ID = '40000002';
 const Oppresor_HP = 100000;
 const Justice_HP = 75000;
 const Chaiser_HP = 50000;
+const Robot_Bunsin = 100;
 const Robot_name = ['che','opp','jas'];
 const Core_Tower_HP = 2000000;
 const Gorge_BattleTime = 900;
@@ -72,7 +73,7 @@ let Lang_text = {
     healed:'HPS',
   },
 };
-let Lang_select = Lang_text.ja;
+var Lang_select = Lang_text.ja;
 let EXCLUDE_BUFF = ['07EB','07EA','0B37','0B38'];//スタンス系　カルディア クローズドポジション
 let EFFECT_ID_LIST = [];
 let EFFECT_ID = {

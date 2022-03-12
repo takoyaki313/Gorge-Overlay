@@ -30,7 +30,7 @@
 <body>
   <div class="header" id="header_space">
     <div class ="header-top">
-      <span class='header-mypage'>
+      <span class='header-mypage'id="mypage-icon-open">
         <label for='header-mypage-open' class='icon-app_fc'></label>
         <button class='mypage-button' id='mypage-open'></button>
       </span>
@@ -59,9 +59,10 @@
   <div style="display: flex ;width: -webkit-fill-available;">
   <div class='g-dps-area'>
     <div class="g-dps">
-      <span class='g-dps-i'>152.</span><span class='g-dps-d'>9</span>
+      <span class='g-dps-i'>--</span><span class='g-dps-d'>-</span>
     </div>
-    <div class='g-hps g-hide'>351.2</div>
+    <div class='g-hps g-hide'>--</div>
+    <div class='g-rocketpunth g-puntch-hide'>--</div>
   </div>
   <div class='g-job-icon'></div>
   <div class='g-main-area'>
@@ -74,21 +75,37 @@
         <span class='g-assist'>0</span>
       </span>
     </div>
-    <div class='g-middle'></div>
-    <div class='g-bottom g-hide'>
-      <div class="g-damage-div">
-        <span class="g-player-string icon-person"></span><span class="g-player-number">125</span><span class="g-torobot-number">+351</span> 　
-      </div>
-      <div class="g-damage-div">
-        <span class="g-player-string icon-maton"></span><span class="g-object-number">152</span><span class="g-tower-number">+351</span>
-      </div>
-      <div class="g-income-space">
-        <span class="g-incomedamage-number">153(100)</span>
-        <span class="g-income-number">-</span>
-        <span class="g-incomeheal-number">200(150)</span>
+    <div class='g-gage'>
+      <div class='g-damage-gage'>
+        <div class='gage-input'></div>
       </div>
     </div>
-    <div class="g-extra-bottom">
+    <!--<div class='g-middle g-hide'></div>-->
+    <div class='g-bottom g-hide'>
+      <div class="g-damage-div-area">
+        <div class="g-damage-div">
+          <span class="g-player-string icon-person"></span><span class="g-person-number"> 　
+        </div>
+        <div class="g-damage-div">
+          <span class="g-player-string icon-hammer"></span><span class="g-torobot-number">
+        </div>
+        <div class="g-damage-div">
+          <span class="g-player-string icon-maton"></span><span class="g-maton-number">　
+        </div>
+        <div class="g-damage-div">
+          <span class="g-player-string icon-tower2"></span><span class="g-tower-number">
+        </div>
+      </div>
+      <div class="g-income-space">
+        <span class="g-incomedamage-number">-</span>
+        <span class="g-income-number"> | </span>
+        <span class="g-incomeheal-number">-</span>
+      </div>
+    </div>
+    <div class="g-extra-bottom robot-space-hide">
+      <div class="ridetime">
+        <span class="ridetime_min">XX</span><span class="ridetime_ten">:</span><span class="ridetime_sec">XX</span>
+      </div>
       <div class="g-robot-data" >
       </div>
     </div>

@@ -2,6 +2,7 @@ let LOGLINE_ENCOUNTER = {};
 var Assist_Debuff_Reset = false;
 var HP_Update_duplite_data = true;
 var HP_Update_duplite_robride_process = false;
+var KILLSOUND = true;
 async function logline_firststep(log){
   if(log[0] === '40'){
     await minimap_change_area_check(log);
@@ -117,7 +118,22 @@ async function addcombatant(log){
     owner_id = null;
   }
   if(nameID !== Field_ID){
-    await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['server',server,true],['battle',battle,true],['add_combatant_time',{battle:true,time:time_ms,stamp:lastupdate},false],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
+    if(LOGLINE_ENCOUNTER.Engage){
+      let readed_data = await read_maindata('Player_data','nameID',nameID,'job');
+      if(typeof readed_data.job === 'string'){
+        if(job !== readed_data.job){//違うので保存する
+          await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['jobhistory',{job:readed_data.job,to:job,time:Math.round((time_ms - LOGLINE_ENCOUNTER.Battle_Start_Time)/1000),lasttime:time_ms,stamp:lastupdate},false],['server',server,true],['battle',battle,true],['add_combatant_time',{battle:true,time:time_ms,stamp:lastupdate},false],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
+        }
+        else {
+          await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['server',server,true],['battle',battle,true],['add_combatant_time',{battle:true,time:time_ms,stamp:lastupdate},false],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
+        }
+      }else {//
+        await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['server',server,true],['battle',battle,true],['add_combatant_time',{battle:true,time:time_ms,stamp:lastupdate},false],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
+      }
+    }else {
+      await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['server',server,true],['battle',battle,true],['add_combatant_time',{battle:true,time:time_ms,stamp:lastupdate},false],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
+    }
+
   }
   if(job !== null){
     await damage_revise(nameID,job,lastupdate);
@@ -250,8 +266,10 @@ async function kill_death_main_25(log){
     }
   }
   if(data.victim_type === 'player'){
-    await update_maindata('Player_data','nameID',data.attackerID,['kill',1,false],['kill_name',{toID:data.victimID,toname:data.victim,lastupdate:data.lastupdate,time_number : await timestamp_change(data.lastupdate)},false],['lastupdate',data.lastupdate,true]);
-    await update_maindata('Player_data','nameID',data.victimID,['death',1,false],['death_name',{fromID:data.attackerID,fromname:data.attacker,lastupdate:data.lastupdate,time_number : await timestamp_change(data.lastupdate)},false],['lastupdate',data.lastupdate,true]);
+    let time_number = await timestamp_change(data.lastupdate);
+    let time = Math.round((time_number - LOGLINE_ENCOUNTER.Battle_Start_Time) / 1000);
+    await update_maindata('Player_data','nameID',data.attackerID,['kill',1,false],['kill_name',{toID:data.victimID,name:data.victim,lastupdate:data.lastupdate,time_number : time_number,time:time},false],['lastupdate',data.lastupdate,true]);
+    await update_maindata('Player_data','nameID',data.victimID,['death',1,false],['death_name',{fromID:data.attackerID,name:data.attacker,lastupdate:data.lastupdate,time_number : time_number,time:time},false],['lastupdate',data.lastupdate,true]);
   }
 }
 async function npc_check_nameID(nameID){
@@ -386,14 +404,14 @@ async function incomedamage_add_target(attackerID,attackermaxhp){
     return ['totalincomedamage','objectincomedamage'];
   }
   else if (attackerID.substring(0,2) === '10') {
-    if(attackermaxhp === Chaiser_HP || attackermaxhp === Oppresor_HP || attackermaxhp === Justice_HP){
+    if(attackermaxhp == Chaiser_HP || attackermaxhp == Oppresor_HP || attackermaxhp == Justice_HP || attackermaxhp == Robot_Bunsin){
       return ['totalincomedamage','robincomedamage'];
-    }
+    }/*
     else if (Number(attackermaxhp) === 0) {
       return ['totalincomedamage','otherpersonincomedamage'];
-    }
+    }*/
     else {
-      return ['totalincomedamage','personalincomedamage'];
+      return ['totalincomedamage','personincomedamage'];
     }
   }
   else{
@@ -555,7 +573,7 @@ async function hpdata_add(nameID,player_data,attackerID){
             if(attackerID.substring(0,2) === '10'){//キルした人がプレイヤー
               attacker_name = await read_maindata('Player_data','nameID',attackerID,'aliance','name','job','robot','robot_data');
               attacker_job = await robot_replace_job(attacker_name);
-              await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job);
+              await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job,attacker_name.name);
             }
             else if (attackerID.substring(0,2) === '40') {//キルした人がNPC
               if(readed_data.attacker.length > 0){
@@ -575,7 +593,7 @@ async function hpdata_add(nameID,player_data,attackerID){
               }
               attacker_name = await read_maindata('Player_data','nameID',attackerID,'aliance','name','job','robot','robot_data');
               attacker_job = await robot_replace_job(attacker_name);
-              await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job);
+              await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job,attacker_name.name);
             }
             else if (attackerID === ' log_38 ') {
               if(readed_data.attacker.length > 0){
@@ -594,7 +612,7 @@ async function hpdata_add(nameID,player_data,attackerID){
                 }
                 attacker_name = await read_maindata('Player_data','nameID',attackerID,'aliance','name','job','robot','robot_data');
                 attacker_job = await robot_replace_job(attacker_name);
-                await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job);
+                await assist_main(attackerID,player_data.nameID,readed_data.attacker,player_data.lastupdate,player_data.time_number,victim_name.name,attacker_name.aliance,victim_job,attacker_job,attacker_name.name);
               }else {
                 if(DEBUG_LOG){
                   console.warn('Warn : Kill Player Unknown->' + attackerID +'->' + player_data.nameID);
@@ -607,7 +625,7 @@ async function hpdata_add(nameID,player_data,attackerID){
               }
             }
           }
-          await update_maindata('Player_data','nameID',player_data.nameID,['s_death',1,false],['s-death-name',{attackerID:attackerID,attacker:attacker_name.name,attacker_job:attacker_job,lastupdate:player_data.lastupdate,time_ms:player_data.time_number},false],['lastupdate',player_data.lastupdate,true]);
+          await update_maindata('Player_data','nameID',player_data.nameID,['s_death',1,false],['s-death-name',{attackerID:attackerID,name:attacker_name.name,job:attacker_job,lastupdate:player_data.lastupdate,time_ms:player_data.time_number,time:Math.round((player_data.time_number - LOGLINE_ENCOUNTER.Battle_Start_Time) / 1000)},false],['lastupdate',player_data.lastupdate,true]);
         }
       }
       if(AREA.Area_Type === 2){//Hidden Gorge
@@ -726,7 +744,7 @@ async function rob_checker(maxhp){
       return 'person';
   }
 }
-async function assist_main(kill_player,death_player,death_attacker,lastupdate,time_number,death_player_name,attacker_aliance,death_job,attacker_job){
+async function assist_main(kill_player,death_player,death_attacker,lastupdate,time_number,death_player_name,attacker_aliance,death_job,attacker_job,attacker_name){
   let ally_kill = false;
   if(typeof attacker_aliance !== 'undefined'){
     if(attacker_aliance > 0){
@@ -749,16 +767,19 @@ async function assist_main(kill_player,death_player,death_attacker,lastupdate,ti
         assist_player.push(assist_dupe[i]);
       }
     }
-    await assist_players_write(assist_player,'assist',lastupdate,death_player,death_player_name);
+    await assist_players_write(assist_player,'assist',lastupdate,death_player,death_player_name,death_job,attacker_name,attacker_job,time_number,attacker_aliance);
     //console.log('Ally ->'+kill_player + ' -> '+ death_player + '  :' + lastupdate);
     //console.log(assist_player);
   }
   //kill list {}
-  await update_maindata('Player_data','nameID',kill_player,['s_kill',1,false],['s-kill-name',{victimID:death_player,victim:death_player_name,death_job:death_job,lastupdate:lastupdate,time_ms:time_number},false],['lastupdate',lastupdate,true]);
+  if(attacker_aliance === 1 && TenSyonMax_Me && KILLSOUND){
+    killsound_play();
+  }
+  await update_maindata('Player_data','nameID',kill_player,['s_kill',1,false],['s-kill-name',{victimID:death_player,name:death_player_name,job:death_job,lastupdate:lastupdate,time_ms:time_number,time:Math.round((time_number - LOGLINE_ENCOUNTER.Battle_Start_Time) / 1000)},false],['lastupdate',lastupdate,true]);
 }
-async function assist_players_write(nameID_array,type,lastupdate,deathID,death_player_name){
+async function assist_players_write(nameID_array,type,lastupdate,deathID,death_player_name,death_job,kill_name,attacker_job,time_number,attacker_aliance){
   for(let i = 0 ; i < nameID_array.length ; i++){
-    update_maindata('Player_data','nameID',nameID_array[i],[type,1,false],['s-'+type,{assist:deathID,assistname:death_player_name,lastupdate:lastupdate,time_number:await timestamp_change(lastupdate)},false],['lastupdate',lastupdate,true]);
+    update_maindata('Player_data','nameID',nameID_array[i],[type,1,false],['s-'+type,{assist:deathID,name:death_player_name,job:death_job,killer:kill_name,killerjob:attacker_job,killer_alliance:attacker_aliance,lastupdate:lastupdate,time_number:time_number,time:Math.round((time_number - LOGLINE_ENCOUNTER.Battle_Start_Time) / 1000)},false],['lastupdate',lastupdate,true]);
   }
 }
 async function what_include_buff(effect,buff_type){
@@ -861,7 +882,6 @@ async function logline_battle_start_check(log){
     LOGLINE_ENCOUNTER.Battle_Start_Time = await timestamp_change(log[1]);
     await battle_counter(time);
     LOGLINE_ENCOUNTER.Engage = true;
-    console.log(log);
   }
   else if (log[3] === Battle_End_Envioroment_ID) {
     LOGLINE_ENCOUNTER.Engage = false;
@@ -874,8 +894,10 @@ async function logline_battle_start_check(log){
 }
 function battle_data_reset(){
   //PvPエリア入室時に実行
+  $(document).find('.ui-helper-hidden-accessible').html('');
   logline_battle_flag_reset();
-  TBD = {Player_data:[],Skill_data:[],DoT_data:[],Player_hp:[],Hp_data:[]};
+  TBD = {Player_data:[],Skill_data:[],DoT_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+  TenSyonMax_Me = false;
   owner_id_list_reset();
 }
 function Overlay_Select_Reset(){

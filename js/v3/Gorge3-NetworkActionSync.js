@@ -95,7 +95,7 @@ async function over_damage(damage_type,damage,currenthp,maxhp){
 async function damage_add(attackerID,victimID,victimmaxHP,damage_type,damage,skillID){
   let add_target = [];
   if(damage_type === 'damage'||damage_type === 'normal-damage'){
-    add_target = await damage_add_type_select(victimID,victimmaxHP);
+    add_target = await damage_add_type_select(victimID,victimmaxHP,damage);
   }
   else if (damage_type === 'heal') {
     add_target = await damage_add_type_select_heal(attackerID,victimID);
@@ -112,7 +112,7 @@ async function damage_add(attackerID,victimID,victimmaxHP,damage_type,damage,ski
   }
   return add_target;
 }
-async function damage_add_type_select(victimID,victimmaxHP){
+async function damage_add_type_select(victimID,victimmaxHP,damage){
   let return_data = ['totaldamage'];
 
   if(victimID.substring(0,2) === '10'){
@@ -121,6 +121,7 @@ async function damage_add_type_select(victimID,victimmaxHP){
       return_data.push('torobotdamage');
     }
     else if (victimmaxHP === 0){
+      return_data.push('persondamage');
       return_data.push('playerotherdamage');
     }
     else{
@@ -133,6 +134,11 @@ async function damage_add_type_select(victimID,victimmaxHP){
       return_data.push('towerdamage');
     }
     else if (victimmaxHP === 0) {
+      if(damage > 10000){
+        return_data.push('towerdamage');
+      }else {
+        return_data.push('matondamage');
+      }
       return_data.push('objectotherdamage');
     }
     else{

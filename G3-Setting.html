@@ -13,6 +13,11 @@
 </head>
 <body>
   <div id="setting-source" style="display: none">
+    <div class='setting-item' id='s-slider'>
+      <h3 class="s-title"></h3>
+      <p class="s-description"></p>
+      <input type='range' min="0" max="100" step="5" class='general-range'></input>
+    </div>
     <div class='setting-item' id='s-textbox'>
       <h3 class="s-title"></h3>
       <p class="s-description"></p>
@@ -21,7 +26,7 @@
     <div class='setting-item' id='s-numberbox'>
       <h3 class="s-title"></h3>
       <p class="s-description"></p>
-      <input type='number' class='general-textbox inputarea'></input>
+      <input type='number' min ="1" class='general-textbox inputarea'></input>
     </div>
     <div class='setting-item' id='s-pulldown'>
       <h3 class="s-title"></h3>
@@ -49,7 +54,6 @@
 
 <div class="grid-body">
   <div class="grid-title">
-    title
   </div>
   <div class="grid-navi">
     <div class="grid-tab">
@@ -72,10 +76,10 @@
       <input id="navi-Other" type="radio" name="TAB" class="tab-switch" />
       <label class="tab-label" for="navi-Other">Other</label>
     </div>
-    <div class="grid-tab">
+    <!--div class="grid-tab">
       <input id="navi-import-export" type="radio" name="TAB" class="tab-switch" />
       <label class="tab-label" for="navi-import-export">import-export</label>
-    </div>
+    </div-->
   </div>
   <div class="grid-setting" id='main-setting'>
 
@@ -84,8 +88,8 @@
   <footer>
     <hr class='cool-line'>
     <div class='version-page'>
-      <span class='version' id='version'>version unknown</span>
-      <a href="https://takoyaki313.github.io/Gorge-Overlay/" style="color:#ded7be;" target="_blank" rel="noopener noreferrer">GitHub Page</a>
+      <span class='version' onclick="location.reload(true);"id='version'>version unknown</span>
+      <a href="https://github.com/takoyaki313/Gorge-Overlay" style="color:#ded7be;" target="_blank" rel="noopener noreferrer">GitHub Page</a>
     </div>
   </footer>
 </body>

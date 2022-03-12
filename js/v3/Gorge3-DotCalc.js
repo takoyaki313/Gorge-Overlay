@@ -371,9 +371,15 @@ async function dunamis_checker(nameID,effectID,rank,lastupdate){
         return null;
       }
       update_maindata('Player_data','nameID',nameID,['dunamis',rank,true]);
+      if(AREA.Area_Type === 2){
+        aliance_dunamis_update(nameID,rank,lastupdate);
+      }
     }
     else {//Tensyon 以外
       update_maindata('Player_data','nameID',nameID,['dunamis',effectID,true]);
+      if(AREA.Area_Type === 2){
+        aliance_dunamis_update(nameID,20,lastupdate);
+      }
     }
     return 0;
   }

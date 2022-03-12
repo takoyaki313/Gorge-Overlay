@@ -74,8 +74,6 @@ footer {
   font-size: 1.1rem;
   background-color: #535353;
 }
-
-/*** iOS ***/
 .toggle-label {
 	width: 3.125rem;
 	position: relative;
@@ -139,6 +137,33 @@ footer {
 	left: 0;
 	width: 100%;
 	height: 100%;
+}
+
+.grid-body .reload{
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 10px solid;
+  border-right-color: transparent;
+  border-radius: 100%;
+  box-sizing: border-box;
+}
+
+.grid-body .reload:before{
+  position: absolute;
+  top: 18px;
+  right: -10px;
+  content: "";
+  height: 50%;
+  border: 20px solid transparent;
+  border-top: 30px solid;
+  background: transparent;
+  transform-origin: left top;
+  transform: rotate(-40deg);
+  box-sizing: border-box;
+}
+.sample-button {
+
 }
 #s-toggle {
   display: grid;

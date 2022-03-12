@@ -1,3 +1,6 @@
+var Setting_Page_Num = 1;
+var Sample_Page_Num = 3;
+var ONLINE = true;
 $(function (){
   'use strict';
   //database_version_store(DB);
@@ -64,12 +67,19 @@ $(document).on("click", "[id^=Overlay_]", function(t){
       delete Overlay_Select[click_name];
     }
 });
-$(document).on("click", "#setting-open", function(t){
-  if(t.detail === 3){
-    window.open( 'G3-Setting.html' ,'',"width=1080,height=840" );
+$(document).on("click", "#mypage-icon-open", function(t){
+  if(t.detail === Sample_Page_Num){
+    sample_gorge_overlay(RW_MAXROW);
   }
-  else if (t.detail === 10) {
-    window.location.reload(false);
+});
+$(document).on("click", "#setting-open", function(t){
+  let num = Math.max(1, Math.min(10, Setting_Page_Num));
+  if(t.detail === num){
+    if(ONLINE){
+      window.open( 'https://takoyaki313.github.io/Gorge-Overlay/G3-Setting.html' ,'',"width=1080,height=840" );
+    }else {
+      window.open( 'G3-Setting.html' ,'',"width=1080,height=840" );
+    }
   }
 });
 window.addEventListener("storage", function (event) {
