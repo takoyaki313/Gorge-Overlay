@@ -64,7 +64,9 @@ function log_queue_unshift(log){
   LOG_QUEUE.unshift(log);
 }
 let start = 0;
-
+function aliance_data_export(){
+  return TBD.Aliance.slice();
+}
 function maindata_export(type,duration,...add){
   let return_data = [];
   let battle_time = true;

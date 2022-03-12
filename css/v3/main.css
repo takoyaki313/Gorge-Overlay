@@ -1,4 +1,5 @@
 :root{
+  --default-color :#ded7be;
   --general-role-color : #ded7be;
   --tank-role-color : #7586e0;
   --healer-role-color : #76ab67;
@@ -13,14 +14,31 @@
   --aliance-color-5 :#B7E55B;
   --aliance-color-6 :#5BE589;
   --aliance-color-10 :transparent;
-  --incomedamage-person : #f4f5f9;
-  --incomedamage-robot : #252c41;
-  --incomedamage-otherperson :#dddfe6;
+  --incomedamage-person : #C95F6A;
+  --incomedamage-robot : #D77856;
   --incomedamage-object : #f1404b;
-  --incomeheal-self :#005792;
-  --incomeheal-party:#f6f6e9;
-  --incomeheal-ally:#fd5f00;
-  --incomeheal-other:#13334c;
+  --incomeheal-self :#FF8AAE;
+  --incomeheal-party:#FFB2A6;
+  --incomeheal-ally:#FFF89A;
+  --incomeheal-other:#9ADCFF;
+  --damage-person:#C95F6A;
+  --damage-robot:#D77856;
+  --damage-object:#4E9B86;
+  --damage-tower:#4F8B97;
+  --death-too-much:rgba(255,0,0,0.3);
+  --party:rgba(37,92,80,0.5);
+  --me:rgba(93,81,37,0.7);
+  --robot-hp-remain : #84F8BD;
+  --robot-hp-over : #EB4561;
+}
+.death-too-much {
+  background-color: var(--death-too-much);
+}
+.party {
+    background-color: var(--party);
+}
+.me {
+    background-color: var(--me);
 }
 ::-webkit-scrollbar {
   display: none;
@@ -30,7 +48,7 @@ html{
 }
 body{
   user-select: none;
-  color: #ded7be;
+  color: var(--default-color);
   font-family: 'Roboto', sans-serif;
   /*background-color: rgb(38 38 38);
   /*  background-color: rgba(0,0,0,0.3);*/
@@ -60,14 +78,15 @@ body{
     display:none;
 }
 .ui-tooltip-content {
-    color: #ded7be;
+    color: var(--default-color);
     font-size: 0.6rem;
     background-color: rgb(38 38 38);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.stickarrow {
-  border-bottom: 0.1rem solid #000;
-  border-right: 0.1rem solid #000;
-  transform: skew(45deg);
+.dunamis_tensyon0{
+  /*none*/
 }
 .dunamis_tensyon1{
   content: url("https://xivapi.com/i/061000/061351_hr1.png");
@@ -185,6 +204,18 @@ body{
 .incomeheal-object{
   background-color: var(--incomeheal-other);
 }
+.heal-self{
+  color: var(--incomeheal-self);
+}
+.heal-party{
+  color: var(--incomeheal-party);
+}
+.heal-ally{
+  color: var(--incomeheal-ally);
+}
+.heal-object{
+  color: var(--incomeheal-other);
+}
 .incomedamage-player {
   background-color: var(--incomedamage-person);
 }
@@ -194,8 +225,32 @@ body{
 .incomedamage-object {
   background-color: var(--incomedamage-object);
 }
-.incomedamage-other {
-  background-color: var(--incomedamage-otherperson);
+.damage-person{
+  background-color: var(--damage-person);
+}
+.damage-robot{
+  background-color: var(--damage-robot);
+}
+.damage-object{
+  background-color: var(--damage-object);
+}
+.damage-tower{
+  background-color: var(--damage-tower);
+}
+.damage-player-other{
+  background-color: var(--damage-person-other);
+}
+.damage-person-color{
+  color: var(--damage-person);
+}
+.damage-robot-color{
+  color: var(--damage-robot);
+}
+.damage-object-color{
+  color: var(--damage-object);
+}
+.damage-tower-color{
+  color: var(--damage-tower);
 }
 /*  Aliance Color    */
 .aliance-border-1 {
@@ -238,6 +293,133 @@ body{
 .role-background-general {
   background-color: var(--general-role-color)!important;
 }
-.me {
-    background-color: rgba(93,81,37,0.7);
+.tooltip-grid-jobicon-name-time{
+  display: grid;
+  grid-template-columns: 1rem max-content 3rem;
+}
+.tooltip-grid-assist{
+  display: grid;
+  grid-template-columns: 1rem max-content 2rem 1rem max-content 3rem;
+}
+.tooltip-grid-assist *{
+  justify-self: center;
+  align-self: center;
+  grid-row-gap: 0.1rem;
+}
+.tooltip-grid-dps{
+  display: grid;
+  grid-template-columns: max-content max-content 1.2rem max-content 1.2rem max-content 1.2rem max-content ;
+}
+.tooltip-grid-total-dps *{
+  margin:  0 0.2rem;
+}
+.tooltip-grid-dps .tooltip-grid-dps-text ,.tooltip-grid-hps .tooltip-grid-dps-text{
+  padding:  0 0.1rem;
+  margin:  0 0.2rem;
+}
+.tooltip-grid-dps *{
+  justify-self: center;
+  align-self: center;
+  grid-row-gap: 0.2rem;
+}
+.tooltip-grid-jobicon-name-time *{
+  justify-self: center;
+  align-self: center;
+}
+.tooltip-grid-hps{
+  display: grid;
+  grid-template-columns: max-content max-content 2rem max-content 2.4rem max-content 1.2rem max-content ;
+}
+.tooltip-grid-hps *{
+  justify-self: center;
+  align-self: center;
+  grid-row-gap: 0.2rem;
+}
+.tooltip-grid-puntch {
+  display: grid;
+  grid-column-gap: 0.4rem;
+  grid-template-columns : max-content max-content max-content;
+}
+.tooltip-grid-puntch *{
+  justify-self: center;
+  align-self: center;
+}
+.tooltip-grid-jobhistory{
+  display: grid;
+  grid-template-columns : 1.3rem 1rem 1.3rem 2rem;
+}
+.tooltip-grid-jobhistory .jobicon{
+  font-size: 0.9rem;
+}
+.tooltip-grid-jobhistory *{
+  justify-self: center;
+  align-self: center;
+}
+.tooltip-grid-income-heal {
+  display: grid;
+  grid-template-columns :1.5rem max-content 1.5rem max-content 1.5rem max-content 1.5rem max-content;
+}
+.tooltip-grid-income-heal *{
+  justify-self: center;
+  align-self: center;
+}
+.tooltip-grid-income-damage {
+  display: grid;
+  grid-template-columns :1.5rem max-content 1.5rem max-content 1.5rem max-content;
+}
+.tooltip-grid-income-damage *,.tooltip-grid-income-damage .child{
+  justify-self: center;
+  align-self: center;
+}
+.tooltip-grid-income-damage .tooltip-grid-income-damage-number {
+  padding-right: 0.2rem;
+}
+.tooltip-line {
+  width: 100%;
+  margin-top: 0.05rem;
+  margin-bottom: 0.15rem;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  border-width: 0.1rem 0px 0px 0px;
+  border-style: solid;
+  border-color: var(--default-color);
+}
+.remain-hp {
+  color : var(--robot-hp-remain);
+}
+.over-hp {
+  color : var(--robot-hp-over);
+}
+.astarisk::after{
+  content: '・';
+  position: absolute;
+  bottom: 55%;
+  left: 50%;
+  z-index: 1;
+  color: royalblue;
+}
+/*Animamtion Text*/
+.blinking {
+    animation: 0.5s linear 0s alternate none infinite running blink;
+}
+@keyframes blink {
+    0% { opacity: 0; }
+    19.9% { opacity: 0; }
+    20% { opacity: 1; }
+    100% { opacity: 1; }
+}
+.gaming-robot::after{
+  background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+  animation: gaming 2s linear infinite;
+}
+.gaming {
+  /* 横長で虹色を作る */
+  background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+  animation: gaming 2s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@keyframes gaming {
+  /* backgroundを移動させる */
+  100% { background-position-x: 200%; }
 }

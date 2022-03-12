@@ -96,7 +96,7 @@ function primary_player(player){
   PRIMARY_PLAYER.name = player.charName;
   log_queue_insert(['101',null,PRIMARY_PLAYER.nameID,PRIMARY_PLAYER.name]);
 }
-let PRIMARY_PLAYER = {ACTname:'YOU',nameID:null,name:null};
+let PRIMARY_PLAYER = {ACT_NAME:'YOU',nameID:null,name:null};
 let AREA = {Area_Type: -1,Last_Area_type:null};
 async function area_check(zone){
   $('#header_space').find('.header-areaname').text(zone.zoneName.toUpperCase());
@@ -159,6 +159,7 @@ async function area_type_set(zoneID){
       AREA.Area_Type = 1;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Fl_BattleTime;
       break;
+    /*
     case 250://Wolves Den Pier
       AREA.Area_Type = 4;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;

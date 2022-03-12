@@ -1,5 +1,8 @@
 let Storage_name = 'Gorge-Overlay3';
 var Font_Size = 16;
+var KILLSOUND_PLAY = new Audio('');
+var KILLSOUND_VOLUME = 20;
+var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/zyaki.wav';
 const Localstorage_dictionary = {
   language:{
     func_name:'Language',
@@ -28,7 +31,7 @@ const Localstorage_dictionary = {
     value:'YOU',
     disp_tab:'general',
     title_ja:'ACTで設定した名前',
-    title_en:'The name you set in ACT.',
+    title_en:'The name you set in ACT',
     description_ja:'ACTからのデータを使う部分（PvEと互換モード）において、自分の背景変更に必要です。',
     description_en:'This is needed to change your background in the part that uses data from ACT (PvE and compatibility mode).',
     inputtype:'textbox',
@@ -42,6 +45,26 @@ const Localstorage_dictionary = {
     description_ja:'一部オーバーレイにおいて、名前をACTで設定したものに置き換えます。',
     description_en:'In some overlays, replace the name with the one set in ACT.',
     inputtype:'toggle',
+  },
+  settingpage_num:{
+    func_name:'Setting_Page_Num',
+    value:1,
+    disp_tab:'general',
+    title_ja:'設定を開きにくくする。',
+    title_en:'settings harder to open',
+    description_ja:'うっかり触ったとき用に連打で開くように変更する。',
+    description_en:'Change it to open with a series of hits for when it is accidentally touched.',
+    inputtype:'value',
+  },
+  samplepage_num:{
+    func_name:'Sample_Page_Num',
+    value:3,
+    disp_tab:'general',
+    title_ja:'サンプルを開きにくくする。',
+    title_en:'Make samples harder to open',
+    description_ja:'うっかり触ったとき用に連打で開くように変更する。',
+    description_en:'Change it to open with a series of hits for when it is accidentally touched.',
+    inputtype:'value',
   },
   PvE_Maxrow:{
     func_name:'PVE_MAXROW',
@@ -84,19 +107,19 @@ const Localstorage_dictionary = {
     value:false,
     disp_tab:'RW-setting',
     title_ja:'アイコンの種類（RW）',
-    title_en:'deployed (RW)',
+    title_en:'Type of Icon (RW)',
     description_ja:'RW時におけるテンションのアイコンを数字にするかアイコンにするか。',
-    description_en:'deployed',
+    description_en:'Icons of tension in RW should be numbers or icons.',
     inputtype:'toggle',
   },
   RW_maxdunamis:{
     func_name:'RW_MAX_DUNAMIS_ICON',
     value:true,
     disp_tab:'RW-setting',
-    title_ja:'テンションマックス時の種類（RW）',
-    title_en:'deployed (RW)',
+    title_ja:'テンションマックス時のアイコン（RW）',
+    title_en:'Icon at max tension (RW)',
     description_ja:'RW時におけるテンションマックスのアイコンを数字にするかアイコンにするか。',
-    description_en:'deployed',
+    description_en:'Icon of Tension Max in RW case should be a number or an icon.',
     inputtype:'toggle',
   },
   fl_act_compatible_mode:{
@@ -119,6 +142,16 @@ const Localstorage_dictionary = {
     description_en:"If a party member is outside the maximum number of lines to be displayed, priority is displayed.",
     inputtype:'toggle',
   },
+  fl_simulation_kill:{
+    func_name:'FL_SIMULATION_KILL',
+    value:true,
+    disp_tab:'FL-setting',
+    title_ja:'OverlayでシミュレーションしたK/Dを用いる (FL)',
+    title_en:'Using K/D simulated by Overlay  (FL)',
+    description_ja:'DoTダメージや列車死等によるキルが反映されます。精度低め。',
+    description_en:"Kills due to DoT damage, train deaths, etc. are reflected. Low accuracy.",
+    inputtype:'toggle',
+  },
   fl_extend:{
     func_name:'FL_EXTEND',
     value:'party',
@@ -136,7 +169,7 @@ const Localstorage_dictionary = {
     value:true,
     disp_tab:'FL-setting',
     title_ja:'周囲に居る味方のみオーバーレイに表示 (FL)',
-    title_en:'Only allies in the vicinity are shown in the overlay. (FL)',
+    title_en:'Only allies in the vicinity are shown in the overlay (FL)',
     description_ja:'周囲に居る味方を表示し、遠くにいる味方を非表示にする。',
     description_en:"Shows allies around you and hides allies in the distance.",
     inputtype:'toggle',
@@ -146,10 +179,34 @@ const Localstorage_dictionary = {
     value:true,
     disp_tab:'FL-setting',
     title_ja:'試合終了後に味方全てのデータをオーバーレイに表示する (FL)',
-    title_en:"Display all allies' data in an overlay after a fights. (FL)",
+    title_en:"Display all allies' data in an overlay after a fights (FL)",
     description_ja:'最大表示行数や周囲の味方のみ表示の制限を無視してすべて表示する。',
     description_en:"Display all of them, ignoring the maximum number of display lines and the limit of displaying only allies around you.",
     inputtype:'toggle',
+  },
+  fl_death_too_much:{
+    func_name:'FL_DEATH_TOO_MUCH',
+    value:8,
+    disp_tab:'FL-setting',
+    min_value:8,
+    max_value:24,
+    title_ja:'Downした人を協調表示する。（FL）',
+    title_en:'Downed person in a coordinated display (FL)',
+    description_ja:'一定回数以上死んだ人を協調表示する。',
+    description_en:'Coordinated display of people who have died more than a certain number of times.',
+    inputtype:'value',
+  },
+  rw_death_too_much:{
+    func_name:'RW_DEATH_TOO_MUCH',
+    value:8,
+    disp_tab:'RW-setting',
+    min_value:8,
+    max_value:24,
+    title_ja:'Downしすぎた人を協調表示する。（RW）',
+    title_en:'Maximum number of rows displayed (RW)',
+    description_ja:'一定回数以上死んだ人を協調表示する。',
+    description_en:'Coordinated display of people who have died more than a certain number of times.',
+    inputtype:'value',
   },
   pve_hpstable:{
     func_name:'PVE_HPS_TABLE',
@@ -183,6 +240,66 @@ const Localstorage_dictionary = {
     description_en:"If a party member is outside the maximum number of lines to be displayed, priority is displayed.",
     inputtype:'toggle',
   },
+  rw_simulation_kill:{
+    func_name:'G_SIMULATION_KILL',
+    value:true,
+    disp_tab:'RW-setting',
+    title_ja:'OverlayでシミュレーションしたK/Dを用いる (RW)',
+    title_en:'Using K/D simulated by Overlay  (RW)',
+    description_ja:'DoTダメージや列車死等によるキルが反映されます。精度低め。',
+    description_en:"If a party member is outside the maximum number of lines to be displayed, priority is displayed.",
+    inputtype:'toggle',
+  },
+  rw_party_color_background:{
+    func_name:'RW_PARTY_COLOR_BACKGROUND',
+    value:true,
+    disp_tab:'RW-setting',
+    title_ja:'パーティメンバーの背景を塗りつぶす (RW)',
+    title_en:'Fill in the background of party members (RW)',
+    description_ja:'パーティメンバーの背景を塗りつぶして見やすくします。',
+    description_en:"Fill in the background of the party members to make them easier to see.",
+    inputtype:'toggle',
+  },
+  fl_party_color_background:{
+    func_name:'FL_PARTY_COLOR_BACKGROUND',
+    value:false,
+    disp_tab:'FL-setting',
+    title_ja:'パーティメンバーの背景を塗りつぶす (FL)',
+    title_en:'Fill in the background of party members (FL)',
+    description_ja:'パーティメンバーの背景を塗りつぶして見やすくします。',
+    description_en:"Fill in the background of the party members to make them easier to see.",
+    inputtype:'toggle',
+  },
+  rw_killsound:{
+    func_name:'KILLSOUND',
+    value:false,
+    disp_tab:'RW-setting',
+    title_ja:'Killに音を鳴らす (RW)',
+    title_en:'Sound to Kill (RW)',
+    description_ja:'テンションマックス以降の自アラキルに音を再生する。',
+    description_en:"Play sound to kill after tension max.",
+    inputtype:'toggle',
+  },
+  rw_killsound_path:{
+    func_name:'KILLSOUND_PATH',
+    value:'https://takoyaki313.github.io/Gorge-Overlay/sound/zyaki.wav',
+    disp_tab:'RW-setting',
+    title_ja:'再生するファイル (RW)',
+    title_en:'Files to be play (RW)',
+    description_ja:'ローカルのファイルは設定できません。',
+    description_en:"Local files cannot be set.",
+    inputtype:'textbox',
+  },
+  rw_killsound_volume:{
+    func_name:'KILLSOUND_VOLUME',
+    value:30,
+    disp_tab:'RW-setting',
+    title_ja:'キルサウンドの音量 (RW)',
+    title_en:'Kill sound volume (RW)',
+    description_ja:'キルサウンドの音量を指定する。',
+    description_en:"Specifies the volume of the kill sound.",
+    inputtype:'slider',
+  },
   rw_extend:{
     func_name:'RW_EXTEND',
     value:'party',
@@ -200,7 +317,7 @@ const Localstorage_dictionary = {
     value:true,
     disp_tab:'RW-setting',
     title_ja:'周囲に居る味方のみオーバーレイに表示 (RW)',
-    title_en:'Only allies in the vicinity are shown in the overlay. (RW)',
+    title_en:'Only allies in the vicinity are shown in the overlay (RW)',
     description_ja:'周囲に居る味方を表示し、遠くにいる味方を非表示にする。',
     description_en:"Shows allies around you and hides allies in the distance.",
     inputtype:'toggle',
@@ -210,7 +327,7 @@ const Localstorage_dictionary = {
     value:true,
     disp_tab:'RW-setting',
     title_ja:'試合終了後に味方全てのデータをオーバーレイに表示する (RW)',
-    title_en:"Display all allies' data in an overlay after a fights. (RW)",
+    title_en:"Display all allies' data in an overlay after a fights (RW)",
     description_ja:'最大表示行数や周囲の味方のみ表示の制限を無視してすべて表示する。',
     description_en:"Display all of them, ignoring the maximum number of display lines and the limit of displaying only allies around you.",
     inputtype:'toggle',
@@ -220,7 +337,7 @@ const Localstorage_dictionary = {
     value:false,
     disp_tab:'Other',
     title_ja:'ACTから受け取ったLog_Lineを無視する。',
-    title_en:"null",
+    title_en:"Debug only",
     description_ja:'デバッグ用',
     description_en:"null",
     inputtype:'toggle',
@@ -230,7 +347,7 @@ const Localstorage_dictionary = {
     value:false,
     disp_tab:'Other',
     title_ja:'処理におけるログをコンソールに表示する。',
-    title_en:"null",
+    title_en:"Debug only",
     description_ja:'デバッグ用',
     description_en:"null",
     inputtype:'toggle',
@@ -240,7 +357,7 @@ const Localstorage_dictionary = {
     value:false,
     disp_tab:'Other',
     title_ja:'計算にかかった時間をコンソールに表示する。',
-    title_en:"null",
+    title_en:"Debug only",
     description_ja:'デバッグ用',
     description_en:"null",
     inputtype:'toggle',
@@ -250,7 +367,7 @@ const Localstorage_dictionary = {
     value:true,
     disp_tab:'Other',
     title_ja:'アシストの対象として、デバフがかかった敵のリセットを行う。',
-    title_en:"null",
+    title_en:"Debug only",
     description_ja:'デバッグ用',
     description_en:"null",
     inputtype:'toggle',
@@ -260,7 +377,7 @@ const Localstorage_dictionary = {
     value:true,
     disp_tab:'Other',
     title_ja:'HPデータの更新に同一タイムスタンプのデータを含める。',
-    title_en:"null",
+    title_en:"Debug only",
     description_ja:'デバッグ用',
     description_en:"null",
     inputtype:'toggle',
@@ -270,14 +387,34 @@ const Localstorage_dictionary = {
     value:false,
     disp_tab:'Other',
     title_ja:'重複したタイムスタンプのデータを含めた場合、重複データに対してロボの搭乗確認を行う。',
-    title_en:"null",
+    title_en:"Debug only",
     description_ja:'デバッグ用',
     description_en:"null",
     inputtype:'toggle',
   },
+  data_reset:{
+    func_name:'data_reset',
+    value:false,
+    disp_tab:'general',
+    title_ja:'設定をリセットする。',
+    title_en:"Reset settings",
+    description_ja:'ローカルに保存された設定データを削除する。',
+    description_en:"Delete locally saved configuration data.",
+    inputtype:'toggle',
+  },
+  onlinemode:{
+    func_name:'ONLINE',
+    value:true,
+    disp_tab:'null',
+    title_ja:'設定のhtmlをローカル参照にする。',
+    title_en:"Reset settings",
+    description_ja:'デバッグ用。設定が開かなくなります。',
+    description_en:"Delete locally saved configuration data.",
+    inputtype:'toggle',
+  },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay Alpha 0.3.8',
+    value:'Gorge-overlay3 Rev.14',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',
@@ -309,8 +446,18 @@ function version_check(grobal_apply){
   }
   localstorage_to_grobal(data,grobal_apply);
   font_size_change();
+  audio_set(false,KILLSOUND_VOLUME);
 }
-
+function audio_set(play,volume){
+  KILLSOUND_PLAY = new Audio(KILLSOUND_PATH);
+  KILLSOUND_PLAY.volume = volume/100;
+  if(play){
+    killsound_play();
+  }
+}
+function killsound_play(){
+  KILLSOUND_PLAY.play();
+}
 function localstorage_defalt(){
   let array = Object.keys(Localstorage_dictionary);
   let storage_data = {};
@@ -318,6 +465,12 @@ function localstorage_defalt(){
     storage_data[array[i]] = Localstorage_dictionary[array[i]].value;
   }
   return storage_data;
+}
+function localstorage_reset(){
+  localstorage_disksave(localstorage_defalt());
+  window.setTimeout(function(){
+    window.location.reload(false);
+  }, 100);
 }
 function localstorage_update(old){
   let default_local = localstorage_defalt();

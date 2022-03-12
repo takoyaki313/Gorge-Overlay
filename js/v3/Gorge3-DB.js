@@ -1,4 +1,5 @@
-let TBD = {Player_data:[],Skill_data:[],DoT_data:[],Player_hp:[],Hp_data:[]};
+let TBD = {Player_data:[],Skill_data:[],DoT_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+let TenSyonMax_Me = false;
 /*async function database_version_store(){
   // バージョン1
   await DB.version(1).stores({
@@ -82,49 +83,6 @@ async function hp_data_db_add(data){
 //Hp_data
 //target : Realtime_data "nameID"(currenthp/maxhp...noweffect)
 //target : Skill_data "queueID + victimID + attackerID"(skillID...queueID)
-async function initialize_playerdata(key){
-  let data = {
-    nameID:key,
-    //damage
-    totaldamage:0,
-    playerdamage:0,
-    torobotdamage:0,
-    playerotherdamage:0,
-    persondamage:0,
-    objectdamage:0,
-    towerdamage:0,
-    matondamage:0,
-    //heal
-    allyheal:0,
-    partyheal:0,
-    selfheal:0,
-    totalheal:0,
-    otherheal:0,
-    //incomedamage
-    totalincomedamage:0,
-    objectincomedamage:0,
-    robincomedamage:0,
-    otherpersonincomedamage:0,
-    personalincomedamage:0,
-    //incomeheal
-    totalincomeheal:0,
-    incomeselfheal:0,
-    incomeotherheal:0,
-    incomeallyheal:0,
-    incomepartyheal:0,
-    //over
-    overheal:0,
-    overdamage:0,
-    //kill
-    kill:0,
-    death:0,
-    assist:0,
-    s_kill:0,
-    s_death:0
-  };
-  console.log(data);
-  return data;
-}
 async function insert_maindata(target,keyname,key,...data){//データの新規追加ONLY
   let input = {[keyname]:key};
   for(let i = 0 ; i <data.length ; i ++){
@@ -136,13 +94,6 @@ async function update_maindata(target,keyname,key,...data){//データの更新�
   //let position = TBD[target].findIndex(({nameID}) => nameID === key);
   let position = await searched_maindata(target,keyname,key);
   if(position === -1){//存在しないとき
-    /*
-    if(target === 'Player_data'){
-      TBD[target].push(await initialize_playerdata(key));
-    }
-    else {
-      TBD[target].push({[keyname]:key});
-    }*/
     TBD[target].push({[keyname]:key});
     position = await searched_maindata(target,keyname,key);
     if(position === -1){
@@ -241,7 +192,30 @@ async function searched_maindata(target,keyname,key){
   }
   return -1;
 }
+async function aliance_dunamis_update(nameID,dunamis,time){
+  if(nameID.substring(0,2) === '10'){
+    let read_data = await read_maindata('Player_data','nameID',nameID,'aliance');
+    if(typeof read_data.aliance === 'number'){
+      number = read_data.aliance;
+    }else {
+      return null;
+    }
+    if(number > 0 && number < 7){
 
+    }else {
+      return null;
+    }
+    if(AREA.Area_Type === 2 && LOGLINE_ENCOUNTER.Engage){
+      if(TBD.Aliance[number].dunamis !== dunamis){
+        if(dunamis === 20 && number === 1){
+          TenSyonMax_Me = true;
+        }
+        TBD.Aliance[number].history.push({from:TBD.Aliance[number].dunamis,to:dunamis,time:Math.round((await timestamp_change(time) - LOGLINE_ENCOUNTER.Battle_Start_Time)/1000)});
+        TBD.Aliance[number].dunamis = dunamis;
+      }
+    }
+  }
+}
 async function db_update(target,keyname,key,...data){
   await DB.transaction("rw", DB[target], async ()=>{
     let db_data = await DB[target].get({[keyname] : key});
@@ -348,6 +322,12 @@ async function update_maindata_change(target, keyname, key, dataname, data, repl
   }
   else if (dataname.length === 6) {
     await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]]);
+  }
+  else if (dataname.length === 7) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]]);
+  }
+  else if (dataname.length === 8) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]]);
   }
   else {
     console.warn('Error : database update format change failed... ->');
