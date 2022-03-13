@@ -21,6 +21,8 @@ Overlayを追加し、CustomからMiniParceを選択し、表示するURLに以�
 ```
 https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay3.html
 ```
+アップデートに関しての情報は[Release](https://github.com/takoyaki313/Gorge-Overlay/releases)より確認できます。
+
 [旧バージョン：Gorge-Overlay](https://takoyaki313.github.io/Gorge-Overlay/old/)
 
 [旧バージョン：Gorge-Overlay2](https://takoyaki313.github.io/Gorge-Overlay/old/Gorge-Overlay2)
@@ -29,7 +31,7 @@ https://takoyaki313.github.io/Gorge-Overlay/Gorge-Overlay3.html
 
 [ravahn/FFXIV_ACT_Plugin](https://github.com/ravahn/FFXIV_ACT_Plugin)
 
-ｑ
+
 ## 仕様
 - 試合終了後のリザルトとオーバーレイのデータが完全に一致しない。
 - カルディアのHoTが計算されない。
