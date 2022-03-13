@@ -321,22 +321,26 @@ function tooltip_income(...data){
   return html_create;
 }
 function tooltip_dunamis_history(aliancedata,aliance){
-  let data = aliancedata[aliance];
-  if(data.dunamis === 0){
+  if(aliance < 7 && aliance > 0){
+    let data = aliancedata[aliance];
+    if(data.dunamis === 0){
+      return {now:0,html:''};
+    }
+    else {
+      let html_create = '<div class="tooltip-grid-jobhistory">';
+      for(let i = 0 ; i < data.history.length ;i++){
+        html_create += '<span>' + data.history[i].from + '</span><span class="icon-NaviArrowRight"></span><span>' + data.history[i].to + '</span><span>' + time_change_format(data.history[i].time) +'</span>';
+      }
+      html_create += '</div>';
+      if(data.dunamis === 20){
+        return {html:html_create,now:TensyonMax};
+      }else {
+        return {html:html_create,now:data.dunamis};
+      }
+      //06C2 --20
+    }
+  }else {
     return {now:0,html:''};
-  }
-  else {
-    let html_create = '<div class="tooltip-grid-jobhistory">';
-    for(let i = 0 ; i < data.history.length ;i++){
-      html_create += '<span>' + data.history[i].from + '</span><span class="icon-NaviArrowRight"></span><span>' + data.history[i].to + '</span><span>' + time_change_format(data.history[i].time) +'</span>';
-    }
-    html_create += '</div>';
-    if(data.dunamis === 20){
-      return {html:html_create,now:TensyonMax};
-    }else {
-      return {html:html_create,now:data.dunamis};
-    }
-    //06C2 --20
   }
 }
 function tooltip_job_history(jobdata){
