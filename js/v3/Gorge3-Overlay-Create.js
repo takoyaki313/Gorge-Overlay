@@ -21,7 +21,7 @@ var FL_DEATH_TOO_MUCH = 8;
 var G_REPLACE_ACTNAME = true;
 var G_SIMULATION_KILL = true;
 var FL_SIMULATION_KILL = true;
-
+const Robot_Accept_Shotest_Time = 500;
 let Overlay_Select = {};
 function gorge_start(e){
   let sort_target = 'calcdps';
@@ -473,11 +473,15 @@ function tooltip_kill_death_create(data,type){
       let icon = '';
       if(type === 'simulate'){
         icon = 'icon-' + data[i].job;
-        html_create += '<span class= "' + icon +'"></span><span>' + data[i].name + '</span><span>' + time_change_format(data[i].time) + '</span>';
+        let name = data[i].name;
+        if(name === ''||typeof name === 'undefined'){
+          name = 'Unknown';
+        }
+        html_create += '<span class= "' + icon +'"></span><span>' + name + '</span><span>' + time_change_format(data[i].time) + '</span>';
       }
       else if(type === 'normal'){
         let name = data[i].name;
-        if(name === ''){
+        if(name === ''||typeof name === 'undefined'){
           name = 'Unknown';
         }
         html_create += '<span></span><span>' + name + '</span><span>' + time_change_format(data[i].time) + '</span>';
@@ -567,10 +571,15 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
         icon_type = 'icon-' + data[i].ride_type +'3';
         if(data[i].time !== 0){
           let r_time = data[i].time;
-          tooltip_data = tooltip_robot_history_detail(data[i].ride_type,data[i].data,Math.round(r_time/1000));
-          return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline "+ icon_type +"'></span></div>";
+          if(data[i].time > Robot_Accept_Shotest_Time){
+            tooltip_data = tooltip_robot_history_detail(data[i].ride_type,data[i].data,Math.round(r_time/1000));
+            return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline "+ icon_type +"'></span></div>";
+          }else {//短すぎるデータ
+            let r_time = data[i].time;
+            return_data += "<div class='robot-history-box' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='' ></span></div>";
+          }
         }else {//last data
-          let r_time = nowtime - data[i].ridetime;
+          let r_time = nowtime > data[i] ? nowtime - data[i].ridetime : 0;
           tooltip_data = tooltip_robot_history_detail(data[i].ride_type,data[i].data,Math.round(r_time/1000));
           return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline " + icon_type +"' ></span></div>";
         }
@@ -580,7 +589,7 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
           let r_time = data[i].time;
           return_data += "<div class='robot-history-box' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='' ></span></div>";
         }else {//last data
-          let r_time = nowtime - data[i].ridetime;
+          let r_time = nowtime > data[i] ? nowtime - data[i].ridetime : 0;
           return_data += "<div class='robot-history-box' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='' ></span></div>";
         }
       }
