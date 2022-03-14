@@ -579,7 +579,7 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
             return_data += "<div class='robot-history-box' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='' ></span></div>";
           }
         }else {//last data
-          let r_time = nowtime > data[i] ? nowtime - data[i].ridetime : 0;
+          let r_time = nowtime > data[i].time ? nowtime - data[i].ridetime : 0;
           tooltip_data = tooltip_robot_history_detail(data[i].ride_type,data[i].data,Math.round(r_time/1000));
           return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline " + icon_type +"' ></span></div>";
         }
@@ -589,7 +589,7 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
           let r_time = data[i].time;
           return_data += "<div class='robot-history-box' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='' ></span></div>";
         }else {//last data
-          let r_time = nowtime > data[i] ? nowtime - data[i].ridetime : 0;
+          let r_time = nowtime > data[i].time ? nowtime - data[i].ridetime : 0;
           return_data += "<div class='robot-history-box' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='' ></span></div>";
         }
       }
