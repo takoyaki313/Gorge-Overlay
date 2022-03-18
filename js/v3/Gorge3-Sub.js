@@ -58,7 +58,7 @@ function countUp(){
     let nowtime = Date.now();
     //Timer_Start_Time
     let current_time_ms = nowtime - LOGLINE_ENCOUNTER.Timer_Start_Time;
-    Battle_Current_Time = Math.floor(current_time_ms/1000);
+    Battle_Current_Time = Math.ceil(current_time_ms/1000);
     //console.log('Timer->'+Battle_Current_Time);
   }
   header_update_timer_pvp();
