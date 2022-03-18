@@ -231,7 +231,7 @@ function gorge_create(template,create_time,start_time,battle_data,hide,selected,
   }
   let dunamis_space = row.find('.g-dunamis');
   let dunamis_detail = tooltip_dunamis_history(aliance_data,Number(battle_data.aliance));
-  if(dunamis_detail.now > 0||dunamis_detail === TensyonMax){
+  if(dunamis_detail.now > 0||dunamis_detail.now === TensyonMax){
     dunamis_space.prop('title',dunamis_detail.html);
     dunamis_space.addClass('dunamis-space');
     if(RW_DUNAMIS_ICON){
