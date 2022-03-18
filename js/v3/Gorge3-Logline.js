@@ -630,7 +630,9 @@ async function hpdata_add(nameID,player_data,attackerID){
       }
       if(AREA.Area_Type === 2){//Hidden Gorge
         if(temp_time > 0 ||HP_Update_duplite_robride_process){//duplite Hpdata exclude
-          await rob_ride_check(nameID,readed_data,player_data);
+          if(LOGLINE_ENCOUNTER.Engage){
+            await rob_ride_check(nameID,readed_data,player_data);
+          }
         }
         //readed_data
         //player_data

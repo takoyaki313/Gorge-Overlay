@@ -21,7 +21,7 @@ var FL_DEATH_TOO_MUCH = 8;
 var G_REPLACE_ACTNAME = true;
 var G_SIMULATION_KILL = true;
 var FL_SIMULATION_KILL = true;
-const Robot_Accept_Shotest_Time = 500;
+const Robot_Accept_Shotest_Time = 100;
 let Overlay_Select = {};
 function gorge_start(e){
   let sort_target = 'calcdps';
@@ -231,7 +231,7 @@ function gorge_create(template,create_time,start_time,battle_data,hide,selected,
   }
   let dunamis_space = row.find('.g-dunamis');
   let dunamis_detail = tooltip_dunamis_history(aliance_data,Number(battle_data.aliance));
-  if(battle_data.dunamis !== undefined && battle_data.dunamis !== null){
+  if(dunamis_detail.now > 0){
     dunamis_space.prop('title',dunamis_detail.html);
     dunamis_space.addClass('dunamis-space');
     if(RW_DUNAMIS_ICON){
