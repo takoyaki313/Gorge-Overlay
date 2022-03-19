@@ -423,3 +423,47 @@ body{
   /* backgroundを移動させる */
   100% { background-position-x: 200%; }
 }
+.gaming2-robot::after{
+  background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+  animation: gaming 1s linear infinite;
+}
+.gaming2 {
+  /* 横長で虹色を作る */
+  background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+  animation: gaming 1s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.green {
+  background: #1EFF00;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.green-robot::after {
+  background: #1EFF00!important;
+}
+.blue {
+  background: #0070FF;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.blue-robot::after {
+  background: #0070FF!important;
+}
+.purple {
+  background: #A335EE;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.purple-robot::after {
+  background: #A335EE!important;
+}
+/*
+100%  : #E5CC80
+99%   : #E268A8
+95%   : #FF8000
+75%   : #A335EE
+50%   : #0070FF
+25%   : #1EFF00
+
+*/

@@ -208,6 +208,18 @@ const Localstorage_dictionary = {
     description_en:'Coordinated display of people who have died more than a certain number of times.',
     inputtype:'value',
   },
+  rw_perosn_raibow:{
+    func_name:'RW_Person_Rainbow_DPS',
+    value:1000,
+    disp_tab:'RW-setting',
+    min_value:1,
+    max_value:100000,
+    title_ja:'一定DPS以上をレインボーにする。（RW）',
+    title_en:'Make a certain DPS or higher a rainbow (RW)',
+    description_ja:'中央で盛った人が輝く。ロボは対象外。',
+    description_en:'The people who thrived in the center shine. Robot is out of scope.',
+    inputtype:'value',
+  },
   pve_hpstable:{
     func_name:'PVE_HPS_TABLE',
     value:'healer',
@@ -414,7 +426,7 @@ const Localstorage_dictionary = {
   },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay3 Rev.14',
+    value:'Gorge-overlay3 Rev.16',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',

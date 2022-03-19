@@ -22,6 +22,8 @@ var G_REPLACE_ACTNAME = true;
 var G_SIMULATION_KILL = true;
 var FL_SIMULATION_KILL = true;
 const Robot_Accept_Shotest_Time = 100;
+var RW_Person_Rainbow_DPS = 1000;
+
 let Overlay_Select = {};
 function gorge_start(e){
   let sort_target = 'calcdps';
@@ -267,7 +269,10 @@ function gorge_create(template,create_time,start_time,battle_data,hide,selected,
   row.find('.g-incomeheal-number').text(damage_to_dps(battle_data.totalincomeheal,time).toFixed(0));
   //under space
   if(typeof battle_data.robot_data === 'undefined'){//ロボなし
-
+    if(battle_data.calcdps >= RW_Person_Rainbow_DPS){
+      row.find(".g-dps-i").addClass('gaming');
+      row.find(".g-dps-d").addClass('gaming');
+    }
   }else {//ロボあり
     row.find('.robot-space-hide').removeClass('robot-space-hide');
     let robot_detail = robot_icon_timehistory_create(battle_data.robot_data,false,create_time,start_time);
@@ -573,7 +578,7 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
           let r_time = data[i].time;
           if(data[i].time > Robot_Accept_Shotest_Time){
             tooltip_data = tooltip_robot_history_detail(data[i].ride_type,data[i].data,Math.round(r_time/1000));
-            return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline "+ icon_type +"'></span></div>";
+            return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline "+ icon_type +" "+ objectdamage_color_add(data[i].ride_type,data[i].data.towerdamage) +"'></span></div>";
           }else {//短すぎるデータ
             let r_time = data[i].time;
             return_data += "<div class='robot-history-box' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='' ></span></div>";
@@ -581,7 +586,7 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
         }else {//last data
           let r_time = nowtime > data[i].time ? nowtime - data[i].ridetime : 0;
           tooltip_data = tooltip_robot_history_detail(data[i].ride_type,data[i].data,Math.round(r_time/1000));
-          return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline " + icon_type +"' ></span></div>";
+          return_data += "<div class='robot-history-box' title='"+ tooltip_data +"' style=' width:" + r_time /total_battle_time * 100 +"%'><span class='" +"g-textline " + icon_type  +" "+ objectdamage_color_add(data[i].ride_type,data[i].data.towerdamage) +"' ></span></div>";
         }
       }
       else {// no robot
@@ -596,6 +601,25 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
     }
   }
   return {history:return_data,rob:robot,lastrobot:tooltip_data};
+}
+function objectdamage_color_add(type,damage){
+  if(type === "opp" ||type === 'jas'){
+    if(damage >= 1000000){
+      return 'gaming2 gaming2-robot';
+    }else if (damage >= 750000) {
+      return 'purple purple-robot';
+    }else if (damage >= 500000) {
+      return 'blue blue-robot';
+    }else if (damage >= 250000) {
+      return 'green green-robot';
+    }
+    else {
+      return '';
+    }
+  }
+  else {
+    return '';
+  }
 }
 function fl_start(e){
   let sort_target = 'calcdps';
