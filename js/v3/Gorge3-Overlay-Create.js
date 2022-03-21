@@ -215,6 +215,7 @@ function gorge_create(template,create_time,start_time,battle_data,hide,selected,
   //////
   if(death_num >= RW_DEATH_TOO_MUCH){
     row.addClass('death-too-much');
+    name_space.text(battle_data.name);
   }
   else if(battle_data.name === PRIMARY_PLAYER.name){
     //myself
@@ -814,7 +815,7 @@ function fl_create(template,battle_data,hide,selected){
     //myself
     row.addClass('me');
     if(G_REPLACE_ACTNAME){
-        row.find('.f-name').text(PRIMARY_PLAYER.ACT_NAME);
+        name_space.text(PRIMARY_PLAYER.ACT_NAME);
     }
   }
   else if(battle_data.aliance === 1 && FL_PARTY_COLOR_BACKGROUND){
