@@ -40,7 +40,7 @@ function overlay_update_start(e){
   else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||
   e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||
   e.Encounter.CurrentZoneName === 'The Goblet'*/){
-    fl_start(e);
+    pve_start(e);
   }
   else {
     timer_encounter(e);
