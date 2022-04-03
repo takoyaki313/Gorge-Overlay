@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconset';
-  src:  url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.eot?479w5d');
-  src:  url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.eot?479w5d#iefix') format('embedded-opentype'),
-    url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.ttf?479w5d') format('truetype'),
-    url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.woff?479w5d') format('woff'),
-    url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.svg?479w5d#iconset') format('svg');
+  src:  url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.eot?479w5d');
+  src:  url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.eot?479w5d#iefix') format('embedded-opentype'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.ttf?479w5d') format('truetype'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.woff?479w5d') format('woff'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.svg?479w5d#iconset') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
