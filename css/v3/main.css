@@ -68,7 +68,7 @@ body{
   display: none;
 }
 .ui-tooltip{
-  max-width: 16rem !important;
+  max-width: 90vw !important;
   background: rgb(38 38 38) !important;
 }
 .underline-text {
@@ -204,18 +204,6 @@ body{
 .incomeheal-object{
   background-color: var(--incomeheal-other);
 }
-.heal-self{
-  color: var(--incomeheal-self);
-}
-.heal-party{
-  color: var(--incomeheal-party);
-}
-.heal-ally{
-  color: var(--incomeheal-ally);
-}
-.heal-object{
-  color: var(--incomeheal-other);
-}
 .incomedamage-player {
   background-color: var(--incomedamage-person);
 }
@@ -237,9 +225,7 @@ body{
 .damage-tower{
   background-color: var(--damage-tower);
 }
-.damage-player-other{
-  background-color: var(--damage-person-other);
-}
+/*Color Font*/
 .damage-person-color{
   color: var(--damage-person);
 }
@@ -251,6 +237,39 @@ body{
 }
 .damage-tower-color{
   color: var(--damage-tower);
+}
+.heal-self-color{
+  color: var(--incomeheal-self);
+}
+.heal-party-color{
+  color: var(--incomeheal-party);
+}
+.heal-ally-color{
+  color: var(--incomeheal-ally);
+}
+.heal-object-color{
+  color: var(--incomeheal-other);
+}
+.incomeheal-self-color{
+  color: var(--incomeheal-self);
+}
+.incomeheal-party-color{
+  color: var(--incomeheal-party);
+}
+.incomeheal-ally-color{
+  color: var(--incomeheal-ally);
+}
+.incomeheal-object-color{
+  color: var(--incomeheal-other);
+}
+.incomedamage-player-color {
+  color: var(--incomedamage-person);
+}
+.incomedamage-robot-color {
+  color: var(--incomedamage-robot);
+}
+.incomedamage-object-color {
+  color: var(--incomedamage-object);
 }
 /*  Aliance Color    */
 .aliance-border-1 {
@@ -328,7 +347,7 @@ body{
 }
 .tooltip-grid-hps{
   display: grid;
-  grid-template-columns: max-content max-content 2rem max-content 2.4rem max-content 1.2rem max-content ;
+  grid-template-columns: 1.2rem max-content 1.2rem max-content 1.2rem max-content 1.2rem max-content ;
 }
 .tooltip-grid-hps *{
   justify-self: center;
@@ -357,15 +376,16 @@ body{
 }
 .tooltip-grid-income-heal {
   display: grid;
-  grid-template-columns :1.5rem max-content 1.5rem max-content 1.5rem max-content 1.5rem max-content;
+  grid-template-columns :1.2rem max-content 1.2rem max-content 1.2rem max-content 1.2rem max-content;
 }
 .tooltip-grid-income-heal *{
   justify-self: center;
   align-self: center;
+  min-height: 0.64rem;
 }
 .tooltip-grid-income-damage {
   display: grid;
-  grid-template-columns :1.5rem max-content 1.5rem max-content 1.5rem max-content;
+  grid-template-columns :1.2rem max-content 1.2rem max-content 1.2rem max-content;
 }
 .tooltip-grid-income-damage *,.tooltip-grid-income-damage .child{
   justify-self: center;

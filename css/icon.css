@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconset';
-  src:  url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.eot?2phw0z');
-  src:  url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.eot?2phw0z#iefix') format('embedded-opentype'),
-    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.ttf?2phw0z') format('truetype'),
-    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.woff?2phw0z') format('woff'),
-    url('https://takoyaki313.github.io/Gorge-Overlay/css/fonts/iconset.svg?2phw0z#iconset') format('svg');
+  src:  url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.eot?479w5d');
+  src:  url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.eot?479w5d#iefix') format('embedded-opentype'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.ttf?479w5d') format('truetype'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.woff?479w5d') format('woff'),
+    url('https://takoyaki313.github.io/Gorge-Overlay/fonts/iconset.svg?479w5d#iconset') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,93 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-error_outline:before {
+  content: "\e93f";
+}
+.icon-play_circle_outline:before {
+  content: "\e942";
+}
+.icon-volume_up:before {
+  content: "\e940";
+}
+.icon-call_missed_outgoing:before {
+  content: "\e941";
+}
+.icon-wifi_tethering:before {
+  content: "\e956";
+}
+.icon-format_size:before {
+  content: "\e957";
+}
+.icon-arrow_forward:before {
+  content: "\e943";
+}
+.icon-arrow_forward_ios:before {
+  content: "\e944";
+}
+.icon-show_chart:before {
+  content: "\e958";
+}
+.icon-shield:before {
+  content: "\e945";
+}
+.icon-local_fire_department:before {
+  content: "\e959";
+}
+.icon-align_horizontal_center:before {
+  content: "\e946";
+}
+.icon-align_horizontal_left:before {
+  content: "\e947";
+}
+.icon-align_horizontal_right:before {
+  content: "\e948";
+}
+.icon-align_vertical_bottom:before {
+  content: "\e95a";
+}
+.icon-align_vertical_top:before {
+  content: "\e95b";
+}
+.icon-party_normal:before {
+  content: "\e949";
+}
+.icon-person_income:before {
+  content: "\e94a";
+}
+.icon-robot_income:before {
+  content: "\e94b";
+}
+.icon-sprint:before {
+  content: "\e94c";
+}
+.icon-tower_income:before {
+  content: "\e94d";
+}
+.icon-Frasco:before {
+  content: "\e94e";
+}
+.icon-alliance:before {
+  content: "\e94f";
+}
+.icon-alliance_normal:before {
+  content: "\e950";
+}
+.icon-maton_income:before {
+  content: "\e951";
+}
+.icon-me:before {
+  content: "\e952";
+}
+.icon-me_normal:before {
+  content: "\e953";
+}
+.icon-party:before {
+  content: "\e954";
+}
+.icon-incomedamage:before {
+  content: "\e955";
+}
 .icon-sge:before {
   content: "\e93d";
 }
@@ -61,7 +148,7 @@
 .icon-btn:before {
   content: "\e926";
 }
-.icon-che3:before {
+.icon-che:before {
   content: "\e927";
 }
 .icon-cnj:before {
@@ -82,7 +169,7 @@
 .icon-gsm:before {
   content: "\e92d";
 }
-.icon-jas3:before {
+.icon-jas:before {
   content: "\e92e";
 }
 .icon-lnc:before {
@@ -97,7 +184,7 @@
 .icon-mrd:before {
   content: "\e932";
 }
-.icon-opp3:before {
+.icon-opp:before {
   content: "\e933";
 }
 .icon-person:before {
@@ -148,7 +235,7 @@
 .icon-brd:before {
   content: "\e907";
 }
-.icon-che:before {
+.icon-che_l:before {
   content: "\e908";
 }
 .icon-dnc:before {
@@ -163,7 +250,7 @@
 .icon-gnb:before {
   content: "\e90c";
 }
-.icon-jas:before {
+.icon-jas_l:before {
   content: "\e90d";
 }
 .icon-mch:before {
@@ -184,7 +271,7 @@
 .icon-nin:before {
   content: "\e913";
 }
-.icon-opp:before {
+.icon-opp_l:before {
   content: "\e914";
 }
 .icon-pld:before {

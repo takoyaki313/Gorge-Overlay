@@ -306,22 +306,22 @@ function tooltip_income(...data){
   let html_create = '';
   if(data.length === 4){//incomeheal Only
     html_create +=   '<div class="tooltip-grid-income-heal">';
-    html_create += '<span style="display: flex;"><span class="child">Me</span><span class="icon-NaviArrowRight child"></span></span><span>' + data[0]+'</span>';
-    html_create += '<span style="display: flex;"><span class="child">P</span><span class="icon-NaviArrowRight child"></span></span><span>' + data[1]+'</span>';
-    html_create += '<span style="display: flex;"><span class="child">A</span><span class="icon-NaviArrowRight child"></span></span><span>' + data[2]+'</span>';
-    html_create += '<span style="display: flex;"><span class="icon-geo-fill child"></span><span class="icon-NaviArrowRight child"></span></span><span>' + data[3]+'</span>';
+    html_create += '<span style="display: flex;"><span class="child icon-me incomeheal-self-color"></span></span><span class="incomeheal-self-color">' + data[0]+'</span>';
+    html_create += '<span style="display: flex;"><span class="child icon-party_normal incomeheal-party-color"></span></span><span class="incomeheal-party-color">' + data[1]+'</span>';
+    html_create += '<span style="display: flex;"><span class="child icon-alliance_normal incomeheal-ally-color"></span></span><span class="incomeheal-ally-color">' + data[2]+'</span>';
+    html_create += '<span style="display: flex;"><span class="icon-tower_income child incomeheal-object-color"></span></span><span class="incomeheal-object-color">' + data[3]+'</span>';
     html_create += '</div>';
   }else if (data.length === 7) {//incomeheal with incomedamage
     html_create += '<div class="tooltip-grid-income-damage">';
-    html_create += '<span style="display: flex;"><span class="icon-person child"></span><span class="icon-NaviArrowRight child"></span></span><span class="tooltip-grid-income-damage-number">' + data[4]+'</span>';
-    html_create += '<span style="display: flex;"><span class="icon-rob child"></span><span class="icon-NaviArrowRight child"></span></span><span class="tooltip-grid-income-damage-number">' + data[5]+'</span>';
-    html_create += '<span style="display: flex;"><span class="icon-maton child"></span><span class="icon-NaviArrowRight child"></span></span><span class="tooltip-grid-income-damage-number">' + data[6]+'</span>';
+    html_create += '<span style="display: flex;"><span class="icon-person_income child incomedamage-player-color"></span></span><span class="tooltip-grid-income-damage-number incomedamage-player-color">' + data[4]+'</span>';
+    html_create += '<span style="display: flex;"><span class="icon-robot_income child incomedamage-robot-color"></span></span><span class="tooltip-grid-income-damage-number incomedamage-robot-color">' + data[5]+'</span>';
+    html_create += '<span style="display: flex;"><span class="icon-maton_income child incomedamage-object-color"></span></span><span class="tooltip-grid-income-damage-number incomedamage-object-color">' + data[6]+'</span>';
     html_create += '</div><div class="tooltip-line"></div>';
     html_create += '<div class="tooltip-grid-income-heal">';
-    html_create += '<span style="display: flex;"><span class="child">Me</span><span class="icon-NaviArrowRight child"></span></span><span>' + data[0]+'</span>';
-    html_create += '<span style="display: flex;"><span class="child">P</span><span class="icon-NaviArrowRight child"></span></span><span>' + data[1]+'</span>';
-    html_create += '<span style="display: flex;"><span class="child">A</span><span class="icon-NaviArrowRight child"></span></span><span>' + data[2]+'</span>';
-    html_create += '<span style="display: flex;"><span class="icon-geo-fill child"></span><span class="icon-NaviArrowRight child"></span></span><span>' + data[3]+'</span>';
+    html_create += '<span style="display: flex;"><span class="child icon-me incomeheal-self-color"></span></span><span class="incomeheal-self-color">' + data[0]+'</span>';
+    html_create += '<span style="display: flex;"><span class="child icon-party incomeheal-party-color"></span></span><span class="incomeheal-party-color">' + data[1]+'</span>';
+    html_create += '<span style="display: flex;"><span class="child icon-alliance incomeheal-ally-color"></span></span><span class="incomeheal-ally-color">' + data[2]+'</span>';
+    html_create += '<span style="display: flex;"><span class="icon-tower_income child incomeheal-object-color"></span></span><span class="incomeheal-object-color">' + data[3]+'</span>';
     html_create += '</div>';
   }
   return html_create;
@@ -397,7 +397,7 @@ function tooltip_robot_history_detail(type,data,time){
   }
   let html_create = '<div class="tooltip-robot-dps"><div class="g-robot-top-dps">';
   html_create += damage_to_dps(data.totaldamage,time).toFixed(0) + '</div><div class="g-icon icon-';
-  html_create += type + '3"></div><div class="g-robot-main"><div class="g-robot-top">';
+  html_create += type + '"></div><div class="g-robot-main"><div class="g-robot-top">';
   html_create += '<div class="g-robot-div"><span class="icon-person"></span><span class="">' + damage_to_dps(data.persondamage,time).toFixed(0) + '</span></div>';
   html_create += '<div class="g-robot-div"><span class="icon-hammer"></span><span class="">' + damage_to_dps(data.torobotdamage,time).toFixed(0) + '</span></div>';
   html_create += '<div class="g-robot-div"><span class="icon-maton"></span><span class="">' + damage_to_dps(data.matondamage,time).toFixed(0) + '</span></div>';
@@ -455,7 +455,7 @@ function tooltip_dps_create(...data){
     html_create += '<div class="tooltip-grid-total-dps">';
     html_create += '<span>Total-Heal</span><span>' + data[0] +'</span><span>O-' + data[1] + '</span><span>' + data[2] +'</span>';
     html_create += "</div><div class='tooltip-line'></div><div class='tooltip-grid-hps'>";
-    html_create += '<span class="tooltip-grid-dps-text heal-self">Self</span><span class="heal-self">' + data[3] + '</span><span class="heal-party">Party</span><span class="heal-party">' + data[4] + '</span><span class="heal-ally">Alliance</span><span class="heal-ally">' + data[5] + '</span><span class="icon-maton heal-object"></span><span class="heal-object">' + data[6] + '</span>';
+    html_create += '<span class="tooltip-grid-dps-text heal-self-color icon-me_normal"></span><span class="heal-self-color">' + data[3] + '</span><span class="heal-party-color icon-party_normal"></span><span class="heal-party-color">' + data[4] + '</span><span class="heal-ally-color icon-alliance_normal"></span><span class="heal-ally-color">' + data[5] + '</span><span class="icon-maton heal-object-color"></span><span class="heal-object-color">' + data[6] + '</span>';
     html_create += '</div>';
     return html_create;
   }else if(data.length === 12){
@@ -565,7 +565,7 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
     if(simple){
       if(Robot_name.indexOf(data[i].ride_type) !== -1){//robot data
         robot[data[i].ride_type]++;
-        return_data += "<span class='icon-" + data[i].ride_type + "3'></span>";
+        return_data += "<span class='icon-" + data[i].ride_type + "'></span>";
       }
     }else {//extend mode のとき
       if(return_data === ''){//1回目
@@ -574,7 +574,7 @@ function robot_icon_timehistory_create(data,simple,nowtime,battle_start_time){
       let icon_type = '';
       if(Robot_name.indexOf(data[i].ride_type) !== -1){//robot data
         robot[data[i].ride_type]++;
-        icon_type = 'icon-' + data[i].ride_type +'3';
+        icon_type = 'icon-' + data[i].ride_type;
         if(data[i].time !== 0){
           let r_time = data[i].time;
           if(data[i].time > Robot_Accept_Shotest_Time){
