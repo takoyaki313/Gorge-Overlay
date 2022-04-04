@@ -545,7 +545,7 @@ let EFFECT_ID = {
     type:[false,false,false,true,false],
     effect:1,
     cut:1,
-    cut_heal:1.1
+    cut_heal:0.9
   },
   '0815':{
     name:'転化',
