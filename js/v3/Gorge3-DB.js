@@ -1,4 +1,4 @@
-let TBD = {Player_data:[],Skill_data:[],DoT_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+let TBD = {Player_data:[],Skill_data:[],DoT_data:[],Barrier_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
 let TenSyonMax_Me = false;
 /*async function database_version_store(){
   // バージョン1

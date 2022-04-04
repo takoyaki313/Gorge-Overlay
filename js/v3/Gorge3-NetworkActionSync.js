@@ -1,5 +1,6 @@
 let POTENCIAL_DAMAGE = false;
-
+let Barrier_Unique_ID = 0;
+var Barrier_incomeheal = true;
 async function networkAbility_Skilldata_insert(uniqueID,damage,damage_type,additional_damage_type,abilityID,nameID,maxhp,victimID,skillID,name,victimname,skillname,lastupdate,add_target,overdamage,time_ms,victimmaxHP){
   await insert_maindata('Skill_data','actionwithnameID',uniqueID,
   ['networkskill_id',abilityID,true],['nameID',nameID,true],['name',name,true],['maxHP',maxhp,true],
@@ -29,6 +30,12 @@ async function add_target_data_create(add_target,damage,overdamage,uniqueID,dama
     add_target_replace.push(false);
   }
   else if (damage_type === 'mp-recover') {
+    for(let i = 0 ; i < add_target.length ; i++){
+      add_target_data.push(damage);
+      add_target_replace.push(false);
+    }
+  }
+  else if (damage_type === 'barrier') {
     for(let i = 0 ; i < add_target.length ; i++){
       add_target_data.push(damage);
       add_target_replace.push(false);
@@ -105,6 +112,10 @@ async function damage_add(attackerID,victimID,victimmaxHP,damage_type,damage,ski
   }
   else if (damage_type === 'mpheal'||damage_type === 'mp-recover') {
     add_target = ['mpheal'];
+  }
+  else if (damage_type === 'barrier') {
+    add_target = await damage_add_type_select_heal(attackerID,victimID);
+    add_target.push('barrier');
   }
   else {
     //console.warn('Warn : Damage Type is unknown->' + damage_type);
@@ -357,17 +368,88 @@ async function effectdata_force4(param){
 async function ability_include_dot_hot(data){
   for(let i = 0 ; i < data.effectname.length ; i++){
     if(data.effectname[i] === 'add-buff-victim'){
+      //Dot-Hot
       let dot_position = DoT_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
       if(dot_position !== -1){
         await potencial_check_from_damage(DoT_ID[dot_position],dot_position,i,data);
       }
+      //Barrier
+      let barrier_position = Barrier_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
+      if(barrier_position !== -1){
+        await potencial_check_barrier(data,barrier_position,'victim');
+      }
     }
     else if (data.effectname[i] === 'add-buff-attacker') {
+      //Dot-Hot
       let dot_position = DoT_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
       if(dot_position !== -1){
         await potencial_check_from_damage(DoT_ID[dot_position],i,data);
       }
+      //Barrier
+      let barrier_position = Barrier_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
+      if(barrier_position !== -1){
+        await potencial_check_barrier(data,barrier_position,'attacker');
+      }
     }
+  }
+}
+async function potencial_action_search_tool(target,actionID,dotid,position){
+  let max = target.length;
+  for(let search_position = position ; search_position < max ; search_position++){
+    if(target[search_position].dotid === dotid){
+      if(actionID === target[search_position].actionid){
+        return target[search_position];
+      }
+    }else {
+      if(DEBUG_LOG){
+        console.warn('EFFECTID Not Matched... dotid:' + dotid  + ' actionID:' + actionID);
+      }
+      return target[position];
+    }
+  }
+}
+async function potencial_check_barrier(data,effectposition,target){
+  let action_detail = await potencial_action_search_tool(Barrier_ID,data.actionID,Barrier_ID[effectposition].dotid,effectposition);
+  let barrier = 0;
+  let attackerID = data.attackerID;
+  let victimID = data.victimID;
+  if(target === 'attacker'){
+    victimID = attackerID;
+  }
+  if(action_detail.damagesync === 0){
+    barrier = await potencial_to_damage_calc_effect(attackerID,victimID,action_detail.potencial,'HoT');
+  }else {
+    let damage = action_detail.action_potencial;
+    for(let i = 0 ; i < data.effectname.length ; i++){
+      if(/*data.effectname[i] === 'damage' || */data.effectname[i] === 'heal'){
+        damage = data.effectparam[i];
+        break;
+      }
+    }
+    barrier = damage;
+  }
+  //
+  let uniqueID = 'B-' + Barrier_Unique_ID++;
+  //console.log(data);
+  insert_maindata('Barrier_data','uniqueID',uniqueID,['action',data.action,true],['actionID',data.actionID,true],['barrier',barrier,true],['networknumber',data.networknumber,true],['attacker',data.attacker,true],['attackerID',data.attackerID,true],['victim',data.victim,true],['victimID',data.victimID,true],['victimmaxHP',data.victimmaxHP,true],['victimCurrentHP',data.victimCurrentHP,true],['lastupdate',data.lastupdate,true]);
+  //console.log(data);
+  //console.log(attackerID + '->' + victimID + ' (' + barrier +'):' + uniqueID);
+  //////////////////////////
+
+  let add_target = await damage_add(attackerID,victimID,data.victimmaxHP,'barrier',barrier,null);
+  let created_data = await add_target_data_create(add_target,barrier,0,String(uniqueID),'barrier',data.lastupdate);
+  //(add_target,damage,overdamage,uniqueID,damage_type,lastupdate)
+  add_target = created_data[0];
+  let add_target_data = created_data[1];
+  let add_target_replace = created_data[2];
+  //////////////
+  //console.log(add_target);
+  //console.log(add_target_data);
+  //console.log(add_target_replace);
+  await update_maindata_change('Player_data','nameID',attackerID,add_target,add_target_data,add_target_replace);
+  if(Barrier_incomeheal){//被ヒールにバリアを計算する。
+    //hp 不要　(incomebarrier_main(uniqueID,nameID,attackerID,damage,add_target,lastupdate)
+    await income_switch_main(uniqueID,victimID,null,attackerID,barrier,data.lastupdate,add_target,'barrier');
   }
 }
 async function potencial_check_from_damage(dot_detail,id_data_position,effectposition,data){
@@ -601,7 +683,13 @@ async function network_action_datatype(log){
   for(let i = 0 ; i < 7 ; i++){
     let target = offset + (i * 2);
     if(log[target] === '0'){
-      return return_data;
+      if(offset < 6 ){
+        if(log[target + 2] === '0'){
+          return return_data;
+        }
+      }else {
+        return return_data;
+      }
     }else {
       let effectflag = log[target];
       let effect_param = log[target + 1];
@@ -614,7 +702,6 @@ async function network_action_datatype(log){
       }
     }
   }
-  //?console.log(return_data);
   return return_data;
 }
 async function effect_flag_checker(flag) {

@@ -181,9 +181,113 @@ let Unique_DoT =[{
   name:'プネウマ',
   type:'HoT'
 }];
+const Barrier_ID = [
+  //占星
+  {
+    actionid:'458C',
+    action_potencial: 2000,
+    dotid:'07FA',
+    name:'ニュートラルセクト（日）',
+    potencial: 2000,
+    max : 10,
+    damagesync : 1,
+    damage : false,
+    type:'barrier'
+  },{
+    actionid:'4A07',
+    action_potencial: 2000,
+    dotid:'07FA',
+    name:'ニュートラルセクト（日）',
+    potencial: 1000,
+    max : 10,
+    damagesync : 0.5,
+    damage : false,
+    type:'barrier'
+  },{
+    actionid:'4647',
+    action_potencial: 0,
+    dotid:'0817',
+    name:'星天対抗',
+    potencial: 2000,
+    max : 10,
+    damagesync : 0,
+    damage : false,
+    type:'barrier'
+  },{//学者
+    actionid:'22C9',
+    action_potencial: 2000,
+    dotid:'0533',
+    name:'鼓舞激励の策',
+    potencial: 2000,
+    max : 10,
+    damagesync : 1,
+    damage : false,
+    type:'barrier'
+  },{
+    actionid:'4647',
+    action_potencial: 0,
+    dotid:'0533',
+    name:'士気高揚の策',
+    potencial: 1000,
+    max : 10,
+    damagesync : 1,
+    damage : false,
+    type:'barrier'
+  },{//赤
+    actionid:'457A',
+    action_potencial: 1200,
+    dotid:'07F1',
+    name:'アンガジェマン',
+    potencial: 2500,
+    max : 6,
+    damagesync : 0,
+    damage : true,
+    type:'barrier'
+  },{//キャス
+    actionid:'4517',
+    action_potencial: 0,
+    dotid:'07C5',
+    name:'マバリア',
+    potencial: 2500,
+    max : 10,
+    damagesync : 0,
+    damage : false,
+    type:'barrier'
+  },{//暗黒
+    actionid:'224B',
+    action_potencial: 0,
+    dotid:'051C',
+    name:'ブラックナイト',
+    potencial: 3000,
+    max : 6,
+    damagesync : 0,
+    damage : false,
+    type:'barrier'
+  },{//ガンブレ
+    actionid:'4528',
+    action_potencial: 1200,
+    dotid:'07CD',
+    name:'ブルータルシェル',
+    potencial: 1200,
+    max : 10,
+    damagesync : 0,
+    damage : true,
+    type:'barrier'
+  },{
+    actionid:'49DF',
+    action_potencial: 800,
+    dotid:'07CD',
+    name:'デーモンスローター',
+    potencial: 800,
+    max : 10,
+    damagesync : 0,
+    damage : true,
+    type:'barrier'
+  },
+];
 let Unique_DoT_ID_Array;
 let DoT_ID_Array;
-
+let Barrier_ID_Array;
 function object_to_array(object,key){
   let data = [];
   for(let i = 0 ; i < object.length ; i++){

@@ -347,7 +347,7 @@ body{
 }
 .tooltip-grid-hps{
   display: grid;
-  grid-template-columns: 1.2rem max-content 1.2rem max-content 1.2rem max-content 1.2rem max-content ;
+  grid-template-columns: 1.2rem max-content 1.2rem max-content 1.2rem max-content 1.2rem max-content 1.2rem max-content ;
 }
 .tooltip-grid-hps *{
   justify-self: center;

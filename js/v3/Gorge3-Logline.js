@@ -354,9 +354,29 @@ async function income_switch_main(uniqueID,attackerID,attackermaxhp,victimID,dam
   else if (type === 'heal') {
     await incomeheal_main(uniqueID,victimID,attackerID,damage,add_target,lastupdate);
   }
+  else if (type === 'barrier') {
+    await incomebarrier_main(uniqueID,victimID,attackerID,damage,add_target,lastupdate);
+  }
   else {
     if(DEBUG_LOG){
       console.error('Income calc error ->' + type);
+    }
+  }
+}
+async function incomebarrier_main(uniqueID,nameID,attackerID,damage,add_target,lastupdate){
+  //incomeheal_mainとほぼ同じ。barrier  を追加しただけ。
+  if(nameID === attackerID){//selfheal
+    await update_maindata('Player_data','nameID',nameID,['totalincomeheal',damage,false],['incomeselfheal',damage,false],['incomeheal',uniqueID,false],['incomebarrier',damage,false],['lastupdate',lastupdate,true]);
+  }
+  else if (attackerID.substring(0,2) === '40'||attackerID.substring(0,2) === 'E0'){//From Object (NPC)
+    await update_maindata('Player_data','nameID',nameID,['totalincomeheal',damage,false],['incomeotherheal',damage,false],['incomeheal',uniqueID,false],['incomebarrier',damage,false],['lastupdate',lastupdate,true]);
+  }
+  else {//From Player
+    if(add_target.indexOf('partyheal') !== -1){
+      await update_maindata('Player_data','nameID',nameID,['totalincomeheal',damage,false],['incomepartyheal',damage,false],['incomeheal',uniqueID,false],['incomebarrier',damage,false],['lastupdate',lastupdate,true]);
+    }
+    else{
+      await update_maindata('Player_data','nameID',nameID,['totalincomeheal',damage,false],['incomeallyheal',damage,false],['incomeheal',uniqueID,false],['incomebarrier',damage,false],['lastupdate',lastupdate,true]);
     }
   }
 }
@@ -898,7 +918,8 @@ function battle_data_reset(){
   //PvPエリア入室時に実行
   $(document).find('.ui-helper-hidden-accessible').html('');
   logline_battle_flag_reset();
-  TBD = {Player_data:[],Skill_data:[],DoT_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+  Barrier_Unique_ID = 0;
+  TBD = {Player_data:[],Skill_data:[],DoT_data:[],Barrier_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
   TenSyonMax_Me = false;
   owner_id_list_reset();
 }

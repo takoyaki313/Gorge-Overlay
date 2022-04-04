@@ -35,6 +35,7 @@ $(function (){
   addOverlayListener("ChangePrimaryPlayer",(myname) => primary_player(myname));
   DoT_ID_Array = object_to_array(DoT_ID,'dotid');
   Unique_DoT_ID_Array = object_to_array(Unique_DoT,'id');
+  Barrier_ID_Array = object_to_array(Barrier_ID,'dotid');
   EFFECT_ID_LIST = Object.keys(EFFECT_ID);
   version_check(true);
   startOverlayEvents();

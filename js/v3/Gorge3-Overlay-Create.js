@@ -165,6 +165,7 @@ function gorge_create(template,create_time,start_time,battle_data,hide,selected,
   already_calc.partyheal = damage_to_dps(battle_data.partyheal,time).toFixed(0);
   already_calc.allyheal = damage_to_dps(battle_data.allyheal,time).toFixed(0);
   already_calc.otherheal = damage_to_dps(battle_data.otherheal,time).toFixed(0);
+  already_calc.barrier = damage_to_dps(battle_data.barrier,time).toFixed(0);
   already_calc.overhealPct = ((battle_data.overheal / battle_data.totalheal)*100).toFixed(2) + '%';
   //dps
   already_calc.totaldamage = damage_to_dps(battle_data.totaldamage,time).toFixed(0);
@@ -178,7 +179,7 @@ function gorge_create(template,create_time,start_time,battle_data,hide,selected,
   already_calc.objectdamage = damage_to_dps(battle_data.objectdamage,time).toFixed(0);
 
   hps_space.text(already_calc.totalheal);
-  hps_space.prop('title',tooltip_dps_create(battle_data.totalheal,battle_data.overheal,already_calc.overhealPct,already_calc.selfheal,already_calc.partyheal,already_calc.allyheal,already_calc.otherheal));
+  hps_space.prop('title',tooltip_dps_create(battle_data.totalheal,battle_data.overheal,already_calc.overhealPct,already_calc.selfheal,already_calc.partyheal,already_calc.allyheal,already_calc.otherheal,already_calc.barrier));
   let dps_tooltip_string = tooltip_dps_create(already_calc.playerdamage,already_calc.persondamage,already_calc.torobotdamage,already_calc.playerotherdamage,already_calc.objectdamage,already_calc.matondamage,already_calc.towerdamage,already_calc.objectotherdamage,already_calc.totaldamage,battle_data.totaldamage,battle_data['total-accept-damage'],time);
   row.find(".g-dps").prop('title',dps_tooltip_string);
   let jobicon_space = row.find('.g-job-icon');
@@ -448,14 +449,14 @@ function tooltip_dps_create(...data){
     <span class="tooltip-grid-dps-text">Object</span><span>1501.4</span><span class="icon-person"></span><span>1501.4</span><span class="icon-person"></span><span>1501.4</span><span class="icon-person"></span><span>1501.4</span>
   </div>*/
   let html_create = '';
-  if(data.length === 7){
+  if(data.length === 8){
     if(typeof data[0] === 'undefined'){
       return 'NO DATA';
     }
     html_create += '<div class="tooltip-grid-total-dps">';
     html_create += '<span>Total-Heal</span><span>' + data[0] +'</span><span>O-' + data[1] + '</span><span>' + data[2] +'</span>';
     html_create += "</div><div class='tooltip-line'></div><div class='tooltip-grid-hps'>";
-    html_create += '<span class="tooltip-grid-dps-text heal-self-color icon-me_normal"></span><span class="heal-self-color">' + data[3] + '</span><span class="heal-party-color icon-party_normal"></span><span class="heal-party-color">' + data[4] + '</span><span class="heal-ally-color icon-alliance_normal"></span><span class="heal-ally-color">' + data[5] + '</span><span class="icon-maton heal-object-color"></span><span class="heal-object-color">' + data[6] + '</span>';
+    html_create += '<span class="icon-shield"></span><span class="">' + data[7] + '</span><span class="heal-self-color icon-me_normal"></span><span class="heal-self-color">' + data[3] + '</span><span class="heal-party-color icon-party_normal"></span><span class="heal-party-color">' + data[4] + '</span><span class="heal-ally-color icon-alliance_normal"></span><span class="heal-ally-color">' + data[5] + '</span><span class="icon-maton heal-object-color"></span><span class="heal-object-color">' + data[6] + '</span>';
     html_create += '</div>';
     return html_create;
   }else if(data.length === 12){

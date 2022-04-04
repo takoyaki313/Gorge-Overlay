@@ -404,6 +404,16 @@ const Localstorage_dictionary = {
     description_en:"null",
     inputtype:'toggle',
   },
+  Barrier_incomeheal:{
+    func_name:'Barrier_incomeheal',
+    value:true,
+    disp_tab:'Other',
+    title_ja:'バリアを被ヒールの計算に含める。',
+    title_en:"Debug only",
+    description_ja:'デバッグ用',
+    description_en:"null",
+    inputtype:'toggle',
+  },
   data_reset:{
     func_name:'data_reset',
     value:false,
@@ -426,7 +436,7 @@ const Localstorage_dictionary = {
   },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay3 Rev.17',
+    value:'Gorge-overlay3 Rev.18',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',
