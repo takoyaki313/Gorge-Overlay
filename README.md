@@ -16,6 +16,7 @@
 
 準備中
 ![image](https://user-images.githubusercontent.com/40759792/161756645-8fb1cdd9-6837-46b6-a9c7-66457de7a439.png)
+![image](https://user-images.githubusercontent.com/40759792/162555713-9a69259f-8d1a-4e00-9f14-a43179bc5252.png)
 ## インストール
 Overlayを追加し、CustomからMiniParceを選択し、表示するURLに以下をコピペしてください。
 ```
