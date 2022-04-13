@@ -783,7 +783,6 @@ async function assist_main(kill_player,death_player,death_attacker,lastupdate,ti
     let attacker_effect = await read_maindata('Player_hp','nameID',kill_player,'effect');
     let kill_buff_list = await what_include_buff(attacker_effect.effect,'buff');
     let assist_dupe = kill_buff_list.concat(damage_attacker);
-    let A_test = false;
     for(let i = 0 ; i < assist_dupe.length ; i++){//
       if(assist_player.indexOf(assist_dupe[i]) === -1 && assist_dupe[i] !== kill_player){
         assist_player.push(assist_dupe[i]);
@@ -850,7 +849,10 @@ async function minimap_change_area_check(log){
   //167 is The Borderland Luins
   //15 is Middle La Noscea
   //51 is Wolves' Den Pier
-  if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'){
+  //759 is The Palaistra
+  //760 is The Volcanic Heart
+  //761 is Cloud Nine
+  if (log[2] === '488'||log[2] === '242'||log[2] === '296'||log[2] ==='568'||log[2] === '167'||log[2] === '759'||log[2] === '760'||log[2] === '761'){
     if(AREA.Area_Type <= 0){
       if(DEBUG_LOG){
         console.error('Area Changed Event later logline event than');

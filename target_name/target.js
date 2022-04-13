@@ -92,7 +92,10 @@ function target_overlay_area_check(area){
   ||area.zoneName.indexOf('Wolves')!== -1
   ||area.zoneName.indexOf('Astragalos')!== -1
   ||area.zoneName.indexOf('Lichenweed')!== -1
-  ||area.zoneName.indexOf('Crystal Tower Training Grounds')!== -1) {
+  ||area.zoneName.indexOf('Crystal Tower Training Grounds')!== -1
+  ||area.zoneID == 1032
+  ||area.zoneID == 1033
+  ||area.zoneID == 1034) {
     Overlay_On = true;
   }
   else {

@@ -25,26 +25,33 @@ function encounter_already_start_check(){
   }
 }
 function overlay_update_start(e){
-  encounter_already_start_check();
-  if(e.Encounter.CurrentZoneName.toLowerCase() === 'hidden gorge'){
-    gorge_start(e);
-  }
-  else if (
-    e.Encounter.CurrentZoneName.toLowerCase() === 'the borderland ruins (secure)'||
-    e.Encounter.CurrentZoneName.toLowerCase() === 'seal rock (seize)'||
-    e.Encounter.CurrentZoneName.toLowerCase() === 'the fields of glory (shatter)'||
-    e.Encounter.CurrentZoneName.toLowerCase() === 'onsal hakair (danshig naadam)'
-    ) {
-      fl_start(e);
-  }
-  else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||
-  e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||
-  e.Encounter.CurrentZoneName === 'The Goblet'*/){
-    pve_start(e);
-  }
-  else {
-    timer_encounter(e);
-    pve_start(e);
+  if(e.isActive === 'true'){
+    encounter_already_start_check();
+    if(e.Encounter.CurrentZoneName.toLowerCase() === 'hidden gorge'){
+      gorge_start(e);
+    }
+    else if (
+      e.Encounter.CurrentZoneName.toLowerCase() === 'the borderland ruins (secure)'||
+      e.Encounter.CurrentZoneName.toLowerCase() === 'seal rock (seize)'||
+      e.Encounter.CurrentZoneName.toLowerCase() === 'the fields of glory (shatter)'||
+      e.Encounter.CurrentZoneName.toLowerCase() === 'onsal hakair (danshig naadam)'
+      ) {
+        fl_start(e);
+    }
+    else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||
+    e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||
+    e.Encounter.CurrentZoneName === 'The Goblet'*/){
+      pve_start(e);
+    }
+    else if (e.Encounter.CurrentZoneName.toLowerCase() === 'the palaistra'||
+    e.Encounter.CurrentZoneName.toLowerCase() === 'the volcanic heart'||
+  e.Encounter.CurrentZoneName.toLowerCase() === 'cloud nine') {
+      cc_start();
+    }
+    else {
+      timer_encounter(e);
+      pve_start(e);
+    }
   }
 }
 function party_data_exchange(party){
@@ -85,6 +92,7 @@ function timer_encounter(e){
   let time = e.Encounter.duration;
   let min = time.substring(0,time.indexOf(':'));
   let sec = time.substring(time.indexOf(':') + 1 ,);
+  losstime_timer_color(false);
   header_timer_update(min,sec);
 }
 function header_timer_update(min,sec){
@@ -102,6 +110,9 @@ async function area_check(zone){
   $('#header_space').find('.header-areaname').text(zone.zoneName.toUpperCase());
   let zoneID = zone.zoneID;
   AREA.Last_Area_type = AREA.Area_Type;
+  /*if(Dev_mode){
+    console.log(zone);
+  }*/
   await area_type_set(zoneID);
   ///
   //エリア移動によるイベント
@@ -159,6 +170,19 @@ async function area_type_set(zoneID){
       AREA.Area_Type = 1;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Fl_BattleTime;
       break;
+
+    case 1032://Crystal Conflict The Palaistra
+      AREA.Area_Type = 5;
+      LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
+      break;
+    case 1033://Crystal Conflict The Volcanic Heart
+      AREA.Area_Type = 5;
+      LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
+      break;
+    case 1034://Crystal Conflict Cloud Nine
+      AREA.Area_Type = 5;
+      LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
+      break;
     /*
     case 250://Wolves Den Pier
       AREA.Area_Type = 4;
@@ -171,6 +195,13 @@ async function area_type_set(zoneID){
     default:
       AREA.Area_Type = 0;
       LOGLINE_ENCOUNTER.Battle_Max_Time = 0;
+  }
+}
+function losstime_timer_color(type){
+  if(type){
+    $('#header_space').find('.header-time').addClass('losstime');
+  }else {
+    $('#header_space').find('.header-time').removeClass('losstime');
   }
 }
 async function sample_gorge_data_calc(type){

@@ -513,6 +513,7 @@ async function potencial_to_damage_calc_effect(attackerID,victimID,default_poten
     if(DoT_Simulate_Debug_massage){
       console.log(default_potencial + ' * ' + attacker + ' * ' + victim + ' = ' + default_potencial * attacker * victim);
     }
+    //console.log(default_potencial +' : '+ attacker + ' : '+ victim);
     return Math.round(default_potencial * attacker * victim);
   }else {//heal
     let attacker = await potencial_to_damage_calc_id(attacker_data,attackerID,'heal',true);
@@ -520,6 +521,7 @@ async function potencial_to_damage_calc_effect(attackerID,victimID,default_poten
     if(DoT_Simulate_Debug_massage){
       console.log(default_potencial + ' * ' + attacker + ' * ' + victim + ' = ' + default_potencial * attacker * victim);
     }
+    //console.log(default_potencial +' : '+ attacker + ' : '+ victim);
     return Math.round(default_potencial * attacker * victim);
   }
 }
@@ -538,8 +540,7 @@ async function abilitydata_main(uniqueID,additional_uniqueID,maintype_position,d
 }
 async function potencial_to_damage_calc_id(target_data,nameID/*effect revise maxhp*/,type/*damage/heal*/,send){
   let return_data = [1,1,1];
-  if(send){
-    if(send)
+  if(send){//与えた側
     if(target_data.effect !== undefined){
       if(DoT_Simulate_Debug_massage){
         console.log(target_data);
@@ -600,7 +601,7 @@ async function potencial_to_damage_calc_id(target_data,nameID/*effect revise max
       }
     }
   }
-  else {//received
+  else {//received受けた側
     if(target_data.revise !== undefined && type==='damage'){
       return_data[2] = target_data.revise.income;
     }

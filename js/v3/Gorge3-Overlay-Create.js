@@ -18,12 +18,12 @@ var RW_MAX_DUNAMIS_ICON = true;
 var RW_PARTY_COLOR_BACKGROUND = true;
 var RW_DEATH_TOO_MUCH = 8;
 var FL_DEATH_TOO_MUCH = 8;
-var G_REPLACE_ACTNAME = true;
+var REPLACE_ACTNAME = true;
 var G_SIMULATION_KILL = true;
 var FL_SIMULATION_KILL = true;
 const Robot_Accept_Shotest_Time = 100;
 var RW_Person_Rainbow_DPS = 1000;
-
+let ALLDISPLAY = false;
 let Overlay_Select = {};
 function gorge_start(e){
   let sort_target = 'calcdps';
@@ -40,13 +40,21 @@ function gorge_start(e){
     else {
       create_time = Math.min(Date.now(),LOGLINE_ENCOUNTER.Result_in_time);
     }
+
     let start_time = LOGLINE_ENCOUNTER.Battle_Start_Time;
     if(start_time === 0){
       start_time = Date.now() - 1000;
     }
+    if(Dev_mode){
+      container.append(teamdata_main(Math.round((create_time - start_time)/1000),'null',maindata_export('ally',null,'persondamage','torobotdamage','matondamage')));
+    }
+
     //let battle_datas = maindata_export('ally',null,'persondamage','torobotdamage','matondamage');
     let battle_datas = [];
-    if(RW_RESULT_SHOW && LOGLINE_ENCOUNTER.Result_Page){
+    if (ALLDISPLAY) {
+      battle_datas = maindata_export('all-player',null,'persondamage','torobotdamage','matondamage');
+    }
+    else if(RW_RESULT_SHOW && LOGLINE_ENCOUNTER.Result_Page){
       battle_datas = maindata_export('ally',null,'persondamage','torobotdamage','matondamage');
     }
     else if(RW_PARTYPRIORITY){
@@ -56,7 +64,7 @@ function gorge_start(e){
         party_member = battled_only(party_member);
         other_member = battled_only(other_member);
       }
-      other_member = array_sort_module(other_member,sort_target);
+      other_member = array_sort_module(other_member,sort_target,'up');
       battle_datas = party_priority(party_member,other_member,RW_MAXROW);
     }
     else {
@@ -67,7 +75,7 @@ function gorge_start(e){
       battle_datas = party_priority([],battle_datas,RW_MAXROW);
     }
     ////////////////////////////////////////////////////////////
-    battle_datas = array_sort_module(battle_datas,sort_target);
+    battle_datas = array_sort_module(battle_datas,sort_target,'up');
     let aliance_data = aliance_data_export();
 
       let select_lock = Object.keys(Overlay_Select);
@@ -221,7 +229,7 @@ function gorge_create(template,create_time,start_time,battle_data,hide,selected,
   else if(battle_data.name === PRIMARY_PLAYER.name){
     //myself
     row.addClass('me');
-    if(G_REPLACE_ACTNAME){
+    if(REPLACE_ACTNAME){
         name_space.text(PRIMARY_PLAYER.ACT_NAME);
     }
     else {
@@ -646,7 +654,7 @@ function fl_start(e){
         party_member = battled_only(party_member);
         other_member = battled_only(other_member);
       }
-      other_member = array_sort_module(other_member,sort_target);
+      other_member = array_sort_module(other_member,sort_target,'up');
       battle_datas = party_priority(party_member,other_member,FL_MAXROW);
     }
     else {
@@ -656,7 +664,7 @@ function fl_start(e){
       }
       battle_datas = party_priority([],battle_datas,FL_MAXROW);
     }
-    battle_datas = array_sort_module(battle_datas,sort_target);
+    battle_datas = array_sort_module(battle_datas,sort_target,'up');
     //////////////////////////////
 
     let max_data = damage_to_dps(battle_datas[0].totaldamage,battle_datas[0].battle_time);
@@ -712,8 +720,12 @@ function fl_start(e){
   }
   $('#overlay').replaceWith(container);
 }
-function array_sort_module(array,key){
-  array.sort((a, b) => b[key] - a[key]);
+function array_sort_module(array,key,direction){
+  if (direction === 'down') {
+    array.sort((a, b) => a[key] - b[key]);
+  }else {
+    array.sort((a, b) => b[key] - a[key]);
+  }
   return array;
 }
 function battled_only(array){
@@ -815,7 +827,7 @@ function fl_create(template,battle_data,hide,selected){
   else if(battle_data.name === PRIMARY_PLAYER.name){
     //myself
     row.addClass('me');
-    if(G_REPLACE_ACTNAME){
+    if(REPLACE_ACTNAME){
         name_space.text(PRIMARY_PLAYER.ACT_NAME);
     }
   }
@@ -859,7 +871,7 @@ function simple_create(template,battle_data,max_data){
   if(battle_data.name === PRIMARY_PLAYER.name){
     //myself
     row.addClass('me');
-    if(G_REPLACE_ACTNAME){
+    if(REPLACE_ACTNAME){
         row.find('.basic-name').text(PRIMARY_PLAYER.ACT_NAME);
     }
   }
@@ -961,7 +973,7 @@ function pve_start(e){
   }
   if(hps_table.length > 0){
     container.append('<div><hr class="basic-hps-line" noshade></hr></div>');
-    hps_table = array_sort_module(hps_table,'hps');
+    hps_table = array_sort_module(hps_table,'hps','up');
     let max_hps = 0;
     for(let i = 0 ; i < hps_table.length ; i++){
       if(i === 0){

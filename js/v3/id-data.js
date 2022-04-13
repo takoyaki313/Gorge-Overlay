@@ -10,6 +10,7 @@ const Robot_name = ['che','opp','jas'];
 const Core_Tower_HP = 2000000;
 const Gorge_BattleTime = 900;
 const Fl_BattleTime = 1200;
+const CC_BattleTime = 300;
 const Test_BattleTime = 300;
 //////////////////////////////////////////////
 //skilltype exclude action

@@ -30,6 +30,10 @@
   --me:rgba(93,81,37,0.7);
   --robot-hp-remain : #84F8BD;
   --robot-hp-over : #EB4561;
+  --losstime:darkred;
+}
+.losstime{
+  color:var(--losstime);
 }
 .death-too-much {
   background-color: var(--death-too-much);
@@ -477,6 +481,27 @@ body{
 }
 .purple-robot::after {
   background: #A335EE!important;
+}
+.redteamicon{
+  content: url("https://xivapi.com/i/061000/061378_hr1.png");
+  background-size: cover;
+}
+.blueteamicon{
+  content: url("https://xivapi.com/i/061000/061379_hr1.png");
+  background-size: cover;
+}
+.generalteamicon{
+  content: url("https://xivapi.com/i/061000/061480_hr1.png");
+  background-size: cover;
+}
+.redteam{
+  background: linear-gradient(to right, rgba(180, 56, 27, 0.5) 5%, 20%,rgba(180, 56, 27, 0.7));
+}
+.blueteam{
+  background: linear-gradient(to right, rgba(27, 56, 180, 0.5) 5%, 20%,rgba(27, 56, 180, 0.7));
+}
+.generalteam{
+  background: linear-gradient(to right, rgba(65, 65, 65, 0.5) 5%, 20%,rgba(65, 65, 65, 0.7));
 }
 /*
 100%  : #E5CC80

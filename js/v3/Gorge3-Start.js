@@ -1,6 +1,8 @@
 var Setting_Page_Num = 1;
 var Sample_Page_Num = 3;
 var ONLINE = true;
+var Dev_mode = false;
+var Calc_interval = 1000;
 $(function (){
   'use strict';
   //database_version_store(DB);
@@ -39,7 +41,7 @@ $(function (){
   EFFECT_ID_LIST = Object.keys(EFFECT_ID);
   version_check(true);
   startOverlayEvents();
-  setInterval(calc,1000);
+  setInterval(calc,Calc_interval);
 });
 $(document).on("click", "[id^=Overlay_]", function(t){
     let select_id = t.currentTarget.id;
@@ -70,7 +72,15 @@ $(document).on("click", "[id^=Overlay_]", function(t){
 });
 $(document).on("click", "#mypage-icon-open", function(t){
   if(t.detail === Sample_Page_Num){
-    sample_gorge_overlay(RW_MAXROW);
+    if(LOGLINE_ENCOUNTER.Engage||LOGLINE_ENCOUNTER.Result_Page){
+      if(Dev_mode){
+        ALLDISPLAY = true;
+      }
+      gorge_start();
+      ALLDISPLAY = false;
+    }else {
+      sample_gorge_overlay(RW_MAXROW);
+    }
   }
 });
 $(document).on("click", "#setting-open", function(t){

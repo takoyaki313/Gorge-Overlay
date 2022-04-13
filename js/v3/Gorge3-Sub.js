@@ -35,6 +35,9 @@ async function battle_counter(time){
     if(DEBUG_LOG){
       console.log('Start Timer');
     }
+    if(AREA.Area_Type !== 5){
+      losstime_timer_color(false);
+    }
     LOGLINE_ENCOUNTER.Timer_Start = true;
     LOGLINE_ENCOUNTER.Timer_Start_Time = Date.now();
     Battle_Current_Time = 0;
@@ -52,7 +55,15 @@ function stop_timer(){
 }
 function countUp(){
   if(Battle_Current_Time > LOGLINE_ENCOUNTER.Battle_Max_Time){
-    stop_timer();
+    if(AREA.Area_Type === 5){
+      //loss time
+      let nowtime = Date.now();
+      //Timer_Start_Time
+      let current_time_ms = nowtime - LOGLINE_ENCOUNTER.Timer_Start_Time;
+      Battle_Current_Time = Math.ceil(current_time_ms/1000);
+    }else {
+      stop_timer();
+    }
   }
   else if(AREA.Area_Type !== 0){
     let nowtime = Date.now();
@@ -81,6 +92,12 @@ function time_change(set_time,current_time){
 
   if(PvE_Timer_DownCount){
     time = set_time - current_time;
+    if(AREA.Area_Type === 5){
+      if(time < 0){
+        time = Math.abs(time);
+        losstime_timer_color(true);
+      }
+    }
   }
   else {
      time = current_time;

@@ -68,6 +68,7 @@ function aliance_data_export(){
   return TBD.Aliance.slice();
 }
 function maindata_export(type,duration,...add){
+  //add は　DPSの合計するフィールド
   let return_data = [];
   let battle_time = true;
   if(typeof duration === 'number'){
@@ -77,6 +78,25 @@ function maindata_export(type,duration,...add){
     let battle_data = TBD.Player_data;
     for(let i = 0 ; i < battle_data.length ; i++){
       if(battle_data[i].aliance > 0){
+        let dps = 0;
+        for(let p = 0 ; p < add.length ; p++){
+          if(typeof battle_data[i][add[p]] === 'number'){
+            dps += battle_data[i][add[p]];
+          }
+        }
+        if(battle_time){
+          battle_data[i].calcdps = damage_to_dps(dps,battle_data[i].battle_time);
+        }else {
+          battle_data[i].calcdps = damage_to_dps(dps,duration);
+        }
+        return_data.push(battle_data[i]);
+      }
+    }
+  }
+  else if (type === 'enemy-player') {
+    let battle_data = TBD.Player_data;
+    for(let i = 0 ; i < battle_data.length ; i++){
+      if(battle_data[i].nameID.substring(0,2) === '10' && typeof battle_data[i].aliance !== 'number'){
         let dps = 0;
         for(let p = 0 ; p < add.length ; p++){
           if(typeof battle_data[i][add[p]] === 'number'){
@@ -134,6 +154,25 @@ function maindata_export(type,duration,...add){
     let battle_data = TBD.Player_data;
     for(let i = 0 ; i < battle_data.length ; i++){
       if(battle_data[i].aliance > 1){
+        let dps = 0;
+        for(let p = 0 ; p < add.length ; p++){
+          if(typeof battle_data[i][add[p]] === 'number'){
+            dps += battle_data[i][add[p]];
+          }
+        }
+        if(battle_time){
+          battle_data[i].calcdps = damage_to_dps(dps,battle_data[i].battle_time);
+        }else {
+          battle_data[i].calcdps = damage_to_dps(dps,duration);
+        }
+        return_data.push(battle_data[i]);
+      }
+    }
+  }
+  else if (type === 'all-player') {
+    let battle_data = TBD.Player_data;
+    for(let i = 0 ; i < battle_data.length ; i++){
+      if(battle_data[i].nameID.slice(0,2) === '10'){
         let dps = 0;
         for(let p = 0 ; p < add.length ; p++){
           if(typeof battle_data[i][add[p]] === 'number'){
