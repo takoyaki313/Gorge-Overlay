@@ -122,6 +122,10 @@ async function area_check(zone){
   }
   else if (AREA.Last_Area_type === -1 && AREA.Area_Type === 0) {//初回起動後からPvEエリアへの移動
     //console.log('初回起動後からPvEエリアへの移動');
+    if(Logline_add_mode){
+      console.log(JSON.stringify(Logline_Add_Tool_Temp));
+      Logline_Add_Tool_Temp = [];
+    }
   }
   else if (AREA.Last_Area_type === -1 && AREA.Area_Type > 0) {//初回起動後からPvPエリアへの移動
     //console.log('初回起動後からPvPエリアへの移動');
@@ -132,6 +136,10 @@ async function area_check(zone){
   }
   else if (AREA.Last_Area_type > 0 && AREA.Area_Type === 0) {//PvPエリアからPvEエリアへの移動
     //console.log('PvPエリアからPvEエリアへの移動');
+    if(Logline_add_mode){
+      console.log(JSON.stringify(Logline_Add_Tool_Temp));
+      Logline_Add_Tool_Temp = [];
+    }
   }
   else if (AREA.Last_Area_type === 0 && AREA.Area_Type > 0) {//PvEエリアからPvPエリアへの移動
   // console.log('PvEエリアからPvPエリアへの移動');
@@ -183,7 +191,7 @@ async function area_type_set(zoneID){
       AREA.Area_Type = 5;
       LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
       break;
-    /*
+  
     case 250://Wolves Den Pier
       AREA.Area_Type = 4;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;

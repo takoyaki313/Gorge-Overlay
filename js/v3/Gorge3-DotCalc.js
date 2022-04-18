@@ -1,5 +1,6 @@
 let check = null;
 let check_2 = null;
+let AcceptMarginTime = 50;
 async function networkDoT_24 (log){
   let data = {
     victimID: log[2],
@@ -115,6 +116,15 @@ async function networkDoT_24 (log){
   }else if (Unique_DoT_ID_Array.indexOf(data.effectID) !== -1) {
     await insert_maindata('DoT_data','ID',uniqueID,['victimID',data.victimID,true],['victim',data.victim,true],
     ['victimmaxhp',data.victimmaxhp,true],['DoTType',data.DoTType,true],['effectID',data.effectID,true],['damage_type',damage_type,true],['damage',data.damage,true],['overdamage',data.overdamage,true],['Simulation_data',null,true],['lastupdate',data.lastupdate,true]);
+    if(data.effectID === '51A'){//ソウルサバイバー
+      await change_accept_damage(data.victimID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,data.victimmaxhp,'normal-damage',uniqueID,data.lastupdate);
+    }else if (data.effectID === 'C67') {
+      
+    }else {
+      await unique_dot_player_hp_add(data,data.effectID,uniqueID,damage_type);
+    }
+
+    /*
     if(data.effectID === 'B34'){//プネウマ
       await puneuma_calc(data,uniqueID,log);
     }else if(data.effectID === '52B'){
@@ -125,7 +135,8 @@ async function networkDoT_24 (log){
     }
     else if (data.effectID === 'B36') {
       await unique_dot_player_hp_add(data,'haimano-inn',uniqueID,damage_type);
-    }
+    }*/
+
   }else {
     if(DEBUG_LOG){
       console.error('Warn : DoT EffectID Unknown ->' + data.effectID);
@@ -257,13 +268,14 @@ async function dot_damage_distribution(data,sum,totaldamage,totaloverdamage){
     else {
       damage = totaldamage * (data[i].potencial / sum);
       overdamage = totaloverdamage * (data[i].potencial / sum);
+      /*
       if(damage > 10000){
         if(DEBUG_LOG){
           console.error('total->' + totaldamage + ' sum->' + sum);
           console.error(damage);
           console.error(data);
         }
-      }
+      }*/
     }
     //console.log('Simulation Damage->'+damage.toFixed(0)+':'+ overdamage.toFixed(0) + '(' + data[i].potencial / sum +'):'+data[i].player);
     added_data.push({player:data[i].player,damage:Math.round(damage),overdamage:Math.round(overdamage)});
@@ -303,7 +315,10 @@ async function player_buff_add_26(log){
       }
     }
   }
+  await update_maindata('Player_hp','nameID',log[7],['effect',data,false],['lastupdate',log[1],true]);
+  /*
   let unique_include = false;
+
   if(data.buffID === '0B34'){//Unique DoT プネウマ
     let puneuma = {
       receive:log[1],
@@ -318,7 +333,7 @@ async function player_buff_add_26(log){
     await update_maindata('Player_hp','nameID',log[7],['effect',data,false],['puneuma',puneuma,false],['lastupdate',log[1],true]);
   }else {
     await update_maindata('Player_hp','nameID',log[7],['effect',data,false],['lastupdate',log[1],true]);
-  }
+  }*/
 }
 async function player_buff_list_update(data,nameID,lastupdate){
   if(data.length % 3 !== 0){
@@ -435,7 +450,7 @@ async function unique_buff_remove_action(log,dot_name,attckermaxhp){
     }
   }
   let now = await timestamp_change(log[1]);
-  if(now - dot_data[dot_data.length -1].time_ms < 10){
+  if(now - dot_data[dot_data.length -1].time_ms < AcceptMarginTime){
     now = now - dot_data[dot_data.length -1].time_ms;
     //console.warn( now +' :Time_recent->' + dot_name);
     await change_accept_damage(attackerID,victimID,dot_data[dot_data.length -1].victimmaxhp,dot_data[dot_data.length -1].damage,dot_data[dot_data.length -1].overdamage,attckermaxhp,dot_data[dot_data.length -1].damage_type,dot_data[dot_data.length -1].uniqueID,lastupdate);
@@ -444,26 +459,30 @@ async function unique_buff_remove_action(log,dot_name,attckermaxhp){
   else {
     now = now - dot_data[dot_data.length -1].time_ms;
     if(DEBUG_LOG){
-      console.warn(dot_name + 'Accept Action Time Not Found->' + now);
+      console.warn(dot_name + ':Accept Action Time Not Found->' + now);
       console.warn(log);
     }
   }
 }
+let UniqueID_end = 3;
 async function network_buff_removerd_30(log){
   //Calc Target ID ->52B Wild Fire
   //
-
-  if(log[2] === Unique_DoT[0].id){//Wild Fire
-    if(log[9] !== '00'){//no damage
-      await unique_buff_remove_action(log,'wild_fire',16000);
+  for(let i = UniqueID_end ; i < Unique_DoT_ID_Array.length ; i++){
+    if(log[2] === Unique_DoT[i].id){
+      await unique_buff_remove_action(log,Unique_DoT[i].id,17500);
     }
+  }
+  /*
+  if(log[2] === Unique_DoT[0].id){
+
   }
   else if (log[2] === Unique_DoT[2].id) {//深謀遠慮
     await unique_buff_remove_action(log,'sinbou',17500);
   }
   else if (log[2] === Unique_DoT[4].id) {
     await unique_buff_remove_action(log,'haimano-inn',17500);
-  }
+  }*/
 }
 async function change_accept_damage(attackerID,victimID,victimmaxhp,damage,overdamage,attackermaxhp,damage_type,uniqueID,lastupdate){
   //attacker side

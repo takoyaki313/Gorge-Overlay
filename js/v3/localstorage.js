@@ -2,6 +2,7 @@ let Storage_name = 'Gorge-Overlay3';
 var Font_Size = 16;
 var KILLSOUND_PLAY = new Audio('');
 var KILLSOUND_VOLUME = 20;
+var LB_Font_Size = 18;
 var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/zyaki.wav';
 const Localstorage_dictionary = {
   language:{
@@ -506,9 +507,21 @@ const Localstorage_dictionary = {
     description_en:'Coordinated display of people who have died more than a certain number of times.',
     inputtype:'value',
   },
+  lb_int_fontsize:{
+    func_name:'LB_Font_Size',
+    value:18,
+    disp_tab:'Other',
+    min_value:1,
+    max_value:99,
+    title_ja:'数値LBのフォントサイズ',
+    title_en:'LB',
+    description_ja:'別オーバレイ「LBInt」のフォントサイズを変更する。リロード必要',
+    description_en:'not yet',
+    inputtype:'value',
+  },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay3 Rev.20.1',
+    value:'Gorge-overlay3 Rev.21.2',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',

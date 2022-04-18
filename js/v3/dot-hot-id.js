@@ -1,122 +1,156 @@
 var DoT_ID = [
   {
-    actionid:'229C',
-    action_potencial: 400,
-    dotid:'052C',
-    netdotid:'1F40052C',
-    name:'サンダー',
-    potencial: 400,
-    max : 15,
-    type:'DoT'
+    actionid:'722E',
+    action_potencial: 18000,
+    dotid:'07F6',
+    name:'テンパランス：効果',
+    potencial: 4000,
+    max : 5,
+    type:'HoT'
   },{
-    actionid:'229D',
-    action_potencial: 2400,
-    dotid:'052C',
-    netdotid:'1F40052C',
-    name:'サンダガ',
-    potencial: 400,
-    max : 15,
-    type:'DoT'
+    actionid:'',//ソルトアース起動71A6
+    action_potencial: 0,
+    dotid:'0BDD',
+    name:'ソルトアース',
+    potencial: 2000,
+    max : 5,
+    type:'HoT'
     },{
-    actionid:'49F7',
-    action_potencial: 200,
-    dotid:'081B',
-    netdotid:'0FA0081B',
-    name:'サンダラ',
-    potencial: 200,
-    max : 15,
-    type:'DoT'
-  },{
-    actionid:'49F8',
-    action_potencial: 1200,
-    dotid:'081B',
-    netdotid:'0FA0081B',
-    name:'サンダジャ',
-    potencial: 200,
-    max : 15,
-    type:'DoT'
-  },{
-    actionid:'22A9',
+    actionid:'',//ソルトアース起動71A6
     action_potencial: 0,
-    dotid:'052E',
-    name:'バイオガ',
-    potencial: 600,
-    max : 18,
+    dotid:'0BDE',
+    name:'ソルトアース[害]',
+    potencial: 2000,
+    max : 5,
     type:'DoT'
   },{
-    actionid:'4A09',
-    action_potencial: 800,
-    dotid:'052E',
-    name:'バイオガ',
-    potencial: 600,
-    max : 18,
+    actionid:'7231',
+    action_potencial: 0,
+    dotid:'0C11',
+    name:'蟲毒法',
+    potencial: 3000,
+    max : 15,
     type:'DoT'
-  },{
-    actionid:'49FB',
-    action_potencial: 0,
-    dotid:'052E',
-    name:'バイオガ',
-    potencial: 600,
-    max : 18,
-    type:'DoT'
-  },{
-    actionid:'457F',
-    action_potencial: 4000,
-    dotid:'0532',
-    name:'ハートオブソラス',
-    potencial: 400,
-    max : 15,
-    type:'HoT'
-  },{
-    actionid:'4A02',
-    action_potencial: 2000,
-    dotid:'0532',
-    name:'ハートオブラプチャー',
-    potencial: 200,
-    max : 15,
-    type:'HoT'
-  },{
-    actionid:null,
-    //守護のクレスト　B2D
-    //活性のクレスト　 B2E
-    action_potencial: 0,
-    dotid:'0B2E',
-    name:'活性のクレスト',
-    potencial: 500,
-    max : 15,
-    type:'HoT'
-  },{
-    actionid:'4647',
-    action_potencial: 0,
-    dotid:'0816',
-    name:'星天対抗',
-    potencial: 800,
-    max : 15,
-    type:'HoT'
-  },{
-    actionid:'458C',
-    action_potencial: 2000,
-    dotid:'07FA',
-    name:'ニュートラルセクト（日）',
-    potencial: 800,
-    max : 15,
-    type:'HoT'
-  },{
-    actionid:'4A07',
-    action_potencial: 2000,
-    dotid:'07FA',
-    name:'ニュートラルセクト（日）',
-    potencial: 400,
-    max : 15,
-    type:'HoT'
   },{
     actionid:'45E3',
-    action_potencial: 3000,
+    action_potencial: 6000,
     dotid:'0811',
     name:'オーロラ',
-    potencial: 600,
+    potencial: 3000,
+    max : 12,
+    type:'HoT'
+  },{
+    actionid:'723B',
+    action_potencial: 0,//4000-8000 HP可変
+    dotid:'0C1B',
+    name:'アスペクトベネフィク[日]',
+    potencial: 1000,
+    max : 12,
+    type:'HoT'
+  },{
+    actionid:'7249',
+    action_potencial: 0,
+    dotid:'0C24',
+    name:'エウクラシア・ドシスIII',
+    potencial: 4000,
+    max : 12,
+    type:'DoT'
+  },{
+    actionid:'7252',
+    action_potencial: 0,
+    dotid:'0C30',
+    name:'リュペー',
+    potencial: 8000,
+    max : 5,
+    type:'DoT'
+  },{
+    actionid:'72DE',
+    action_potencial: 4000,
+    dotid:'07E3',
+    name:'バイオブラスト',
+    potencial: 4000,
+    max : 9,
+    type:'DoT'
+  },{
+    actionid:'73DD',
+    action_potencial: 0,//3000-6000-9000可変
+    dotid:'0C92',
+    name:'火傷',
+    potencial: 3000,
+    max : 9,
+    type:'DoT'
+  },{
+    actionid:'',
+    action_potencial: 0,
+    dotid:'0C9B',
+    name:'スリップストリーム[害]',
+    potencial: 3000,
+    max : 5,
+    type:'DoT'
+  },{
+    actionid:'73F0',//フェニックスが使用
+    action_potencial: 0,
+    dotid:'0C9E',
+    name:'不死鳥の翼',
+    potencial: 3000,
     max : 15,
     type:'HoT'
+  },{
+    actionid:'73F2',
+    action_potencial: 3000,
+    dotid:'0CA0',
+    name:'リヴァレーション',
+    potencial: 3000,
+    max : 15,
+    type:'DoT'
+  },{
+    actionid:'73FC',
+    action_potencial: 6000,
+    dotid:'0CA5',
+    name:'エンリポスト',
+    potencial: 4000,
+    max : 6,
+    type:'DoT'
+  },{
+    actionid:'73FD',
+    action_potencial: 7000,
+    dotid:'0CA6',
+    name:'エンツヴェルクハウ',
+    potencial: 4000,
+    max : 6,
+    type:'DoT'
+  },{
+    actionid:'73FE',
+    action_potencial: 8000,
+    dotid:'0CA7',
+    name:'エンルドゥブルマン',
+    potencial: 6000,
+    max : 6,
+    type:'DoT'
+  },{
+    actionid:'7340',
+    action_potencial: 4000,
+    dotid:'0C70',
+    name:'劫火滅却の術',
+    potencial: 4000,
+    max : 12,
+    type:'DoT'
+  },{
+    actionid:'7344',
+    action_potencial: 10000,
+    dotid:'0C75',
+    name:'命水',
+    potencial: 4000,
+    max : 12,
+    type:'HoT'
+  },{
+    actionid:'',//ドトン発動734A
+    action_potencial: 0,
+    dotid:'0C07',
+    name:'土遁の術[害]',
+    potencial: 2000,
+    max : 5,
+    type:'DoT'
   },{
     actionid:'26FA',
     action_potencial: 10000,
@@ -139,47 +173,48 @@ var DoT_ID = [
     potencial: 1000,
     max : 1200,
     type:'HoT'
-  },{
-    actionid:'89',
-    dotid:'009E',
-    name:'リジェネ',
-    potencial: 1000,
-    max : 18,
-    type:'HoT'
-  },{
-    actionid:'4094',
-    action_potencial: 60,
-    dotid:'074F',
-    name:'ディア',
-    potencial: 60,
-    max : 30,
-    type:'DoT'
   }
 ];
 let Unique_DoT =[{
-  id:'52B',
-  name:'ワイルドファイア',
-  type:'DoT'
-},{
   id:'A2C',
   name:'カルディア',
   type:'HoT'
+},{
+  id:'51A',
+  name:'ソウルサバイバー',
+  type:'DoT'
+},{
+  id:'C64',
+  name:'急所系穴',
+  type:'DoT'
+},{
+  id:'544',
+  name:'スリプル',
+  type:'DoT'
 },{
   id:'886',
   name:'深謀遠慮の策',
   type:'HoT'
 },{
-  id:'80E',
-  name:'原初の猛り[被]',
-  type:'HoT'
-},{
-  id:'B36',
+  id:'C27',
   name:'ハイマの印',
   type:'HoT'
 },{
-  id:'B34',
-  name:'プネウマ',
+  id:'C9E',
+  name:'不死鳥の翼',
   type:'HoT'
+},{
+  id:'C20',
+  name:'マクロコスモス',
+  type:'HoT'
+},{
+  id:'C64',
+  name:'急所系穴',
+  type:'DoT'
+},{
+  id:'C64',
+  name:'急所系穴',
+  type:'DoT'
 }];
 const Barrier_ID = [
   //占星

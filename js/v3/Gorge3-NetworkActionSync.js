@@ -217,6 +217,9 @@ async function networkAbility_damage_calc(damage_bit){
     else if ( c === '80' && d === '00') {
       damage = parseInt( ab ,16);
     }
+    else if (c === 'A0' && d === '00') {
+      damage = parseInt(damage_bit.substring(0,damage_bit.length - 4),16);
+    }
     return damage;
   }
   else if (damage_bit.length === 1) {

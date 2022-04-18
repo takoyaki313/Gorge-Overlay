@@ -3,7 +3,13 @@ var Assist_Debuff_Reset = false;
 var HP_Update_duplite_data = true;
 var HP_Update_duplite_robride_process = false;
 var KILLSOUND = true;
+let Logline_Add_Tool_Temp = [];
+let Logline_add_mode = false;
 async function logline_firststep(log){
+  /*
+  if(Logline_add_mode){
+    Logline_Add_Tool_Temp.push(log);
+  }*/
   if(log[0] === '40'){
     await minimap_change_area_check(log);
   }
@@ -43,7 +49,9 @@ async function logline_firststep(log){
       await kill_death_main_25(log);
           break;
       case '26':
-      //await action_add_tool(log); action_tempに未登録 effectID
+      if(Logline_add_mode){
+        await action_add_tool(log); //action_tempに未登録 effectID
+      }
       await player_buff_add_26(log);
         break;
       case '30':
@@ -52,6 +60,9 @@ async function logline_firststep(log){
 
       case '33':
       logline_battle_start_check(log);
+        break;
+      case '36':
+      console.log(log);
         break;
       case '37':
       await networkAbility_receve(log);
@@ -87,7 +98,8 @@ async function logline_firststep(log){
 let action_temp = [];
 async function action_add_tool(log){
   let data = Object.keys(EFFECT_ID);
-  if(data.indexOf(await effectdata_force4(log[2])) !== -1){
+  let id = await effectdata_force4(log[2]);
+  if(data.indexOf(id) !== -1){
     return null;
   }
   for(let i = 0 ; i < action_temp.length ; i++){
@@ -95,7 +107,8 @@ async function action_add_tool(log){
       return null;
     }
   }
-  action_temp.push({id:log[2],name:log[3],time:Number(log[4])});
+  console.log(log);
+  action_temp.push({id:log[2],name:log[3],time:Number(log[4]),log:log});
 }
 //////////////////////////////////////////
 ////        3

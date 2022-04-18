@@ -96,6 +96,8 @@ function time_change(set_time,current_time){
       if(time < 0){
         time = Math.abs(time);
         losstime_timer_color(true);
+      }else {
+        losstime_timer_color(false);
       }
     }
   }
