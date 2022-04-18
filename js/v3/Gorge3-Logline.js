@@ -61,9 +61,6 @@ async function logline_firststep(log){
       case '33':
       logline_battle_start_check(log);
         break;
-      case '36':
-      console.log(log);
-        break;
       case '37':
       await networkAbility_receve(log);
         break;

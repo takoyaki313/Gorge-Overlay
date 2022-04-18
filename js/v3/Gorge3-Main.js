@@ -191,7 +191,7 @@ async function area_type_set(zoneID){
       AREA.Area_Type = 5;
       LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
       break;
-  
+  /*
     case 250://Wolves Den Pier
       AREA.Area_Type = 4;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;
