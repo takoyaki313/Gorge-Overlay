@@ -7,6 +7,7 @@ $(function (){
   'use strict';
   addOverlayListener('ChangeZone', (zone) => target_overlay_area_check(zone));
   addOverlayListener('LogLine', (logline) => log_start(logline.line));
+  target_overlay_localstrage_get();
   startOverlayEvents();
 });
 function log_start(log){
