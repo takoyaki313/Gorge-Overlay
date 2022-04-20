@@ -19,6 +19,8 @@
   //setting
   ////////////////////
   var Overlay_On = true;
+  let LastLB = 0
+  let MaxLB = 0;
   ////////////////////
   $(function (){
     'use strict';
@@ -27,11 +29,13 @@
     target_overlay_localstrage_get();
     startOverlayEvents();
   });
+
   function log_start(log){
     if(Overlay_On){
       if(log[0] === '36'){
-        LB = parseInt(log[2],16);
-        target_overlay_disp(LB);
+        let lb = parseInt(log[2],16);
+
+        target_overlay_disp(lb + percentage(lb));
       }
     }
   }
@@ -44,7 +48,6 @@
       target_overlay_fontsize(data.lb_int_fontsize);
     }
   }
-  let LB = 0;
 
   function target_overlay_disp(targetname){
     $('#InTspace').text(targetname);
@@ -55,8 +58,6 @@
   function target_overlay_fontsize(size){
     $('#InTspace').css('font-size',size + "px");
   }
-
-
   ////////////////
   function target_overlay_area_check(area){
     if (area.zoneName === 'Hidden Gorge'
@@ -72,12 +73,41 @@
     ||area.zoneID == 1033
     ||area.zoneID == 1034) {
       Overlay_On = true;
-      target_overlay_disp(LB);
+      target_overlay_disp(0);
     }
     else {
       Overlay_On = false;
+      MaxLB = 0;
+      LastLB = 0;
       target_overlay_hide();
     }
+  }
+  function percentage(num){
+    let percent = '';
+    if(num >= MaxLB ){//最大より現在値が大きいとき　（最大値がわからない/ジョブを変更した）
+      MaxLB = num;
+    }
+    else if (num === 0) {
+      if(MaxLB !== 0){
+        percent = ' : 0%';
+      }
+    }
+    else if (LastLB > num) {//前の値の方が現在の値より高いとき　（LB打った後・ジョブを変更した）
+      MaxLB = LastLB;
+      percent = ' : ' + Math.round(num / MaxLB * 100) + '%';
+    }
+    else {
+      percent = ' : ' + Math.round(num / MaxLB * 100) + '%';
+    }
+    if(num !== MaxLB){//最大値調査中
+      let tick_add = num - LastLB;
+      if(tick_add > 0){
+        let time_remain = Math.round((MaxLB - num)  / tick_add) * 3;
+        percent = percent + ' (' + time_remain +'s)';
+      }
+    }
+    LastLB = num;
+    return percent;
   }
   </script>
 </head>
