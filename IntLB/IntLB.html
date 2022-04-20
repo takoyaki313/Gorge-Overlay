@@ -60,6 +60,8 @@
   }
   ////////////////
   function target_overlay_area_check(area){
+    MaxLB = 0;
+    LastLB = 0;
     if (area.zoneName === 'Hidden Gorge'
     ||area.zoneID == 376
     ||area.zoneName.indexOf('Seal Rock')!== -1
@@ -77,8 +79,6 @@
     }
     else {
       Overlay_On = false;
-      MaxLB = 0;
-      LastLB = 0;
       target_overlay_hide();
     }
   }
@@ -94,15 +94,15 @@
     }
     else if (LastLB > num) {//前の値の方が現在の値より高いとき　（LB打った後・ジョブを変更した）
       MaxLB = LastLB;
-      percent = ' : ' + Math.round(num / MaxLB * 100) + '%';
+      percent = ' : ' + Math.floor(num / MaxLB * 100) + '%';
     }
     else {
-      percent = ' : ' + Math.round(num / MaxLB * 100) + '%';
+      percent = ' : ' + Math.floor(num / MaxLB * 100) + '%';
     }
     if(num !== MaxLB){//最大値調査中
       let tick_add = num - LastLB;
       if(tick_add > 0){
-        let time_remain = Math.round((MaxLB - num)  / tick_add) * 3;
+        let time_remain = Math.ceil((MaxLB - num)  / tick_add) * 3;
         percent = percent + ' (' + time_remain +'s)';
       }
     }
