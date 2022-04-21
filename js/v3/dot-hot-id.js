@@ -32,6 +32,14 @@ var DoT_ID = [
     max : 15,
     type:'DoT'
   },{
+    actionid:'7232',//展開戦術
+    action_potencial: 0,
+    dotid:'0C11',
+    name:'蟲毒法',
+    potencial: 3000,
+    max : 15,
+    type:'DoT'
+  },{
     actionid:'45E3',
     action_potencial: 6000,
     dotid:'0811',

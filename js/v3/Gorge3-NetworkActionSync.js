@@ -460,9 +460,26 @@ async function potencial_check_from_damage(dot_detail,id_data_position,effectpos
   if(dot_detail.actionid !== data.actionID){
     let dot_id_position = DoT_ID_Array.indexOf(dot_detail.dotid,id_data_position + 1);
     dot_detail = DoT_ID[dot_id_position];
-    if(dot_detail.actionid !== data.actionID){
+    if(dot_id_position === -1){
+      if(DEBUG_LOG){
+        console.error('dot data not found');
+        console.error(data);
+      }
+      //return test;
+      return null;
+    }else if (dot_detail.actionid !== data.actionID) {
       dot_id_position = DoT_ID_Array.indexOf(dot_detail.dotid,dot_id_position + 1);
       dot_detail = DoT_ID[dot_id_position];
+      if(dot_id_position === -1){
+        if(DEBUG_LOG){
+          console.error('dot data not found');
+          console.error(data);
+        }
+        //return test;
+        return null;
+      }else{
+
+      }
       if(dot_detail.actionid !== data.actionID){
         if(DEBUG_LOG){
           console.error('dot data not found');

@@ -521,7 +521,7 @@ const Localstorage_dictionary = {
   },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay3 Rev.21.2',
+    value:'Gorge-overlay3 Rev.21.3',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',
