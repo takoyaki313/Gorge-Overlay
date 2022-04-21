@@ -160,6 +160,16 @@ var DoT_ID = [
     max : 5,
     type:'DoT'
   },{
+    actionid:'',
+    //守護のクレスト　B2D
+    //活性のクレスト　 B2E
+    action_potencial: 0,
+    dotid:'0B2E',
+    name:'活性のクレスト',
+    potencial: 4000,
+    max : 6,
+    type:'HoT'
+  },{
     actionid:'26FA',
     action_potencial: 10000,
     dotid:'010B',
@@ -168,14 +178,14 @@ var DoT_ID = [
     max : 12,
     type:'DoT'
   },{
-    actionid:null,
+    actionid:'',
     dotid:'0597',
     name:'タワーフィールド',
     potencial: 1000,
     max : 1200,
     type:'HoT'
   },{
-    actionid:null,
+    actionid:'',
     dotid:'0598',
     name:'タワーフィールド',
     potencial: 1000,
@@ -216,12 +226,8 @@ let Unique_DoT =[{
   name:'マクロコスモス',
   type:'HoT'
 },{
-  id:'C64',
-  name:'急所系穴',
-  type:'DoT'
-},{
-  id:'C64',
-  name:'急所系穴',
+  id:'C67',
+  name:'メテオドライブ',
   type:'DoT'
 }];
 const Barrier_ID = [

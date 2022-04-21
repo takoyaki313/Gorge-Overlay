@@ -931,7 +931,7 @@ let EFFECT_ID = {
     maxtime:5
   },
   '0C66':{
-    name:'メテオドライヴ',//DoT
+    name:'メテオドライヴ',//強化スタン
     type:[false,false,false,false,false],
     effect:1,
     cut:1,
@@ -939,7 +939,7 @@ let EFFECT_ID = {
     maxtime:3
   },
   '0C67':{
-    name:'メテオドライヴ',//強化スタン
+    name:'メテオドライヴ',//DoT
     type:[false,false,false,false,false],
     effect:1,
     cut:1,
