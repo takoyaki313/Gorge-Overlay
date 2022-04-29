@@ -737,7 +737,10 @@ async function network_action_datatype(log){
       }
       let flagdata = await effect_flag_checker(parseInt(effectdamage,16));
       if(flagdata === null){
-        console.warn(effectdamage);
+        if(DEBUG_LOG){
+          console.warn(effectdamage);
+          console.warn(log);
+        }
       }
       if(effectflag.length >= 3){
         if(flagdata === 'normal-damage'){
