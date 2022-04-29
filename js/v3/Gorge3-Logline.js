@@ -33,13 +33,13 @@ async function logline_firststep(log){
       case '21':
       if(LOGLINE_ENCOUNTER.Engage){
         await networkactionsync_21_22(log);
-        await networkactionsync_21_22_2(log);
+        //await networkactionsync_21_22_2(log);
       }
         break;
       case '22':
       if(LOGLINE_ENCOUNTER.Engage){
         await networkactionsync_21_22(log);
-        await networkactionsync_21_22_2(log);
+        //await networkactionsync_21_22_2(log);
       }
         break;
       case '24':
