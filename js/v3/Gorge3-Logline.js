@@ -33,11 +33,13 @@ async function logline_firststep(log){
       case '21':
       if(LOGLINE_ENCOUNTER.Engage){
         await networkactionsync_21_22(log);
+        await networkactionsync_21_22_2(log);
       }
         break;
       case '22':
       if(LOGLINE_ENCOUNTER.Engage){
         await networkactionsync_21_22(log);
+        await networkactionsync_21_22_2(log);
       }
         break;
       case '24':
@@ -152,20 +154,20 @@ async function addcombatant(log){
 }
 async function damage_revise(nameID,job,lastupdate){
   if(AREA.Area_Type === 1 ||AREA.Area_Type === 3){//FL
-    let class_A = ['pld','war','drk','gnb','mnk','sam','rpr'];
-    let class_B = ['drg','nin'];
-    let class_C = ['rdm'];
+    let class_A = ['pld','war','drk','gnb','mnk','sam','rpr','drg','nin'];
+    //let class_B = ['whm'];
+    //let class_C = ['rdm'];
     if(class_A.indexOf(job) !== -1) {
-      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1.1,income:0.7},true],['lastupdate',lastupdate,true]);
-    }
+      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:0.6},true],['lastupdate',lastupdate,true]);
+    }/*
     else if (class_B.indexOf(job) !== -1) {
-      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1.1,income:0.75},true],['lastupdate',lastupdate,true]);
+      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:0.75},true],['lastupdate',lastupdate,true]);
     }
     else if (class_C.indexOf(job) !== -1) {
       await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:0.8},true],['lastupdate',lastupdate,true]);
-    }
+    }*/
     else {
-      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:1},true],['lastupdate',lastupdate,true]);
+      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:0.8},true],['lastupdate',lastupdate,true]);
     }
   }
   else if (AREA.Area_Type === 2) {//Gorge
@@ -892,6 +894,26 @@ function null_check(data){
     data = null;
   }
   return data;
+}
+async function pet_replace(nameID,name){
+  let rtn = {nameID:nameID,name:name};
+  if(nameID.substring(0,2) === '40'){//もしペットIDならIDと名前を本人に入れ替える。
+    let searched = await owner_id_list_search(nameID);
+    if(searched !== null){
+      nameID = searched;
+      let db = await read_maindata('Player_data','nameID',nameID,name);
+      if(db !== null){
+        name = db.name;
+      }
+    }
+    /*
+    else if (name.indexOf('チェイサー') !== -1 ||name.indexOf('オプレッサー') !== -1 ||name.indexOf('分身') !== -1 ) {
+      if(DEBUG_LOG){
+              console.warn('Warn : ペットの情報がマージされませんでした。' + data.attacker + ':' + data.attackerID + ':' + data.action);
+      }
+    }*/
+  }
+  return rtn;
 }
 async function owner_id_list_add(ownerID,petID,ownername){
   OWNER_LIST.push([petID,ownerID,ownername]);

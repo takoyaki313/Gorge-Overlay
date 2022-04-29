@@ -1,6 +1,7 @@
 let POTENCIAL_DAMAGE = false;
 let Barrier_Unique_ID = 0;
 var Barrier_incomeheal = true;
+const logline_21_22_max = 48;
 async function networkAbility_Skilldata_insert(uniqueID,damage,damage_type,additional_damage_type,abilityID,nameID,maxhp,victimID,skillID,name,victimname,skillname,lastupdate,add_target,overdamage,time_ms,victimmaxHP){
   await insert_maindata('Skill_data','actionwithnameID',uniqueID,
   ['networkskill_id',abilityID,true],['nameID',nameID,true],['name',name,true],['maxHP',maxhp,true],
@@ -206,6 +207,7 @@ async function networkAbility_damage_calc(damage_bit){
     let c = damage_bit.substring(damage_bit.length - 4,damage_bit.length - 2);
     let d = damage_bit.substring(damage_bit.length - 2,damage_bit.length);
     let damage = 0;
+    let special = false;
     if( c === '00'& d === '00'){
       damage = parseInt( ab ,16);
     }
@@ -216,20 +218,24 @@ async function networkAbility_damage_calc(damage_bit){
     }
     else if ( c === '80' && d === '00') {
       damage = parseInt( ab ,16);
+      special = true;
     }
     else if (c === 'A0' && d === '00') {
-      damage = parseInt(damage_bit.substring(0,damage_bit.length - 4),16);
+      damage = parseInt( ab ,16);
+      special = true;
+    }else {
+      console.error('damage-calc failed...' + damage_bit);
     }
-    return damage;
+    return {damage:damage,return:special};
   }
-  else if (damage_bit.length === 1) {
-    return 0;
+  else if (damage_bit === '0') {
+    return {damage:0,return:false};
   }
   else {
     if(DEBUG_LOG){
       console.warn('Error: networkAbility-damage is not 4 lower length ...->' + damage_bit);
     }
-    return 0;
+    return {damage:0,return:false};
   }
 }
 async function doublerocketpuntch_hit_pct(nameID,victimID,hitnum,lastupdate){
@@ -240,8 +246,9 @@ async function doublerocketpuntch_hit_pct(nameID,victimID,hitnum,lastupdate){
     await update_maindata('Player_data','nameID',nameID,['totalrocketpuntch',1,false],['hitrocketpuntch',1,false],['hitrocketpuntchavarage',hitnum,false],['lastupdate',lastupdate,true]);
   }
 }
+let Log = '';
 async function networkactionsync_21_22(log){
-  const logline_21_22_max = 48;
+  Log = log;
   if(log.length > logline_21_22_max ||log.length < logline_21_22_max - 1){
     if(DEBUG_LOG){
       console.error("Error : data length not matched 48/47 ->" + log.length);
@@ -257,8 +264,8 @@ async function networkactionsync_21_22(log){
     victim : log[7],
     actionID : log[4],
     action : log[5],
-    effectname : effectdata[0],
-    effectparam : effectdata[1],
+    effectname : effectdata.name,
+    effectparam : effectdata.param,
     victimCurrentHP : Number(log[24]),
     victimmaxHP : Number(log[25]),
     attackerCurrentHP:Number(log[34]),
@@ -275,6 +282,7 @@ async function networkactionsync_21_22(log){
       }
     }
   }
+
   if(data.attackerID.substring(0,2) === '40'){//もしペットIDならIDと名前を本人に入れ替える。
     let searched = await owner_id_list_search(data.attackerID);
     if(searched !== null){
@@ -284,11 +292,12 @@ async function networkactionsync_21_22(log){
         data.attacker = db.name;
       }
     }
+    /*
     else if (name.indexOf('チェイサー') !== -1 ||name.indexOf('オプレッサー') !== -1 ||name.indexOf('分身') !== -1 ) {
       if(DEBUG_LOG){
               console.warn('Warn : ペットの情報がマージされませんでした。' + data.attacker + ':' + data.attackerID + ':' + data.action);
       }
-    }
+    }*/
   }
   let uniqueID = data.networknumber + data.victimID;
   let additional_reason = {uniqueID:null,reason:null,position:null};
@@ -687,16 +696,23 @@ async function potencial_to_damage_calc_id(target_data,nameID/*effect revise max
 async function effectdata_exchangeInt(effectdata){
   let data_name = [];
   let data_param = [];
+  let data_type = [];
+  let data_special = [];
   for(let i = 0 ; i < effectdata.length ; i++){
     data_name.push(effectdata[i].flag);
+    data_type.push(effectdata[i].type);
     if(effectdata[i].flag === 'normal-damage'||effectdata[i].flag === 'heal'||effectdata[i].flag === 'mp-recover'||effectdata[i].flag === 'tp-recover'){
-      data_param.push(await networkAbility_damage_calc(effectdata[i].param));
+      let param_calc = await networkAbility_damage_calc(effectdata[i].param);
+      data_param.push(param_calc.damage);
+      data_special.push(param_calc.return);
+      //console.log('damage->' + param_calc.damage + ' type->' + effectdata[i].flag + ' type->' + effectdata[i].type + ' rtn->' + param_calc.return);
     }
     else {
       data_param.push(effectdata[i].param.substring(0, effectdata[i].param.length - 4));
+      data_special.push(false);
     }
   }
-  return [data_name,data_param];
+  return {name:data_name,param:data_param,type:data_type,special:data_special};
 }
 async function network_action_datatype(log){
   const offset = 8;
@@ -713,78 +729,119 @@ async function network_action_datatype(log){
       }
     }else {
       let effectflag = log[target];
+      let effectdamage = effectflag;
       let effect_param = log[target + 1];
+      let type = 'null';
       if(effectflag.length > 1){
-        effectflag  = effectflag.substring(effectflag.length-2 ,effectflag.length);
+        effectdamage  = effectflag.substring(effectflag.length-2 ,effectflag.length);
       }
-      let flagdata = await effect_flag_checker(parseInt(effectflag,16));
+      let flagdata = await effect_flag_checker(parseInt(effectdamage,16));
+      if(flagdata === null){
+        console.warn(effectdamage);
+      }
+      if(effectflag.length >= 3){
+        if(flagdata === 'normal-damage'){
+          let effect_offset = effectflag.substring(effectflag.length - 4 ,effectflag.length - 2);
+          type  = await effect_offset_checker(effect_offset,log);
+        }
+      }
       if(flagdata !== null){
-        return_data.push({flag : flagdata,param:effect_param});
+        return_data.push({flag : flagdata, type:type, param:effect_param});
       }
     }
   }
   return return_data;
 }
+async function effect_offset_checker(flag,log){
+  switch (flag) {
+    case '05':
+      return 'block';
+    case '5':
+      return 'block';
+    case '40':
+      return 'normal';
+    case '25':
+      return 'ex-block';
+    case '60':
+      return 'ex-normal';
+    case '41':
+      return 'miss';
+    case '61':
+      return 'ex-miss';
+    default:
+      console.warn('effect type offset unknown -> ' + flag);
+      console.warn(log);
+      return 'noraml';
+  }
+}
 async function effect_flag_checker(flag) {
   switch (flag) {
     case 1:
       return 'miss-damage';
-
     case 2:
+    console.log('normal-damage-2');
       return 'normal-damage';
-
     case 3:
       return 'normal-damage';
-
     case 4:
       return 'heal';
-
     case 5:
+    console.log('parri-damage');
       return 'block-damage';
-
     case 6:
-
+    console.log('parri-damage');
       return 'parri-damage';
     case 7:
-
-      return 'invincible';
+      return 'invincible';//無敵に殴るとこれ（OP）
+    case 8:
+      return 'esuna-miss';//効果なし
     case 10:
-
+    console.log('powerdrain');
       return 'powerdrain';
     case 11:
-
       return 'mp-recover';
     case 13:
-
       return 'tp-recover';
     case 14:
-
       return 'add-buff-victim';
     case 15:
-
       return 'add-buff-attacker';
+    case 16:
+      return 'esuna-one';//状態異常回復（１つのみ）
+    case 19:
+      return 'esuna';
+    case 20:
+      return 'no-effect';//効果なし
     case 24:
-
       return 'provoke';
     case 25:
-
       return 'provoke';
+    case 27:
+      return 'skill-replace';
+    case 29:
+      return 'additional_effect';//聖刻みたいなやつが敵についてて追加効果が発動している
     case 32:
-
       return 'knockback';
     case 33:
-
       return 'pull';
+    case 40:
+      return 'mount';
+    case 45:
+      return 'buff-extension-miss';
     case 51:
-
       return 'instant death';
     case 55:
-
       return 'debuff-resisted';
+    case 59:
+      return 'debuff-remove';//自身が与えたデバフを削除する。
+    case 60:
+      return 'control-ally';//ミクロコスモスでバフの終了を強制させる/バハムートに指示する等　別アクションを同時に実行させる
     case 61:
-
       return 'actor-jobgage';
     default:
+    if(DEBUG_LOG){
+      console.warn(flag);
+    }
       return null;
   }
 }

@@ -270,7 +270,7 @@ let EFFECT_ID = {
     name:'ナイトの堅守',
     type:[false,false,true,false,true],
     effect:1,
-    cut:0.9,
+    cut:0.8,
     cut_heal:1,
     maxtime:10
   },
@@ -386,7 +386,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:10
+    maxtime:15
   },
   '0BDA':{
     name:'ダークアーツ',
@@ -531,7 +531,7 @@ let EFFECT_ID = {
     effect:1,
     cut:0.8,
     cut_heal:1,
-    maxtime:6
+    maxtime:10
   },
   '0811':{
     name:'オーロラ',
@@ -553,7 +553,7 @@ let EFFECT_ID = {
     name:'連続剣[被]',
     type:[false,false,true,false,false],
     effect:1,
-    cut:1.03,
+    cut:1.04,
     cut_heal:1,
     maxtime:5
   },
@@ -621,7 +621,7 @@ let EFFECT_ID = {
     effect:1.1,
     cut:1,
     cut_heal:1,
-    maxtime:10
+    maxtime:15
   },
   '0C11':{
     name:'蟲毒法',
@@ -637,7 +637,7 @@ let EFFECT_ID = {
     effect:0.9,
     cut:1,
     cut_heal:1,
-    maxtime:10
+    maxtime:15
   },
   '0C16':{
     name:'秘策',
@@ -1034,7 +1034,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:15
+    maxtime:30
   },
   '0524':{
     name:'かくれる',
@@ -1185,7 +1185,7 @@ let EFFECT_ID = {
     name:'必殺剣・地天',
     type:[false,false,true,false,true],
     effect:1,
-    cut:0.5,
+    cut:0.75,
     cut_heal:1,
     maxtime:5
   },
@@ -1402,7 +1402,7 @@ let EFFECT_ID = {
   '0C49':{
     name:'英雄のファンタジア[被]',
     type:[true,false,false,false,true],
-    effect:1.05,
+    effect:1.1,
     cut:1,
     cut_heal:1,
     maxtime:30
@@ -1680,7 +1680,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:30
+    maxtime:60
   },
   '0C61':{
     name:'ホリグロット',
