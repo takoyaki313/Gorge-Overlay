@@ -408,7 +408,7 @@ const Localstorage_dictionary = {
   Barrier_incomeheal:{
     func_name:'Barrier_incomeheal',
     value:true,
-    disp_tab:'Other',
+    disp_tab:'none',
     title_ja:'バリアを被ヒールの計算に含める。',
     title_en:"Debug only",
     description_ja:'デバッグ用',
@@ -521,7 +521,7 @@ const Localstorage_dictionary = {
   },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay3 Rev.22',
+    value:'Gorge-overlay3.1 Rev.1',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',

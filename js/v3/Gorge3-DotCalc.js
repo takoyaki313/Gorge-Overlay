@@ -9,7 +9,8 @@ async function networkDoT_24 (log){
     DoTType : log[4],
     effectID : log[5],
     damage : parseInt(log[6],16),
-    lastupdate : log[1]
+    lastupdate : log[1],
+    victimCurrenthp:Number(log[7]),
   };
   let uniqueID = data.effectID + data.lastupdate + data.victimID + data.DoTType;
   let damage_type = null;
@@ -110,16 +111,18 @@ async function networkDoT_24 (log){
       return null;
     }
     let simulation_data = await dot_damage_distribution(effect_position,sum,data.damage,data.overdamage);
-    await dot_damage_cut(simulation_data,data.victimID,data.victimmaxhp,damage_type,data.lastupdate,uniqueID);
+    await new_dot_damage_cut(simulation_data,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.DoTType,data.lastupdate,uniqueID);
+    //await dot_damage_cut(simulation_data,data.victimID,data.victimmaxhp,damage_type,data.lastupdate,uniqueID);
     await insert_maindata('DoT_data','ID',uniqueID,['victimID',data.victimID,true],['victim',data.victim,true],
     ['victimmaxhp',data.victimmaxhp,true],['DoTType',data.DoTType,true],['effectID',data.effectID,true],['damage_type',damage_type,true],['damage',data.damage,true],['overdamage',data.overdamage,true],['Simulation_data',simulation_data,true],['lastupdate',data.lastupdate,true]);
   }else if (Unique_DoT_ID_Array.indexOf(data.effectID) !== -1) {
     await insert_maindata('DoT_data','ID',uniqueID,['victimID',data.victimID,true],['victim',data.victim,true],
     ['victimmaxhp',data.victimmaxhp,true],['DoTType',data.DoTType,true],['effectID',data.effectID,true],['damage_type',damage_type,true],['damage',data.damage,true],['overdamage',data.overdamage,true],['Simulation_data',null,true],['lastupdate',data.lastupdate,true]);
     if(data.effectID === '51A'){//ソウルサバイバー
-      await change_accept_damage(data.victimID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,data.victimmaxhp,'normal-damage',uniqueID,data.lastupdate);
+      await new_change_accept_damage(data.victimID,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.damage,'HoT',uniqueID,data.lastupdate)
+      //await change_accept_damage(data.victimID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,data.victimmaxhp,'normal-damage',uniqueID,data.lastupdate);
     }else if (data.effectID === 'C67') {
-      
+
     }else {
       await unique_dot_player_hp_add(data,data.effectID,uniqueID,damage_type);
     }
@@ -176,7 +179,8 @@ async function puneuma_calc(data,uniqueID,log){
         let puneuma_data = read_data.puneuma[i];
         let new_puneuma = read_data.puneuma.slice(0,i);
         new_puneuma.concat(read_data.puneuma.slice(i + 1,));
-        await change_accept_damage(puneuma_data.attackerID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,17500,'heal',uniqueID,data.lastupdate);
+        await new_change_accept_damage(puneuma_data.attackerID,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.damage,'HoT',uniqueID,data.lastupdate);
+        //await change_accept_damage(puneuma_data.attackerID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,17500,'heal',uniqueID,data.lastupdate);
         await update_maindata('Player_hp','nameID',data.victimID,['puneuma',new_puneuma,true]);
         return null;
       }
@@ -186,7 +190,8 @@ async function puneuma_calc(data,uniqueID,log){
       //let num = now - read_data.puneuma[read_data.puneuma.length - 1].receive_time;
       //console.error('Probably...? '  + num);
       let puneuma_data = read_data.puneuma[read_data.puneuma.length - 1];
-      await change_accept_damage(puneuma_data.attackerID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,17500,'heal',uniqueID,data.lastupdate);
+      await new_change_accept_damage(puneuma_data.attackerID,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.damage,'HoT',uniqueID,data.lastupdate);
+      //await change_accept_damage(puneuma_data.attackerID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,17500,'heal',uniqueID,data.lastupdate);
       await update_maindata('Player_hp','nameID',data.victimID,['puneuma',read_data.puneuma.slice(0,-1),true]);
       return null;
     }
@@ -196,37 +201,62 @@ async function puneuma_calc(data,uniqueID,log){
     }
   }
 }
-async function dot_calculation(log){
-  //use logline 38 + 24 + 26
-  let victimID = log[2];
-  let d_uniqueID = '0' + log[1] + victimID + 'DoT';
-  let h_uniqueID = '0' + log[1] + victimID + 'HoT';
-  let dot_damage_data = await read_maindata('DoT_data','ID',d_uniqueID,'damage','overdamage');
-  let dot_heal_data = await read_maindata('DoT_data','ID',h_uniqueID,'damage','overdamage');
-  let victim_effect = await read_maindata('Player_hp','nameID',victimID,'effect','dot_potencial');
-  if(DEBUG_LOG){
-    console.error(dot_damage_data);
-    console.error(dot_heal_data);
-    console.error(victim_effect);
-  }
-  if(dot_damage_data.damage !== undefined){
+//await new_dot_damage_cut(simulation_data,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.DoTType,data.lastupdate,uniqueID);
+async function new_dot_damage_cut(simulation_data,victimID,victimCurrenthp,victimmaxhp,damage_type,lastupdate,uniqueID){
+  for(let i = 0 ; i < simulation_data.length ; i++){
+    let sim = simulation_data[i];
+    let a_replaceID = await pet_replace(sim.player,"");
+    let v_replaceID = await pet_replace(victimID,"");
+    let victim = {nameID:v_replaceID.nameID,name:v_replaceID.name,maxhp:victimmaxhp,currentHp:victimCurrenthp};
+    let attacker = null;
 
-  }
-  if(dot_heal_data.damage !== undefined){
+    if(a_replaceID.nameID === victimID){
+      attacker = victim;
+    }else {
+      let db_data = await read_maindata('Player_hp','nameID',a_replaceID.nameID,'maxhp','currenthp');
+      if(Object.keys(db_data).length === 2){//include maxhp
+        attacker = {nameID:a_replaceID.nameID,name:a_replaceID.name,maxhp:db_data.maxhp,currentHp:db_data.currenthp};
+      }else {//Kari data
+        attacker = {nameID:a_replaceID.nameID,name:a_replaceID.name,maxhp:33333,currentHp:5000};
+      }
+    }
+    //damage add / heal add
+    let type = 'heal';
+    if(damage_type === 'DoT'){
+      type = 'damage';
+      //38を受けてないが、ダメージ/ヒールを受けたとして処理
+      await update_maindata('Player_hp','nameID',victim.nameID,['attacker',{attacker:attacker.nameID,type:'DoT-damage'},false]);
+    }else {
+      //await update_maindata('Player_hp','nameID',victim.nameID,['attacker',{attacker:attacker.nameID,type:'HoT-heal'},false]);
+    }
+    let input_data = await damage_heal_input_type(uniqueID,attacker.nameID,victim.nameID,attacker.maxhp,attacker.currentHp,victim.maxhp,victim.currentHp,'HoT/DoT',type,sim.damage,damage_type);
 
+    //与ダメ
+    let send = {};
+    let marge_temp = {target:[],data:[],replace:[]};
+    if(Send_Action){
+      send = await add_accept_target(input_data.target,input_data.data,'send');
+    }
+    else {
+      send = marge_temp;
+    }
+    let send_marge = await general_input_type(lastupdate,input_data,send);
+    update_maindata_change_array('Player_data','nameID',attacker.nameID,send_marge.target,send_marge.data,send_marge.replace);
+
+    //被ダメ
+    let income = await add_accept_target(input_data.target,input_data.data,'income');
+    let income_marge = await general_input_type(lastupdate,marge_temp,income);
+
+    update_maindata_change_array('Player_data','nameID',victim.nameID,income_marge.target,income_marge.data,income_marge.replace);
   }
 }
 async function dot_damage_cut(simulation_data,victimID,victimmaxhp,damage_type,lastupdate,uniqueID){
   for(let i = 0 ; i < simulation_data.length ; i++){
     let overdamage = simulation_data[i].overdamage;
     let damage = simulation_data[i].damage;
-    if(damage > 10000){
-      if(DEBUG_LOG){
-        console.error(damage);
-        console.error(simulation_data);
-      }
-    }
-    let add_target = await damage_add(simulation_data[i].player,victimID,victimmaxhp,damage_type,damage,null);
+    let damage_input_nameID = await pet_replace(simulation_data[i].player,"");
+    simulation_data[i].player = damage_input_nameID.nameID;
+    let add_target = await damage_add(damage_input_nameID.nameID,victimID,victimmaxhp,damage_type,damage,null);
     let created_data = await add_target_data_create(add_target,damage,overdamage,'dot_calc',damage_type,lastupdate);
     add_target = created_data[0];
     let add_target_data = created_data[1];
@@ -253,7 +283,6 @@ async function dot_damage_cut(simulation_data,victimID,victimmaxhp,damage_type,l
       await income_switch_main(uniqueID,simulation_data[i].player,15000,victimID,damage,lastupdate,add_target,damage_type);
     }
     /////////////////////////
-
   }
 }
 async function dot_damage_distribution(data,sum,totaldamage,totaloverdamage){
@@ -377,7 +406,7 @@ async function player_buff_list_update(data,nameID,lastupdate){
 async function dunamis_checker(nameID,effectID,rank,lastupdate){
   let dunamis = ['0853','0854','0855','0856','0857','05B9','06C2'];
   // 05B9 Tensyon    06C2 TensyonMax
-  if(dunamis.indexOf(effectID) !== -1){
+  if(dunamis.indexOf(effectID) !== -1 && nameID.substring(0,2) === "10"){
     if(effectID === '05B9'){
       if(typeof rank !== 'number'){
         if(DEBUG_LOG){
@@ -417,6 +446,8 @@ async function unique_buff_remove_action(log,dot_name,attckermaxhp){
   let attackerID = log[5];
   let victimID = log[7];
   let lastupdate = log[1];
+  let victimhp = Number(log[10]);
+  let victimmaxhp = Number(log[11]);
   let read_data = await read_maindata('Player_hp','nameID',victimID,dot_name);
   if(Object.keys(read_data).length === 0){
     if(DEBUG_LOG){
@@ -427,14 +458,14 @@ async function unique_buff_remove_action(log,dot_name,attckermaxhp){
   }
   if(read_data[dot_name] === undefined){
     if(DEBUG_LOG){
-      console.log(dot_name + ' Data Not Found');
+      console.log(dot_name + ' Data Not Found [undefined]');
       console.log(log);
     }
     return null;
   }
   if(read_data[dot_name].length === 0){
     if(DEBUG_LOG){
-      console.log(dot_name + ' Data Not Found');
+      console.log(dot_name + ' Data Not Found [length = 0]');
       console.log(log);
     }
     return null;
@@ -444,8 +475,9 @@ async function unique_buff_remove_action(log,dot_name,attckermaxhp){
     if(lastupdate === dot_data[i].time){
       let new_data = dot_data.slice(0,i);
       new_data.concat(dot_data.slice(i + 1,));
-      await change_accept_damage(attackerID,victimID,dot_data[i].victimmaxhp,dot_data[i].damage,dot_data[i].overdamage,attckermaxhp,dot_data[i].damage_type,dot_data[i].uniqueID,lastupdate);
-      await update_maindata('Player_hp','nameID',victimID,[dot_name,new_data,true]);
+      await new_change_accept_damage(attackerID,victimID,victimhp,victimmaxhp,dot_data[i].damage,dot_data[i].damage_type,dot_data[i].uniqueID,lastupdate);
+      //await change_accept_damage(attackerID,victimID,dot_data[i].victimmaxhp,dot_data[i].damage,dot_data[i].overdamage,attckermaxhp,dot_data[i].damage_type,dot_data[i].uniqueID,lastupdate);
+      //await update_maindata('Player_hp','nameID',victimID,[dot_name,new_data,true]);
       return null;
     }
   }
@@ -453,7 +485,8 @@ async function unique_buff_remove_action(log,dot_name,attckermaxhp){
   if(now - dot_data[dot_data.length -1].time_ms < AcceptMarginTime){
     now = now - dot_data[dot_data.length -1].time_ms;
     //console.warn( now +' :Time_recent->' + dot_name);
-    await change_accept_damage(attackerID,victimID,dot_data[dot_data.length -1].victimmaxhp,dot_data[dot_data.length -1].damage,dot_data[dot_data.length -1].overdamage,attckermaxhp,dot_data[dot_data.length -1].damage_type,dot_data[dot_data.length -1].uniqueID,lastupdate);
+    await new_change_accept_damage(attackerID,victimID,victimhp,victimmaxhp,dot_data[dot_data.length -1].damage,dot_data[dot_data.length -1].damage_type,dot_data[dot_data.length -1].uniqueID,lastupdate);
+    //await change_accept_damage(attackerID,victimID,dot_data[dot_data.length -1].victimmaxhp,dot_data[dot_data.length -1].damage,dot_data[dot_data.length -1].overdamage,attckermaxhp,dot_data[dot_data.length -1].damage_type,dot_data[dot_data.length -1].uniqueID,lastupdate);
     await update_maindata('Player_hp','nameID',victimID,[dot_name,dot_data.slice(0,-1),true]);
   }
   else {
@@ -484,12 +517,65 @@ async function network_buff_removerd_30(log){
     await unique_buff_remove_action(log,'haimano-inn',17500);
   }*/
 }
+async function new_change_accept_damage(attackerID,victimID,victimCurrenthp,victimmaxhp,damage,damage_type,uniqueID,lastupdate){
+  let a_replaceID = await pet_replace(attackerID,"");
+  let v_replaceID = await pet_replace(victimID,"");
+  let victim = {nameID:v_replaceID.nameID,name:v_replaceID.name,maxhp:victimmaxhp,currentHp:victimCurrenthp};
+  let attacker = null;
+
+  if(a_replaceID.nameID === victimID){
+    attacker = victim;
+  }else {
+    let db_data = await read_maindata('Player_hp','nameID',a_replaceID.nameID,'maxhp','currenthp');
+    if(Object.keys(db_data).length === 2){//include maxhp
+      attacker = {nameID:a_replaceID.nameID,name:a_replaceID.name,maxhp:db_data.maxhp,currentHp:db_data.currenthp};
+    }else {//Kari data
+      attacker = {nameID:a_replaceID.nameID,name:a_replaceID.name,maxhp:33333,currentHp:5000};
+    }
+  }
+  //damage add / heal add
+  let type = '';
+  if(damage_type === 'DoT'||damage_type === 'normal-damage'||damage_type === 'damage'){
+    //38を受けてないが、ダメージ/ヒールを受けたとして処理
+    damage_type = 'damage';
+    type = 'DoT';
+    await update_maindata('Player_hp','nameID',victim.nameID,['attacker',{attacker:attacker.nameID,type:'DoT-damage'},false]);
+  }else{
+    damage_type = 'heal';
+    type = 'HoT';
+    //await update_maindata('Player_hp','nameID',victim.nameID,['attacker',{attacker:attacker.nameID,type:'HoT-heal'},false]);
+  }
+  let input_data = await damage_heal_input_type(uniqueID,attacker.nameID,victim.nameID,attacker.maxhp,attacker.currentHp,victim.maxhp,victim.currentHp,'SpecialDoT/HoT',damage_type,damage,type);
+
+  //与ダメ
+  let send = {};
+  let marge_temp = {target:[],data:[],replace:[]};
+  if(Send_Action){
+    send = await add_accept_target(input_data.target,input_data.data,'send');
+  }
+  else {
+    send = marge_temp;
+  }
+  let send_marge = await general_input_type(lastupdate,input_data,send);
+  update_maindata_change_array('Player_data','nameID',attacker.nameID,send_marge.target,send_marge.data,send_marge.replace);
+
+  //被ダメ
+  let income = await add_accept_target(input_data.target,input_data.data,'income');
+  let income_marge = await general_input_type(lastupdate,marge_temp,income);
+
+  update_maindata_change_array('Player_data','nameID',victim.nameID,income_marge.target,income_marge.data,income_marge.replace);
+}
+
+/*
 async function change_accept_damage(attackerID,victimID,victimmaxhp,damage,overdamage,attackermaxhp,damage_type,uniqueID,lastupdate){
   //attacker side
-  let add_target = await damage_add(attackerID,victimID,victimmaxhp,damage_type,damage,'skillID');
+  let a_petcheck = await pet_replace(attackerID,"");
+  let v_petcheck = await pet_replace(victimID,"");
+  let add_target = await damage_add(a_petcheck.nameID,victimID,victimmaxhp,damage_type,damage,'skillID');
   let created_data = await add_target_data_create(add_target,damage,overdamage,uniqueID,damage_type,lastupdate);
-  await update_maindata_change('Player_data','nameID',attackerID,created_data[0],created_data[1],created_data[2]);
+  await update_maindata_change('Player_data','nameID',a_petcheck.nameID,created_data[0],created_data[1],created_data[2]);
   //victim side
-  await update_maindata('Player_hp','nameID',victimID,['attacker',{attacker:attackerID,type:'unique_dot'},false]);
-  await income_switch_main(uniqueID,attackerID,attackermaxhp,victimID,damage,lastupdate,add_target,damage_type);
+  await update_maindata('Player_hp','nameID',v_petcheck.nameID,['attacker',{attacker:a_petcheck.nameID,type:'unique_dot'},false]);
+  await income_switch_main(uniqueID,a_petcheck.nameID,attackermaxhp,v_petcheck.nameID,damage,lastupdate,add_target,damage_type);
 }
+*/

@@ -156,21 +156,21 @@ function cc_create(template,data,duration,maxdps){
   let already_calc = {};
   //hps
   already_calc.totalheal = damage_to_dps(data.totalheal,time).toFixed(0);
-  already_calc.selfheal = damage_to_dps(data.selfheal,time).toFixed(0);
-  already_calc.partyheal = damage_to_dps(data.partyheal,time).toFixed(0);
-  already_calc.allyheal = damage_to_dps(data.allyheal,time).toFixed(0);
-  already_calc.otherheal = damage_to_dps(data.otherheal,time).toFixed(0);
-  already_calc.barrier = damage_to_dps(data.barrier,time).toFixed(0);
-  already_calc.overhealPct = ((data.overheal / data.totalheal)*100).toFixed(2) + '%';
+  already_calc.selfheal = damage_to_dps(data.heal_self,time).toFixed(0);
+  already_calc.partyheal = damage_to_dps(data.heal_party,time).toFixed(0);
+  already_calc.allyheal = damage_to_dps(data.heal_ally,time).toFixed(0);
+  already_calc.otherheal = damage_to_dps(data.heal_object,time).toFixed(0);
+  already_calc.barrier = damage_to_dps(data.heal_total_barrier,time).toFixed(0);
+  already_calc.overhealPct = ((data.over_totalheal / data.totalheal)*100).toFixed(2) + '%';
   //dps
   already_calc.totaldamage = damage_to_dps(data.totaldamage,time).toFixed(0);
   //
   let dps_area = row.find('.c-dps');
   let hps_area = row.find('.c-hps');
   hps_area.text(already_calc.totalheal);
-  hps_area.prop('title',tooltip_dps_create(data.totalheal,data.overheal,already_calc.overhealPct,already_calc.selfheal,already_calc.partyheal,already_calc.allyheal,already_calc.otherheal,already_calc.barrier));
+  hps_area.prop('title',tooltip_dps_create(data.totalheal,data.over_totalheal,already_calc.overhealPct,already_calc.selfheal,already_calc.partyheal,already_calc.allyheal,already_calc.otherheal,already_calc.barrier));
   //let dps_tooltip_string = tooltip_dps_create(already_calc.playerdamage,already_calc.persondamage,already_calc.torobotdamage,already_calc.playerotherdamage,already_calc.objectdamage,already_calc.matondamage,already_calc.towerdamage,already_calc.objectotherdamage,already_calc.totaldamage,battle_data.totaldamage,battle_data['total-accept-damage'],time);
-  dps_area.prop(tooltip_dps_create('-','-','-','-','-','-','-','-',already_calc.totaldamage,data.totaldamage,data['total-accept-damage'],time));
+  dps_area.prop('title',tooltip_dps_create('-','-','-','-','-','-','-','-',already_calc.totaldamage,data.totaldamage,'-',time));
 
   //jobicon
   let jobicon_space = row.find('.c-job-icon');
@@ -225,9 +225,9 @@ function cc_create(template,data,duration,maxdps){
   row.find('.c-damage-gage').addClass('role-background-' + job_to_role(data.job));
   row.find('.c-damage-gage').css('width', ((data.calcdps / maxdps) * 100) + '%');
   //
-  row.find('.c-income-space').prop('title',tooltip_income(damage_to_dps(data.incomeselfheal,time).toFixed(0),damage_to_dps(data.incomepartyheal,time).toFixed(0),damage_to_dps(data.incomeallyheal,time).toFixed(0),damage_to_dps(data.incomeotherheal,time).toFixed(0),damage_to_dps(data.personincomedamage,time).toFixed(0),damage_to_dps(data.robincomedamage,time).toFixed(0),damage_to_dps(data.objectincomedamage,time).toFixed(0)));
-  row.find('.c-incomedamage-number').text(damage_to_dps(data.totalincomedamage,time).toFixed(0));
-  row.find('.c-incomeheal-number').text(damage_to_dps(data.totalincomeheal,time).toFixed(0));
+  row.find('.c-income-space').prop('title',tooltip_income(damage_to_dps(data.accept_income_heal_self,time).toFixed(0),damage_to_dps(data.accept_income_heal_party,time).toFixed(0),damage_to_dps(data.accept_income_heal_ally,time).toFixed(0),damage_to_dps(data.accept_income_heal_object,time).toFixed(0),damage_to_dps(data.accept_income_damage_player,time).toFixed(0),damage_to_dps(data.robincomedamage,time).toFixed(0),damage_to_dps(data.accept_income_damage_object,time).toFixed(0)));
+  row.find('.c-incomedamage-number').text(damage_to_dps(data.accept_income_totaldamage,time).toFixed(0));
+  row.find('.c-incomeheal-number').text(damage_to_dps(data.accept_income_totalheal,time).toFixed(0));
   return row;
 }
 function overlaycreate_battletimeset(){

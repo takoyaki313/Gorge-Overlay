@@ -1,6 +1,7 @@
 let POTENCIAL_DAMAGE = false;
 let Barrier_Unique_ID = 0;
 var Barrier_incomeheal = true;
+let NetworkActionSync = true;
 const logline_21_22_max = 48;
 async function networkAbility_Skilldata_insert(uniqueID,damage,damage_type,additional_damage_type,abilityID,nameID,maxhp,victimID,skillID,name,victimname,skillname,lastupdate,add_target,overdamage,time_ms,victimmaxHP){
   await insert_maindata('Skill_data','actionwithnameID',uniqueID,
@@ -221,8 +222,12 @@ async function networkAbility_damage_calc(damage_bit){
       special = true;
     }
     else if (c === 'A0' && d === '00') {
-      damage = parseInt( ab ,16);
       special = true;
+      if(damage_bit === 'A000'){
+        damage = 0;
+      }else {
+        damage = parseInt( ab ,16);
+      }
     }else {
       console.error('damage-calc failed...' + damage_bit);
     }
@@ -361,7 +366,7 @@ async function networkactionsync_21_22(log){
     data.victimCurrentHP = data.attackerCurrentHP;
     await abilitydata_main(uniqueID,null,additional_reason.position,data);
   }
-  await ability_include_dot_hot(data);
+  //await ability_include_dot_hot(data);
 }
 async function effectdata_force4(param){
   if(param.length === 3){
@@ -383,7 +388,7 @@ async function ability_include_dot_hot(data){
       //Dot-Hot
       let dot_position = DoT_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
       if(dot_position !== -1){
-        await potencial_check_from_damage(DoT_ID[dot_position],dot_position,i,data);
+        await potencial_check_from_damage(DoT_ID[dot_position],dot_position,data);
       }
       //Barrier
       let barrier_position = Barrier_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
@@ -395,7 +400,7 @@ async function ability_include_dot_hot(data){
       //Dot-Hot
       let dot_position = DoT_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
       if(dot_position !== -1){
-        await potencial_check_from_damage(DoT_ID[dot_position],i,data);
+        await potencial_check_from_damage(DoT_ID[dot_position],data);
       }
       //Barrier
       let barrier_position = Barrier_ID_Array.indexOf(await effectdata_force4(data.effectparam[i]));
@@ -459,13 +464,13 @@ async function potencial_check_barrier(data,effectposition,target){
   //console.log(add_target_data);
   //console.log(add_target_replace);
   await update_maindata_change('Player_data','nameID',attackerID,add_target,add_target_data,add_target_replace);
+
   if(Barrier_incomeheal){//被ヒールにバリアを計算する。
     //hp 不要　(incomebarrier_main(uniqueID,nameID,attackerID,damage,add_target,lastupdate)
     await income_switch_main(uniqueID,victimID,null,attackerID,barrier,data.lastupdate,add_target,'barrier');
   }
 }
-async function potencial_check_from_damage(dot_detail,id_data_position,effectposition,data){
-
+async function potencial_check_from_damage(dot_detail,id_data_position,data){
   if(dot_detail.actionid !== data.actionID){
     let dot_id_position = DoT_ID_Array.indexOf(dot_detail.dotid,id_data_position + 1);
     dot_detail = DoT_ID[dot_id_position];
@@ -500,9 +505,9 @@ async function potencial_check_from_damage(dot_detail,id_data_position,effectpos
     }
   }
   let potencial = dot_detail.potencial;
-
-  if(dot_detail.action_potencial > 0 ){
-    if(data.effectname[0] === 'heal'||data.effectname[0] === 'normal-damage'&&POTENCIAL_DAMAGE){
+  potencial = await potencial_to_damage_calc_effect(data.attackerID,data.victimID,potencial,dot_detail.type);
+  /*if(dot_detail.action_potencial > 0 ){
+    if(data.effectname[0] === 'heal'||data.effectname[0] === 'normal-damage' && POTENCIAL_DAMAGE){
       let damage = data.effectparam[0];
       potencial = Math.round(dot_detail.potencial * (damage / dot_detail.action_potencial));
     }
@@ -513,7 +518,7 @@ async function potencial_check_from_damage(dot_detail,id_data_position,effectpos
   else {
     //unknown potencial
     potencial = await potencial_to_damage_calc_effect(data.attackerID,data.victimID,potencial,dot_detail.type);
-  }
+  }*/
   //console.log(data.action +'(' + dot_detail.name + ')' +':Potencial->' + potencial);
   await update_maindata('Player_hp','nameID',data.victimID,['dot_potencial',{potencial:potencial,attackerID:data.attackerID,dotID:dot_detail.dotid,actionID:data.actionID,time_ms:data.time_ms,dot_time:dot_detail.max},false],['lastupdate',data.lastupdate,true]);
 }
@@ -565,7 +570,7 @@ async function abilitydata_main(uniqueID,additional_uniqueID,maintype_position,d
   let add_target_data = created_data[1];
   let add_target_replace = created_data[2];
   //////////////
-  await update_maindata_change('Player_data','nameID',data.attackerID,add_target,add_target_data,add_target_replace);
+  //await update_maindata_change('Player_data','nameID',data.attackerID,add_target,add_target_data,add_target_replace);
 }
 async function potencial_to_damage_calc_id(target_data,nameID/*effect revise maxhp*/,type/*damage/heal*/,send){
   let return_data = [1,1,1];
@@ -691,7 +696,6 @@ async function potencial_to_damage_calc_id(target_data,nameID/*effect revise max
       }
     }
   }
-  return null;
 }
 async function effectdata_exchangeInt(effectdata){
   let data_name = [];
@@ -757,6 +761,10 @@ async function network_action_datatype(log){
 }
 async function effect_offset_checker(flag,log){
   switch (flag) {
+    case '01':
+      return 'miss';
+    case '21':
+      return 'ex-miss';
     case '05':
       return 'block';
     case '5':

@@ -1,66 +1,10 @@
-let TBD = {Player_data:[],Skill_data:[],DoT_data:[],Barrier_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+let TBD = {};
 let TenSyonMax_Me = false;
-/*async function database_version_store(){
-  // バージョン1
-  await DB.version(1).stores({
-    Player_data: "&nameID, name, job, aliance, server, &hphistory, robhistory, kills, deaths, assist, water, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomeheal, incomeselfheal, incomeotherheal, incomepartyheal, incomeallyheal, totalincomedamage, personalincomedamage, robincomedamage, otherpersonincomedamage, objectincomedamage, mpheal",
-    Skill_data: "&actionwithnameID, networkskill_id, name, victimname, skillname ,damage_type, add_target, skillID, nameID, victimID, time_send, time_accept, [networkskill_id+victimID]",
-    DoT_data: "&ID, victimID, lastupdate, effectID",
-    Player_hp: "&nameID, currenthp, maxhp, lastupdate",
-    Hp_data: "++ , nameID , time_number, lastupdate"
-  });
+const Kind = ['damage_kind','heal_kind','accept_income_heal_kind','accept_income_damage_kind'];//重複を許可しない.要素は文字列だけ
 
-  // バージョン2 usersストアを追加
-
-  await DB.version(2).stores({
-    Player_data: "&nameID, name, job, aliance, server, &hphistory, robhistory, kills, deaths, assist, water, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomeheal, incomeselfheal, incomeotherheal, incomepartyheal, incomeallyheal, totalincomedamage, personalincomedamage, robincomedamage, otherpersonincomedamage, objectincomedamage, mpheal",
-    Skill_data: "&actionwithnameID, networkskill_id, name, victimname, skillname ,damage_type, add_target, skillID, nameID, victimID, time_send, time_accept, [networkskill_id+victimID], damage",
-    DoT_data: "&ID, victimID, lastupdate, effectID",
-    Player_hp: "&nameID, currenthp, maxhp, lastupdate",
-    Hp_data: "++ , nameID , time_number, lastupdate"
-  });
-  /*
-  // バージョン3 notesストアにgoodを追加
-  // 更新時にtagsにgoodがあったら、新しく追加したキー「good」にtrueを入れるようにします。
-  db.version(3).stores({
-    notes: "++id, title, body, *tags, good, updated_at",
-    users: "++id, name"
-  }).upgrade(function() {
-    return db.notes.modify(function(note) {
-      if (note.tags.indexOf('good')) {
-        note.good = true;
-      }
-    });
-  });
-  await DB_WORKSPACE.version(1).stores({
-    Player_data: "&nameID, name, job, aliance, server, *rob, robhistory, kills, deaths, assist, water, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomeheal, incomeselfheal, incomeotherheal, incomepartyheal, incomeallyheal, totalincomedamage, personalincomedamage, robincomedamage, otherpersonincomedamage, objectincomedamage, mpheal",
-    Skill_data: "&actionwithnameID, networkskill_id, name, victimname, skillname ,damage_type, add_target, skillID, nameID, victimID, time_send, time_accept, [networkskill_id+victimID]",
-    DoT_data: "&ID, victimID, lastupdate, effectID",
-    Hp_data: "++ , nameID , time_number, lastupdate"//bufflist pottencial% attackerhistory
-  });
-  await DB_BACKUP.version(1).stores({
-    Battle : '++'
-  });
-}*/
-async function main_db_save_reset(){
-  //await DB_BACKUP.Battle.add({Database : DB.Player_data.toArray()});
-  await main_db_save();
-  await main_db_clear();
-}
-async function main_db_clear(){
-  await DB.Player_data.clear();
-  await DB.Skill_data.clear();
-  await DB.DoT_data.clear();
-  await DB.Hp_data.clear();
-  await DB.Player_hp.clear();
-}
-async function main_db_save(){
-  await DB_BACKUP.Battle.add({
-    Player_data : await DB.Player_data.toArray(),
-    Hp_data : await DB.Hp_data.toArray(),
-    Skill_data : await DB.Skill_data.toArray(),
-    DoT_data : await DB.DoT_data.toArray()
-  });
+function reset_TBD(){
+  TBD = {Player_data:[],Skill_data:[],DoT_data:[],Barrier_data:[],Player_hp:[],Hp_data:[],Action_data:[],Action_Synced_data:[],Action_Sync_data:[]
+    ,Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
 }
 async function hp_data_db_add(data){
   let input_primary_key = null;
@@ -76,13 +20,6 @@ async function hp_data_db_add(data){
   //console.log('return value ->'+ input_primary_key);
   return input_primary_key;
 }
-//target : Player_data "nameID" (DPS...HPS...etc)
-//Player_data: "&nameID, name, job, aliance, server, *rob, robhistory, kills, deaths, assist, water, totaldamage, playerdamage, persondamage, torobotdamage, objectdamage, matondamage, towerdamage, overdamage, totalheal, myheal ,partyheal ,allyheal, otherheal, overheal, totalincomeheal, incomeselfheal, incomeotherheal, incomepartyheal, incomeallyheal, totalincomedamage, personalincomedamage, robincomedamage, otherpersonincomedamage, objectincomedamage, mpheal",
-//Skill_data: "&actionwithnameID, networkskill_id, name, victimname, skillname ,damage_type, add_target, skillID, nameID, victimID, time_send, time_accept, [networkskill_id+victimID]",
-//DoT_data: "&ID, victimID, lastupdate, effectID",
-//Hp_data
-//target : Realtime_data "nameID"(currenthp/maxhp...noweffect)
-//target : Skill_data "queueID + victimID + attackerID"(skillID...queueID)
 async function insert_maindata(target,keyname,key,...data){//データの新規追加ONLY
   let input = {[keyname]:key};
   for(let i = 0 ; i <data.length ; i ++){
@@ -90,7 +27,38 @@ async function insert_maindata(target,keyname,key,...data){//データの新規�
   }
   TBD[target].push(input);
 }
-async function update_maindata(target,keyname,key,...data){//データの更新含む
+async function insert_maindata_object(target,obj){//データの新規追加ONLY 連想配列をそのまま
+  TBD[target].push(obj);
+}
+async function update_maindata(target,keyname,key,...data){
+  await New_update_maindata(target,keyname,key,data);
+}
+async function update_maindata_change_array(target,keyname,key,name,data,replace){
+  let rtn = [];
+  for (let i = 0 ; i < name.length ; i++){
+    if(data[i] !== undefined){
+      if(typeof data[i] === 'number'){
+        if(isNaN(data[i])){
+          console.error('DataSpace include "NaN"');
+          console.error(name);
+          console.error(data);
+          console.error(replace);
+          console.error(Log);
+          return null;
+        }
+      }
+      rtn.push([name[i],data[i],replace[i]]);
+    }else {
+      console.error('DataSpace undefined Include');
+      console.error(name);
+      console.error(data);
+      console.error(replace);
+      return null;
+    }
+  }
+  await New_update_maindata(target,keyname,key,rtn);
+}
+async function New_update_maindata(target,keyname,key,data){//データの更新含む
   //let position = TBD[target].findIndex(({nameID}) => nameID === key);
   let position = await searched_maindata(target,keyname,key);
   if(position === -1){//存在しないとき
@@ -116,7 +84,7 @@ async function update_maindata(target,keyname,key,...data){//データの更新�
           //db_data[data[i][0]] = '' ;
           TBD[target][position][data[i][0]] = [];
         }
-        else if (typeof data[i][1] === 'object') {
+        else if (data[i][1] instanceof Object) {
           TBD[target][position][data[i][0]] = [];
         }
       }
@@ -127,11 +95,19 @@ async function update_maindata(target,keyname,key,...data){//データの更新�
         //db_data[data[i][0]] += data[i][1];
         TBD[target][position][data[i][0]].push(data[i][1]) ;
       }
-      else if (typeof data[i][1] === 'object') {
-        TBD[target][position][data[i][0]].push(data[i][1]) ;
+      else if (data[i][1] instanceof Object) {
+        if(data[i][1] instanceof Array){
+          if(Kind.indexOf(data[i][0] !== -1)){
+            TBD[target][position][data[i][0]] = TBD[target][position][data[i][0]].concat(data[i][1]);
+          }else {
+            TBD[target][position][data[i][0]].push(data[i][1]);
+          }
+        }else {
+          TBD[target][position][data[i][0]].push(data[i][1]);
+        }
       }
       else {
-        console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1]);
+        console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1] + 'i = ' + i);
         console.error(data);
       }
     }
@@ -159,7 +135,7 @@ async function update_maindata(target,keyname,key,...data){//データの更新�
                   //db_data[data[i][0]] = '' ;
                   data_robot[data[i][0]] = [];
                 }
-                else if (typeof data[i][1] === 'object') {
+                else if (data[i][1] instanceof Object) {
                   data_robot[data[i][0]] = [];
                 }
               }
@@ -170,8 +146,16 @@ async function update_maindata(target,keyname,key,...data){//データの更新�
                 //db_data[data[i][0]] += data[i][1];
                 data_robot[data[i][0]].push(data[i][1]) ;
               }
-              else if (typeof data[i][1] === 'object') {
-                data_robot[data[i][0]].push(data[i][1]) ;
+              else if (data[i][1] instanceof Object) {
+                if(data[i][1] instanceof Array){
+                  if(Kind.indexOf(data[i][0] !== -1)){
+                    TBD[target][position][data[i][0]] = TBD[target][position][data[i][0]].concat(data[i][1]);
+                  }else {
+                    TBD[target][position][data[i][0]].push(data[i][1]);
+                  }
+                }else {
+                  TBD[target][position][data[i][0]].push(data[i][1]);
+                }
               }
               else {
                 console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1]);
@@ -183,6 +167,23 @@ async function update_maindata(target,keyname,key,...data){//データの更新�
       }
     }
   }
+}
+async function actionSplice(target,potision){
+  return TBD[target].splice(potision,1);
+}
+async function action_Search(target,searchkey,searchdata,part){
+  for(let i = TBD[target].length - 1; i > 0 ;i--){
+    if(part){
+      if(TBD[target][i][searchkey].substring(0,searchdata.length) === searchdata){
+        return i ;
+      }
+    }else {
+      if(TBD[target][i][searchkey] === searchdata){
+        return i ;
+      }
+    }
+  }
+  return -1 ;
 }
 async function searched_maindata(target,keyname,key){
   for(let i = TBD[target].length - 1 ; i >= 0 ; i--){
@@ -216,61 +217,6 @@ async function aliance_dunamis_update(nameID,dunamis,time){
     }
   }
 }
-async function db_update(target,keyname,key,...data){
-  await DB.transaction("rw", DB[target], async ()=>{
-    let db_data = await DB[target].get({[keyname] : key});
-    if(typeof db_data === 'undefined'){
-      await DB[target].add({[keyname] : key});
-      db_data = await DB[target].get({[keyname] : key});
-    }
-    for(let i = 0 ; i < data.length ; i++){
-      if(data[i][2]){//replace
-        db_data[data[i][0]] = data[i][1];
-        await DB[target].put(db_data);
-      }
-      else{//add
-        //console.log(typeof db_data[data[i][0]]);
-        if(typeof db_data[data[i][0]] === 'undefined'){
-          if(typeof data[i][1] === 'number'){
-            db_data[data[i][0]] = 0 ;
-          }
-          else if (typeof data[i][1] === 'string') {
-            //db_data[data[i][0]] = '' ;
-            db_data[data[i][0]] = [];
-          }
-          else if (typeof data[i][1] === 'object') {
-            db_data[data[i][0]] = [];
-          }
-        }
-        if(typeof data[i][1] === 'number'){
-          db_data[data[i][0]] += data[i][1];
-        }
-        else if (typeof data[i][1] === 'string') {
-          //db_data[data[i][0]] += data[i][1];
-          db_data[data[i][0]].push(data[i][1]) ;
-        }
-        else if (typeof data[i][1] === 'object') {
-          db_data[data[i][0]].push(data[i][1]) ;
-        }
-        else {
-          console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1]);
-          console.error(data);
-        }
-        await DB[target].put(db_data);
-      }
-    }
-  })
-  .then(()=>{
-    // トランザクション正常終了後に処理をしたい場合はここに書く
-    //console.debug('transaction sucsess ! Target:' + target + 'key->' + keyname + ':' + key);
-    //console.debug(data);
-  })
-  .catch((error)=>{
-    console.error(error);
-    console.error('Target:' + target + 'key->' + keyname + ':' + key);
-    console.error(data);
-  });
-}
 async function read_maindata(target,keyname,key,...data){
   let return_data = {};
   let position = await searched_maindata(target,keyname,key);
@@ -282,25 +228,6 @@ async function read_maindata(target,keyname,key,...data){
       return_data[data[i]] = TBD[target][position][data[i]];
     }
   }
-  return return_data;
-}
-async function db_read(target,keyname,key,...data){
-  let return_data = {};
-  await DB.transaction('r',DB[target],async ()=>{
-    let db_data = await DB[target].get({[keyname] : key});
-    if(typeof db_data !== 'undefined'){
-      for(let i = 0 ; i < data.length ; i++){
-        return_data[data[i]] = db_data[data[i]];
-      }
-    }
-    else{
-      console.debug('Debug : Database not saved->' + target + ':' + keyname +  ':' + key);
-    }
-  })
-  .catch((error)=>{
-    console.error(error);
-    return_data = null;
-  });
   return return_data;
 }
 
@@ -328,6 +255,27 @@ async function update_maindata_change(target, keyname, key, dataname, data, repl
   }
   else if (dataname.length === 8) {
     await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]]);
+  }
+  else if (dataname.length === 9) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]],[dataname[8],data[8],replace[8]]);
+  }
+  else if (dataname.length === 10) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]],[dataname[8],data[8],replace[8]],[dataname[9],data[9],replace[9]]);
+  }
+  else if (dataname.length === 11) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]],[dataname[8],data[8],replace[8]],[dataname[9],data[9],replace[9]],[dataname[10],data[10],replace[10]]);
+  }
+  else if (dataname.length === 12) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]],[dataname[8],data[8],replace[8]],[dataname[9],data[9],replace[9]],[dataname[10],data[10],replace[10]],[dataname[11],data[11],replace[11]]);
+  }
+  else if (dataname.length === 13) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]],[dataname[8],data[8],replace[8]],[dataname[9],data[9],replace[9]],[dataname[10],data[10],replace[10]],[dataname[11],data[11],replace[11]],[dataname[12],data[12],replace[12]]);
+  }
+  else if (dataname.length === 14) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]],[dataname[8],data[8],replace[8]],[dataname[9],data[9],replace[9]],[dataname[10],data[10],replace[10]],[dataname[11],data[11],replace[11]],[dataname[12],data[12],replace[12]],[dataname[13],data[13],replace[13]]);
+  }
+  else if (dataname.length === 15) {
+    await update_maindata(target,keyname,key,[dataname[0],data[0],replace[0]],[dataname[1],data[1],replace[1]],[dataname[2],data[2],replace[2]],[dataname[3],data[3],replace[3]],[dataname[4],data[4],replace[4]],[dataname[5],data[5],replace[5]],[dataname[6],data[6],replace[6]],[dataname[7],data[7],replace[7]],[dataname[8],data[8],replace[8]],[dataname[9],data[9],replace[9]],[dataname[10],data[10],replace[10]],[dataname[11],data[11],replace[11]],[dataname[12],data[12],replace[12]],[dataname[13],data[13],replace[13]],[dataname[14],data[14],replace[14]]);
   }
   else {
     console.warn('Error : database update format change failed... ->');

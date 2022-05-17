@@ -3,7 +3,7 @@ const Field_ID = 'E0000000';
 const Battle_Start_Envioroment_ID = '40000001';
 const Battle_End_Envioroment_ID = '40000002';
 const Oppresor_HP = 100000;
-const Justice_HP = 75000;
+const Justice_HP = 75000;//jas
 const Chaiser_HP = 50000;
 const Robot_Bunsin = 100;
 const Robot_name = ['che','opp','jas'];
@@ -16,6 +16,8 @@ const Test_BattleTime = 300;
 //skilltype exclude action
 /////////////////////////////////////////////
 const DoubleRocketPuntch = '26FB';//ダブルロケットパンチ (SkillID)
+const Kaiki = '740F' //快気(SkillID)
+const GunyouPosion = '717F' //軍用ポーション(SkillID)
 const TensyonMax = '06C2';　//テンションマックス (buffID)
 /////////////////////
 //////// Setting

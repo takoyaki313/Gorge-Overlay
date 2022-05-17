@@ -21,6 +21,7 @@ function calc(){
         console.debug('CLOCK_Sucsessed->' + time + 'ms');
       }
       await log_battle_time();
+      await duplicate_delete();
     });
     PROMISE_ARRAY.push(promise);
     Promise.all(PROMISE_ARRAY).then(() => LOG_PROCESS = false)
@@ -53,6 +54,17 @@ async function log_battle_time(){
       }
       else {
         //no action
+      }
+    }
+  }
+}
+async function duplicate_delete(){
+  if(AREA.Area_Type > 0){
+    for(let i = 0 ; i < TBD.Player_data.length ; i++){
+      for(let p = 0 ; p < Kind.length ; p++){
+        if(typeof TBD.Player_data[i][Kind[p]] === "object"){
+          TBD.Player_data[i][Kind[p]] = Array.from(new Set(TBD.Player_data[i][Kind[p]]));
+        }
       }
     }
   }

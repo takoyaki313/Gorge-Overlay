@@ -7,6 +7,7 @@ $(function (){
   'use strict';
   //database_version_store(DB);
   logline_battle_flag_reset();
+  reset_TBD();
   //DB.Player_hp.clear();
    $( document ).tooltip({
     content: function() {
@@ -76,7 +77,7 @@ $(document).on("click", "#mypage-icon-open", function(t){
       if(Dev_mode){
         ALLDISPLAY = true;
       }
-      gorge_start();
+      fl_start();
       ALLDISPLAY = false;
     }else {
       sample_gorge_overlay(RW_MAXROW);

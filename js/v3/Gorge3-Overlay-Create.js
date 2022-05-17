@@ -806,9 +806,9 @@ function fl_create(template,battle_data,hide,selected){
   if(battle_data.dunamis !== undefined && battle_data.dunamis !== null){
     row.find('.f-dunamis').addClass('dunamis-space');
   }
-  row.find('.f-incomedamage').text(damage_to_dps(battle_data.totalincomedamage,time).toFixed(0));
+  row.find('.f-incomedamage').text(damage_to_dps(battle_data.accept_income_totaldamage,time).toFixed(0));
   row.find(".f-incomedamage").prop('title',tooltip_title_create([Lang_select.personincomedamage +' -> ',battle_data.personincomedamage],[Lang_select.robincomedamage + ' -> ',battle_data.robincomedamage],[Lang_select.objectincomedamage + ' -> ',battle_data.objectincomedamage]));
-  row.find('.f-incomeheal').text(damage_to_dps(battle_data.totalincomeheal ,time).toFixed(0));
+  row.find('.f-incomeheal').text(damage_to_dps(battle_data.accept_income_totalheal ,time).toFixed(0));
   row.find(".f-incomeheal").prop('title',tooltip_title_create([Lang_select.incomeselfheal +' -> ',battle_data.incomeselfheal],[Lang_select.incomepartyheal + ' -> ',battle_data.incomepartyheal],[Lang_select.incomeallyheal + ' -> ',battle_data.incomeallyheal],[Lang_select.incomeotherheal + ' -> ',battle_data.incomeotherheal]));
   /*if(AREA.Area_Type === 3){
     row.find(".f-incomedamage-gage").html(bar_create([battle_data.personincomedamage,'incomedamage-player'],[battle_data.robincomedamage,'incomedamage-robot'],[battle_data.objectincomedamage,'incomedamage-object'],[battle_data.otherpersonincomedamage,'incomedamage-other']));

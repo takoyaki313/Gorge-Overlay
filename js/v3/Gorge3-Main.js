@@ -25,7 +25,7 @@ function encounter_already_start_check(){
   }
 }
 function overlay_update_start(e){
-  if(e.isActive === 'true'){
+  if(e.isActive === 'true' && Object.keys(e.Combatant).length > 0 ){
     encounter_already_start_check();
     if(e.Encounter.CurrentZoneName.toLowerCase() === 'hidden gorge'){
       gorge_start(e);
@@ -45,7 +45,7 @@ function overlay_update_start(e){
     }
     else if (e.Encounter.CurrentZoneName.toLowerCase() === 'the palaistra'||
     e.Encounter.CurrentZoneName.toLowerCase() === 'the volcanic heart'||
-  e.Encounter.CurrentZoneName.toLowerCase() === 'cloud nine') {
+    e.Encounter.CurrentZoneName.toLowerCase() === 'cloud nine') {
       cc_start();
     }
     else {
@@ -191,7 +191,7 @@ async function area_type_set(zoneID){
       AREA.Area_Type = 5;
       LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
       break;
-  /*
+    /*
     case 250://Wolves Den Pier
       AREA.Area_Type = 4;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;
@@ -230,9 +230,9 @@ function battle_time_set(){
     TBD.Player_data[i].battle_time = 600;
   }
 }
-async function sample_seiatu_data_calc(){
-  let data = await seiatu_sample();
-  AREA.Area_Type = 3;
+async function sample_crystal_data_calc(){
+  let data = await crystal_sample();
+  AREA.Area_Type = 5;
   for(let i = 0 ; i < data.length ; i ++){
     //logline_firststep(data[i]);
     log_queue_insert(data[i]);

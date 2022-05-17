@@ -239,6 +239,7 @@ const Barrier_ID = [
     name:'ホーリーシェルトロン',
     potencial: 12000,
     max : 5,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -247,9 +248,10 @@ const Barrier_ID = [
     action_potencial: 0,
     dotid:'0BD7',
     name:'原初の血煙',
-    potencial: 0,
+    potencial: 63000 * 0.1,
     max : 10,
-    damagesync : 0,//maxhp 10%
+    synctype:'maxhp',
+    damagesync : 0.1,//maxhp 10%
     damage : false,
     type:'barrier'
   },{//drk
@@ -259,6 +261,7 @@ const Barrier_ID = [
     name:'ブラックナイト',
     potencial: 8000,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -269,6 +272,7 @@ const Barrier_ID = [
     name:'アクアヴェール',
     potencial: 6000,//成功時は12000
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -279,6 +283,7 @@ const Barrier_ID = [
     name:'鼓舞',
     potencial: 4000,
     max : 15,
+    synctype:'heal',
     damagesync : 1,
     damage : false,
     type:'barrier'
@@ -289,6 +294,7 @@ const Barrier_ID = [
     name:'セラフィックヴェール',
     potencial: 4000,
     max : 10,
+    synctype:'heal',
     damagesync : 1,
     damage : false,
     type:'barrier'
@@ -299,6 +305,7 @@ const Barrier_ID = [
     name:'コンソレイション',
     potencial: 4000,
     max : 10,
+    synctype:'heal',
     damagesync : 1,
     damage : false,
     type:'barrier'
@@ -309,7 +316,8 @@ const Barrier_ID = [
     name:'ジャギュラーリップ',
     potencial: 4000,
     max : 7,
-    damagesync : 4,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },{
@@ -319,7 +327,8 @@ const Barrier_ID = [
     name:'アブドメンテアー',
     potencial: 5000,
     max : 7,
-    damagesync : 2.5,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },{
@@ -329,7 +338,8 @@ const Barrier_ID = [
     name:'アイガウジ',
     potencial: 6000,
     max : 7,
-    damagesync : 2,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },{//ast
@@ -339,6 +349,7 @@ const Barrier_ID = [
     name:'アスペクトベネフィク[夜]',
     potencial: 1200,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -359,6 +370,7 @@ const Barrier_ID = [
     name:'エウクラシア・ディアグノシス',
     potencial: 8000,
     max : 15,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -367,9 +379,10 @@ const Barrier_ID = [
     action_potencial: 20000,
     dotid:'0C6D',
     name:'スカイシャッター',
-    potencial: 0,//Hp 25%
+    potencial: 58500 * 0.25,//Hp 25%
     max : 10,
-    damagesync : 0,
+    synctype:'maxhp',
+    damagesync : 0.25,
     damage : true,
     type:'barrier'
   },{//rpr
@@ -379,6 +392,7 @@ const Barrier_ID = [
     name:'守護のクレスト',
     potencial: 12000,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -389,7 +403,8 @@ const Barrier_ID = [
     name:'奥義波切',
     potencial: 8000,
     max : 10,
-    damagesync : 1,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },{
@@ -399,7 +414,8 @@ const Barrier_ID = [
     name:'返し波切',
     potencial: 8000,
     max : 10,
-    damagesync : 1,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },/*{//dnc
@@ -419,6 +435,7 @@ const Barrier_ID = [
     name:'守りの光',
     potencial: 8000,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -429,7 +446,8 @@ const Barrier_ID = [
     name:'エンリポスト',
     potencial: 6000,
     max : 10,
-    damagesync : 1,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },{
@@ -439,7 +457,8 @@ const Barrier_ID = [
     name:'エンツヴェルクハウ',
     potencial: 6000,
     max : 10,
-    damagesync : 0.857,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },{
@@ -449,7 +468,8 @@ const Barrier_ID = [
     name:'エンルドゥブルマン',
     potencial: 6000,
     max : 10,
-    damagesync : 0.75,
+    synctype:'calc',
+    damagesync : 0,
     damage : true,
     type:'barrier'
   },{//mch
@@ -459,6 +479,7 @@ const Barrier_ID = [
     name:'エーテルモーター',
     potencial: 4000,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -469,6 +490,7 @@ const Barrier_ID = [
     name:'分身の術',
     potencial: 8000,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -479,6 +501,7 @@ const Barrier_ID = [
     name:'風遁の術',
     potencial: 16000,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'
@@ -489,6 +512,7 @@ const Barrier_ID = [
     name:'抜重歩法',
     potencial: 6000,
     max : 10,
+    synctype:'calc',
     damagesync : 0,
     damage : false,
     type:'barrier'

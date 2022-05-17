@@ -3,13 +3,14 @@ var Assist_Debuff_Reset = false;
 var HP_Update_duplite_data = true;
 var HP_Update_duplite_robride_process = false;
 var KILLSOUND = true;
+let Send_Action = false;
 let Logline_Add_Tool_Temp = [];
 let Logline_add_mode = false;
+const EnableTimeRange = 100000;
 async function logline_firststep(log){
-  /*
   if(Logline_add_mode){
     Logline_Add_Tool_Temp.push(log);
-  }*/
+  }
   if(log[0] === '40'){
     await minimap_change_area_check(log);
   }
@@ -32,14 +33,14 @@ async function logline_firststep(log){
         break;
       case '21':
       if(LOGLINE_ENCOUNTER.Engage){
-        await networkactionsync_21_22(log);
-        //await networkactionsync_21_22_2(log);
+        //await networkactionsync_21_22(log);
+        await networkactionsync_21_22_2(log);
       }
         break;
       case '22':
       if(LOGLINE_ENCOUNTER.Engage){
-        await networkactionsync_21_22(log);
-        //await networkactionsync_21_22_2(log);
+        //await networkactionsync_21_22(log);
+        await networkactionsync_21_22_2(log);
       }
         break;
       case '24':
@@ -64,7 +65,8 @@ async function logline_firststep(log){
       logline_battle_start_check(log);
         break;
       case '37':
-      await networkAbility_receve(log);
+      //await networkAbility_receve(log);
+      await networkAbility_receve2(log);
         break;
       case '38':
       if(LOGLINE_ENCOUNTER.Engage){
@@ -75,7 +77,7 @@ async function logline_firststep(log){
       case '39':
       await networkupdatehp_39(log);
         break;
-      case '00':
+      case '41':
       //console.log(log);
       break;
 
@@ -123,8 +125,9 @@ async function addcombatant(log){
   let battle = true;
   let lastupdate = log[1];
   let time_ms = await timestamp_change(lastupdate);
-  if(owner_id !== '0000'){
+  if(owner_id.length === 8){
     await owner_id_list_add(owner_id,nameID,name);
+    return null;
   }
   else {
     owner_id = null;
@@ -196,18 +199,19 @@ async function damage_revise(nameID,job,lastupdate){
 //////////////////////////////////////////////
 async function removecombatant(log){
   let nameID = log[2].toUpperCase();
-  let name = null_check(log[3]);
-  let job = jobID_to_string(log[4]);
-  let server = null_check(log[8]);
-  //let owner_id = null_check(log[6].toUpperCase());
-  let currenthp = Number(log[9]);
-  let maxhp = Number(log[10]);
+  //let name = null_check(log[3]);
+  //let job = jobID_to_string(log[4]);
+  //let server = null_check(log[8]);
+  let owner_id = log[6].toUpperCase();
+  //let currenthp = Number(log[9]);
+  //let maxhp = Number(log[10]);
   let battle = false;
   let lastupdate = log[1];
   let time_ms = await timestamp_change(lastupdate);
-  //if(owner_id !== '0'){
-  //  owner_id_list_add(owner_id,nameID,name);
-  //}
+  if(owner_id !== '0000'){
+    return null;
+    //owner_id_list_add(owner_id,nameID,name);
+  }
   if(nameID !== Field_ID){
     await update_maindata('Player_data','nameID',nameID,['battle',battle,true],['add_combatant_time',{battle:false,time:time_ms,stamp:lastupdate},false],['lastupdate',lastupdate,true]);
   }
@@ -295,6 +299,62 @@ async function npc_check_nameID(nameID){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////     37
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+async function networkAbility_receve2(log){
+  let data = {
+    nameID : log[2],
+    packetID : log[4],
+    currenthp : Number(log[5]),
+    maxhp : Number(log[6]),
+    x_position : log[11],
+    y_position : log[12],
+    z_position : log[13],
+    rotate : log[14],
+    lastupdate : log[1],
+    time_number : await timestamp_change(log[1])
+  };
+  let uniqueID = data.packetID + data.nameID;
+  if(uniqueID.length !== 16){
+    console.error('37:networkAbility_receve Search_ID Length Error');
+    console.error(data);
+    return null;
+  }
+  let db_position = await action_Search('Action_Sync_data','uniqueID',uniqueID,true);
+  let db_data = null;
+  let attackerID = '37_Unknown';
+  if(db_position === -1){
+    //console.warn(log);
+    await hpdata_add(data.nameID,data,attackerID);
+    return null;
+  }else{
+    db_data = await actionSplice('Action_Sync_data',db_position);
+    db_data = db_data[0];
+    db_data.time_accept = data.lastupdate;
+    insert_maindata_object('Action_Synced_data',db_data);
+  }
+  attackerID = db_data.attackerID;
+  await hpdata_add(data.nameID,data,attackerID);
+  //--income damage / heal
+  if(db_data.inputname === null){
+    return null;
+  }
+  let income = await add_accept_target(db_data.inputname,db_data.inputdata,'income');
+  update_maindata_change_array('Player_data','nameID',db_data.victimID,income.target,income.data,income.replace);
+  if(Send_Action){
+    let send = await add_accept_target(db_data.inputname,db_data.inputdata,'send');
+    update_maindata_change_array('Player_data','nameID',db_data.attackerID,send.target,send.data,send.replace);
+  }
+}
+async function add_accept_target(name,data,income){
+  let rtn = {target:[],data:[],replace:[]};
+  let input_str = 'accept_' + income + '_';
+  for(let i = 0 ; i <  name.length ; i++){
+    rtn.target.push(input_str + name[i]);
+    rtn.data.push(data[i]);
+    rtn.replace.push(false);
+  }
+  return rtn;
+}
+//version3.1
 async function networkAbility_receve(log){
   //logline 37
   let nameID = log[2];
@@ -313,7 +373,6 @@ async function networkAbility_receve(log){
     lastupdate : log[1],
     time_number : await timestamp_change(lastupdate)
   };
-
   //await player_buff_list_update(log.slice(17,log.length -1),player_data.nameid,player_data.lastupdate);
   let name_ability_ID = abilityID + nameID;
   let db_data = await read_maindata('Skill_data','actionwithnameID',name_ability_ID,'nameID','victimID','additional_damage','damage_type','maxHP','damage','add_target');
@@ -354,7 +413,7 @@ async function networkAbility_receve(log){
     }
   }
   else {
-    await hpdata_add(nameID,player_data,'unknown ');
+    await hpdata_add(nameID,player_data,'unknown');
     //console.debug(log);
     //スキルデータが存在しない
   }
@@ -442,6 +501,7 @@ async function incomedamage_add_target(attackerID,attackermaxhp){
     else if (Number(attackermaxhp) === 0) {
       return ['totalincomedamage','otherpersonincomedamage'];
     }*/
+    //version3.1
     else {
       return ['totalincomedamage','personincomedamage'];
     }
@@ -453,6 +513,7 @@ async function incomedamage_add_target(attackerID,attackermaxhp){
     return ['totalincomedamage'];
   }
 }
+//version3.1
 ///////////////////////////////////////////////////////////////
 //////    38
 ///////////////////////////////////////////////////////////////
@@ -656,8 +717,8 @@ async function hpdata_add(nameID,player_data,attackerID){
                 console.warn('Warn : Kill Player Unknown->' + attackerID +'->' + player_data.nameID);
               }
             }
+            await update_maindata('Player_data','nameID',player_data.nameID,['s_death',1,false],['s-death-name',{attackerID:attackerID,name:attacker_name.name,job:attacker_job,lastupdate:player_data.lastupdate,time_ms:player_data.time_number,time:Math.round((player_data.time_number - LOGLINE_ENCOUNTER.Battle_Start_Time) / 1000)},false],['lastupdate',player_data.lastupdate,true]);
           }
-          await update_maindata('Player_data','nameID',player_data.nameID,['s_death',1,false],['s-death-name',{attackerID:attackerID,name:attacker_name.name,job:attacker_job,lastupdate:player_data.lastupdate,time_ms:player_data.time_number,time:Math.round((player_data.time_number - LOGLINE_ENCOUNTER.Battle_Start_Time) / 1000)},false],['lastupdate',player_data.lastupdate,true]);
         }
       }
       if(AREA.Area_Type === 2){//Hidden Gorge
@@ -900,18 +961,12 @@ async function pet_replace(nameID,name){
   if(nameID.substring(0,2) === '40'){//もしペットIDならIDと名前を本人に入れ替える。
     let searched = await owner_id_list_search(nameID);
     if(searched !== null){
-      nameID = searched;
-      let db = await read_maindata('Player_data','nameID',nameID,name);
+      rtn.nameID = searched;
+      let db = await read_maindata('Player_data','nameID',searched,'name');
       if(db !== null){
-        name = db.name;
+        rtn.name = db.name;
       }
     }
-    /*
-    else if (name.indexOf('チェイサー') !== -1 ||name.indexOf('オプレッサー') !== -1 ||name.indexOf('分身') !== -1 ) {
-      if(DEBUG_LOG){
-              console.warn('Warn : ペットの情報がマージされませんでした。' + data.attacker + ':' + data.attackerID + ':' + data.action);
-      }
-    }*/
   }
   return rtn;
 }
@@ -953,7 +1008,7 @@ function battle_data_reset(){
   $(document).find('.ui-helper-hidden-accessible').html('');
   logline_battle_flag_reset();
   Barrier_Unique_ID = 0;
-  TBD = {Player_data:[],Skill_data:[],DoT_data:[],Barrier_data:[],Player_hp:[],Hp_data:[],Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+  reset_TBD();
   TenSyonMax_Me = false;
   owner_id_list_reset();
 }
