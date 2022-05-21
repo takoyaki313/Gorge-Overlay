@@ -472,6 +472,17 @@ const Barrier_ID = [
     damagesync : 0,
     damage : true,
     type:'barrier'
+  },{//blm
+    actionid:'73D9',
+    action_potencial: 12000,
+    dotid:'0C95',
+    name:'バースト',
+    potencial: 12000,
+    max : 10,
+    synctype:'calc',
+    damagesync : 0,
+    damage : true,
+    type:'barrier'
   },{//mch
     actionid:'72E5',
     action_potencial: 0,
