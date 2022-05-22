@@ -3,6 +3,7 @@ var Font_Size = 16;
 var KILLSOUND_PLAY = new Audio('');
 var KILLSOUND_VOLUME = 20;
 var LB_Font_Size = 18;
+var Target_Marker_FontSize = 16;
 var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/zyaki.wav';
 const Localstorage_dictionary = {
   language:{
@@ -498,13 +499,25 @@ const Localstorage_dictionary = {
   cc_death_too_much:{
     func_name:'CC_Death_Too_Much',
     value:5,
-    disp_tab:'CC-setting',
+    disp_tab:'none',
     min_value:1,
     max_value:99,
     title_ja:'Downしすぎた人を協調表示する。（CC）',
     title_en:'Maximum number of rows displayed (CC)',
     description_ja:'一定回数以上死んだ人を協調表示する。',
     description_en:'Coordinated display of people who have died more than a certain number of times.',
+    inputtype:'value',
+  },
+  cc_death_per_sec:{
+    func_name:'CC_Death_Per_Sec',
+    value:60,
+    disp_tab:'CC-setting',
+    min_value:1,
+    max_value:9999,
+    title_ja:'Downペースの協調表示。（CC）',
+    title_en:'Down pace highlighting (CC)',
+    description_ja:'設定秒数以下のペースでDownしているプレイヤーを強調表示する。',
+    description_en:'Highlight players who are down at a pace less than or equal to the set number of seconds.',
     inputtype:'value',
   },
   lb_int_fontsize:{
@@ -519,9 +532,21 @@ const Localstorage_dictionary = {
     description_en:'Change the font size of another overlay "IntLB". Need to reload',
     inputtype:'value',
   },
+  target_marker_fontsize:{
+    func_name:'Target_Marker_FontSize',
+    value:16,
+    disp_tab:'Other',
+    min_value:1,
+    max_value:99,
+    title_ja:'TargetLogのフォントサイズ',
+    title_en:'TargetLog font size',
+    description_ja:'別オーバレイ「TargetLog」のフォントサイズを変更する。リロード必要',
+    description_en:'Change the font size of another overlay "TargetLog". Need to reload',
+    inputtype:'value',
+  },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay3.1 Rev.1',
+    value:'Gorge-overlay3.1 Rev.2',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',

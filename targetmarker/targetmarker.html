@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TargetMarkerLog</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    body {
+      font-family: 'Lato', sans-serif;
+      color: #ded7be;
+      background-color: rgba(37,37,37,0.3);
+    }
+    .triangle-right {
+      position: relative;
+      width: 1rem;
+      height: 1rem;
+      background-color: #ded7be;
+      margin: 0 0.8rem;
+      clip-path: polygon(0 33%, 50% 33%, 50% 15%, 100% 50%, 50% 85%, 50% 67%, 0 67%);
+    }
+    .row {
+      display: grid;
+      grid-template-columns:2rem 1rem 1fr auto;
+      margin: 0.1rem 0;
+    }
+    .row *{
+      display: flex;
+      max-height: 2rem;
+      align-items: center;
+    }
+    .detail-space {
+      display: flex;
+    }
+    .detail-space *{
+      display: flex;
+    }
+    .row .icon-id {
+      justify-content: center;
+    }
+    .row .icon-id *{
+      width: 1.5rem;
+    }
+    .row .time ,.row .add-delete{
+    justify-content: center
+    }
+    .detail-space {
+      margin: 0 0.4rem;
+      width: -webkit-fill-available;
+    }
+    #main {
+      transition: .5s ;
+      border: 0.1rem;
+    }
+    .Player-To , .Player-From {
+      white-space: nowrap;
+      overflow: hidden;
+      /*width: calc(50% - 1rem)*/
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script>
+  ////////////////////
+  //setting
+  ////////////////////
+  var Overlay_On = true;
+  let LastLB = 0
+  let MaxLB = 0;
+  ////////////////////
+  $(function (){
+    'use strict';
+    addOverlayListener('ChangeZone', (zone) => targetmarker_overlay_area_check(zone));
+    addOverlayListener('LogLine', (logline) => log_start(logline.line));
+    targetmarker_overlay_localstrage_get();
+    startOverlayEvents();
+  });
+
+  function log_start(log){
+    if(Overlay_On){
+      if(log[0] === '28'){
+        marker_disp2829(log,'field');
+      }else if (log[0] === '29') {
+        marker_disp2829(log,'marker');
+      }
+    }
+  }
+  function marker_disp2829(log,type){
+    if(log[2] === 'Delete' &&log[4] === '0000'){
+      //置き換えの削除
+      return null;
+    }
+    let target = Number(log[3]);
+    let detail = null;
+    if(type === 'field'){
+      detail = FieldMarkerID[target];
+    }else if (type === 'marker') {
+      detail = MarkerTargetID[target];
+    }
+    let add = '';
+    if(log[2] === 'Add'){
+      add = '+';
+    }else if (log[2] === 'Delete') {
+      add = '-';
+    }
+
+
+    let data = {
+      type:type,
+      name:detail.name,
+      url:detail.icon,
+      From:log[5],
+      To:log[7],
+      add:add,
+      time:Date.parse(log[1]),
+      date:null,
+    }
+    data.date = new Date(data.time);
+    data_disp(data);
+  }
+  let MarkerTargetID = [
+    {
+      name:'攻撃1',
+      icon:'https://xivapi.com/i/060000/060701.png'
+    },
+    {
+      name:'攻撃2',
+      icon:'https://xivapi.com/i/060000/060702.png'
+    },
+    {
+      name:'攻撃3',
+      icon:'https://xivapi.com/i/060000/060703.png'
+    },
+    {
+      name:'攻撃4',
+      icon:'https://xivapi.com/i/060000/060704.png'
+    },
+    {
+      name:'攻撃5',
+      icon:'https://xivapi.com/i/060000/060705.png'
+    },
+    {
+      name:'鎖1',
+      icon:'https://xivapi.com/i/060000/060706.png'
+    },
+    {
+      name:'鎖2',
+      icon:'https://xivapi.com/i/060000/060707.png'
+    },
+    {
+      name:'鎖3',
+      icon:'https://xivapi.com/i/060000/060708.png'
+    },
+    {
+      name:'禁止1',
+      icon:'https://xivapi.com/i/060000/060709.png'
+    },
+    {
+      name:'禁止2',
+      icon:'https://xivapi.com/i/060000/060710.png'
+    },
+    {
+      name:'四角',
+      icon:'https://xivapi.com/i/060000/060711.png'
+    },
+    {
+      name:'丸',
+      icon:'https://xivapi.com/i/060000/060712.png'
+    },
+    {
+      name:'十字',
+      icon:'https://xivapi.com/i/060000/060713.png'
+    },
+    {
+      name:'三角',
+      icon:'https://xivapi.com/i/060000/060714.png'
+    }
+  ];
+  let FieldMarkerID = [
+    {
+      name:'A',
+      icon:'https://xivapi.com/i/060000/060474_hr1.png'
+    },
+    {
+      name:'B',
+      icon:'https://xivapi.com/i/060000/060475_hr1.png'
+    },
+    {
+      name:'C',
+      icon:'https://xivapi.com/i/060000/060476_hr1.png'
+    },
+    {
+      name:'D',
+      icon:'https://xivapi.com/i/060000/060936_hr1.png'
+    },
+    {
+      name:'1',
+      icon:'https://xivapi.com/i/060000/060931_hr1.png'
+    },
+    {
+      name:'2',
+      icon:'https://xivapi.com/i/060000/060932_hr1.png'
+    },
+    {
+      name:'3',
+      icon:'https://xivapi.com/i/060000/060933_hr1.png'
+    },
+    {
+      name:'4',
+      icon:'https://xivapi.com/i/063000/063904_hr1.png'
+    },
+  ]
+  function targetmarker_overlay_localstrage_get(){
+    let data = JSON.parse(localStorage.getItem('Gorge-Overlay3'));
+    if(data === null){
+      targetmarker_overlay_fontsize(18);
+    }
+    else {
+      targetmarker_overlay_fontsize(data.target_marker_fontsize);
+    }
+  }
+
+  function targetmarker_overlay_disp(targetname){
+    $('html').css('display','block');
+  }
+  function targetmarker_overlay_hide(){
+    $('html').css('display','none');
+    $('#main').html('');
+  }
+  function targetmarker_overlay_fontsize(size){
+    $('html').css('font-size',size + "px");
+  }
+  ////////////////
+  function targetmarker_overlay_area_check(area){
+    MaxLB = 0;
+    LastLB = 0;
+    if (area.zoneName === 'Hidden Gorge'
+    ||area.zoneID == 376
+    ||area.zoneName.indexOf('Seal Rock')!== -1
+    ||area.zoneID == 554
+    ||area.zoneName.indexOf('Onsal Hakair')!== -1
+    ||area.zoneName.indexOf('Wolves')!== -1
+    ||area.zoneName.indexOf('Astragalos')!== -1
+    ||area.zoneName.indexOf('Lichenweed')!== -1
+    ||area.zoneName.indexOf('Crystal Tower Training Grounds')!== -1
+    ||area.zoneID == 1032
+    ||area.zoneID == 1033
+    ||area.zoneID == 1034) {
+      Overlay_On = true;
+      targetmarker_overlay_disp(0);
+    }
+    else {
+      Overlay_On = false;
+      targetmarker_overlay_hide();
+    }
+  }
+  function data_disp(data){
+    let template = $('#template .row');
+    //let container = $('#row').clone();
+    let row = template.clone();
+    let disptime = data.date.toLocaleTimeString();
+    if(disptime.substring(disptime.length - 2 , disptime.length ) === 'AM'||disptime.substring(disptime.length - 2 , disptime.length) === 'PM'){
+      disptime = disptime.substring(0, disptime.length - 3);
+    }
+    row.find('.time').text(disptime);
+    row.find('.icon-id').html('<img src="' + data.url + '"></img>');
+    row.find('.add-delete').text(data.add);
+    row.find('.Player-From').text(data.From);
+    if(data.type === 'field'){
+      row.find('.triangle-right').css('display','none');
+      row.find('.Player-To').css('display','none');
+    }else {
+      row.find('.Player-To').text(data.To);
+    }
+    $('#main').append(row);
+    var element = document.getElementById("main");
+    element.scrollIntoView(false,{behavir:'smooth'})
+  }
+  </script>
+</head>
+<body>
+  <div id="template" style="display:none">
+    <div class="row">
+      <div class="icon-id"></div>
+      <div class="add-delete">-</div>
+      <div class="detail-space">
+        <div class="Player-From">-</div>
+        <div class="triangle-right"></div>
+        <div class="Player-To">-</div>
+      </div>
+      <div class="time">-</div>
+    </div>
+  </div>
+  <div id="main">
+  </div>
+</body>
