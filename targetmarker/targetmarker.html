@@ -53,6 +53,8 @@
     #main {
       transition: .5s ;
       border: 0.1rem;
+      display: flex;
+      flex-direction: column;
     }
     .Player-To , .Player-From {
       white-space: nowrap;
@@ -87,6 +89,7 @@
       }
     }
   }
+  let reverse = false;
   function marker_disp2829(log,type){
     if(log[2] === 'Delete' &&log[4] === '0000'){
       //置き換えの削除
@@ -219,6 +222,7 @@
     }
     else {
       targetmarker_overlay_fontsize(data.target_marker_fontsize);
+      targetmarker_overlay_reverse(data.target_marker_repeat)
     }
   }
 
@@ -231,6 +235,14 @@
   }
   function targetmarker_overlay_fontsize(size){
     $('html').css('font-size',size + "px");
+  }
+  function targetmarker_overlay_reverse(bool){
+    if(bool){
+      $('#main').css('flex-direction','column-reverse');
+      reverse = true;
+    }else {
+      $('#main').css('flex-direction','column');
+    }
   }
   ////////////////
   function targetmarker_overlay_area_check(area){
@@ -276,7 +288,11 @@
     }
     $('#main').append(row);
     var element = document.getElementById("main");
-    element.scrollIntoView(false,{behavir:'smooth'})
+    if(reverse){
+      element.scrollIntoView(true,{behavir:'smooth'});
+    }else {
+      element.scrollIntoView(false,{behavir:'smooth'});
+    }
   }
   </script>
 </head>

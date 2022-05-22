@@ -4,6 +4,7 @@ var KILLSOUND_PLAY = new Audio('');
 var KILLSOUND_VOLUME = 20;
 var LB_Font_Size = 18;
 var Target_Marker_FontSize = 16;
+var Target_Marker_Repeat = false;
 var KILLSOUND_PATH = 'https://takoyaki313.github.io/Gorge-Overlay/sound/zyaki.wav';
 const Localstorage_dictionary = {
   language:{
@@ -544,9 +545,19 @@ const Localstorage_dictionary = {
     description_en:'Change the font size of another overlay "TargetLog". Need to reload',
     inputtype:'value',
   },
+  target_marker_repeat:{
+    func_name:'Target_Marker_Repeat',
+    value:false,
+    disp_tab:'Other',
+    title_ja:'TargetLogの新規ログの追加方向を反転する。',
+    title_en:"TargetLog Reverse",
+    description_ja:'オン＝上に追加 / オフ＝下に追加',
+    description_en:"On = add above / off = add below",
+    inputtype:'toggle',
+  },
   VERSION:{
     func_name:null,
-    value:'Gorge-overlay3.1 Rev.2',
+    value:'Gorge-overlay3.1 Rev.2.1',
     title_ja:'Version : ',
     title_en:'Version : ',
     description_ja:'',
