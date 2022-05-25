@@ -77,7 +77,7 @@ var DoT_ID = [
     dotid:'07E3',
     name:'バイオブラスト',
     potencial: 4000,
-    max : 9,
+    max : 12,
     type:'DoT'
   },{
     actionid:'73DD',
@@ -92,7 +92,7 @@ var DoT_ID = [
     action_potencial: 0,
     dotid:'0C9B',
     name:'スリップストリーム[害]',
-    potencial: 3000,
+    potencial: 4000,
     max : 5,
     type:'DoT'
   },{
@@ -433,7 +433,7 @@ const Barrier_ID = [
     action_potencial: 0,
     dotid:'0C98',
     name:'守りの光',
-    potencial: 8000,
+    potencial: 10000,
     max : 10,
     synctype:'calc',
     damagesync : 0,
@@ -474,10 +474,10 @@ const Barrier_ID = [
     type:'barrier'
   },{//blm
     actionid:'73D9',
-    action_potencial: 12000,
+    action_potencial: 16000,
     dotid:'0C95',
     name:'バースト',
-    potencial: 12000,
+    potencial: 16000,
     max : 10,
     synctype:'calc',
     damagesync : 0,

@@ -496,7 +496,7 @@ let EFFECT_ID = {
   '0BE2':{
     name:'ノーマーシー',
     type:[true,true,false,false,true],
-    effect:1.1,
+    effect:1.2,
     cut:1,
     cut_heal:1,
     maxtime:7
@@ -543,9 +543,9 @@ let EFFECT_ID = {
   },
   '0BEC':{
     name:'連続剣',
-    type:[false,false,false,false,true],
+    type:[false,false,true,false,true],
     effect:1,
-    cut:1,
+    cut:0.75,
     cut_heal:1,
     maxtime:4
   },
@@ -1515,9 +1515,9 @@ let EFFECT_ID = {
   },
   '0C5A':{
     name:'刃の舞い',
-    type:[false,false,false,false,true],
+    type:[false,false,true,false,true],
     effect:1,
-    cut:1,
+    cut:0.8,
     cut_heal:1,
     maxtime:3
   },
@@ -1592,7 +1592,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:15
+    maxtime:30
   },
   '0C8D':{
     name:'アストラルファイアIII',
@@ -1600,7 +1600,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:15
+    maxtime:30
   },
   '0C90':{
     name:'アストラルファイア[被]',
@@ -1616,7 +1616,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:15
+    maxtime:30
   },
   '0C8F':{
     name:'アンブラルブリザードIII',
@@ -1624,7 +1624,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:15
+    maxtime:30
   },
   '0C91':{
     name:'アンブラルブリザード[被]',
@@ -1648,7 +1648,7 @@ let EFFECT_ID = {
     effect:1,
     cut:1,
     cut_heal:1,
-    maxtime:4
+    maxtime:3
   },
   '052D':{
     name:'迅速魔',
@@ -1690,6 +1690,14 @@ let EFFECT_ID = {
     cut_heal:1,
     maxtime:10
   },
+  '0C94':{
+    name:'アポカタスタシス',
+    type:[false,false,true,false,true],
+    effect:1,
+    cut:0.8,
+    cut_heal:1,
+    maxtime:1
+  },
   //Summoner
   '0C99':{
     name:'スリップストリーム',
@@ -1711,7 +1719,7 @@ let EFFECT_ID = {
     name:'守りの光',
     type:[false,false,true,false,true],
     effect:1,
-    cut:0.9,
+    cut:0.8,
     cut_heal:1,
     maxtime:10
   },
@@ -1775,7 +1783,7 @@ let EFFECT_ID = {
   '0CAA':{
     name:'モノマキー',
     type:[true,false,false,false,false],
-    effect:0.8,//付与したは付与された人へのダメージが1.1倍
+    effect:0.9,//付与したは付与された人へのダメージが1.1倍
     cut:1,
     cut_heal:1,
     maxtime:7
