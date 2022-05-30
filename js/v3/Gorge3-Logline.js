@@ -7,7 +7,9 @@ let Send_Action = false;
 let Logline_Add_Tool_Temp = [];
 let Logline_add_mode = false;
 const EnableTimeRange = 100000;
+let Log = '';
 async function logline_firststep(log){
+  Log = log;
   if(Logline_add_mode){
     Logline_Add_Tool_Temp.push(log);
   }
@@ -132,6 +134,7 @@ async function addcombatant(log){
   else {
     owner_id = null;
   }
+
   if(nameID !== Field_ID){
     if(LOGLINE_ENCOUNTER.Engage){
       let readed_data = await read_maindata('Player_data','nameID',nameID,'job');
@@ -148,12 +151,16 @@ async function addcombatant(log){
     }else {
       await update_maindata('Player_data','nameID',nameID,['name',name,true],['job',job,true],['server',server,true],['battle',battle,true],['add_combatant_time',{battle:true,time:time_ms,stamp:lastupdate},false],['ownerID',owner_id,true],['lastupdate',lastupdate,true]);
     }
-
   }
   if(job !== null){
     await damage_revise(nameID,job,lastupdate);
   }
   await update_maindata('Player_hp','nameID',nameID,['attacker',[],true]);
+  if(nameID.substring(0,2) === '10'){
+    if(name !== '' && job !== ''){
+      NameID_Name_JobList[nameID] = {name:name,job:job};
+    }
+  }
 }
 async function damage_revise(nameID,job,lastupdate){
   if(AREA.Area_Type === 1 ||AREA.Area_Type === 3){//FL
@@ -339,6 +346,12 @@ async function networkAbility_receve2(log){
   }
   let income = await add_accept_target(db_data.inputname,db_data.inputdata,'income');
   update_maindata_change_array('Player_data','nameID',db_data.victimID,income.target,income.data,income.replace);
+  let counter = db_data.inputname.indexOf('counter');
+  if(counter !== -1){
+    //counter damage include
+    let income = await add_accept_target(db_data.inputdata[counter].target,db_data.inputdata[counter].data,'income');
+    update_maindata_change_array('Player_data','nameID',db_data.attackerID,income.target,income.data,income.replace);
+  }
   if(Send_Action){
     let send = await add_accept_target(db_data.inputname,db_data.inputdata,'send');
     update_maindata_change_array('Player_data','nameID',db_data.attackerID,send.target,send.data,send.replace);
@@ -348,9 +361,11 @@ async function add_accept_target(name,data,income){
   let rtn = {target:[],data:[],replace:[]};
   let input_str = 'accept_' + income + '_';
   for(let i = 0 ; i <  name.length ; i++){
-    rtn.target.push(input_str + name[i]);
-    rtn.data.push(data[i]);
-    rtn.replace.push(false);
+    if(name[i] !== 'counter'){
+      rtn.target.push(input_str + name[i]);
+      rtn.data.push(data[i]);
+      rtn.replace.push(false);
+    }
   }
   return rtn;
 }

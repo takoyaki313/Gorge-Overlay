@@ -1,0 +1,70 @@
+.tooltip_hr_line{
+  width: 100%;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  border-width: 0.1rem 0px 0px 0px;
+  border-style: solid;
+  border-color: var(--default-color);
+}
+.Crystal_damage_Tooltip {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+.Crystal_damage_Tooltip .damage-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0.1rem;
+}
+.Crystal_damage_Tooltip .income-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 0.1rem;
+}
+.Crystal_damage_Tooltip .damage-total {
+  display: flex;
+  padding: 0 0.5rem;
+  align-items: center;
+}
+
+.Crystal_damage_Tooltip .damage-total-other {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 0.1rem;
+}
+.Crystal_damage_Tooltip .damage-total-other *{
+  display: flex;
+  padding: 0 0.5rem;
+}
+.Crystal_damage_Tooltip .damage-player-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5rem auto 2rem;
+  padding: 0 0.5rem;
+  justify-content: center;
+}
+.Crystal_damage_Tooltip .damage-player-row *{
+  display: flex;
+  padding: 0 0.5rem;
+}
+.Crystal_damage_Tooltip .heal-me {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.1rem;
+}
+.Crystal_damage_Tooltip .heal-me *{
+  display: flex;
+  align-items: center;
+}
+.Crystal_damage_Tooltip .heal-me-under {
+  display: flex;
+  justify-content: space-evenly;
+}
+.Crystal_damage_Tooltip .heal-me-under *{
+  display: flex;
+  align-items: center;
+}

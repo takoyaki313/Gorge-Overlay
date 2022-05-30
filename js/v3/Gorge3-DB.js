@@ -1,10 +1,14 @@
 let TBD = {};
+let NameID_Name_JobList = {};
+///////////////
+
 let TenSyonMax_Me = false;
 const Kind = ['damage_kind','heal_kind','accept_income_heal_kind','accept_income_damage_kind'];//重複を許可しない.要素は文字列だけ
 
 function reset_TBD(){
   TBD = {Player_data:[],Skill_data:[],DoT_data:[],Barrier_data:[],Player_hp:[],Hp_data:[],Action_data:[],Action_Synced_data:[],Action_Sync_data:[]
     ,Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+  NameID_Name_JobList = {}
 }
 async function hp_data_db_add(data){
   let input_primary_key = null;

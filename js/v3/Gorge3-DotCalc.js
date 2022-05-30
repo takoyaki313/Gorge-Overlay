@@ -442,13 +442,13 @@ async function buffID_cordinate(id){
     return id;
   }
 }
-async function unique_buff_remove_action(log,dot_name,attckermaxhp){
+async function unique_buff_remove_action(log,dot_name){
   let attackerID = log[5];
   let victimID = log[7];
   let lastupdate = log[1];
-  let victimhp = Number(log[10]);
-  let victimmaxhp = Number(log[11]);
-  let read_data = await read_maindata('Player_hp','nameID',victimID,dot_name);
+  let victimhp = 0;
+  let victimmaxhp = 48000;
+  let read_data = await read_maindata('Player_hp','nameID',victimID,dot_name,'currenthp','maxhp');
   if(Object.keys(read_data).length === 0){
     if(DEBUG_LOG){
       console.warn(dot_name + ' Data Not Found');
@@ -469,6 +469,12 @@ async function unique_buff_remove_action(log,dot_name,attckermaxhp){
       console.log(log);
     }
     return null;
+  }
+  if(read_data.currenthp !== undefined){
+    victimhp = read_data.currenthp;
+  }
+  if(read_data.maxhp !== undefined){
+    victimmaxhp = read_data.maxhp;
   }
   let dot_data = read_data[dot_name];
   for(let i = 0 ; i < dot_data.length ; i ++){

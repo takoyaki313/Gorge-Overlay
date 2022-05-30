@@ -89,6 +89,9 @@ body{
     flex-direction: column;
     align-items: center;
 }
+.ui-widget {
+  font-family: 'Roboto', sans-serif;
+}
 .dunamis_tensyon0{
   /*none*/
 }

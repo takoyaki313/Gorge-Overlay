@@ -251,9 +251,7 @@ async function doublerocketpuntch_hit_pct(nameID,victimID,hitnum,lastupdate){
     await update_maindata('Player_data','nameID',nameID,['totalrocketpuntch',1,false],['hitrocketpuntch',1,false],['hitrocketpuntchavarage',hitnum,false],['lastupdate',lastupdate,true]);
   }
 }
-let Log = '';
 async function networkactionsync_21_22(log){
-  Log = log;
   if(log.length > logline_21_22_max ||log.length < logline_21_22_max - 1){
     if(DEBUG_LOG){
       console.error("Error : data length not matched 48/47 ->" + log.length);

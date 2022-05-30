@@ -363,10 +363,10 @@ const Barrier_ID = [
     damagesync : 0,
     damage : false,
     type:'barrier'
-  },*/{
+  },{
     actionid:'7249',
     action_potencial: 0,
-    dotid:'0C24',
+    dotid:'0C25',//logline 26 
     name:'エウクラシア・ディアグノシス',
     potencial: 8000,
     max : 15,
@@ -374,7 +374,7 @@ const Barrier_ID = [
     damagesync : 0,
     damage : false,
     type:'barrier'
-  },{//drg
+  },*/{//drg
     actionid:'733A',
     action_potencial: 20000,
     dotid:'0C6D',

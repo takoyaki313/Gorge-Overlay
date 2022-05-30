@@ -32,8 +32,26 @@ async function networkactionsync_21_22_2(log){
   let victim_effect = {name:[],param:[]};
   let attacker_effect = {name:[],param:[]};
   for(let i = 0 ; i < effectmax ; i++){
-    if(Update_attacker.indexOf(effectdata.name[i]) === -1 && !effectdata.special[i]){//victim 側への影響
-      if('normal-damage' === effectdata.name[i]){
+    if(Update_attacker.indexOf(effectdata.name[i]) === -1){//victim 側への影響
+      if('normal-damage' === effectdata.name[i] && effectdata.special[i]){
+        //counter damage
+        let counter_position = victim_effect.name.indexOf('counter');
+        if(counter_position !== -1){//2個目以降のdamage
+          if(typeof effectdata.param[i] === 'number'){
+            victim_effect.param[counter_position].param += effectdata.param[i];
+          }else {
+            if(DEBUG_LOG){
+              console.error('21-22 連続攻撃の合算が出来ませんでした。');
+              console.error(log);
+              console.error(effectdata);
+            }
+          }
+        }else {
+          victim_effect.name.push('counter');
+          victim_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
+        }
+      }
+      else if('normal-damage' === effectdata.name[i]){
         //victim_effect.name.push('damage');
         //victim_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
         let damage_position = victim_effect.name.indexOf('damage');
@@ -60,11 +78,12 @@ async function networkactionsync_21_22_2(log){
         victim_effect.param.push(effectdata.param[i]);
       }
     }else {//attacker 側への影響
-      if('normal-damage' === effectdata.name[i]){//反撃ダメージ
+      /*if('normal-damage' === effectdata.name[i]){//反撃ダメージ
         attacker_effect.name.push('counter');
         attacker_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
+        console.warn(Log);
       }
-      else if('heal' === effectdata.name[i]){
+      else*/ if('heal' === effectdata.name[i]){
         let heal_position = attacker_effect.name.indexOf('heal');
         if(heal_position !== -1){//2個目のヒール
           if(typeof effectdata.param[i] === 'number'){
@@ -137,19 +156,15 @@ async function counterdamage_include(data,effect){
     input.inputname = attacker_input_data.target;
     input.inputdata = attacker_input_data.data;
     let marge_input_data = await general_input_type(data.lastupdate,victim_input_data,attacker_input_data);
-    if(NetworkActionSync){
-      update_maindata_change_array('Player_data','nameID',input.attackerID,marge_input_data.target,marge_input_data.data,marge_input_data.replace);
-    }
+    update_maindata_change_array('Player_data','nameID',input.attackerID,marge_input_data.target,marge_input_data.data,marge_input_data.replace);
+    return marge_input_data;
   }
 }
 async function networkaction_calc(data,effect,type){
   let attacker = {};
   let victim = {};
+  let counter = effect.name.indexOf('counter') ;
   if(type === 'attacker'){
-    if (effect.name.indexOf('counter') !== -1 ){
-      //ダメージだけ入れる
-      counterdamage_include(data,effect);
-    }
     attacker = {nameID:data.attackerID,name:data.attacker,hp:data.attackerCurrentHP,maxhp:data.attackermaxHP};
     victim = {nameID:data.attackerID,name:data.attacker,hp:data.attackerCurrentHP,maxhp:data.attackermaxHP};
   }
@@ -157,7 +172,6 @@ async function networkaction_calc(data,effect,type){
     attacker = {nameID:data.attackerID,name:data.attacker,hp:data.attackerCurrentHP,maxhp:data.attackermaxHP};
     victim = {nameID:data.victimID,name:data.victim,hp:data.victimCurrentHP,maxhp:data.victimmaxHP};
   }
-
   let uniqueID = data.networknumber + victim.nameID + data.count;
   let input = {
     attackerID:attacker.nameID,
@@ -217,6 +231,12 @@ async function networkaction_calc(data,effect,type){
         input_data.target = input_data.target.concat(barrier_input.target);
         input_data.replace = input_data.replace.concat(barrier_input.replace);
       }
+    }else if (input.effectname[i] === "counter") {
+        //ダメージだけ入れる
+        let counter_input = await counterdamage_include(data,effect);
+        input_data.data.push(counter_input);
+        input_data.target.push('counter');
+        input_data.replace.push(false);
     }
   }
   //-------------------------------
@@ -286,6 +306,11 @@ async function damage_heal_input_type(uniqueID,attackerID,victimID,a_maxHP,a_Cur
     else{
       overdamage = 0;
     }
+    if(damage < overdamage){
+      console.error('Overdamage Calc Error->'  + damage + ' < ' + overdamage);
+      console.error(' v_CurrentHP ->'+ v_CurrentHP + ' v_maxHP->' + v_maxHP);
+      console.error(Log);
+    }
     rtn = await damage_target_set(damage,overdamage,target,type,rtn)
   }else {
     console.warn('type is Unknown : damage_heal_input_type ->' + type);
@@ -297,7 +322,11 @@ async function damage_target_set(damage,overdamage,paramName,type,rtn){
   let param = [];
   for(let i = 0 ; i < paramName.length ; i++){
     replace.push(false);
-    param.push(damage);
+    if(paramName[i].substring(paramName[i].length - 4 ,paramName[i].length ) === '_num'){
+      param.push(1);
+    }else {
+      param.push(damage);
+    }
   }
   if(type === 'damage'){
     param.push(paramName.concat());
@@ -342,8 +371,10 @@ async function heal_target(victimID,attackerID,actionID,special){
         typeinput.push('heal_self');
         if(actionID === Kaiki){
           typeinput.push('heal_kaiki');
+          typeinput.push('heal_kaiki_num');
         }else if (actionID === GunyouPosion) {
           typeinput.push('heal_G_posion');
+          typeinput.push('heal_G_posion_num');
         }else {
           typeinput.push('heal_self_' + special );
         }

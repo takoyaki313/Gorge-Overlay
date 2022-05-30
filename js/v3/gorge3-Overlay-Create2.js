@@ -1,6 +1,7 @@
 //grobal
 var CC_Simulation_kill = true;
 var CC_Death_Too_Much = 5;
+var CC_Death_Per_Sec = 60;
 function teamdata_main(duration,teamtype,maindata){
   let teamdata = team_data_marge(maindata);
   return teamdata_disp(teamdata,duration,teamtype);
@@ -168,9 +169,9 @@ function cc_create(template,data,duration,maxdps){
   let dps_area = row.find('.c-dps');
   let hps_area = row.find('.c-hps');
   hps_area.text(already_calc.totalheal);
-  hps_area.prop('title',tooltip_dps_create(data.totalheal,data.over_totalheal,already_calc.overhealPct,already_calc.selfheal,already_calc.partyheal,already_calc.allyheal,already_calc.otherheal,already_calc.barrier));
+  hps_area.prop('title',crystal_heal_tooptip(data));
   //let dps_tooltip_string = tooltip_dps_create(already_calc.playerdamage,already_calc.persondamage,already_calc.torobotdamage,already_calc.playerotherdamage,already_calc.objectdamage,already_calc.matondamage,already_calc.towerdamage,already_calc.objectotherdamage,already_calc.totaldamage,battle_data.totaldamage,battle_data['total-accept-damage'],time);
-  dps_area.prop('title',tooltip_dps_create('-','-','-','-','-','-','-','-',already_calc.totaldamage,data.totaldamage,'-',time));
+  dps_area.prop('title',crystal_dps_tooptip(data));
 
   //jobicon
   let jobicon_space = row.find('.c-job-icon');
@@ -216,8 +217,10 @@ function cc_create(template,data,duration,maxdps){
   }
   //not use
   //let dunamis_space = row.find('.c-dunamis');
-  if(death_num >= CC_Death_Too_Much){
-    row.addClass('death-too-much');
+  if( ( time / death_num ) - CC_Death_Per_Sec < 0){
+    if(death_num > 2){
+      row.addClass('death-too-much');
+    }
   }else if (me) {
     row.addClass('me');
   }
@@ -225,9 +228,11 @@ function cc_create(template,data,duration,maxdps){
   row.find('.c-damage-gage').addClass('role-background-' + job_to_role(data.job));
   row.find('.c-damage-gage').css('width', ((data.calcdps / maxdps) * 100) + '%');
   //
-  row.find('.c-income-space').prop('title',tooltip_income(damage_to_dps(data.accept_income_heal_self,time).toFixed(0),damage_to_dps(data.accept_income_heal_party,time).toFixed(0),damage_to_dps(data.accept_income_heal_ally,time).toFixed(0),damage_to_dps(data.accept_income_heal_object,time).toFixed(0),damage_to_dps(data.accept_income_damage_player,time).toFixed(0),damage_to_dps(data.robincomedamage,time).toFixed(0),damage_to_dps(data.accept_income_damage_object,time).toFixed(0)));
+  //row.find('.c-income-space').prop('title',tooltip_income(damage_to_dps(data.accept_income_heal_self,time).toFixed(0),damage_to_dps(data.accept_income_heal_party,time).toFixed(0),damage_to_dps(data.accept_income_heal_ally,time).toFixed(0),damage_to_dps(data.accept_income_heal_object,time).toFixed(0),damage_to_dps(data.accept_income_damage_player,time).toFixed(0),damage_to_dps(data.robincomedamage,time).toFixed(0),damage_to_dps(data.accept_income_damage_object,time).toFixed(0)));
   row.find('.c-incomedamage-number').text(damage_to_dps(data.accept_income_totaldamage,time).toFixed(0));
+  row.find('.c-incomedamage-number').prop('title',crystal_income_damage_tooptip(data));
   row.find('.c-incomeheal-number').text(damage_to_dps(data.accept_income_totalheal,time).toFixed(0));
+  row.find('.c-incomeheal-number').prop('title',crystal_income_heal_tooptip(data));
   return row;
 }
 function overlaycreate_battletimeset(){
@@ -244,4 +249,423 @@ function overlaycreate_battletimeset(){
     start_time = Date.now() - 1000;
   }
   return Math.round((create_time - start_time) / 1000);
+}
+/*DAMAGE TOOLTIP
+<div class="Crystal_damage_Tooltip">
+  <div class="damage-top">
+    <div class="damage-total">DAMAGE : 1235121</div>
+    <div class="damage-total icon-ScheduleTime">231</div>
+  </div>
+  <div class="damage-total-other">
+    <div class="damage-total">N:1125-95%</div>
+    <div class="damage-total">D:115-5%</div>
+    <div class="damage-total">C:15-5%</div>
+  </div>
+  <div class="tooltip_hr_line"></div>
+  <div class="damage-player-row">
+    <div class="name">A Name</div><div class="job-icon icon-pld"></div><div class="dps">1254</div><div class="dps-percent">15%</div>
+    <div class="name">B Name</div><div class="job-icon icon-pld"></div><div class="dps">254</div><div class="dps-percent">5%</div>
+    <div class="name">C Name</div><div class="job-icon icon-pld"></div><div class="dps">154</div><div class="dps-percent">35%</div>
+    <div class="name">D Name</div><div class="job-icon icon-pld"></div><div class="dps">4</div><div class="dps-percent">20%</div>
+    <div class="name">E Name</div><div class="job-icon icon-pld"></div><div class="dps">12</div><div class="dps-percent">1%</div>
+  </div>
+</div>
+*/
+function crystal_dps_tooptip(data){
+  let all_kind = Object.keys(data);
+  let time_include = false;
+  let time = 0;
+  if(all_kind.indexOf('damage_kind') === -1){
+    return '';
+  }
+  if(all_kind.indexOf('battle_time') !== -1 ){
+    time_include = true;
+    time = data.battle_time;
+  }
+  let d_kind = data.damage_kind;
+
+  let rtn = '';//html format
+  //top area
+  rtn += '<div class="Crystal_damage_Tooltip"><div class="damage-top"><div class="damage-total">DAMAGE : ';
+  rtn += d_kind.indexOf('totaldamage') !== -1 ? data.totaldamage : '0' ;
+  rtn += '</div><div class="damage-total"><div class="icon-ScheduleTime"></div>'
+  rtn += time_include ? time : '-' ;
+  //
+  rtn += '</div></div><div class="damage-total-other">';
+  rtn += d_kind.indexOf('damage_total_normal') !== -1 ? '<div class="damage-total">N:' + damage_to_dps(data.damage_total_normal,time).toFixed(1) + '-' + ((data.damage_total_normal/data.totaldamage) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += d_kind.indexOf('damage_total_DoT') !== -1 ? '<div class="damage-total">D:' + damage_to_dps(data.damage_total_DoT,time).toFixed(1) + '-' + ((data.damage_total_DoT/data.totaldamage) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += d_kind.indexOf('damage_total_counter') !== -1 ? '<div class="damage-total">C:' + damage_to_dps(data.damage_total_counter,time).toFixed(1) + '-' + ((data.damage_total_counter/data.totaldamage) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += '</div>';
+  //hr
+  rtn += '<div class="tooltip_hr_line"></div>';
+  //player dps area
+  if (!time_include){
+    return rtn;
+  }
+
+  let player_damage = [];
+  for(let i = 0 ; i < d_kind.length ; i++){
+    if(d_kind[i].substring(0,9) === 'damage_10'){
+      let nameID = d_kind[i].substring(d_kind[i].length - 8 ,d_kind[i].length);
+      let damage = data[d_kind[i]];
+      if(typeof NameID_Name_JobList[nameID] === 'object'){
+        let name_job = NameID_Name_JobList[nameID]
+        player_damage.push({nameID:nameID,name:name_job.name,job:name_job.job,damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.totaldamage) * 100).toFixed(0) + '%'});
+      }else {
+        player_damage.push({nameID:nameID,name:nameID,job:'none',damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.totaldamage) * 100).toFixed(0) + '%'});
+      }
+    }
+  }
+  player_damage = array_sort_module(player_damage,'damage','');
+  if(player_damage.length > 0 ){
+    player_damage = array_sort_module(player_damage,'damage','');
+    rtn += '<div class="damage-player-row">';
+    for(let i = 0 ; i < player_damage.length ; i ++){
+      rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>';
+    }
+    rtn += '</div>';
+  }
+  rtn += '</div>';
+  return rtn;
+}
+/*INCOME DAMAGE TOOLTIP
+<div class="Crystal_damage_Tooltip">
+  <div class="income-top">
+    <div class="damage-total">ALL : 1235121</div>
+    <div class="damage-total icon-person_income">231</div>
+    <div class="damage-total icon-maton_income">231</div>
+  </div>
+  <div class="damage-total-other">
+    <div class="damage-total">N:1125-95%</div>
+    <div class="damage-total">D:115-5%</div>
+    <div class="damage-total">C:15-5%</div>
+  </div>
+  <div class="tooltip_hr_line"></div>
+  <div class="damage-player-row">
+    <div class="name">A Name</div><div class="job-icon icon-pld"></div><div class="dps">1254</div><div class="dps-percent">15%</div>
+    <div class="name">B Name</div><div class="job-icon icon-pld"></div><div class="dps">254</div><div class="dps-percent">5%</div>
+    <div class="name">C Name</div><div class="job-icon icon-pld"></div><div class="dps">154</div><div class="dps-percent">35%</div>
+    <div class="name">D Name</div><div class="job-icon icon-pld"></div><div class="dps">4</div><div class="dps-percent">20%</div>
+    <div class="name">E Name</div><div class="job-icon icon-pld"></div><div class="dps">12</div><div class="dps-percent">1%</div>
+  </div>
+</div>
+*/
+function crystal_income_damage_tooptip(data){
+  let all_kind = Object.keys(data);
+  let time_include = false;
+  let time = 0;
+  if(all_kind.indexOf('accept_income_damage_kind') === -1){
+    return '';
+  }
+  if(all_kind.indexOf('battle_time') !== -1 ){
+    time_include = true;
+    time = data.battle_time;
+  }
+  let d_kind = data.accept_income_damage_kind;
+
+  let rtn = '';//html format
+  //top area
+  rtn += '<div class="Crystal_damage_Tooltip"><div class="income-top"><div class="damage-total">A-DAMAGE : ';
+  rtn += d_kind.indexOf('totaldamage') !== -1 ? data.accept_income_totaldamage : '0' ;
+  rtn += d_kind.indexOf('damage_player') !== -1 ? '<div class="damage-total"><div class="icon-person_income"></div>' + damage_to_dps(data.accept_income_damage_player,time).toFixed(1) +'</div>': '' ;
+  rtn += d_kind.indexOf('damage_object') !== -1 ? '<div class="damage-total"><div class="icon-maton_income"></div>' + damage_to_dps(data.accept_income_damage_object,time).toFixed(1) +'</div>': '' ;
+  //
+  rtn += '</div></div><div class="damage-total-other">';
+  rtn += d_kind.indexOf('damage_total_normal') !== -1 ? '<div class="damage-total">N:' + damage_to_dps(data.accept_income_damage_total_normal,time).toFixed(1) + '-' + ((data.accept_income_damage_total_normal/data.accept_income_totaldamage) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += d_kind.indexOf('damage_total_DoT') !== -1 ? '<div class="damage-total">D:' + damage_to_dps(data.accept_income_damage_total_DoT,time).toFixed(1) + '-' + ((data.accept_income_damage_total_DoT/data.accept_income_totaldamage) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += d_kind.indexOf('damage_total_counter') !== -1 ? '<div class="damage-total">C:' + damage_to_dps(data.accept_income_damage_total_counter,time).toFixed(1) + '-' + ((data.accept_income_damage_total_counter/data.accept_income_totaldamage) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += '</div>';
+  //hr
+  rtn += '<div class="tooltip_hr_line"></div>';
+  //player dps area
+  if (!time_include){
+    return rtn;
+  }
+
+  let player_damage = [];
+  for(let i = 0 ; i < d_kind.length ; i++){
+    if(d_kind[i].substring(0,14) === 'damage_from_10'){
+      let nameID = d_kind[i].substring(d_kind[i].length - 8 ,d_kind[i].length);
+      let damage = data['accept_income_' + d_kind[i]];
+      if(typeof NameID_Name_JobList[nameID] === 'object'){
+        let name_job = NameID_Name_JobList[nameID]
+        player_damage.push({nameID:nameID,name:name_job.name,job:name_job.job,damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.accept_income_totaldamage) * 100).toFixed(0) + '%'});
+      }else {
+        player_damage.push({nameID:nameID,name:nameID,job:'none',damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.accept_income_totaldamage) * 100).toFixed(0) + '%'});
+      }
+    }
+  }
+  if(player_damage.length > 0 ){
+    player_damage = array_sort_module(player_damage,'damage','');
+    rtn += '<div class="damage-player-row">';
+    for(let i = 0 ; i < player_damage.length ; i ++){
+      rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>';
+    }
+    rtn += '</div>';
+  }
+  rtn += '</div>';
+  return rtn;
+}
+/*
+<div class="Crystal_damage_Tooltip">
+  <div class="income-top"><!--Heal All-->
+    <div class="damage-total">ALL : 1235121(15%)</div>
+  </div>
+  <div class="damage-total-other">
+    <div class="damage-total">N:1125(15%)-95%</div>
+    <div class="damage-total">D:115-5%</div>
+    <div class="damage-total icon-shield">:15-5%</div>
+  </div>
+  <div class="tooltip_hr_line"></div>
+  <!--Heal Me-->
+  <div class="heal-me">
+    <div class="icon-me_normal">321(10%)</div><div>N:127(100%)</div><div class="">D:127</div><div class="icon-shield">127</div>
+  </div>
+  <div class="heal-me-under">
+    <div class="icon-local_fire_department">10-325(32%)</div><div class="icon-Frasco">3-87(32%)</div>
+  </div>
+  <div class="tooltip_hr_line"></div>
+  <div class="heal-me">
+    <div class="icon-party_normal">321(10%)</div><div >N:127(100%)</div><div class="">D:127</div><div class="icon-shield">127</div>
+  </div>
+  <!--Heal Other-->
+  <div class="damage-player-row">
+    <div class="name">A Name</div><div class="job-icon icon-pld"></div><div class="dps">1254</div><div class="dps-percent">15%</div>
+    <div class="name">B Name</div><div class="job-icon icon-pld"></div><div class="dps">254</div><div class="dps-percent">5%</div>
+    <div class="name">C Name</div><div class="job-icon icon-pld"></div><div class="dps">154</div><div class="dps-percent">35%</div>
+    <div class="name">D Name</div><div class="job-icon icon-pld"></div><div class="dps">4</div><div class="dps-percent">20%</div>
+    <div class="name">E Name</div><div class="job-icon icon-pld"></div><div class="dps">12</div><div class="dps-percent">1%</div>
+  </div>
+</div>
+*/
+function crystal_heal_tooptip(data){
+  let all_kind = Object.keys(data);
+  let time = 0;
+  if(all_kind.indexOf('heal_kind') === -1){
+    return '';
+  }
+  if(all_kind.indexOf('battle_time') !== -1 ){
+    time = data.battle_time;
+  }
+  else {
+    return '';
+  }
+  let h_kind = data.heal_kind;
+
+  let rtn = '';//html format
+  //top area
+  rtn += '<div class="Crystal_damage_Tooltip"><div class="income-top"><div class="damage-total">HEAL : ';
+  rtn += h_kind.indexOf('totalheal') !== -1 ? data.totalheal : '0' ;
+  rtn += h_kind.indexOf('over_totalheal') !== -1 ? ' (' + ((data.over_totalheal / data.totalheal) * 100).toFixed(1) + '%)' : ' (0%)' ;
+  //
+  rtn += '</div></div><div class="damage-total-other">';
+  rtn += h_kind.indexOf('heal_total_normal') !== -1 ? '<div class="damage-total">N:' + damage_to_dps(data.heal_total_normal,time).toFixed(0) +' (' + ((data.over_heal_total_normal / data.heal_total_normal) * 100).toFixed(0) + '%)' + '-' + ((data.heal_total_normal/data.totalheal) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += h_kind.indexOf('heal_total_HoT') !== -1 ? '<div class="damage-total">H:' + damage_to_dps(data.heal_total_HoT,time).toFixed(0) +' (' + ((data.over_heal_total_HoT / data.heal_total_HoT) * 100).toFixed(0) + '%)' + '-' + ((data.heal_total_HoT/data.totalheal) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += h_kind.indexOf('heal_total_barrier') !== -1 ? '<div class="damage-total"><div class="icon-shield"></div>:' + damage_to_dps(data.heal_total_barrier,time).toFixed(0) + '-' + ((data.heal_total_barrier/data.totalheal) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += '</div>';
+  //me hps area
+  if(h_kind.indexOf('heal_self') !== -1){
+    if(data.heal_self > 0){
+      //hr
+      rtn += '<div class="tooltip_hr_line"></div>';
+      rtn += '<div class="heal-me"><div><div class="icon-me_normal"></div>';
+      rtn += damage_to_dps(data.heal_self,time).toFixed(1);
+      rtn += h_kind.indexOf('over_heal_self') !== -1 ? ' (' + ((data.over_heal_self / data.heal_self) * 100).toFixed(0) + '%)' : '(0%)' ;
+      rtn += '-' + ((data.heal_self / data.totalheal) * 100).toFixed(0) + '%</div>';
+      rtn += h_kind.indexOf('heal_self_HoT') !== -1 ? '<div class="damage-total">H:'+ damage_to_dps(data.heal_self_HoT,time).toFixed(0) +' (' + ((data.over_heal_self_HoT / data.heal_self_HoT) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_self_barrier') !== -1 ? '<div class="damage-total"><div class="icon-shield"></div>:'+ damage_to_dps(data.heal_self_barrier,time).toFixed(0) + '</div>': '' ;
+      //Kaiki G-posion
+      rtn += '</div><div class="heal-me-under">';
+      rtn += h_kind.indexOf('heal_kaiki') !== -1 ? '<div><div class="icon-local_fire_department"></div>'+ data.heal_kaiki_num + '-' + damage_to_dps(data.heal_kaiki,time).toFixed(0) +' (' + ((data.over_heal_kaiki / data.heal_kaiki) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_G_posion') !== -1 ? '<div><div class="icon-Frasco"></div>'+ data.heal_G_posion_num + '-' + damage_to_dps(data.heal_G_posion,time).toFixed(0) +' (' + ((data.over_heal_G_posion / data.heal_G_posion) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += '</div>';
+    }
+  }
+  //party hps area
+  if(h_kind.indexOf('heal_party') !== -1){
+    if(data.heal_party > 0){
+      rtn += '<div class="tooltip_hr_line"></div>';
+      rtn += '<div class="heal-me"><div><div class="icon-party_normal"></div>';
+      rtn += damage_to_dps(data.heal_party,time).toFixed(1);
+      rtn += h_kind.indexOf('over_heal_party') !== -1 ? ' (' + ((data.over_heal_party / data.heal_party) * 100).toFixed(0) + '%)' : '(0%)' ;
+      rtn += '-' + ((data.heal_party / data.totalheal) * 100).toFixed(0) + '%</div>';
+      rtn += h_kind.indexOf('heal_party_HoT') !== -1 ? '<div class="damage-total">H:'+ damage_to_dps(data.heal_party_HoT,time).toFixed(0) +' (' + ((data.over_heal_party_HoT / data.heal_party_HoT) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_party_barrier') !== -1 ? '<div class="damage-noraml"><div class="icon-shield"></div>:'+ damage_to_dps(data.heal_party_barrier,time).toFixed(0) + '</div>': '' ;
+      rtn += '</div>';
+
+      let player_damage = [];
+      for(let i = 0 ; i < h_kind.length ; i++){
+        if(h_kind[i].substring(0,7) === 'heal_10'){
+          let nameID = h_kind[i].substring(h_kind[i].length - 8 ,h_kind[i].length);
+          let damage = data[h_kind[i]];
+          if(typeof NameID_Name_JobList[nameID] === 'object'){
+            let name_job = NameID_Name_JobList[nameID]
+            player_damage.push({nameID:nameID,name:name_job.name,job:name_job.job,damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.totalheal) * 100).toFixed(0) + '%'});
+          }else {
+            player_damage.push({nameID:nameID,name:nameID,job:'none',damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.totalheal) * 100).toFixed(0) + '%'});
+          }
+        }
+      }
+      if(player_damage.length > 0 ){
+        player_damage = array_sort_module(player_damage,'damage','');
+        rtn += '<div class="damage-player-row">';
+        for(let i = 0 ; i < player_damage.length ; i ++){
+          rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>';
+        }
+        rtn += '</div>';
+      }
+    }
+  }
+  //Ally hps area (party copy)
+  if(h_kind.indexOf('heal_ally') !== -1){
+    if(data.heal_ally > 0){
+      rtn += '<div class="tooltip_hr_line"></div>';
+      rtn += '<div class="heal-me"><div><div class="icon-alliance_normal"></div>';
+      rtn += damage_to_dps(data.heal_ally,time).toFixed(1);
+      rtn += h_kind.indexOf('over_heal_ally') !== -1 ? ' (' + ((data.over_heal_ally / data.heal_ally) * 100).toFixed(0) + '%)' : '(0%)' ;
+      rtn += '-' + ((data.heal_ally / data.totalheal) * 100).toFixed(0) + '%</div>';
+      rtn += h_kind.indexOf('heal_ally_HoT') !== -1 ? '<div class="damage-total">H:'+ damage_to_dps(data.heal_ally_HoT,time).toFixed(0) +' (' + ((data.over_heal_ally_HoT / data.heal_ally_HoT) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_ally_barrier') !== -1 ? '<div class="damage-total"><div class="icon-shield"></div>:'+ damage_to_dps(data.heal_ally_barrier,time).toFixed(0) + '</div>': '' ;
+      rtn += '</div>';
+
+      let player_damage = [];
+      for(let i = 0 ; i < h_kind.length ; i++){
+        if(h_kind[i].substring(0,7) === 'heal_10'){
+          let nameID = h_kind[i].substring(h_kind[i].length - 8 ,h_kind[i].length);
+          let damage = data[h_kind[i]];
+          if(typeof NameID_Name_JobList[nameID] === 'object'){
+            let name_job = NameID_Name_JobList[nameID]
+            player_damage.push({nameID:nameID,name:name_job.name,job:name_job.job,damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.totalheal) * 100).toFixed(0) + '%'});
+          }else {
+            player_damage.push({nameID:nameID,name:nameID,job:'none',damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.totalheal) * 100).toFixed(0) + '%'});
+          }
+        }
+      }
+      if(player_damage.length > 0 ){
+        player_damage = array_sort_module(player_damage,'damage','');
+        rtn += '<div class="damage-player-row">';
+        for(let i = 0 ; i < player_damage.length ; i ++){
+          rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>';
+        }
+        rtn += '</div>';
+      }
+    }
+  }
+  rtn += '</div>';
+  return rtn;
+}
+function crystal_income_heal_tooptip(data){
+  let all_kind = Object.keys(data);
+  let time = 0;
+  if(all_kind.indexOf('accept_income_heal_kind') === -1){
+    return '';
+  }
+  if(all_kind.indexOf('battle_time') !== -1 ){
+    time = data.battle_time;
+  }
+  else {
+    return '';
+  }
+  let h_kind = data.accept_income_heal_kind;
+
+  let rtn = '';//html format
+  //top area
+  rtn += '<div class="Crystal_damage_Tooltip"><div class="income-top"><div class="damage-total">A-HEAL : ';
+  rtn += h_kind.indexOf('totalheal') !== -1 ? data.accept_income_totalheal : '0' ;
+  rtn += h_kind.indexOf('over_totalheal') !== -1 ? ' (' + ((data.accept_income_over_totalheal / data.accept_income_totalheal) * 100).toFixed(1) + '%)' : ' (0%)' ;
+  //
+  rtn += '</div></div><div class="damage-total-other">';
+  rtn += h_kind.indexOf('heal_total_normal') !== -1 ? '<div class="damage-total">N:' + damage_to_dps(data.accept_income_heal_total_normal,time).toFixed(0) +' (' + ((data.accept_income_over_heal_total_normal / data.accept_income_heal_total_normal) * 100).toFixed(0) + '%)' + '-' + ((data.accept_income_heal_total_normal/data.accept_income_totalheal) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += h_kind.indexOf('heal_total_HoT') !== -1 ? '<div class="damage-total">H:' + damage_to_dps(data.accept_income_heal_total_HoT,time).toFixed(0) +' (' + ((data.accept_income_over_heal_total_HoT / data.accept_income_heal_total_HoT) * 100).toFixed(0) + '%)' + '-' + ((data.accept_income_heal_total_HoT/data.accept_income_totalheal) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += h_kind.indexOf('heal_total_barrier') !== -1 ? '<div class="damage-total"><div class="icon-shield"></div>:' + damage_to_dps(data.accept_income_heal_total_barrier,time).toFixed(0) + '-' + ((data.accept_income_heal_total_barrier/data.accept_income_totalheal) * 100).toFixed(0) + '%</div>': '' ;
+  rtn += '</div>';
+  //me hps area
+  if(h_kind.indexOf('heal_self') !== -1){
+    if(data.accept_income_heal_self > 0){
+      rtn += '<div class="tooltip_hr_line"></div>';
+      rtn += '<div class="heal-me"><div><div class="icon-me_normal"></div>';
+      rtn += damage_to_dps(data.accept_income_heal_self,time).toFixed(1);
+      rtn += h_kind.indexOf('over_heal_self') !== -1 ? ' (' + ((data.accept_income_over_heal_self / data.accept_income_heal_self) * 100).toFixed(0) + '%)' : '(0%)' ;
+      rtn += '-' + ((data.accept_income_heal_self / data.accept_income_totalheal) * 100).toFixed(0) + '%</div>';
+      rtn += h_kind.indexOf('heal_self_HoT') !== -1 ? '<div class="damage-total">H:'+ damage_to_dps(data.accept_income_heal_self_HoT,time).toFixed(0) +' (' + ((data.accept_income_over_heal_self_HoT / data.accept_income_heal_self_HoT) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_self_barrier') !== -1 ? '<div class="damage-total"><div class="icon-shield"></div>:'+ damage_to_dps(data.accept_income_heal_self_barrier,time).toFixed(0) + '</div>': '' ;
+      //Kaiki G-posion
+      rtn += '</div><div class="heal-me-under">';
+      rtn += h_kind.indexOf('heal_kaiki') !== -1 ? '<div><div class="icon-local_fire_department"></div>'+ data.accept_income_heal_kaiki_num + '-' + damage_to_dps(data.accept_income_heal_kaiki,time).toFixed(0) +' (' + ((data.accept_income_over_heal_kaiki / data.accept_income_heal_kaiki) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_G_posion') !== -1 ? '<div><div class="icon-Frasco"></div>'+ data.accept_income_heal_G_posion_num + '-' + damage_to_dps(data.accept_income_heal_G_posion,time).toFixed(0) +' (' + ((data.accept_income_over_heal_G_posion / data.accept_income_heal_G_posion) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += '</div>';
+    }
+  }
+  //party hps area
+  if(h_kind.indexOf('heal_party') !== -1){
+    if(data.accept_income_heal_party > 0){
+      rtn += '<div class="tooltip_hr_line"></div>';
+      rtn += '<div class="heal-me"><div><div class="icon-party_normal"></div>';
+      rtn += damage_to_dps(data.accept_income_heal_party,time).toFixed(1);
+      rtn += h_kind.indexOf('over_heal_party') !== -1 ? ' (' + ((data.accept_income_over_heal_party / data.accept_income_heal_party) * 100).toFixed(0) + '%)' : '(0%)' ;
+      rtn += '-' + ((data.accept_income_heal_party / data.accept_income_totalheal) * 100).toFixed(0) + '%</div>';
+      rtn += h_kind.indexOf('heal_party_HoT') !== -1 ? '<div class="damage-total">H:'+ damage_to_dps(data.accept_income_heal_party_HoT,time).toFixed(0) +' (' + ((data.accept_income_over_heal_party_HoT / data.accept_income_heal_party_HoT) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_party_barrier') !== -1 ? '<div class="damage-total"><div class="icon-shield"></div>:'+ damage_to_dps(data.accept_income_heal_party_barrier,time).toFixed(0) + '</div>': '' ;
+      rtn += '</div>';
+
+      let player_damage = [];
+      for(let i = 0 ; i < h_kind.length ; i++){
+        if(h_kind[i].substring(0,12) === 'heal_from_10'){
+          let nameID = h_kind[i].substring(h_kind[i].length - 8 ,h_kind[i].length);
+          let damage = data['accept_income_' + h_kind[i]];
+          if(typeof NameID_Name_JobList[nameID] === 'object'){
+            let name_job = NameID_Name_JobList[nameID]
+            player_damage.push({nameID:nameID,name:name_job.name,job:name_job.job,damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.accept_income_totalheal) * 100).toFixed(0) + '%'});
+          }else {
+            player_damage.push({nameID:nameID,name:nameID,job:'none',damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.accept_income_totalheal) * 100).toFixed(0) + '%'});
+          }
+        }
+      }
+      if(player_damage.length > 0 ){
+        player_damage = array_sort_module(player_damage,'damage','');
+        rtn += '<div class="damage-player-row">';
+        for(let i = 0 ; i < player_damage.length ; i ++){
+          rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>';
+        }
+        rtn += '</div>';
+      }
+    }
+  }
+  //Ally hps area (party copy)
+  if(h_kind.indexOf('heal_ally') !== -1){
+    if(data.accept_income_heal_ally > 0){
+      rtn += '<div class="tooltip_hr_line"></div>';
+      rtn += '<div class="heal-me"><div><div class="icon-alliance_normal"></div>';
+      rtn += damage_to_dps(data.accept_income_heal_ally,time).toFixed(1);
+      rtn += h_kind.indexOf('over_heal_ally') !== -1 ? ' (' + ((data.accept_income_over_heal_ally / data.accept_income_heal_ally) * 100).toFixed(0) + '%)' : '(0%)' ;
+      rtn += '-' + ((data.accept_income_heal_ally / data.accept_income_totalheal) * 100).toFixed(0) + '%</div>';
+      rtn += h_kind.indexOf('heal_ally_HoT') !== -1 ? '<div class="damage-total">H:'+ damage_to_dps(data.accept_income_heal_ally_HoT,time).toFixed(0) +' (' + ((data.accept_income_over_heal_ally_HoT / data.accept_income_heal_ally_HoT) * 100).toFixed(0) + '%)</div>': '' ;
+      rtn += h_kind.indexOf('heal_ally_barrier') !== -1 ? '<div class="damage-total"><div class="icon-shield"></div>:'+ damage_to_dps(data.accept_income_heal_ally_barrier,time).toFixed(0) + '</div>': '' ;
+      rtn += '</div>';
+
+      let player_damage = [];
+      for(let i = 0 ; i < h_kind.length ; i++){
+        if(h_kind[i].substring(0,12) === 'heal_from_10'){
+          let nameID = h_kind[i].substring(h_kind[i].length - 8 ,h_kind[i].length);
+          let damage = data['accept_income_' + h_kind[i]];
+          if(typeof NameID_Name_JobList[nameID] === 'object'){
+            let name_job = NameID_Name_JobList[nameID]
+            player_damage.push({nameID:nameID,name:name_job.name,job:name_job.job,damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.accept_income_totalheal) * 100).toFixed(0) + '%'});
+          }else {
+            player_damage.push({nameID:nameID,name:nameID,job:'none',damage:damage,dps:damage_to_dps(damage,time).toFixed(1),percent:((damage/data.accept_income_totalheal) * 100).toFixed(0) + '%'});
+          }
+        }
+      }
+      if(player_damage.length > 0 ){
+        player_damage = array_sort_module(player_damage,'damage','');
+        rtn += '<div class="damage-player-row">';
+        for(let i = 0 ; i < player_damage.length ; i ++){
+          rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>'
+        }
+        rtn += '</div>';
+      }
+    }
+  }
+  rtn += '</div>';
+  return rtn;
 }
