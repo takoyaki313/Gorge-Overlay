@@ -1,6 +1,7 @@
 let check = null;
 let check_2 = null;
-let AcceptMarginTime = 50;
+let AcceptMarginTime = 100;
+let AcceptMarginTime_mag = 1.1;
 async function networkDoT_24 (log){
   let data = {
     victimID: log[2],
@@ -11,8 +12,10 @@ async function networkDoT_24 (log){
     damage : parseInt(log[6],16),
     lastupdate : log[1],
     victimCurrenthp:Number(log[7]),
+    uniqueID : null,
   };
   let uniqueID = data.effectID + data.lastupdate + data.victimID + data.DoTType;
+  data.uniqueID = uniqueID;
   let damage_type = null;
   if(data.DoTType === 'DoT'){
     damage_type = 'normal-damage';
@@ -122,8 +125,13 @@ async function networkDoT_24 (log){
       await new_change_accept_damage(data.victimID,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.damage,'HoT',uniqueID,data.lastupdate)
       //await change_accept_damage(data.victimID,data.victimID,data.victimmaxhp,data.damage,data.overdamage,data.victimmaxhp,'normal-damage',uniqueID,data.lastupdate);
     }else if (data.effectID === 'C67') {
-
-    }else {
+      //Meteor Drive
+      await meteor_drive(data);
+    }else if(data.effectID === 'A2C'){
+      //Kardia Heal
+      await kardia_heal(data);
+    }
+    else{
       await unique_dot_player_hp_add(data,data.effectID,uniqueID,damage_type);
     }
 
@@ -144,6 +152,68 @@ async function networkDoT_24 (log){
     if(DEBUG_LOG){
       console.error('Warn : DoT EffectID Unknown ->' + data.effectID);
       console.error(log);
+    }
+  }
+}
+async function meteor_drive(data){
+  let id = '0C67';
+  let read_data = await read_maindata('Player_hp','nameID',data.victimID,id);
+  let now_time = await timestamp_change(data.lastupdate);
+  let calc = false;
+  if(Object.keys(read_data).length === 1){//include
+    if(typeof read_data[id] === 'object'){
+      let attacker = null;//適当
+      for (let i = 0 ; i < read_data[id].length ; i++){
+        if((now_time - read_data[id][i].time_ms) < (read_data[id][i].time * (1000 * AcceptMarginTime_mag))){
+          if(read_data[id][i].hit > 0){
+            if(!calc){
+              calc = true;
+              //MATCH
+              read_data[id][i].hit--;
+              attacker = read_data[id][i].attacker;
+            }
+          }
+        }
+      }
+      //------------
+      if(attacker === null){
+        if(DEBUG_LOG){
+          console.warn('Meteor Drive effect not include->');
+          console.warn(read_data);
+          console.warn(data);
+        }
+      }else {
+        await new_change_accept_damage(attacker,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.damage,data.DoTType,data.uniqueID,data.lastupdate);
+      }
+    }
+  }
+}
+async function kardia_heal(data){
+  let read_data = await read_maindata('Player_hp','nameID',data.victimID,'effect');
+  if(Object.keys(read_data).length === 1){//include
+    if(typeof read_data.effect === 'object'){
+      let attacker = null;//適当
+      for (let i = 0 ; i < read_data.effect.length ; i++){
+        if(read_data.effect[i].buffID === '0B38'){//カルディア被
+          if(attacker === null){
+            attacker = read_data.effect[i].attacker;
+          }else {
+            if(DEBUG_LOG){
+              console.warn('Warn : 複数人からカルディアを受けている。');
+              console.warn(read_data);
+            }
+            return null;
+          }
+        }
+      }
+      if(attacker === null){
+        if(DEBUG_LOG){
+          console.warn('Kardia effect not include->' + data.victimID);
+        }
+      }else {
+        await new_change_accept_damage(attacker,data.victimID,data.victimCurrenthp,data.victimmaxhp,data.damage,'kardia-heal',data.uniqueID,data.lastupdate);
+      }
+      //-------------
     }
   }
 }
@@ -312,57 +382,32 @@ async function dot_damage_distribution(data,sum,totaldamage,totaloverdamage){
   return added_data;
 }
 async function player_buff_add_26(log){
-  let data = {buffID:await buffID_cordinate(log[2]),attacker:log[5],buff:log[3],time:Number(log[4])};
+  let data = {buffID:await buffID_cordinate(log[2]),attacker:log[5],victim:log[7],buff:log[3],time:Number(log[4]),time_ms:await timestamp_change(log[1]),lastupdate:log[1]};
   if(data.buffID === '05B9'){//Tensyon
     data.buffID = log[9] + data.buffID;
   }
-  //
-  //重複がないか確認する
-  //
-  let player_effect = await read_maindata('Player_hp','nameID',log[7],'effect');
-  if(Object.keys(player_effect).length !== 0){
-    if(player_effect.effect === undefined){
-      //console.error(player_effect);
-      //console.error(log[7] + log[6]);
-      //console.error('Error : effect list is undefined');
+  let special = Special_Barrier_ID_Array_Dot.indexOf(data.buffID);
+  if(special !== -1){
+    let player_effect = await read_maindata('Player_hp','nameID',data.victim,'effect','currenthp','maxhp');
+    let victim = {currenthp:player_effect.currenthp,maxhp:player_effect.maxhp,nameID:data.victim};
+    if(typeof victim.maxhp !== 'number'){
+      victim.currenthp = 33333;
+      victim.maxhp = 11111;
+      //DUMMY
+      console.warn('26:VICTIM DUMMY_HP APPLY');
     }
-    else {
-      for(let i = 0 ; i < player_effect.effect.length ; i++){
-        if(player_effect.effect[i].buffID === data.buffID){
-          //console.log('Already buff include');
-          if(data.buffID === '0B34'){//Unique DoT プネウマ
-            let puneuma = {
-              receive:log[1],
-              attackerID:log[5],
-              victimID:log[7],
-              receive_time:await timestamp_change(log[1])
-            };
-            await update_maindata('Player_hp','nameID',log[7],['puneuma',puneuma,false],['lastupdate',log[1],true]);
-          }
-          return null;
-        }
-      }
-    }
+    //let attacker = await read_maindata('Player_hp','nameID',data.attacker,data.buffID,'currenthp','maxhp');
+    let barrier = await potencial_to_damage_calc_effect(data.attacker,data.victim,Special_Barrier_ID[special].potencial,'HoT');
+    await new_change_accept_damage(data.attacker,data.victim,victim.currenthp,victim.maxhp,barrier,'Kardia-barrier',data.buffID + data.lastupdate + data.attacker + data.victim ,data.lastupdate);
   }
-  await update_maindata('Player_hp','nameID',log[7],['effect',data,false],['lastupdate',log[1],true]);
-  /*
-  let unique_include = false;
-
-  if(data.buffID === '0B34'){//Unique DoT プネウマ
-    let puneuma = {
-      receive:log[1],
-      attackerID:log[5],
-      victimID:log[7],
-      receive_time:await timestamp_change(log[1])
-    };
-    unique_include = true;
+  //Meteor Drive
+  if(data.buffID === '0C67'){
+    data.hit = 3;
+    await update_maindata('Player_hp','nameID',log[7],['effect',data,false],[data.buffID,data,false],['lastupdate',log[1],true]);
   }
-  //console.error('buffID is insert');
-  if(unique_include){
-    await update_maindata('Player_hp','nameID',log[7],['effect',data,false],['puneuma',puneuma,false],['lastupdate',log[1],true]);
-  }else {
+  else {
     await update_maindata('Player_hp','nameID',log[7],['effect',data,false],['lastupdate',log[1],true]);
-  }*/
+  }
 }
 async function player_buff_list_update(data,nameID,lastupdate){
   if(data.length % 3 !== 0){
@@ -508,20 +553,10 @@ async function network_buff_removerd_30(log){
   //Calc Target ID ->52B Wild Fire
   //
   for(let i = UniqueID_end ; i < Unique_DoT_ID_Array.length ; i++){
-    if(log[2] === Unique_DoT[i].id){
+    if(log[2] === Unique_DoT[i].id && log[2] !== 'C67'){//Meteor Drive Exclude
       await unique_buff_remove_action(log,Unique_DoT[i].id,17500);
     }
   }
-  /*
-  if(log[2] === Unique_DoT[0].id){
-
-  }
-  else if (log[2] === Unique_DoT[2].id) {//深謀遠慮
-    await unique_buff_remove_action(log,'sinbou',17500);
-  }
-  else if (log[2] === Unique_DoT[4].id) {
-    await unique_buff_remove_action(log,'haimano-inn',17500);
-  }*/
 }
 async function new_change_accept_damage(attackerID,victimID,victimCurrenthp,victimmaxhp,damage,damage_type,uniqueID,lastupdate){
   let a_replaceID = await pet_replace(attackerID,"");
@@ -546,6 +581,9 @@ async function new_change_accept_damage(attackerID,victimID,victimCurrenthp,vict
     damage_type = 'damage';
     type = 'DoT';
     await update_maindata('Player_hp','nameID',victim.nameID,['attacker',{attacker:attacker.nameID,type:'DoT-damage'},false]);
+  }else if(damage_type === 'Kardia-barrier'){
+    damage_type = 'heal';
+    type = 'barrier';
   }else{
     damage_type = 'heal';
     type = 'HoT';

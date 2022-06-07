@@ -1694,7 +1694,7 @@ let EFFECT_ID = {
     name:'アポカタスタシス',
     type:[false,false,true,false,true],
     effect:1,
-    cut:0.8,
+    cut:0.9,
     cut_heal:1,
     maxtime:1
   },

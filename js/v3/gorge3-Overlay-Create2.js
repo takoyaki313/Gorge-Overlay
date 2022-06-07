@@ -103,6 +103,20 @@ var Enemy_team_display = true;
 var Ally_team_matome = true;
 var Enemy_team_matome = true;
 var C_Time_Reference = 'battle_time';
+function wolves_start(e){
+  let template = $('#cc-source');
+  let container = $('#overlay').clone();
+  container.html("");
+  let time = Number(e.Encounter.DURATION);
+  let battle_datas = maindata_export('ally',time,'totaldamage');
+  battle_datas = array_sort_module(battle_datas,'calcdps','up');
+  for(let i = 0 ; i < battle_datas.length; i++){
+    let battle_data = battle_datas[i];
+    battle_data.battle_time = time;
+    container.append(cc_create(template,battle_data,time,battle_datas[0].calcdps));
+  }
+  $('#overlay').replaceWith(container);
+}
 function cc_start(){
   let sort_target = 'calcdps';
   let template = $('#cc-source');
@@ -296,8 +310,7 @@ function crystal_dps_tooptip(data){
   rtn += d_kind.indexOf('damage_total_DoT') !== -1 ? '<div class="damage-total">D:' + damage_to_dps(data.damage_total_DoT,time).toFixed(1) + '-' + ((data.damage_total_DoT/data.totaldamage) * 100).toFixed(0) + '%</div>': '' ;
   rtn += d_kind.indexOf('damage_total_counter') !== -1 ? '<div class="damage-total">C:' + damage_to_dps(data.damage_total_counter,time).toFixed(1) + '-' + ((data.damage_total_counter/data.totaldamage) * 100).toFixed(0) + '%</div>': '' ;
   rtn += '</div>';
-  //hr
-  rtn += '<div class="tooltip_hr_line"></div>';
+
   //player dps area
   if (!time_include){
     return rtn;
@@ -319,6 +332,8 @@ function crystal_dps_tooptip(data){
   player_damage = array_sort_module(player_damage,'damage','');
   if(player_damage.length > 0 ){
     player_damage = array_sort_module(player_damage,'damage','');
+    //hr
+    rtn += '<div class="tooltip_hr_line"></div>';
     rtn += '<div class="damage-player-row">';
     for(let i = 0 ; i < player_damage.length ; i ++){
       rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>';
@@ -375,8 +390,6 @@ function crystal_income_damage_tooptip(data){
   rtn += d_kind.indexOf('damage_total_DoT') !== -1 ? '<div class="damage-total">D:' + damage_to_dps(data.accept_income_damage_total_DoT,time).toFixed(1) + '-' + ((data.accept_income_damage_total_DoT/data.accept_income_totaldamage) * 100).toFixed(0) + '%</div>': '' ;
   rtn += d_kind.indexOf('damage_total_counter') !== -1 ? '<div class="damage-total">C:' + damage_to_dps(data.accept_income_damage_total_counter,time).toFixed(1) + '-' + ((data.accept_income_damage_total_counter/data.accept_income_totaldamage) * 100).toFixed(0) + '%</div>': '' ;
   rtn += '</div>';
-  //hr
-  rtn += '<div class="tooltip_hr_line"></div>';
   //player dps area
   if (!time_include){
     return rtn;
@@ -397,6 +410,8 @@ function crystal_income_damage_tooptip(data){
   }
   if(player_damage.length > 0 ){
     player_damage = array_sort_module(player_damage,'damage','');
+    //hr
+    rtn += '<div class="tooltip_hr_line"></div>';
     rtn += '<div class="damage-player-row">';
     for(let i = 0 ; i < player_damage.length ; i ++){
       rtn += '<div class="name">'+ player_damage[i].name +'</div><div class="job-icon icon-'+ player_damage[i].job +'"></div><div class="dps">'+ player_damage[i].dps +'</div><div class="dps-percent">'+ player_damage[i].percent +'</div>';

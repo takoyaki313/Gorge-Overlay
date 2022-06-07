@@ -6,7 +6,7 @@ var KILLSOUND = true;
 let Send_Action = false;
 let Logline_Add_Tool_Temp = [];
 let Logline_add_mode = false;
-const EnableTimeRange = 100000;
+const Logline_Message = false;
 let Log = '';
 async function logline_firststep(log){
   Log = log;
@@ -15,6 +15,12 @@ async function logline_firststep(log){
   }
   if(log[0] === '40'){
     await minimap_change_area_check(log);
+  }
+  if(Logline_Message){
+    let match = ['21','22','37','24','26','30','38'];
+    if(match.indexOf(log[0]) !== -1){
+      console.debug(log);
+    }
   }
   if(AREA.Area_Type > 0){
     switch (log[0]) {
@@ -338,8 +344,7 @@ async function networkAbility_receve2(log){
     db_data.time_accept = data.lastupdate;
     insert_maindata_object('Action_Synced_data',db_data);
   }
-  attackerID = db_data.attackerID;
-  await hpdata_add(data.nameID,data,attackerID);
+
   //--income damage / heal
   if(db_data.inputname === null){
     return null;
@@ -351,11 +356,15 @@ async function networkAbility_receve2(log){
     //counter damage include
     let income = await add_accept_target(db_data.inputdata[counter].target,db_data.inputdata[counter].data,'income');
     update_maindata_change_array('Player_data','nameID',db_data.attackerID,income.target,income.data,income.replace);
+    attackerID = db_data.C_attackerID
+  }else {
+    attackerID = db_data.attackerID;
   }
   if(Send_Action){
     let send = await add_accept_target(db_data.inputname,db_data.inputdata,'send');
     update_maindata_change_array('Player_data','nameID',db_data.attackerID,send.target,send.data,send.replace);
   }
+  await hpdata_add(data.nameID,data,attackerID);
 }
 async function add_accept_target(name,data,income){
   let rtn = {target:[],data:[],replace:[]};
@@ -1041,6 +1050,9 @@ function logline_battle_flag_reset(){
     Battle_Max_Time : 0,
     Aliance_Data_24 : false,
   };
+  if(AREA.Area_Type === 4){
+    LOGLINE_ENCOUNTER.Engage = true;
+  }
 }
 async function timestamp_change(time){
   return Date.parse(time);

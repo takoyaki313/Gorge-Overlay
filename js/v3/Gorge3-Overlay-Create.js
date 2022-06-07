@@ -766,8 +766,8 @@ function fl_create(template,battle_data,hide,selected){
     row.find('.f-job-icon').addClass('underline-text');
   }
   row.find('.f-hps').text(damage_to_dps(battle_data.totalheal,time).toFixed(0));
-  row.find(".f-hps").prop('title',tooltip_title_create([Lang_select.self +' -> ',battle_data.selfheal],[Lang_select.party + ' -> ',battle_data.partyheal],[Lang_select.ally + ' -> ',battle_data.allyheal],[Lang_select.other + ' -> ',battle_data.otherheal]));
-  row.find(".f-dps").prop('title',tooltip_title_create([Lang_select.Person +' -> ',battle_data.persondamage],[Lang_select.Robot + ' -> ',battle_data.torobotdamage],[Lang_select.Maton + ' -> ',battle_data.matondamage],[Lang_select.Tower + ' -> ',battle_data.towerdamage]));
+  row.find(".f-hps").prop('title',crystal_heal_tooptip(battle_data));
+  row.find(".f-dps").prop('title',crystal_dps_tooptip(battle_data));
   let jobicon_space = row.find('.f-job-icon');
   jobicon_space.addClass('icon-' + battle_data.job);
   let jobhistory = tooltip_job_history(battle_data.jobhistory);
@@ -807,13 +807,13 @@ function fl_create(template,battle_data,hide,selected){
     row.find('.f-dunamis').addClass('dunamis-space');
   }
   row.find('.f-incomedamage').text(damage_to_dps(battle_data.accept_income_totaldamage,time).toFixed(0));
-  row.find(".f-incomedamage").prop('title',tooltip_title_create([Lang_select.personincomedamage +' -> ',battle_data.personincomedamage],[Lang_select.robincomedamage + ' -> ',battle_data.robincomedamage],[Lang_select.objectincomedamage + ' -> ',battle_data.objectincomedamage]));
+  row.find(".f-incomedamage").prop('title',crystal_income_damage_tooptip(battle_data));
   row.find('.f-incomeheal').text(damage_to_dps(battle_data.accept_income_totalheal ,time).toFixed(0));
-  row.find(".f-incomeheal").prop('title',tooltip_title_create([Lang_select.incomeselfheal +' -> ',battle_data.incomeselfheal],[Lang_select.incomepartyheal + ' -> ',battle_data.incomepartyheal],[Lang_select.incomeallyheal + ' -> ',battle_data.incomeallyheal],[Lang_select.incomeotherheal + ' -> ',battle_data.incomeotherheal]));
+  row.find(".f-incomeheal").prop('title',crystal_income_heal_tooptip(battle_data));
   /*if(AREA.Area_Type === 3){
     row.find(".f-incomedamage-gage").html(bar_create([battle_data.personincomedamage,'incomedamage-player'],[battle_data.robincomedamage,'incomedamage-robot'],[battle_data.objectincomedamage,'incomedamage-object'],[battle_data.otherpersonincomedamage,'incomedamage-other']));
   }*/
-  row.find(".f-incomeheal-gage").html(bar_create([battle_data.incomeotherheal,'incomeheal-object'],[battle_data.incomeallyheal,'incomeheal-ally'],[battle_data.incomepartyheal,'incomeheal-party'],[battle_data.incomeselfheal,'incomeheal-self']));
+  //row.find(".f-incomeheal-gage").html(bar_create([battle_data.incomeotherheal,'incomeheal-object'],[battle_data.incomeallyheal,'incomeheal-ally'],[battle_data.incomepartyheal,'incomeheal-party'],[battle_data.incomeselfheal,'incomeheal-self']));
   if(hide){
     row.find('.f-hide').css('display','none');
     row.children().attr('id','Overlay_' + battle_data.name + 'of');

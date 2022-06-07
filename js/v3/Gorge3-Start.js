@@ -9,10 +9,11 @@ $(function (){
   logline_battle_flag_reset();
   reset_TBD();
   //DB.Player_hp.clear();
-   $( document ).tooltip({
+  $( document ).tooltip({
     content: function() {
         return $(this).attr('title');
-    }
+    },
+    show:false
   });
   /////////////////////////////////////////////////////////
   addOverlayListener('LogLine', (logline) => {
@@ -39,10 +40,15 @@ $(function (){
   DoT_ID_Array = object_to_array(DoT_ID,'dotid');
   Unique_DoT_ID_Array = object_to_array(Unique_DoT,'id');
   Barrier_ID_Array = object_to_array(Barrier_ID,'dotid');
+  Special_Barrier_ID_Array_Skill = object_to_array(Special_Barrier_ID,'actionid');
+  Special_Barrier_ID_Array_Dot = object_to_array(Special_Barrier_ID,'dotid');
   EFFECT_ID_LIST = Object.keys(EFFECT_ID);
   version_check(true);
   startOverlayEvents();
   setInterval(calc,Calc_interval);
+  if(Dev_mode){
+    connectBC(true);
+  }
 });
 $(document).on("click", "[id^=Overlay_]", function(t){
     let select_id = t.currentTarget.id;
@@ -72,11 +78,15 @@ $(document).on("click", "[id^=Overlay_]", function(t){
     }
 });
 $(document).on("click", "#mypage-icon-open", function(t){
-  if(t.detail === Sample_Page_Num){
+  if(Dev_mode){
+    if(ONLINE){
+      //window.open( 'https://takoyaki313.github.io/Gorge-Overlay/G3-Setting.html' ,'',"width=1080,height=840" );
+    }else {
+      window.open( 'GorgeOverlay_DebugTool.html' ,'',"width=1080,height=840" );
+    }
+  }
+  else if(t.detail === Sample_Page_Num){
     if(LOGLINE_ENCOUNTER.Engage||LOGLINE_ENCOUNTER.Result_Page){
-      if(Dev_mode){
-        ALLDISPLAY = true;
-      }
       fl_start();
       ALLDISPLAY = false;
     }else {
@@ -92,6 +102,11 @@ $(document).on("click", "#setting-open", function(t){
     }else {
       window.open( 'G3-Setting.html' ,'',"width=1080,height=840" );
     }
+  }
+});
+$(document).on("click", ".header-areaname", function(t){
+  if(Dev_mode){
+    sendBC(TBD);
   }
 });
 window.addEventListener("storage", function (event) {

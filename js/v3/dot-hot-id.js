@@ -283,7 +283,9 @@ const Barrier_ID = [
     name:'鼓舞',
     potencial: 4000,
     max : 15,
-    synctype:'heal',
+    synctype:'buff_check',
+    checkID: '0C16',
+    synctype2: 1.5,
     damagesync : 1,
     damage : false,
     type:'barrier'
@@ -353,28 +355,7 @@ const Barrier_ID = [
     damagesync : 0,
     damage : false,
     type:'barrier'
-  },/*{//sage
-    actionid:'740A',
-    action_potencial: 0,
-    dotid:'0C24',
-    name:'ハイマ',
-    potencial: 1200,
-    max : 10,
-    damagesync : 0,
-    damage : false,
-    type:'barrier'
-  },{
-    actionid:'7249',
-    action_potencial: 0,
-    dotid:'0C25',//logline 26 
-    name:'エウクラシア・ディアグノシス',
-    potencial: 8000,
-    max : 15,
-    synctype:'calc',
-    damagesync : 0,
-    damage : false,
-    type:'barrier'
-  },*/{//drg
+  },{//drg
     actionid:'733A',
     action_potencial: 20000,
     dotid:'0C6D',
@@ -519,7 +500,7 @@ const Barrier_ID = [
   },{
     actionid:'732C',
     action_potencial: 0,
-    dotid:'07CD',
+    dotid:'0C65',
     name:'抜重歩法',
     potencial: 6000,
     max : 10,
@@ -529,9 +510,35 @@ const Barrier_ID = [
     type:'barrier'
   },
 ];
+let Special_Barrier_ID = [{
+    actionid:'7249',
+    action_potencial: 0,
+    dotid:'0C25',//logline 26
+    name:'エウクラシア・ディアグノシス',
+    potencial: 8000,
+    max : 15,
+    synctype:'calc',
+    damagesync : 0,
+    damage : false,
+    type:'barrier'
+},{
+    actionid:'740A',//プネウマ
+    action_potencial: 0,
+    dotid:'0C26',//logline 26
+    name:'ハイマ',
+    potencial: 2000,
+    max : 10,
+    synctype:'calc',
+    damagesync : 0,
+    damage : false,
+    type:'barrier'
+}];
 let Unique_DoT_ID_Array;
 let DoT_ID_Array;
 let Barrier_ID_Array;
+let Special_Barrier_ID_Array_Skill;
+let Special_Barrier_ID_Array_Dot;
+
 function object_to_array(object,key){
   let data = [];
   for(let i = 0 ; i < object.length ; i++){

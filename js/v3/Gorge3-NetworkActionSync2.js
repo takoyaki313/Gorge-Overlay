@@ -1,6 +1,7 @@
-const Update_attacker = ['add-buff-attacker','tp-recover','mp-recover','additional-effect'];
+const Update_attacker = ['add-buff-attacker','tp-recover','mp-recover'/*,'additional-effect'*/];
 let LastUniqueID = "";
 async function networkactionsync_21_22_2(log){
+  const logline_21_22_max = 48;
   if(log.length > logline_21_22_max){
     if(DEBUG_LOG){
       console.error("Error : data length not matched 48/47 ->" + log.length);
@@ -28,12 +29,11 @@ async function networkactionsync_21_22_2(log){
     count: "-" + log[45],
   };
   let effectmax = effectdata.name.length;
-
   let victim_effect = {name:[],param:[]};
   let attacker_effect = {name:[],param:[]};
   for(let i = 0 ; i < effectmax ; i++){
-    if(Update_attacker.indexOf(effectdata.name[i]) === -1){//victim 側への影響
-      if('normal-damage' === effectdata.name[i] && effectdata.special[i]){
+    if(Update_attacker.indexOf(effectdata.name[i]) === -1 && ! effectdata.special[i]){//victim 側への影響
+      /*if('normal-damage' === effectdata.name[i] && effectdata.special[i]){
         //counter damage
         let counter_position = victim_effect.name.indexOf('counter');
         if(counter_position !== -1){//2個目以降のdamage
@@ -51,7 +51,7 @@ async function networkactionsync_21_22_2(log){
           victim_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
         }
       }
-      else if('normal-damage' === effectdata.name[i]){
+      else */if('normal-damage' === effectdata.name[i]){
         //victim_effect.name.push('damage');
         //victim_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
         let damage_position = victim_effect.name.indexOf('damage');
@@ -78,12 +78,11 @@ async function networkactionsync_21_22_2(log){
         victim_effect.param.push(effectdata.param[i]);
       }
     }else {//attacker 側への影響
-      /*if('normal-damage' === effectdata.name[i]){//反撃ダメージ
+      if('normal-damage' === effectdata.name[i]){//反撃ダメージ
         attacker_effect.name.push('counter');
         attacker_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
-        console.warn(Log);
       }
-      else*/ if('heal' === effectdata.name[i]){
+      else if('heal' === effectdata.name[i]){
         let heal_position = attacker_effect.name.indexOf('heal');
         if(heal_position !== -1){//2個目のヒール
           if(typeof effectdata.param[i] === 'number'){
@@ -120,9 +119,29 @@ async function networkactionsync_21_22_2(log){
     attacker_input_data = await networkaction_calc(data,attacker_effect,"attacker");
   }
   let marge_input_data = await general_input_type(data.lastupdate,victim_input_data,attacker_input_data);
-  if(NetworkActionSync){
-    update_maindata_change_array('Player_data','nameID',data.attackerID,marge_input_data.target,marge_input_data.data,marge_input_data.replace);
+  await update_maindata_change_array('Player_data','nameID',data.attackerID,marge_input_data.target,marge_input_data.data,marge_input_data.replace);
+
+  let special_Barrier = Special_Barrier_ID_Array_Skill.indexOf(data.actionID);
+  if(special_Barrier !== -1){
+    await special_barrier_calc(data,Special_Barrier_ID[special_Barrier]);
   }
+}
+async function special_barrier_calc(data,barrier){
+  let input = {
+    attackerID:data.attackerID,
+    attacker:data.attacker,
+    victimID:data.victimID,
+    victim:data.victim,
+    actionID:data.actionID,
+    action:data.action,
+    victimCurrentHP : data.victimCurrentHP,
+    victimmaxHP : data.victimmaxHP,
+    attackerCurrentHP:data.attackerCurrentHP,
+    attackermaxHP : data.attackermaxHP,
+    time_ms:data.time_ms,
+  }
+  //let barrier_input = await New_potencial_check_barrier(input,barrier,true,'kardia-barrier');
+  await update_maindata('Player_hp','nameID',data.attackerID,[barrier.dotid,{time_ms:data.time_ms,data:input},true]);//カルディア対象へのバリアなので置き換え
 }
 async function counterdamage_include(data,effect){
   let victim = {nameID:data.attackerID,name:data.attacker,hp:data.attackerCurrentHP,maxhp:data.attackermaxHP};
@@ -133,6 +152,8 @@ async function counterdamage_include(data,effect){
     attacker:attacker.name,
     victimID:victim.nameID,
     victim:victim.name,
+    C_attackerID:data.victimID,
+    C_attacker:data.victim,
     effectname:effect.name,
     effectparam:effect.param,
     inputname:null,
@@ -163,7 +184,6 @@ async function counterdamage_include(data,effect){
 async function networkaction_calc(data,effect,type){
   let attacker = {};
   let victim = {};
-  let counter = effect.name.indexOf('counter') ;
   if(type === 'attacker'){
     attacker = {nameID:data.attackerID,name:data.attacker,hp:data.attackerCurrentHP,maxhp:data.attackermaxHP};
     victim = {nameID:data.attackerID,name:data.attacker,hp:data.attackerCurrentHP,maxhp:data.attackermaxHP};
@@ -178,10 +198,12 @@ async function networkaction_calc(data,effect,type){
     attacker:attacker.name,
     victimID:victim.nameID,
     victim:victim.name,
+    C_attackerID:data.victimID,
+    C_attacker:data.victim,
     effectname:effect.name,
     effectparam:effect.param,
-    inputname:null,
-    inputdata:null,
+    inputname:[],
+    inputdata:[],
     actionID:data.actionID,
     action:data.action,
     victimCurrentHP : victim.hp,
@@ -226,14 +248,27 @@ async function networkaction_calc(data,effect,type){
       let barrier_position = Barrier_ID_Array.indexOf(await effectdata_force4(input.effectparam[i]));
       if(barrier_position !== -1){
         //include barrier
-        let barrier_input = await New_potencial_check_barrier(input,barrier_position);
-        input_data.data = input_data.data.concat(barrier_input.data);
+        let additional_effect = 1;
+        if(input.actionID === '722B'){//アクアヴェールの2倍
+          if(input.effectname.indexOf('esuna-miss') !== -1){
+
+          }else if (input.effectname.indexOf('esuna-one') !== -1) {
+            //console.error('アクアヴェール　OK');
+            additional_effect = 2;
+          }
+        }
+        let barrier_input = await New_potencial_check_barrier(input,barrier_position,false,'barrier',input.attackerID,additional_effect);
+        input.inputname = input.inputname.concat(barrier_input.target);
+        input.inputdata = input.inputdata.concat(barrier_input.data);
         input_data.target = input_data.target.concat(barrier_input.target);
+        input_data.data = input_data.data.concat(barrier_input.data);
         input_data.replace = input_data.replace.concat(barrier_input.replace);
       }
     }else if (input.effectname[i] === "counter") {
         //ダメージだけ入れる
         let counter_input = await counterdamage_include(data,effect);
+        input.inputname = input.inputname.concat('counter');
+        input.inputdata = input.inputdata.concat(counter_input);
         input_data.data.push(counter_input);
         input_data.target.push('counter');
         input_data.replace.push(false);
@@ -307,9 +342,11 @@ async function damage_heal_input_type(uniqueID,attackerID,victimID,a_maxHP,a_Cur
       overdamage = 0;
     }
     if(damage < overdamage){
-      console.error('Overdamage Calc Error->'  + damage + ' < ' + overdamage);
-      console.error(' v_CurrentHP ->'+ v_CurrentHP + ' v_maxHP->' + v_maxHP);
-      console.error(Log);
+      if(DEBUG_LOG){
+        console.error('Overdamage Calc Error->'  + damage + ' < ' + overdamage);
+        console.error(' v_CurrentHP ->'+ v_CurrentHP + ' v_maxHP->' + v_maxHP);
+        console.error(Log);
+      }
     }
     rtn = await damage_target_set(damage,overdamage,target,type,rtn)
   }else {
@@ -507,9 +544,13 @@ async function damage_target(victimID,attackerID,v_maxHP,a_maxHP,actionID,specia
 //////////////////////////////////////////////////////////////////////////
 //Barrier
 //////////////////////////////////////////////////////////////////////////
-async function New_potencial_check_barrier(data,effectposition){
-  let action_detail = await potencial_action_search_tool(Barrier_ID,data.actionID,Barrier_ID[effectposition].dotid,effectposition);
-  let barrier = 0;
+async function New_potencial_check_barrier(data,effectposition,special,type_name,attackerID/*Optional*/,additional){
+  let action_detail = null;
+  if (special){
+    action_detail = effectposition;
+  }else {
+    action_detail = await potencial_action_search_tool(Barrier_ID,data.actionID,Barrier_ID[effectposition].dotid,effectposition);
+  }
   if(action_detail.synctype === 'calc'){
     barrier = await potencial_to_damage_calc_effect(data.attackerID,data.victimID,action_detail.potencial,'HoT');
   }else if (action_detail.synctype === 'heal'){
@@ -521,6 +562,30 @@ async function New_potencial_check_barrier(data,effectposition){
       }
     }
     barrier = damage;
+  }else if (action_detail.synctype === 'buff_check'){
+    let read_data = await read_maindata('Player_hp','nameID',attackerID,'effect');
+    let additional = false;//適当
+    if(Object.keys(read_data).length === 1){//include
+      if(typeof read_data.effect === 'object'){
+        for (let i = 0 ; i < read_data.effect.length ; i++){
+          if(read_data.effect[i].buffID === action_detail.checkID){
+            additional = true;
+            break
+          }
+        }
+      }
+    }
+    let damage = action_detail.action_potencial;
+    for(let i = 0 ; i < data.effectname.length ; i++){
+      if(data.effectname[i] === 'heal'){
+        damage = data.effectparam[i] * action_detail.damagesync;
+        break;
+      }
+    }
+    barrier = damage;
+    if(additional){
+      barrier = barrier * action_detail.synctype2;
+    }
   }
   else if (action_detail.synctype === 'maxhp'){
     if (data.victimmaxHP === 0) {
@@ -532,7 +597,10 @@ async function New_potencial_check_barrier(data,effectposition){
     console.warn('ActionSync Barrier Calc Failed :Sync Type Unknown ->' + action_detail.synctype);
     console.warn(action_detail);
   }
-  return await damage_heal_input_type(null,data.attackerID,data.victimID,data.attackermaxHP,data.attackerCurrentHP,data.victimmaxHP,data.victimCurrentHP,action_detail.dotid,'heal',barrier,'barrier');
+  if(additional !== 1){
+    barrier = barrier * additional;
+  }
+  return await damage_heal_input_type(null,data.attackerID,data.victimID,data.attackermaxHP,data.attackerCurrentHP,data.victimmaxHP,data.victimCurrentHP,action_detail.dotid,'heal',barrier,type_name);
 }
 ////////////////////////////////////////////////////////////////
 //  effectdata return

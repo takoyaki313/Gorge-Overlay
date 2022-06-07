@@ -10,6 +10,17 @@ function reset_TBD(){
     ,Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
   NameID_Name_JobList = {}
 }
+function part_reset_TBD(){
+  let backup = [];
+  for(let i = 0 ; i < TBD.Player_data.length ; i++){
+    let target = TBD.Player_data[i];
+    if(target.nameID.substring(0,2) === '10'){
+      backup.push({nameID:target.nameID,name:target.name,job:target.job,server:target.server,aliance:target.aliance});
+    }
+  }
+  TBD = {Player_data:backup,Skill_data:[],DoT_data:[],Barrier_data:[],Player_hp:[],Hp_data:[],Action_data:[],Action_Synced_data:[],Action_Sync_data:[]
+    ,Aliance:[{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]},{dunamis:0,history:[]}]};
+}
 async function hp_data_db_add(data){
   let input_primary_key = null;
   await DB.transaction("rw", DB.Hp_data,async ()=>{

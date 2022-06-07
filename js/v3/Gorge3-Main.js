@@ -5,6 +5,7 @@ var OWNER_LIST = [];
 var FORCE_LOG_OFF = false;
 var DEBUG_LOG = false;
 let DoT_Simulate_Debug_massage = false;
+let WolvesReset = false;
 
 /*
 inputdata format
@@ -25,6 +26,12 @@ function encounter_already_start_check(){
   }
 }
 function overlay_update_start(e){
+  if(e.isActive === 'false' && e.Encounter.CurrentZoneName === "Wolves' Den Pier"){
+    if(AREA.Area_Type === 4 && WolvesReset){//簡易リセット
+      WolvesReset = false;
+      part_reset_TBD();
+    }
+  }
   if(e.isActive === 'true' && Object.keys(e.Combatant).length > 0 ){
     encounter_already_start_check();
     if(e.Encounter.CurrentZoneName.toLowerCase() === 'hidden gorge'){
@@ -38,10 +45,11 @@ function overlay_update_start(e){
       ) {
         fl_start(e);
     }
-    else if(e.Encounter.CurrentZoneName === 'Middle La Noscea'||
+    else if(/*e.Encounter.CurrentZoneName === 'Middle La Noscea'||*/
     e.Encounter.CurrentZoneName === "Wolves' Den Pier"/*||
     e.Encounter.CurrentZoneName === 'The Goblet'*/){
-      pve_start(e);
+      WolvesReset = true;
+      wolves_start(e);
     }
     else if (e.Encounter.CurrentZoneName.toLowerCase() === 'the palaistra'||
     e.Encounter.CurrentZoneName.toLowerCase() === 'the volcanic heart'||
@@ -191,10 +199,11 @@ async function area_type_set(zoneID){
       AREA.Area_Type = 5;
       LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
       break;
-    /*
+
     case 250://Wolves Den Pier
       AREA.Area_Type = 4;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;
+      WolvesReset = false;
       break;
     /*case 341://The Goblet
       AREA.Area_Type = 10;
@@ -230,8 +239,14 @@ function battle_time_set(){
     TBD.Player_data[i].battle_time = 600;
   }
 }
-async function sample_crystal_data_calc(){
-  let data = await crystal_sample();
+async function sample_crystal_data_calc(type){
+  let data = "";
+  if(type === 1){
+    data = await crystal_sample();
+  }else if (type === 2) {
+    data = await crystal2_sample();
+  }
+
   AREA.Area_Type = 5;
   for(let i = 0 ; i < data.length ; i ++){
     //logline_firststep(data[i]);
