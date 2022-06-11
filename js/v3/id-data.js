@@ -6,7 +6,7 @@ const Oppresor_HP = 100000;
 const Justice_HP = 75000;//jas
 const Chaiser_HP = 50000;
 const Robot_Bunsin = 100;
-const Robot_name = ['che','opp','jas'];
+const Robot_name = ['che', 'opp', 'jas'];
 const Core_Tower_HP = 2000000;
 const Gorge_BattleTime = 900;
 const Fl_BattleTime = 1200;
@@ -18,7 +18,7 @@ const Test_BattleTime = 300;
 const DoubleRocketPuntch = '26FB';//ダブルロケットパンチ (SkillID)
 const Kaiki = '740F' //快気(SkillID)
 const GunyouPosion = '717F' //軍用ポーション(SkillID)
-const TensyonMax = '06C2';　//テンションマックス (buffID)
+const TensyonMax = '06C2';//テンションマックス (buffID)
 /////////////////////
 //////// Setting
 /////////////////////
@@ -27,64 +27,64 @@ const TensyonMax = '06C2';　//テンションマックス (buffID)
 ///effect ID
 /////////////////
 let Lang_text = {
-  ja:{
-    Person:'人',
-    Robot:'ロボット',
-    Maton:'オブジェクト',
-    Tower:'タワー・コア',
+  ja: {
+    Person: '人',
+    Robot: 'ロボット',
+    Maton: 'オブジェクト',
+    Tower: 'タワー・コア',
     //
-    self:'自分',
-    party:'パーティ',
-    ally:'他アラ',
-    other:'オブジェクト',
+    self: '自分',
+    party: 'パーティ',
+    ally: '他アラ',
+    other: 'オブジェクト',
     //income
-    personincomedamage:'人',
-    robincomedamage:'ロボット',
-    objectincomedamage:'オブジェクト',
-    otherpersonincomedamage:'人（不明）',
+    personincomedamage: '人',
+    robincomedamage: 'ロボット',
+    objectincomedamage: 'オブジェクト',
+    otherpersonincomedamage: '人（不明）',
     //
-    incomeselfheal:'自分',
-    incomepartyheal:'パーティ',
-    incomeallyheal:'他アラ',
-    incomeotherheal:'オブジェクト',
+    incomeselfheal: '自分',
+    incomepartyheal: 'パーティ',
+    incomeallyheal: '他アラ',
+    incomeotherheal: 'オブジェクト',
     //
-    overhealPct:'オーバーヒール%',
-    healed:'HPS',
+    overhealPct: 'オーバーヒール%',
+    healed: 'HPS',
   },
-  en:{
-    Person:'Person',
-    Robot:'Robot',
-    Maton:'Object',
-    Tower:'Tower/Core',
+  en: {
+    Person: 'Person',
+    Robot: 'Robot',
+    Maton: 'Object',
+    Tower: 'Tower/Core',
     //
-    self:'Myself',
-    party:'Party',
-    ally:'Aliance',
-    other:'Object',
+    self: 'Myself',
+    party: 'Party',
+    ally: 'Aliance',
+    other: 'Object',
     //income
-    personincomedamage:'Person',
-    robincomedamage:'Robot',
-    objectincomedamage:'Object',
-    otherpersonincomedamage:'Person (Unknown)',
+    personincomedamage: 'Person',
+    robincomedamage: 'Robot',
+    objectincomedamage: 'Object',
+    otherpersonincomedamage: 'Person (Unknown)',
     //
-    incomeselfheal:'Myself',
-    incomepartyheal:'Party',
-    incomeallyheal:'Aliance',
-    incomeotherheal:'Object',
+    incomeselfheal: 'Myself',
+    incomepartyheal: 'Party',
+    incomeallyheal: 'Aliance',
+    incomeotherheal: 'Object',
     //
-    overhealPct:'OverHeal%',
-    healed:'HPS',
+    overhealPct: 'OverHeal%',
+    healed: 'HPS',
   },
 };
 var Lang_select = Lang_text.ja;
-let EXCLUDE_BUFF = ['07EB','07EA','0B37','0B38'];//スタンス系　カルディア クローズドポジション
+let EXCLUDE_BUFF = ['07EB', '07EA', '0B37', '0B38'];//スタンス系　カルディア クローズドポジション
 let EFFECT_ID_LIST = [];
 //////////////////////////////////////////////
 //Job
 //////////////////////////////////////////////
-function jobID_to_string(id){
-  if(typeof id === 'string'){
-    id = parseInt(id,16);
+function jobID_to_string(id) {
+  if (typeof id === 'string') {
+    id = parseInt(id, 16);
   }
   let job = null;
   switch (id) {
@@ -210,7 +210,7 @@ function jobID_to_string(id){
       break;
     case 40:
       job = 'sge';
-    break;
+      break;
     case 50:
       job = 'opp';
       break;
@@ -225,13 +225,13 @@ function jobID_to_string(id){
   }
   return job;
 }
-function job_to_role(job){
-  let tank = ['pld','gla','war','mrd','drk','gnb'];
-  let healer = ['whm','sch','ast','cnj','sge'];
-  let melee = ['mnk','drg','nin','sam','pgl','lnc','rog','rpr'];
-  let physical = ['brd','mch','dnc','arc'];
-  let magical = ['blm','smn','rdm','thm','acn'];
-  if(tank.indexOf(job) !== -1){
+function job_to_role(job) {
+  let tank = ['pld', 'gla', 'war', 'mrd', 'drk', 'gnb'];
+  let healer = ['whm', 'sch', 'ast', 'cnj', 'sge'];
+  let melee = ['mnk', 'drg', 'nin', 'sam', 'pgl', 'lnc', 'rog', 'rpr'];
+  let physical = ['brd', 'mch', 'dnc', 'arc'];
+  let magical = ['blm', 'smn', 'rdm', 'thm', 'acn'];
+  if (tank.indexOf(job) !== -1) {
     return 'tank';
   }
   else if (healer.indexOf(job) !== -1) {
