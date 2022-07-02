@@ -1,4 +1,5 @@
-let EFFECT_ID = {
+const Stack_buff = ['0B59'/*テンション*/ ,'0BED'/*連続剣*/,'0C5B'/*喝采*/];
+const EFFECT_ID = {
   /*'05B9':{
     en_name:'Soaring',
     name:'テンション',
@@ -549,11 +550,43 @@ let EFFECT_ID = {
     cut_heal: 1,
     maxtime: 4
   },
-  '0BED': {
+  '010BED': {//Stack 1
     name: '連続剣[被]',
     type: [false, false, true, false, false],
     effect: 1,
     cut: 1.04,
+    cut_heal: 1,
+    maxtime: 5
+  },
+  '020BED': {//Stack 2
+    name: '連続剣[被]',
+    type: [false, false, true, false, false],
+    effect: 1,
+    cut: 1.08,
+    cut_heal: 1,
+    maxtime: 5
+  },
+  '030BED': {//Stack 3
+    name: '連続剣[被]',
+    type: [false, false, true, false, false],
+    effect: 1,
+    cut: 1.12,
+    cut_heal: 1,
+    maxtime: 5
+  },
+  '040BED': {//Stack 4
+    name: '連続剣[被]',
+    type: [false, false, true, false, false],
+    effect: 1,
+    cut: 1.16,
+    cut_heal: 1,
+    maxtime: 5
+  },
+  '050BED': {//Stack 5
+    name: '連続剣[被]',
+    type: [false, false, true, false, false],
+    effect: 1,
+    cut: 1.20,
     cut_heal: 1,
     maxtime: 5
   },
@@ -1521,7 +1554,31 @@ let EFFECT_ID = {
     cut_heal: 1,
     maxtime: 3
   },
-  '0C5B': {
+  '010C5B': {
+    name: '喝采',
+    type: [false, false, false, false, true],
+    effect: 1,
+    cut: 1,
+    cut_heal: 1,
+    maxtime: 5
+  },
+  '020C5B': {
+    name: '喝采',
+    type: [false, false, false, false, true],
+    effect: 1,
+    cut: 1,
+    cut_heal: 1,
+    maxtime: 5
+  },
+  '030C5B': {
+    name: '喝采',
+    type: [false, false, false, false, true],
+    effect: 1,
+    cut: 1,
+    cut_heal: 1,
+    maxtime: 5
+  },
+  '040C5B': {
     name: '喝采',
     type: [false, false, false, false, true],
     effect: 1,
