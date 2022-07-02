@@ -40,6 +40,5 @@ async function marker_data_check(log){//28,29
         }
         data.To_Job = Player_To.job;
     }
-    console.log(data);
     sendBC("targetlog",data);
 }
