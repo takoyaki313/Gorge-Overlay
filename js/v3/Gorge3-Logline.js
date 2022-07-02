@@ -17,7 +17,7 @@ async function logline_firststep(log) {
     await minimap_change_area_check(log);
   }
   if (Logline_Message) {
-    let match = ['21', '22', '37', '24', '26', '30', '38'];
+    let match = ['21', '22', '37', '24', '26','28','29', '30', '38'];
     if (match.indexOf(log[0]) !== -1) {
       console.debug(log);
     }
@@ -65,6 +65,9 @@ async function logline_firststep(log) {
         }
         await player_buff_add_26(log);
         break;
+      case '29':
+        await marker_data_check(log);
+        break;
       case '30':
         await network_buff_removerd_30(log);
         break;
@@ -101,6 +104,7 @@ async function logline_firststep(log) {
     }
   }
 }
+
 //////////////////////////////////////////
 /// action add tool
 ///////////////////////////////////////////
@@ -164,7 +168,7 @@ async function addcombatant(log) {
   await update_maindata('Player_hp', 'nameID', nameID, ['attacker', [], true]);
   if (nameID.substring(0, 2) === '10') {
     if (name !== '' && job !== '') {
-      NameID_Name_JobList[nameID] = { name: name, job: job };
+      NameID_Name_JobList[nameID] = { name: name, job: job ,server: server,owner:owner_id};
     }
   }
 }

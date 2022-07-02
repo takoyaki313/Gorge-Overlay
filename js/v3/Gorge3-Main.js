@@ -112,6 +112,15 @@ function primary_player(player) {
   PRIMARY_PLAYER.name = player.charName;
   log_queue_insert(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 }
+function broadcast_Check(){
+  if (AREA.Area_Type === 0) {
+    sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
+    connectBC(false);
+  }else{
+    connectBC(true);
+    sendBC("general",{source:"GorgeOverlay",message:"Connect"});
+  }  
+}
 let PRIMARY_PLAYER = { ACT_NAME: 'YOU', nameID: null, name: null };
 let AREA = { Area_Type: -1, Last_Area_type: null };
 async function area_check(zone) {
@@ -122,6 +131,7 @@ async function area_check(zone) {
     console.log(zone);
   }*/
   await area_type_set(zoneID);
+  broadcast_Check();
   ///
   //エリア移動によるイベント
   //console.warn('エリア移動 Last: '+ AREA.Last_Area_type + ' Now: ' + AREA.Area_Type);

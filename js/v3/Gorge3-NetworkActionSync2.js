@@ -593,7 +593,10 @@ async function New_potencial_check_barrier(data, effectposition, special, type_n
     } else {
       barrier = data.victimmaxHP * action_detail.damagesync;
     }
-  } else {
+  }else if (action_detail.synctype === 'stack-buff') {
+    
+  }
+  else {
     console.warn('ActionSync Barrier Calc Failed :Sync Type Unknown ->' + action_detail.synctype);
     console.warn(action_detail);
   }

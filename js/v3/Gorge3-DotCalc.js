@@ -383,7 +383,7 @@ async function dot_damage_distribution(data, sum, totaldamage, totaloverdamage) 
 }
 async function player_buff_add_26(log) {
   let data = { buffID: await buffID_cordinate(log[2]), attacker: log[5], victim: log[7], buff: log[3], time: Number(log[4]), time_ms: await timestamp_change(log[1]), lastupdate: log[1] };
-  if (data.buffID === '05B9') {//Tensyon
+  if (Stack_buff.indexOf(data.buffID) !== -1) {
     data.buffID = log[9] + data.buffID;
   }
   let special = Special_Barrier_ID_Array_Dot.indexOf(data.buffID);
@@ -430,7 +430,7 @@ async function player_buff_list_update(data, nameID, lastupdate) {
       //console.log(data[0 + (i * 3)] + ':'+data[1 + (i * 3)] + ':'+data[2 + (i * 3)]);
       if (data[0 + (i * 3)] !== '0' || data[2 + (i * 3)] !== '0') {
         let effectID = await buffID_cordinate(data[0 + (i * 3)]);
-        if (effectID === '05B9') {//Tensyon
+        if (Stack_buff.indexOf(effectID) !== -1) {
           replace_data.push({ buffID: data[0 + (i * 3)], attacker: data[2 + (i * 3)] });
           checked += await dunamis_checker(nameID, effectID, parseInt(data[0 + (i * 3)].substring(0, 2), 16), lastupdate);
         }

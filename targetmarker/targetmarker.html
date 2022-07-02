@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>TargetMarkerLog</title>
+  <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/icon.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
     ::-webkit-scrollbar {
@@ -61,25 +62,89 @@
       overflow: hidden;
       /*width: calc(50% - 1rem)*/
     }
+    .Player-To-job , .player-From-job {
+      align-items: center;
+
+    }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorgebc.js"></script>
   <script>
   ////////////////////
   //setting
   ////////////////////
   var Overlay_On = true;
-  let LastLB = 0
-  let MaxLB = 0;
+  var Link_GorgeOverlay = false;
   ////////////////////
   $(function (){
     'use strict';
-    addOverlayListener('ChangeZone', (zone) => targetmarker_overlay_area_check(zone));
-    addOverlayListener('LogLine', (logline) => log_start(logline.line));
     targetmarker_overlay_localstrage_get();
-    startOverlayEvents();
+    if(Link_GorgeOverlay){
+      console.debug("TargetMarker Link Mode");
+      connectBC(true);
+      sendBC("general",{source:"targetLog",message:"Connect"});
+      BC_Channel.onmessage = function(evt) {
+        let messageObject = evt.data;
+        if (messageObject.type === "targetlog") {
+          if (!Overlay_On){
+            targetmarker_overlay_disp();
+            Overlay_On = true;
+          }
+          //disp
+          let Receive = messageObject.data;
+          let detail = null;
+          let type_str = "";
+          if(Receive.source === "28"){//Field Marker
+            return null;
+            detail = FieldMarkerID[Receive.target];
+            type_str = "field";
+          }else if (Receive.source === "29") {//Target Marker
+            detail = MarkerTargetID[Receive.target];
+            type_str = "marker";
+          }else{
+            console.warn("Log line type that does not match");
+            console.warn(messageObject);
+            return null;
+          }
+          let add = '';
+          if(Receive.add === 'Add'){
+            add = '+';
+          }else if (Receive.add === 'Delete') {
+            add = '-';
+          }
+          //
+          let disp_data = {
+            type:type_str,
+            name:detail.name,
+            url:detail.icon,
+            From:Receive.From,
+            FromJob:Receive.From_Job,
+            To:Receive.To,
+            ToJob:Receive.To_Job,
+            add:add,
+            time:Receive.time,
+            date:new Date(Receive.time),
+          }
+          data_disp(disp_data);
+        }else if(messageObject.type === "general"){
+          if (messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Connect"){
+            targetmarker_overlay_disp();
+            Overlay_On = true;
+          }else if(messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Disconnect"){
+            targetmarker_overlay_hide();
+            Overlay_On = false;
+          }
+        }
+      }
+    }else{
+      console.debug("TargetMarker Standalone Mode");
+      addOverlayListener('ChangeZone', (zone) => targetmarker_overlay_area_check(zone));
+      addOverlayListener('LogLine', (logline) => log_start(logline.line));
+      startOverlayEvents();
+    }
   });
-
+  //--------Standalone Mode
   function log_start(log){
     if(Overlay_On){
       if(log[0] === '28'){
@@ -115,7 +180,9 @@
       name:detail.name,
       url:detail.icon,
       From:log[5],
+      FromJob:"",
       To:log[7],
+      ToJob:"",
       add:add,
       time:Date.parse(log[1]),
       date:null,
@@ -123,6 +190,7 @@
     data.date = new Date(data.time);
     data_disp(data);
   }
+  //----------------------------------------------------------------
   let MarkerTargetID = [
     {
       name:'攻撃1',
@@ -222,11 +290,12 @@
     }
     else {
       targetmarker_overlay_fontsize(data.target_marker_fontsize);
-      targetmarker_overlay_reverse(data.target_marker_repeat)
+      targetmarker_overlay_reverse(data.target_marker_repeat);
+      Link_GorgeOverlay = data.bc_Enable;
     }
   }
 
-  function targetmarker_overlay_disp(targetname){
+  function targetmarker_overlay_disp(){
     $('html').css('display','block');
   }
   function targetmarker_overlay_hide(){
@@ -261,7 +330,7 @@
     ||area.zoneID == 1033
     ||area.zoneID == 1034) {
       Overlay_On = true;
-      targetmarker_overlay_disp(0);
+      targetmarker_overlay_disp();
     }
     else {
       Overlay_On = false;
@@ -279,12 +348,14 @@
     row.find('.time').text(disptime);
     row.find('.icon-id').html('<img src="' + data.url + '"></img>');
     row.find('.add-delete').text(data.add);
-    row.find('.Player-From').text(data.From);
+    row.find('.Player-From-name').text(data.From);
+    row.find('.Player-From-job').addClass("icon-" + data.FromJob);
     if(data.type === 'field'){
       row.find('.triangle-right').css('display','none');
       row.find('.Player-To').css('display','none');
     }else {
-      row.find('.Player-To').text(data.To);
+      row.find('.Player-To-name').text(data.To);
+      row.find('.Player-To-job').addClass("icon-" + data.ToJob);
     }
     $('#main').append(row);
     var element = document.getElementById("main");
@@ -302,9 +373,15 @@
       <div class="icon-id"></div>
       <div class="add-delete">-</div>
       <div class="detail-space">
-        <div class="Player-From">-</div>
+        <div class="Player-From">
+          <div class="Player-From-job"></div>
+          <div class="Player-From-name"></div>
+        </div>
         <div class="triangle-right"></div>
-        <div class="Player-To">-</div>
+        <div class="Player-To">
+          <div class="Player-To-job"></div>
+          <div class="Player-To-name"></div>
+        </div>
       </div>
       <div class="time">-</div>
     </div>

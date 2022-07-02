@@ -140,7 +140,6 @@ async function potencial_check_from_damage(dot_detail, id_data_position, data) {
   }
   let potencial = dot_detail.potencial;
   potencial = await potencial_to_damage_calc_effect(data.attackerID, data.victimID, potencial, dot_detail.type);
-
   await update_maindata('Player_hp', 'nameID', data.victimID, ['dot_potencial', { potencial: potencial, attackerID: data.attackerID, dotID: dot_detail.dotid, actionID: data.actionID, time_ms: data.time_ms, dot_time: dot_detail.max }, false], ['lastupdate', data.lastupdate, true]);
 }
 async function potencial_to_damage_calc_effect(attackerID, victimID, default_potencial, damage_type) {

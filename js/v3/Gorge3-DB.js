@@ -25,6 +25,21 @@ function part_reset_TBD() {
     , Aliance: [{ dunamis: 0, history: [] }, { dunamis: 0, history: [] }, { dunamis: 0, history: [] }, { dunamis: 0, history: [] }, { dunamis: 0, history: [] }, { dunamis: 0, history: [] }, { dunamis: 0, history: [] }]
   };
 }
+async function get_ID_to_NameJob(nameID){
+  if (typeof(NameID_Name_JobList[nameID]) === 'undefined'){
+    return {name:nameID,job:"",server:"Unknown",owner:null};
+  }else{
+    if(NameID_Name_JobList[nameID].owner === null){
+      return NameID_Name_JobList[nameID];
+    }else{
+      if (typeof(NameID_Name_JobList[NameID_Name_JobList[nameID].owner]) === 'undefined'){
+        return NameID_Name_JobList[nameID];
+      }else{
+        return NameID_Name_JobList[NameID_Name_JobList[nameID].owner];
+      }
+    }
+  }
+}
 async function hp_data_db_add(data) {
   let input_primary_key = null;
   await DB.transaction("rw", DB.Hp_data, async () => {

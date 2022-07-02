@@ -521,6 +521,16 @@ const Localstorage_dictionary = {
     description_en: 'Highlight players who are down at a pace less than or equal to the set number of seconds.',
     inputtype: 'value',
   },
+  bc_Enable: {
+    func_name: 'BC_Enable',
+    value: false,
+    disp_tab: 'Other',
+    title_ja: 'TargetLogへデータを送信する。',
+    title_en: "Send data to TargetLog.",
+    description_ja: 'プレイヤー名の表示を強化する。',
+    description_en: "Enhanced the display of player names.",
+    inputtype: 'toggle',
+  },
   lb_int_fontsize: {
     func_name: 'LB_Font_Size',
     value: 18,
@@ -557,7 +567,7 @@ const Localstorage_dictionary = {
   },
   VERSION: {
     func_name: null,
-    value: 'Gorge-overlay3.1 Rev.5',
+    value: 'Gorge-overlay3.1 Rev.6',
     title_ja: 'Version : ',
     title_en: 'Version : ',
     description_ja: '',
