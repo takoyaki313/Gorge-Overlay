@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>TargetMarkerLog</title>
   <link rel="stylesheet" href="https://takoyaki313.github.io/Gorge-Overlay/css/icon.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
     ::-webkit-scrollbar {
       display: none;
     }
+
     body {
       font-family: 'Lato', sans-serif;
       color: #ded7be;
-      background-color: rgba(37,37,37,0.3);
+      background-color: rgba(37, 37, 37, 0.3);
     }
+
     .triangle-right {
       position: relative;
       width: 1rem;
@@ -22,47 +26,61 @@
       margin: 0 0.8rem;
       clip-path: polygon(0 33%, 50% 33%, 50% 15%, 100% 50%, 50% 85%, 50% 67%, 0 67%);
     }
+
     .row {
       display: grid;
-      grid-template-columns:2rem 1rem 1fr auto;
+      grid-template-columns: 2rem 1rem 1fr auto;
       margin: 0.1rem 0;
     }
-    .row *{
+
+    .row * {
       display: flex;
       max-height: 2rem;
       align-items: center;
     }
+
     .detail-space {
       display: flex;
     }
-    .detail-space *{
+
+    .detail-space * {
       display: flex;
     }
+
     .row .icon-id {
       justify-content: center;
     }
-    .row .icon-id *{
+
+    .row .icon-id * {
       width: 1.5rem;
     }
-    .row .time ,.row .add-delete{
-    justify-content: center
+
+    .row .time,
+    .row .add-delete {
+      justify-content: center
     }
+
     .detail-space {
       margin: 0 0.4rem;
       width: -webkit-fill-available;
     }
+
     #main {
-      transition: .5s ;
+      transition: .5s;
       border: 0.1rem;
       display: flex;
       flex-direction: column;
     }
-    .Player-To , .Player-From {
+
+    .Player-To,
+    .Player-From {
       white-space: nowrap;
       overflow: hidden;
       /*width: calc(50% - 1rem)*/
     }
-    .Player-To-job , .player-From-job {
+
+    .Player-To-job,
+    .player-From-job {
       align-items: center;
 
     }
@@ -71,302 +89,315 @@
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
   <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorgebc.js"></script>
   <script>
-  ////////////////////
-  //setting
-  ////////////////////
-  var Overlay_On = true;
-  var Link_GorgeOverlay = false;
-  ////////////////////
-  $(function (){
-    'use strict';
-    targetmarker_overlay_localstrage_get();
-    if(Link_GorgeOverlay){
-      console.debug("TargetMarker Link Mode");
-      connectBC(true);
-      sendBC("general",{source:"targetLog",message:"Connect"});
-      BC_Channel.onmessage = function(evt) {
-        let messageObject = evt.data;
-        if (messageObject.type === "targetlog") {
-          if (!Overlay_On){
-            targetmarker_overlay_disp();
-            Overlay_On = true;
-          }
-          //disp
-          let Receive = messageObject.data;
-          let detail = null;
-          let type_str = "";
-          if(Receive.source === "28"){//Field Marker
-            return null;
-            detail = FieldMarkerID[Receive.target];
-            type_str = "field";
-          }else if (Receive.source === "29") {//Target Marker
-            detail = MarkerTargetID[Receive.target];
-            type_str = "marker";
-          }else{
-            console.warn("Log line type that does not match");
-            console.warn(messageObject);
-            return null;
-          }
-          let add = '';
-          if(Receive.add === 'Add'){
-            add = '+';
-          }else if (Receive.add === 'Delete') {
-            add = '-';
-          }
-          //
-          let disp_data = {
-            type:type_str,
-            name:detail.name,
-            url:detail.icon,
-            From:Receive.From,
-            FromJob:Receive.From_Job,
-            To:Receive.To,
-            ToJob:Receive.To_Job,
-            add:add,
-            time:Receive.time,
-            date:new Date(Receive.time),
-          }
-          data_disp(disp_data);
-        }else if(messageObject.type === "general"){
-          if (messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Connect"){
-            targetmarker_overlay_disp();
-            Overlay_On = true;
-          }else if(messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Disconnect"){
-            targetmarker_overlay_hide();
-            Overlay_On = false;
+    ////////////////////
+    //setting
+    ////////////////////
+    var Overlay_On = true;
+    var Link_GorgeOverlay = false;
+    ////////////////////
+    $(function () {
+      'use strict';
+      targetmarker_overlay_localstrage_get();
+      if (Link_GorgeOverlay) {
+        console.debug("TargetMarker Link Mode");
+        connectBC(true);
+        sendBC("general", { source: "targetLog", message: "Connect" });
+        BC_Channel.onmessage = function (evt) {
+          let messageObject = evt.data;
+          if (messageObject.type === "targetlog") {
+            if (!Overlay_On) {
+              targetmarker_overlay_disp();
+              Overlay_On = true;
+            }
+            //disp
+            let Receive = messageObject.data;
+            let detail = null;
+            let type_str = "";
+            if (Receive.source === "28") {//Field Marker
+              return null;
+              detail = FieldMarkerID[Receive.target];
+              type_str = "field";
+            } else if (Receive.source === "29") {//Target Marker
+              detail = MarkerTargetID[Receive.target];
+              type_str = "marker";
+            } else {
+              console.warn("Log line type that does not match");
+              console.warn(messageObject);
+              return null;
+            }
+            let add = '';
+            if (Receive.add === 'Add') {
+              add = '+';
+            } else if (Receive.add === 'Delete') {
+              add = '-';
+            }
+            //
+            let disp_data = {
+              type: type_str,
+              name: detail.name,
+              url: detail.icon,
+              From: Receive.From,
+              FromJob: Receive.From_Job,
+              To: Receive.To,
+              ToJob: Receive.To_Job,
+              add: add,
+              time: Receive.time,
+              date: new Date(Receive.time),
+            }
+            
+            if (disp_data.From.substring(0,2) === "10") {
+              disp_data.From = "Player";
+            }else if(disp_data.From.substring(0,2) === "40"){
+              disp_data.From = "Object";
+            }
+            if (disp_data.To.substring(0,2) === "10") {
+              disp_data.To = "Player";
+            }else if(disp_data.To.substring(0,2) === "40"){
+              disp_data.To = "Object";
+            }
+
+            data_disp(disp_data);
+          } else if (messageObject.type === "general") {
+            if (messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Connect") {
+              targetmarker_overlay_disp();
+              Overlay_On = true;
+            } else if (messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Disconnect") {
+              targetmarker_overlay_hide();
+              Overlay_On = false;
+            }
           }
         }
+      } else {
+        console.debug("TargetMarker Standalone Mode");
+        addOverlayListener('ChangeZone', (zone) => targetmarker_overlay_area_check(zone));
+        addOverlayListener('LogLine', (logline) => log_start(logline.line));
+        startOverlayEvents();
       }
-    }else{
-      console.debug("TargetMarker Standalone Mode");
-      addOverlayListener('ChangeZone', (zone) => targetmarker_overlay_area_check(zone));
-      addOverlayListener('LogLine', (logline) => log_start(logline.line));
-      startOverlayEvents();
-    }
-  });
-  //--------Standalone Mode
-  function log_start(log){
-    if(Overlay_On){
-      if(log[0] === '28'){
-        marker_disp2829(log,'field');
-      }else if (log[0] === '29') {
-        marker_disp2829(log,'marker');
+    });
+    //--------Standalone Mode
+    function log_start(log) {
+      if (Overlay_On) {
+        if (log[0] === '28') {
+          marker_disp2829(log, 'field');
+        } else if (log[0] === '29') {
+          marker_disp2829(log, 'marker');
+        }
       }
     }
-  }
-  let reverse = false;
-  function marker_disp2829(log,type){
-    if(log[2] === 'Delete' &&log[4] === '0000'){
-      //置き換えの削除
-      return null;
-    }
-    let target = Number(log[3]);
-    let detail = null;
-    if(type === 'field'){
-      detail = FieldMarkerID[target];
-    }else if (type === 'marker') {
-      detail = MarkerTargetID[target];
-    }
-    let add = '';
-    if(log[2] === 'Add'){
-      add = '+';
-    }else if (log[2] === 'Delete') {
-      add = '-';
-    }
+    let reverse = false;
+    function marker_disp2829(log, type) {
+      if (log[2] === 'Delete' && log[4] === '0000') {
+        //置き換えの削除
+        return null;
+      }
+      let target = Number(log[3]);
+      let detail = null;
+      if (type === 'field') {
+        detail = FieldMarkerID[target];
+      } else if (type === 'marker') {
+        detail = MarkerTargetID[target];
+      }
+      let add = '';
+      if (log[2] === 'Add') {
+        add = '+';
+      } else if (log[2] === 'Delete') {
+        add = '-';
+      }
 
 
-    let data = {
-      type:type,
-      name:detail.name,
-      url:detail.icon,
-      From:log[5],
-      FromJob:"",
-      To:log[7],
-      ToJob:"",
-      add:add,
-      time:Date.parse(log[1]),
-      date:null,
+      let data = {
+        type: type,
+        name: detail.name,
+        url: detail.icon,
+        From: log[5],
+        FromJob: "",
+        To: log[7],
+        ToJob: "",
+        add: add,
+        time: Date.parse(log[1]),
+        date: null,
+      }
+      data.date = new Date(data.time);
+      data_disp(data);
     }
-    data.date = new Date(data.time);
-    data_disp(data);
-  }
-  //----------------------------------------------------------------
-  let MarkerTargetID = [
-    {
-      name:'攻撃1',
-      icon:'https://xivapi.com/i/060000/060701.png'
-    },
-    {
-      name:'攻撃2',
-      icon:'https://xivapi.com/i/060000/060702.png'
-    },
-    {
-      name:'攻撃3',
-      icon:'https://xivapi.com/i/060000/060703.png'
-    },
-    {
-      name:'攻撃4',
-      icon:'https://xivapi.com/i/060000/060704.png'
-    },
-    {
-      name:'攻撃5',
-      icon:'https://xivapi.com/i/060000/060705.png'
-    },
-    {
-      name:'鎖1',
-      icon:'https://xivapi.com/i/060000/060706.png'
-    },
-    {
-      name:'鎖2',
-      icon:'https://xivapi.com/i/060000/060707.png'
-    },
-    {
-      name:'鎖3',
-      icon:'https://xivapi.com/i/060000/060708.png'
-    },
-    {
-      name:'禁止1',
-      icon:'https://xivapi.com/i/060000/060709.png'
-    },
-    {
-      name:'禁止2',
-      icon:'https://xivapi.com/i/060000/060710.png'
-    },
-    {
-      name:'四角',
-      icon:'https://xivapi.com/i/060000/060711.png'
-    },
-    {
-      name:'丸',
-      icon:'https://xivapi.com/i/060000/060712.png'
-    },
-    {
-      name:'十字',
-      icon:'https://xivapi.com/i/060000/060713.png'
-    },
-    {
-      name:'三角',
-      icon:'https://xivapi.com/i/060000/060714.png'
+    //----------------------------------------------------------------
+    let MarkerTargetID = [
+      {
+        name: '攻撃1',
+        icon: 'https://xivapi.com/i/060000/060701.png'
+      },
+      {
+        name: '攻撃2',
+        icon: 'https://xivapi.com/i/060000/060702.png'
+      },
+      {
+        name: '攻撃3',
+        icon: 'https://xivapi.com/i/060000/060703.png'
+      },
+      {
+        name: '攻撃4',
+        icon: 'https://xivapi.com/i/060000/060704.png'
+      },
+      {
+        name: '攻撃5',
+        icon: 'https://xivapi.com/i/060000/060705.png'
+      },
+      {
+        name: '鎖1',
+        icon: 'https://xivapi.com/i/060000/060706.png'
+      },
+      {
+        name: '鎖2',
+        icon: 'https://xivapi.com/i/060000/060707.png'
+      },
+      {
+        name: '鎖3',
+        icon: 'https://xivapi.com/i/060000/060708.png'
+      },
+      {
+        name: '禁止1',
+        icon: 'https://xivapi.com/i/060000/060709.png'
+      },
+      {
+        name: '禁止2',
+        icon: 'https://xivapi.com/i/060000/060710.png'
+      },
+      {
+        name: '四角',
+        icon: 'https://xivapi.com/i/060000/060711.png'
+      },
+      {
+        name: '丸',
+        icon: 'https://xivapi.com/i/060000/060712.png'
+      },
+      {
+        name: '十字',
+        icon: 'https://xivapi.com/i/060000/060713.png'
+      },
+      {
+        name: '三角',
+        icon: 'https://xivapi.com/i/060000/060714.png'
+      }
+    ];
+    let FieldMarkerID = [
+      {
+        name: 'A',
+        icon: 'https://xivapi.com/i/060000/060474_hr1.png'
+      },
+      {
+        name: 'B',
+        icon: 'https://xivapi.com/i/060000/060475_hr1.png'
+      },
+      {
+        name: 'C',
+        icon: 'https://xivapi.com/i/060000/060476_hr1.png'
+      },
+      {
+        name: 'D',
+        icon: 'https://xivapi.com/i/060000/060936_hr1.png'
+      },
+      {
+        name: '1',
+        icon: 'https://xivapi.com/i/060000/060931_hr1.png'
+      },
+      {
+        name: '2',
+        icon: 'https://xivapi.com/i/060000/060932_hr1.png'
+      },
+      {
+        name: '3',
+        icon: 'https://xivapi.com/i/060000/060933_hr1.png'
+      },
+      {
+        name: '4',
+        icon: 'https://xivapi.com/i/063000/063904_hr1.png'
+      },
+    ]
+    function targetmarker_overlay_localstrage_get() {
+      let data = JSON.parse(localStorage.getItem('Gorge-Overlay3'));
+      if (data === null) {
+        targetmarker_overlay_fontsize(18);
+      }
+      else {
+        targetmarker_overlay_fontsize(data.target_marker_fontsize);
+        targetmarker_overlay_reverse(data.target_marker_repeat);
+        Link_GorgeOverlay = data.bc_Enable;
+      }
     }
-  ];
-  let FieldMarkerID = [
-    {
-      name:'A',
-      icon:'https://xivapi.com/i/060000/060474_hr1.png'
-    },
-    {
-      name:'B',
-      icon:'https://xivapi.com/i/060000/060475_hr1.png'
-    },
-    {
-      name:'C',
-      icon:'https://xivapi.com/i/060000/060476_hr1.png'
-    },
-    {
-      name:'D',
-      icon:'https://xivapi.com/i/060000/060936_hr1.png'
-    },
-    {
-      name:'1',
-      icon:'https://xivapi.com/i/060000/060931_hr1.png'
-    },
-    {
-      name:'2',
-      icon:'https://xivapi.com/i/060000/060932_hr1.png'
-    },
-    {
-      name:'3',
-      icon:'https://xivapi.com/i/060000/060933_hr1.png'
-    },
-    {
-      name:'4',
-      icon:'https://xivapi.com/i/063000/063904_hr1.png'
-    },
-  ]
-  function targetmarker_overlay_localstrage_get(){
-    let data = JSON.parse(localStorage.getItem('Gorge-Overlay3'));
-    if(data === null){
-      targetmarker_overlay_fontsize(18);
-    }
-    else {
-      targetmarker_overlay_fontsize(data.target_marker_fontsize);
-      targetmarker_overlay_reverse(data.target_marker_repeat);
-      Link_GorgeOverlay = data.bc_Enable;
-    }
-  }
 
-  function targetmarker_overlay_disp(){
-    $('html').css('display','block');
-  }
-  function targetmarker_overlay_hide(){
-    $('html').css('display','none');
-    $('#main').html('');
-  }
-  function targetmarker_overlay_fontsize(size){
-    $('html').css('font-size',size + "px");
-  }
-  function targetmarker_overlay_reverse(bool){
-    if(bool){
-      $('#main').css('flex-direction','column-reverse');
-      reverse = true;
-    }else {
-      $('#main').css('flex-direction','column');
+    function targetmarker_overlay_disp() {
+      $('html').css('display', 'block');
     }
-  }
-  ////////////////
-  function targetmarker_overlay_area_check(area){
-    MaxLB = 0;
-    LastLB = 0;
-    if (area.zoneName === 'Hidden Gorge'
-    ||area.zoneID == 376
-    ||area.zoneName.indexOf('Seal Rock')!== -1
-    ||area.zoneID == 554
-    ||area.zoneName.indexOf('Onsal Hakair')!== -1
-    ||area.zoneName.indexOf('Wolves')!== -1
-    ||area.zoneName.indexOf('Astragalos')!== -1
-    ||area.zoneName.indexOf('Lichenweed')!== -1
-    ||area.zoneName.indexOf('Crystal Tower Training Grounds')!== -1
-    ||area.zoneID == 1032
-    ||area.zoneID == 1033
-    ||area.zoneID == 1034) {
-      Overlay_On = true;
-      targetmarker_overlay_disp();
+    function targetmarker_overlay_hide() {
+      $('html').css('display', 'none');
+      $('#main').html('');
     }
-    else {
-      Overlay_On = false;
-      targetmarker_overlay_hide();
+    function targetmarker_overlay_fontsize(size) {
+      $('html').css('font-size', size + "px");
     }
-  }
-  function data_disp(data){
-    let template = $('#template .row');
-    //let container = $('#row').clone();
-    let row = template.clone();
-    let disptime = data.date.toLocaleTimeString();
-    if(disptime.substring(disptime.length - 2 , disptime.length ) === 'AM'||disptime.substring(disptime.length - 2 , disptime.length) === 'PM'){
-      disptime = disptime.substring(0, disptime.length - 3);
+    function targetmarker_overlay_reverse(bool) {
+      if (bool) {
+        $('#main').css('flex-direction', 'column-reverse');
+        reverse = true;
+      } else {
+        $('#main').css('flex-direction', 'column');
+      }
     }
-    row.find('.time').text(disptime);
-    row.find('.icon-id').html('<img src="' + data.url + '"></img>');
-    row.find('.add-delete').text(data.add);
-    row.find('.Player-From-name').text(data.From);
-    row.find('.Player-From-job').addClass("icon-" + data.FromJob);
-    if(data.type === 'field'){
-      row.find('.triangle-right').css('display','none');
-      row.find('.Player-To').css('display','none');
-    }else {
-      row.find('.Player-To-name').text(data.To);
-      row.find('.Player-To-job').addClass("icon-" + data.ToJob);
+    ////////////////
+    function targetmarker_overlay_area_check(area) {
+      MaxLB = 0;
+      LastLB = 0;
+      if (area.zoneName === 'Hidden Gorge'
+        || area.zoneID == 376
+        || area.zoneName.indexOf('Seal Rock') !== -1
+        || area.zoneID == 554
+        || area.zoneName.indexOf('Onsal Hakair') !== -1
+        || area.zoneName.indexOf('Wolves') !== -1
+        || area.zoneName.indexOf('Astragalos') !== -1
+        || area.zoneName.indexOf('Lichenweed') !== -1
+        || area.zoneName.indexOf('Crystal Tower Training Grounds') !== -1
+        || area.zoneID == 1032
+        || area.zoneID == 1033
+        || area.zoneID == 1034) {
+        Overlay_On = true;
+        targetmarker_overlay_disp();
+      }
+      else {
+        Overlay_On = false;
+        targetmarker_overlay_hide();
+      }
     }
-    $('#main').append(row);
-    var element = document.getElementById("main");
-    if(reverse){
-      element.scrollIntoView(true,{behavir:'smooth'});
-    }else {
-      element.scrollIntoView(false,{behavir:'smooth'});
+    function data_disp(data) {
+      let template = $('#template .row');
+      //let container = $('#row').clone();
+      let row = template.clone();
+      let disptime = data.date.toLocaleTimeString();
+      if (disptime.substring(disptime.length - 2, disptime.length) === 'AM' || disptime.substring(disptime.length - 2, disptime.length) === 'PM') {
+        disptime = disptime.substring(0, disptime.length - 3);
+      }
+      row.find('.time').text(disptime);
+      row.find('.icon-id').html('<img src="' + data.url + '"></img>');
+      row.find('.add-delete').text(data.add);
+      row.find('.Player-From-name').text(data.From);
+      row.find('.Player-From-job').addClass("icon-" + data.FromJob);
+      if (data.type === 'field') {
+        row.find('.triangle-right').css('display', 'none');
+        row.find('.Player-To').css('display', 'none');
+      } else {
+        row.find('.Player-To-name').text(data.To);
+        row.find('.Player-To-job').addClass("icon-" + data.ToJob);
+      }
+      $('#main').append(row);
+      var element = document.getElementById("main");
+      if (reverse) {
+        element.scrollIntoView(true, { behavir: 'smooth' });
+      } else {
+        element.scrollIntoView(false, { behavir: 'smooth' });
+      }
     }
-  }
   </script>
 </head>
+
 <body>
   <div id="template" style="display:none">
     <div class="row">
