@@ -271,7 +271,7 @@ const EFFECT_ID = {
     name: 'ナイトの堅守',
     type: [false, false, true, false, true],
     effect: 1,
-    cut: 0.8,
+    cut: 0.85,
     cut_heal: 1,
     maxtime: 10
   },
@@ -1187,7 +1187,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1,
     cut_heal: 1,
-    maxtime: 10
+    maxtime: 8
   },
   '0C77': {
     name: '死の連鎖',
@@ -1613,7 +1613,7 @@ const EFFECT_ID = {
   '07E6': {
     name: '剣の舞い',
     type: [true, false, false, false, true],
-    effect: 1.05,
+    effect: 1.1,
     cut: 1,
     cut_heal: 1,
     maxtime: 10

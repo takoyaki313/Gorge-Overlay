@@ -175,19 +175,19 @@ async function addcombatant(log) {
 async function damage_revise(nameID, job, lastupdate) {
   if (AREA.Area_Type === 1 || AREA.Area_Type === 3) {//FL
     let class_A = ['pld', 'war', 'drk', 'gnb', 'mnk', 'sam', 'rpr', 'drg', 'nin'];
-    //let class_B = ['whm'];
+    let class_B = ['whm','sch','smn'];
     //let class_C = ['rdm'];
     if (class_A.indexOf(job) !== -1) {
-      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.6 }, true], ['lastupdate', lastupdate, true]);
-    }/*
-    else if (class_B.indexOf(job) !== -1) {
-      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:0.75},true],['lastupdate',lastupdate,true]);
+      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.4 }, true], ['lastupdate', lastupdate, true]);
     }
+    else if (class_B.indexOf(job) !== -1) {
+      await update_maindata('Player_hp','nameID',nameID,['revise',{damage:0.9,income:0.7},true],['lastupdate',lastupdate,true]);
+    }/*
     else if (class_C.indexOf(job) !== -1) {
       await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:0.8},true],['lastupdate',lastupdate,true]);
     }*/
     else {
-      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.8 }, true], ['lastupdate', lastupdate, true]);
+      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.7 }, true], ['lastupdate', lastupdate, true]);
     }
   }
   else if (AREA.Area_Type === 2) {//Gorge

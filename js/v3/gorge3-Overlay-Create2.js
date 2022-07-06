@@ -237,12 +237,13 @@ function cc_create(template, data, duration, maxdps) {
   }
   //not use
   //let dunamis_space = row.find('.c-dunamis');
-  if ((time / death_num) - CC_Death_Per_Sec < 0) {
+  if (me) {
+    row.addClass('me');
+  }
+  else if ((time / death_num) - CC_Death_Per_Sec < 0) {
     if (death_num > 2) {
       row.addClass('death-too-much');
     }
-  } else if (me) {
-    row.addClass('me');
   }
   //damage bar
   row.find('.c-damage-gage').addClass('role-background-' + job_to_role(data.job));
