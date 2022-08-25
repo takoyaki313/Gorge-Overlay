@@ -112,13 +112,16 @@ function primary_player(player) {
   PRIMARY_PLAYER.name = player.charName;
   log_queue_insert(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 }
+let BC_Channel_Active = false;
 function broadcast_Check(){
   if (AREA.Area_Type === 0) {
-    if(AREA.Last_Area_type !== -1){
+    if(AREA.Last_Area_type !== -1&&BC_Channel_Active){
       sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
       connectBC(false);
+      BC_Channel_Active = false;
     }
   }else{
+    BC_Channel_Active = true;
     connectBC(true);
     sendBC("general",{source:"GorgeOverlay",message:"Connect"});
   }  
