@@ -171,24 +171,24 @@ var DoT_ID = [
     type: 'HoT'
   }, {
     actionid: '26FA',
-    action_potencial: 10000,
+    action_potencial: 40000,
     dotid: '010B',
     name: '火傷',
-    potencial: 2500,
+    potencial: 10000,
     max: 12,
     type: 'DoT'
   }, {
     actionid: '',
     dotid: '0597',
     name: 'タワーフィールド',
-    potencial: 1000,
+    potencial: 4000,
     max: 1200,
     type: 'HoT'
-  }, {
+  }, {// not use?
     actionid: '',
     dotid: '0598',
     name: 'タワーフィールド',
-    potencial: 1000,
+    potencial: 4000,
     max: 1200,
     type: 'HoT'
   }
@@ -270,7 +270,7 @@ const Barrier_ID = [
     action_potencial: 0,
     dotid: '0C0E',
     name: 'アクアヴェール',
-    potencial: 6000,//成功時は12000
+    potencial: 8000,//成功時は2倍に威力アップ
     max: 10,
     synctype: 'calc',
     damagesync: 0,

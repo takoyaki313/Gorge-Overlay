@@ -114,8 +114,10 @@ function primary_player(player) {
 }
 function broadcast_Check(){
   if (AREA.Area_Type === 0) {
-    sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
-    connectBC(false);
+    if(AREA.Last_Area_type !== -1){
+      sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
+      connectBC(false);
+    }
   }else{
     connectBC(true);
     sendBC("general",{source:"GorgeOverlay",message:"Connect"});
@@ -237,6 +239,8 @@ async function sample_gorge_data_calc(type) {
     data = await sample_gorge();
   } else if (type === 3) {
     data = await gorge3_sample();
+  }else if (type === 4){
+    data = await newgorge_sample();
   }
   AREA.Area_Type = 2;
   for (let i = 0; i < data.length; i++) {

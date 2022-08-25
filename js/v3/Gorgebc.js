@@ -12,10 +12,3 @@ function connectBC(connect){
 function sendBC(type,object){
   BC_Channel.postMessage({type:type,data:object});
 }
-/*
-BC_Channel.onmessage = function(evt) {
-  let messageObject = evt.data;
-  console.log(evt);
-  // ... メッセージに応じた処理 ...
-}
-*/

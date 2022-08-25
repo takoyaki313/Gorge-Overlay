@@ -2,12 +2,12 @@
 const Field_ID = 'E0000000';
 const Battle_Start_Envioroment_ID = '40000001';
 const Battle_End_Envioroment_ID = '40000002';
-const Oppresor_HP = 100000;
-const Justice_HP = 75000;//jas
-const Chaiser_HP = 50000;
-const Robot_Bunsin = 100;
+const Oppresor_HP = 500000;
+const Justice_HP = 375000;//jas
+const Chaiser_HP = 250000;
+const Robot_Bunsin_HP = 100;
 const Robot_name = ['che', 'opp', 'jas'];
-const Core_Tower_HP = 2000000;
+const Core_Tower_HP = 8000000;
 const Gorge_BattleTime = 900;
 const Fl_BattleTime = 1200;
 const CC_BattleTime = 300;

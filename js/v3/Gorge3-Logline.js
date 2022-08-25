@@ -6,7 +6,7 @@ var KILLSOUND = true;
 let Send_Action = false;
 let Logline_Add_Tool_Temp = [];
 let Logline_add_mode = false;
-const Logline_Message = false;
+let Logline_Message = false;
 let Log = '';
 async function logline_firststep(log) {
   Log = log;
@@ -191,20 +191,20 @@ async function damage_revise(nameID, job, lastupdate) {
     }
   }
   else if (AREA.Area_Type === 2) {//Gorge
-    let class_A = ['pld', 'war', 'drk', 'gnb', 'mnk', 'sam', 'rpr'];
-    let class_B = ['drg', 'nin'];
+    let class_A = ['pld', 'war', 'drk', 'gnb', 'mnk', 'sam', 'rpr','drg','nin'];
+    //let class_B = ['drg', 'nin'];
     let class_C = ['rdm'];
     if (class_A.indexOf(job) !== -1) {
-      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.8 }, true], ['lastupdate', lastupdate, true]);
-    }
+      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.7 }, true], ['lastupdate', lastupdate, true]);
+    }/*
     else if (class_B.indexOf(job) !== -1) {
       await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.85 }, true], ['lastupdate', lastupdate, true]);
     }
     else if (class_C.indexOf(job) !== -1) {
       await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.9 }, true], ['lastupdate', lastupdate, true]);
-    }
+    }*/
     else {
-      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 1 }, true], ['lastupdate', lastupdate, true]);
+      await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.85 }, true], ['lastupdate', lastupdate, true]);
     }
   }
   else {
@@ -500,7 +500,7 @@ async function incomedamage_main(uniqueID, attackerID, attackermaxhp, victimID, 
   let incomedamage = damage;
   let incomedamage_damage_type = await incomedamage_add_target(attackerID, attackermaxhp);
   let incomedamage_data = await incomedamage_data_create(incomedamage_damage_type, uniqueID, incomedamage, lastupdate);
-  await update_maindata_change('Player_data', 'nameID', victimID, incomedamage_data[0], incomedamage_data[1], incomedamage_data[2]);
+  await update_maindata_change_array('Player_data', 'nameID', victimID, incomedamage_data[0], incomedamage_data[1], incomedamage_data[2]);
 }
 async function incomedamage_data_create(incomedamage_damage_type, uniqueID, incomedamage, lastupdate) {
   let data_main = [];
@@ -523,7 +523,7 @@ async function incomedamage_add_target(attackerID, attackermaxhp) {
     return ['totalincomedamage', 'objectincomedamage'];
   }
   else if (attackerID.substring(0, 2) === '10') {
-    if (attackermaxhp == Chaiser_HP || attackermaxhp == Oppresor_HP || attackermaxhp == Justice_HP || attackermaxhp == Robot_Bunsin) {
+    if (attackermaxhp == Chaiser_HP || attackermaxhp == Oppresor_HP || attackermaxhp == Justice_HP || attackermaxhp == Robot_Bunsin_HP) {
       return ['totalincomedamage', 'robincomedamage'];
     }/*
     else if (Number(attackermaxhp) === 0) {
@@ -641,7 +641,7 @@ async function hpdata_add(nameID, player_data, attackerID) {
   let readed_data = await read_maindata('Player_hp', 'nameID', nameID, 'nameID', 'currenthp', 'maxhp', 'time_number', 'effect', 'attacker');
   if (Object.keys(readed_data).length === 0) {
     //new create :data not found
-    await update_maindata_change('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
+    await update_maindata_change_array('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
   } else {
     let apply_hpupdate = false;
     let temp_time = player_data.time_number - readed_data.time_number;
@@ -677,7 +677,7 @@ async function hpdata_add(nameID, player_data, attackerID) {
         }
       }
 
-      await update_maindata_change('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
+      await update_maindata_change_array('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
       //////////////////////////////////
       ////
       ////////////////
@@ -794,7 +794,7 @@ async function hpdata_add(nameID, player_data, attackerID) {
           //console.error('デバフがかかっているのでリセットしない');
         }
       }
-      await update_maindata_change('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
+      await update_maindata_change_array('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
     }
     else {
       if (DEBUG_LOG) {

@@ -1,4 +1,4 @@
-const Stack_buff = ['0B59'/*テンション*/ ,'0BED'/*連続剣*/,'0C5B'/*喝采*/];
+const Stack_buff = ['05B9'/*テンション*/, '0BED'/*連続剣*/, '0C5B'/*喝采*/];
 const EFFECT_ID = {
   /*'05B9':{
     en_name:'Soaring',
@@ -217,13 +217,6 @@ const EFFECT_ID = {
     type: [false, false, true, true, true],
     effect: 1,
     cut: 0,
-    cut_heal: 1
-  },
-  '0597': {
-    name: 'タワーフィールド',
-    type: [false, false, true, false, true],
-    effect: 1,
-    cut: 0.5,
     cut_heal: 1
   },
   //Paladin
@@ -651,7 +644,7 @@ const EFFECT_ID = {
   '0C10': {
     name: '激励',
     type: [true, false, false, false, true],
-    effect: 1.1,
+    effect: 1.08,
     cut: 1,
     cut_heal: 1,
     maxtime: 15
@@ -667,7 +660,7 @@ const EFFECT_ID = {
   '0C12': {
     name: '蟲毒',
     type: [true, false, false, false, false],
-    effect: 0.9,
+    effect: 0.92,
     cut: 1,
     cut_heal: 1,
     maxtime: 15
@@ -1651,7 +1644,7 @@ const EFFECT_ID = {
     cut_heal: 1,
     maxtime: 30
   },
-  '0C8D': {
+  /*'0C8D'*/'0D35': {　
     name: 'アストラルファイアIII',
     type: [false, false, false, false, true],
     effect: 1,
@@ -1771,6 +1764,14 @@ const EFFECT_ID = {
     cut: 1,
     cut_heal: 1,
     maxtime: 10
+  },
+  '0C9A': {// speed up
+    name: 'スリップストリーム',
+    type: [false, false, false, false, true],
+    effect: 1,
+    cut: 1,
+    cut_heal: 1,
+    maxtime: 5
   },
   '0C98': {
     name: '守りの光',
@@ -2083,12 +2084,42 @@ const EFFECT_ID = {
     effect: 1,
     cut: 0.5,
     cut_heal: 1
-  },
+  },/* before 6.2
   '010B': {
     name: '火傷',
     type: [false, false, false, false, false],
     effect: 1,
     cut: 1,
     cut_heal: 1
-  }
+  },*/
+  '00FA': {// 6.2-
+    name: '火傷',
+    type: [false, false, false, false, false],
+    effect: 1,
+    cut: 1,
+    cut_heal: 1,
+    maxtime: 12
+  },  
+  '06C1': {// 6.2-
+    name: '不退転',
+    type: [false, false, false, false, true],
+    effect: 1,
+    cut: 1,
+    cut_heal: 1,
+    maxtime: 9999
+  },
+  '0597': {
+    name: 'タワーフィールド',
+    type: [false, false, true, false, true],
+    effect: 1,
+    cut: 0.5,
+    cut_heal: 1
+  },
+  '0598': {// タワーにつく
+    name: 'タワーフィールド',
+    type: [false, false, false, false, true],
+    effect: 1,
+    cut: 1,
+    cut_heal: 1
+  },
 };

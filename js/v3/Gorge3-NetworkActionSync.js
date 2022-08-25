@@ -67,14 +67,6 @@ async function networkAbility_damage_calc(damage_bit) {
     return { damage: 0, return: false };
   }
 }
-async function doublerocketpuntch_hit_pct(nameID, victimID, hitnum, lastupdate) {
-  if (victimID === Field_ID) {//miss shot
-    await update_maindata('Player_data', 'nameID', nameID, ['totalrocketpuntch', 1, false], ['missrocketpuntch', 1, false], ['lastupdate', lastupdate, true]);
-  }
-  else {//hit
-    await update_maindata('Player_data', 'nameID', nameID, ['totalrocketpuntch', 1, false], ['hitrocketpuntch', 1, false], ['hitrocketpuntchavarage', hitnum, false], ['lastupdate', lastupdate, true]);
-  }
-}
 async function effectdata_force4(param) {
   if (param.length === 3) {
     return '0' + param;
@@ -426,6 +418,8 @@ async function effect_flag_checker(flag) {
       return 'add-buff-attacker';
     case 16:
       return 'esuna-one';//状態異常回復（１つのみ）
+    case 17:
+      return 'un-mount';//降りる (4011)
     case 19:
       return 'esuna';
     case 20:
@@ -456,6 +450,8 @@ async function effect_flag_checker(flag) {
       return 'control-ally';//ミクロコスモスでバフの終了を強制させる/バハムートに指示する等　別アクションを同時に実行させる
     case 61:
       return 'actor-jobgage';
+    case 73:
+      return 'un-dead';
     default:
       if (DEBUG_LOG) {
         console.warn(flag);

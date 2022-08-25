@@ -335,7 +335,7 @@ async function dot_damage_cut(simulation_data, victimID, victimmaxhp, damage_typ
     //console.log(add_target);
     //console.log(add_target_data);
     //console.log(add_target_replace);
-    await update_maindata_change('Player_data', 'nameID', simulation_data[i].player, add_target, add_target_data, add_target_replace);
+    await update_maindata_change_array('Player_data', 'nameID', simulation_data[i].player, add_target, add_target_data, add_target_replace);
     ////
     if (damage_type === 'normal-damage') {
       await update_maindata('Player_hp', 'nameID', victimID, ['attacker', { attacker: simulation_data[i].player, type: 'DoT-damage' }, false]);
@@ -455,7 +455,8 @@ async function dunamis_checker(nameID, effectID, rank, lastupdate) {
     if (effectID === '05B9') {
       if (typeof rank !== 'number') {
         if (DEBUG_LOG) {
-          console.error('Tensyon_num is unknown');
+          console.error('Tensyon_num is unknown', rank);
+          console.error(Log);
         }
         return null;
       }
@@ -617,7 +618,7 @@ async function change_accept_damage(attackerID,victimID,victimmaxhp,damage,overd
   let v_petcheck = await pet_replace(victimID,"");
   let add_target = await damage_add(a_petcheck.nameID,victimID,victimmaxhp,damage_type,damage,'skillID');
   let created_data = await add_target_data_create(add_target,damage,overdamage,uniqueID,damage_type,lastupdate);
-  await update_maindata_change('Player_data','nameID',a_petcheck.nameID,created_data[0],created_data[1],created_data[2]);
+  await update_maindata_change_array('Player_data','nameID',a_petcheck.nameID,created_data[0],created_data[1],created_data[2]);
   //victim side
   await update_maindata('Player_hp','nameID',v_petcheck.nameID,['attacker',{attacker:a_petcheck.nameID,type:'unique_dot'},false]);
   await income_switch_main(uniqueID,a_petcheck.nameID,attackermaxhp,v_petcheck.nameID,damage,lastupdate,add_target,damage_type);

@@ -169,26 +169,26 @@ function gorge_create(template, create_time, start_time, battle_data, hide, sele
   let already_calc = {};
   //hps
   already_calc.totalheal = damage_to_dps(battle_data.totalheal, time).toFixed(0);
-  already_calc.selfheal = damage_to_dps(battle_data.selfheal, time).toFixed(0);
-  already_calc.partyheal = damage_to_dps(battle_data.partyheal, time).toFixed(0);
-  already_calc.allyheal = damage_to_dps(battle_data.allyheal, time).toFixed(0);
-  already_calc.otherheal = damage_to_dps(battle_data.otherheal, time).toFixed(0);
-  already_calc.barrier = damage_to_dps(battle_data.barrier, time).toFixed(0);
-  already_calc.overhealPct = ((battle_data.overheal / battle_data.totalheal) * 100).toFixed(2) + '%';
+  already_calc.selfheal = damage_to_dps(battle_data.heal_self, time).toFixed(0);
+  already_calc.partyheal = damage_to_dps(battle_data.heal_party, time).toFixed(0);
+  already_calc.allyheal = damage_to_dps(battle_data.heal_ally, time).toFixed(0);
+  already_calc.otherheal = damage_to_dps(battle_data.heal_object, time).toFixed(0);
+  already_calc.barrier = damage_to_dps(battle_data.heal_total_barrier, time).toFixed(0);
+  already_calc.overhealPct = ((battle_data.over_totalheal / battle_data.totalheal) * 100).toFixed(2) + '%';
   //dps
   already_calc.totaldamage = damage_to_dps(battle_data.totaldamage, time).toFixed(0);
   already_calc.persondamage = damage_to_dps(battle_data.persondamage, time).toFixed(0);
   already_calc.torobotdamage = damage_to_dps(battle_data.torobotdamage, time).toFixed(0);
-  already_calc.matondamage = damage_to_dps(battle_data.matondamage, time).toFixed(0);
-  already_calc.towerdamage = damage_to_dps(battle_data.towerdamage, time).toFixed(0);
+  already_calc.matondamage = damage_to_dps(battle_data.damage_maton, time).toFixed(0);
+  already_calc.towerdamage = damage_to_dps(battle_data.damage_tower, time).toFixed(0);
   already_calc.playerotherdamage = damage_to_dps(battle_data.playerotherdamage, time).toFixed(0);
   already_calc.objectotherdamage = damage_to_dps(battle_data.objectotherdamage, time).toFixed(0);
   already_calc.playerdamage = damage_to_dps(battle_data.playerdamage, time).toFixed(0);
   already_calc.objectdamage = damage_to_dps(battle_data.objectdamage, time).toFixed(0);
 
   hps_space.text(already_calc.totalheal);
-  hps_space.prop('title', tooltip_dps_create(battle_data.totalheal, battle_data.overheal, already_calc.overhealPct, already_calc.selfheal, already_calc.partyheal, already_calc.allyheal, already_calc.otherheal, already_calc.barrier));
-  let dps_tooltip_string = tooltip_dps_create(already_calc.playerdamage, already_calc.persondamage, already_calc.torobotdamage, already_calc.playerotherdamage, already_calc.objectdamage, already_calc.matondamage, already_calc.towerdamage, already_calc.objectotherdamage, already_calc.totaldamage, battle_data.totaldamage, battle_data['total-accept-damage'], time);
+  hps_space.prop('title', tooltip_dps_create(battle_data.totalheal, battle_data.over_totalheal, already_calc.overhealPct, already_calc.selfheal, already_calc.partyheal, already_calc.allyheal, already_calc.otherheal, already_calc.barrier));
+  let dps_tooltip_string = tooltip_dps_create(already_calc.playerdamage, already_calc.persondamage, already_calc.torobotdamage, already_calc.playerotherdamage, already_calc.objectdamage, already_calc.matondamage, already_calc.towerdamage, already_calc.objectotherdamage, already_calc.totaldamage, battle_data.totaldamage, 0/*battle_data['total-accept-damage']*/, time);
   row.find(".g-dps").prop('title', dps_tooltip_string);
   let jobicon_space = row.find('.g-job-icon');
   jobicon_space.addClass('icon-' + battle_data.job);
@@ -274,15 +274,20 @@ function gorge_create(template, create_time, start_time, battle_data, hide, sele
   row.find('.g-torobot-number').text(already_calc.torobotdamage);
   row.find('.g-maton-number').text(already_calc.matondamage);
   row.find('.g-tower-number').text(already_calc.towerdamage);
-  row.find('.g-income-space').prop('title', tooltip_income(damage_to_dps(battle_data.incomeselfheal, time).toFixed(0), damage_to_dps(battle_data.incomepartyheal, time).toFixed(0), damage_to_dps(battle_data.incomeallyheal, time).toFixed(0), damage_to_dps(battle_data.incomeotherheal, time).toFixed(0), damage_to_dps(battle_data.personincomedamage, time).toFixed(0), damage_to_dps(battle_data.robincomedamage, time).toFixed(0), damage_to_dps(battle_data.objectincomedamage, time).toFixed(0)));
-  row.find('.g-incomedamage-number').text(damage_to_dps(battle_data.totalincomedamage, time).toFixed(0));
-  row.find('.g-incomeheal-number').text(damage_to_dps(battle_data.totalincomeheal, time).toFixed(0));
+  //row.find('.g-income-space').prop('title', tooltip_income(damage_to_dps(battle_data.incomeselfheal, time).toFixed(0), damage_to_dps(battle_data.incomepartyheal, time).toFixed(0), damage_to_dps(battle_data.incomeallyheal, time).toFixed(0), damage_to_dps(battle_data.incomeotherheal, time).toFixed(0), damage_to_dps(battle_data.personincomedamage, time).toFixed(0), damage_to_dps(battle_data.robincomedamage, time).toFixed(0), damage_to_dps(battle_data.objectincomedamage, time).toFixed(0)));
+  //row.find('.g-incomedamage-number').text(damage_to_dps(battle_data.totalincomedamage, time).toFixed(0));
+  //row.find('.g-incomeheal-number').text(damage_to_dps(battle_data.totalincomeheal, time).toFixed(0));
+  row.find('.g-incomedamage-number').text(damage_to_dps(battle_data.accept_income_totaldamage, time).toFixed(0));
+  row.find(".g-incomedamage-number").prop('title', crystal_income_damage_tooptip(battle_data));
+  row.find('.g-incomeheal-number').text(damage_to_dps(battle_data.accept_income_totalheal, time).toFixed(0));
+  row.find(".g-incomeheal-number").prop('title', crystal_income_heal_tooptip(battle_data));
   //under space
   if (typeof battle_data.robot_data === 'undefined') {//ロボなし
-    if (battle_data.calcdps >= RW_Person_Rainbow_DPS) {
+    //Rainbow
+    /*if (battle_data.calcdps >= RW_Person_Rainbow_DPS) {
       row.find(".g-dps-i").addClass('gaming');
       row.find(".g-dps-d").addClass('gaming');
-    }
+    }*/
   } else {//ロボあり
     row.find('.robot-space-hide').removeClass('robot-space-hide');
     let robot_detail = robot_icon_timehistory_create(battle_data.robot_data, false, create_time, start_time);
@@ -373,15 +378,15 @@ function tooltip_job_history(jobdata) {
 }
 function tooltip_robot_history_detail(type, data, time) {
   let incomedamage = 0;
-  if (typeof data.totalincomedamage !== 'number') {
+  if (typeof data.accept_income_totaldamage !== 'number') {
     incomedamage = 0;
   } else {
     if (type === 'che') {
-      incomedamage = Chaiser_HP - data.totalincomedamage;
+      incomedamage = Chaiser_HP - data.accept_income_totaldamage;
     } else if (type === 'opp') {
-      incomedamage = Oppresor_HP - data.totalincomedamage;
+      incomedamage = Oppresor_HP - data.accept_income_totaldamage;
     } else if (type === 'jas') {
-      incomedamage = Justice_HP - data.totalincomedamage;
+      incomedamage = Justice_HP - data.accept_income_totaldamage;
     } else {
       incomedamage = 0;
     }
@@ -409,8 +414,8 @@ function tooltip_robot_history_detail(type, data, time) {
   html_create += type + '"></div><div class="g-robot-main"><div class="g-robot-top">';
   html_create += '<div class="g-robot-div"><span class="icon-person"></span><span class="">' + damage_to_dps(data.persondamage, time).toFixed(0) + '</span></div>';
   html_create += '<div class="g-robot-div"><span class="icon-hammer"></span><span class="">' + damage_to_dps(data.torobotdamage, time).toFixed(0) + '</span></div>';
-  html_create += '<div class="g-robot-div"><span class="icon-maton"></span><span class="">' + damage_to_dps(data.matondamage, time).toFixed(0) + '</span></div>';
-  html_create += '<div class="g-robot-div"><span class="icon-tower2"></span><span class="">' + damage_to_dps(data.towerdamage, time).toFixed(0) + '</span></div>';
+  html_create += '<div class="g-robot-div"><span class="icon-maton"></span><span class="">' + damage_to_dps(data.damage_maton, time).toFixed(0) + '</span></div>';
+  html_create += '<div class="g-robot-div"><span class="icon-tower2"></span><span class="">' + damage_to_dps(data.damage_tower, time).toFixed(0) + '</span></div>';
   html_create += '</div><div class="g-middle"></div><div class="g-robot-under"><div class="g-robot-ridetime"><span class="icon-ScheduleTime"></span><span>' + time_change_format(time) + '</span></div>';
   html_create += '<div class="g-robot-incomedamage ' + incomedamage_color + '">' + incomedamage + '</div><div class="g-robot-k-d-a">' + 'K:' + kda.kill + ' D:' + kda.death + ' A:' + kda.assist + '</div></div></div></div>';
   return html_create;
@@ -588,7 +593,7 @@ function robot_icon_timehistory_create(data, simple, nowtime, battle_start_time)
           let r_time = data[i].time;
           if (data[i].time > Robot_Accept_Shotest_Time) {
             tooltip_data = tooltip_robot_history_detail(data[i].ride_type, data[i].data, Math.round(r_time / 1000));
-            return_data += "<div class='robot-history-box' title='" + tooltip_data + "' style=' width:" + r_time / total_battle_time * 100 + "%'><span class='" + "g-textline " + icon_type + " " + objectdamage_color_add(data[i].ride_type, data[i].data.towerdamage) + "'></span></div>";
+            return_data += "<div class='robot-history-box' title='" + tooltip_data + "' style=' width:" + r_time / total_battle_time * 100 + "%'><span class='" + "g-textline " + icon_type + " " + objectdamage_color_add(data[i].ride_type, data[i].data.damage_tower) + "'></span></div>";
           } else {//短すぎるデータ
             let r_time = data[i].time;
             return_data += "<div class='robot-history-box' style=' width:" + r_time / total_battle_time * 100 + "%'><span class='' ></span></div>";
@@ -596,7 +601,7 @@ function robot_icon_timehistory_create(data, simple, nowtime, battle_start_time)
         } else {//last data
           let r_time = nowtime > data[i].time ? nowtime - data[i].ridetime : 0;
           tooltip_data = tooltip_robot_history_detail(data[i].ride_type, data[i].data, Math.round(r_time / 1000));
-          return_data += "<div class='robot-history-box' title='" + tooltip_data + "' style=' width:" + r_time / total_battle_time * 100 + "%'><span class='" + "g-textline " + icon_type + " " + objectdamage_color_add(data[i].ride_type, data[i].data.towerdamage) + "' ></span></div>";
+          return_data += "<div class='robot-history-box' title='" + tooltip_data + "' style=' width:" + r_time / total_battle_time * 100 + "%'><span class='" + "g-textline " + icon_type + " " + objectdamage_color_add(data[i].ride_type, data[i].data.damage_tower) + "' ></span></div>";
         }
       }
       else {// no robot
@@ -614,13 +619,13 @@ function robot_icon_timehistory_create(data, simple, nowtime, battle_start_time)
 }
 function objectdamage_color_add(type, damage) {
   if (type === "opp" || type === 'jas') {
-    if (damage >= 1000000) {
+    if (damage >= 5000000) {
       return 'gaming2 gaming2-robot';
-    } else if (damage >= 750000) {
+    } else if (damage >= 350000) {
       return 'purple purple-robot';
-    } else if (damage >= 500000) {
+    } else if (damage >= 2000000) {
       return 'blue blue-robot';
-    } else if (damage >= 250000) {
+    } else if (damage >= 1000000) {
       return 'green green-robot';
     }
     else {

@@ -27,6 +27,8 @@ async function networkactionsync_21_22_2(log) {
     lastupdate: log[1],
     time_ms: await timestamp_change(log[1]),
     count: "-" + log[45],
+    count_row: Number(log[45]),
+    hitnum: Number(log[46]),
   };
   let effectmax = effectdata.name.length;
   let victim_effect = { name: [], param: [] };
@@ -117,6 +119,29 @@ async function networkactionsync_21_22_2(log) {
   }
   if (attacker_effect.name.length > 0) {
     attacker_input_data = await networkaction_calc(data, attacker_effect, "attacker");
+  }
+  if (data.actionID === DoubleRocketPuntch){
+    if(AREA.Area_Type === 2){
+      //Hidden Gorge
+      if(data.count_row === 0){
+        attacker_input_data.target.push('totalrocketpuntch');
+        attacker_input_data.replace.push(false);
+        attacker_input_data.data.push(1);
+        if (data.victimID === Field_ID){
+          //miss shot
+          attacker_input_data.target.push('missrocketpuntch');
+          attacker_input_data.replace.push(false);
+          attacker_input_data.data.push(1);
+        }else{
+          attacker_input_data.target.push('hitrocketpuntch');
+          attacker_input_data.replace.push(false);
+          attacker_input_data.data.push(1);
+          attacker_input_data.target.push('hitrocketpuntchavarage');
+          attacker_input_data.replace.push(false);
+          attacker_input_data.data.push(1);
+        }
+      }
+    }
   }
   let marge_input_data = await general_input_type(data.lastupdate, victim_input_data, attacker_input_data);
   await update_maindata_change_array('Player_data', 'nameID', data.attackerID, marge_input_data.target, marge_input_data.data, marge_input_data.replace);
@@ -399,7 +424,7 @@ async function damage_target_set(damage, overdamage, paramName, type, rtn) {
 async function heal_target(victimID, attackerID, actionID, special) {
   let typeinput = ['totalheal'];
   typeinput.push('heal_total_' + special);
-  if (attackerID.substring(0, 2) === '40') {
+  if (attackerID.substring(0, 2) === '40'||attackerID === Field_ID) {
     typeinput.push('heal_object');
     typeinput.push('heal_object_' + special);
   } else if (attackerID.substring(0, 2) === '10') {
@@ -448,6 +473,7 @@ async function heal_target(victimID, attackerID, actionID, special) {
     }
   } else {
     console.warn('heal attackerID error->' + attackerID);
+    console.warn(Log);
   }
   return typeinput;
 }
@@ -529,7 +555,7 @@ async function damage_target(victimID, attackerID, v_maxHP, a_maxHP, actionID, s
           }
         }
         typeinput.push(attack_target.join("_"));
-        if (v_maxHP > 1000000) {//Tower Core
+        if (v_maxHP === Core_Tower_HP) {//Tower Core
           typeinput.push("damage_tower");
         } else {
           typeinput.push("damage_maton");
