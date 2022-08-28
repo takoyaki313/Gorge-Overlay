@@ -46,20 +46,20 @@ function gorge_start(e) {
       start_time = Date.now() - 1000;
     }
     if (Dev_mode) {
-      container.append(teamdata_main(Math.round((create_time - start_time) / 1000), 'null', maindata_export('ally', null, 'persondamage', 'torobotdamage', 'matondamage')));
+      container.append(teamdata_main(Math.round((create_time - start_time) / 1000), 'null', maindata_export('ally', null, 'damage-player','damage-maton')));
     }
 
     //let battle_datas = maindata_export('ally',null,'persondamage','torobotdamage','matondamage');
     let battle_datas = [];
     if (ALLDISPLAY) {
-      battle_datas = maindata_export('all-player', null, 'persondamage', 'torobotdamage', 'matondamage');
+      battle_datas = maindata_export('all-player', null, 'damage-player','damage-maton');
     }
     else if (RW_RESULT_SHOW && LOGLINE_ENCOUNTER.Result_Page) {
-      battle_datas = maindata_export('ally', null, 'persondamage', 'torobotdamage', 'matondamage');
+      battle_datas = maindata_export('ally', null, 'damage-player','damage-maton');
     }
     else if (RW_PARTYPRIORITY) {
-      let party_member = maindata_export('party', null, 'persondamage', 'torobotdamage', 'matondamage');
-      let other_member = maindata_export('ally-other', null, 'persondamage', 'torobotdamage', 'matondamage');
+      let party_member = maindata_export('party', null, 'damage-player','damage-maton');
+      let other_member = maindata_export('ally-other', null, 'damage-player','damage-maton');
       if (RW_AROUND_ONLY) {
         party_member = battled_only(party_member);
         other_member = battled_only(other_member);
@@ -68,7 +68,7 @@ function gorge_start(e) {
       battle_datas = party_priority(party_member, other_member, RW_MAXROW);
     }
     else {
-      battle_datas = maindata_export('ally', null, 'persondamage', 'torobotdamage', 'matondamage');
+      battle_datas = maindata_export('ally', null, 'damage-player','damage-maton');
       if (RW_AROUND_ONLY) {
         battle_datas = battled_only(battle_datas);
       }
