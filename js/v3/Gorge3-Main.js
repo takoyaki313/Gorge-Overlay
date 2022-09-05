@@ -113,9 +113,14 @@ function primary_player(player) {
   log_queue_insert(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 }
 let BC_Channel_Active = false;
-function broadcast_Check(){
+async function broadcast_Check(){
   if (AREA.Area_Type === 0) {
     if(AREA.Last_Area_type !== -1&&BC_Channel_Active){
+      sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
+      connectBC(false);
+      BC_Channel_Active = false;
+    }else if(AREA.Last_Area_type === -1){
+      await connectBC(true);
       sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
       connectBC(false);
       BC_Channel_Active = false;

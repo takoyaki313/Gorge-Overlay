@@ -352,7 +352,7 @@ async function damage_heal_input_type(uniqueID, attackerID, victimID, a_maxHP, a
     damage = param;
   }
   if (type === 'damage') {
-    let target = await damage_target(victimID, attackerID, v_maxHP, a_maxHP, actionID, special);
+    let target = await damage_target(victimID, attackerID, v_maxHP, a_maxHP, actionID, special,damage);
     rtn = await damage_target_set(damage, overdamage, target, type, rtn);
   } else if (type === "heal") {
     let target = await heal_target(victimID, attackerID, actionID, special);
@@ -477,7 +477,7 @@ async function heal_target(victimID, attackerID, actionID, special) {
   }
   return typeinput;
 }
-async function damage_target(victimID, attackerID, v_maxHP, a_maxHP, actionID, special) {
+async function damage_target(victimID, attackerID, v_maxHP, a_maxHP, actionID, special,damage) {
   let typeinput = ['totaldamage'];
   typeinput.push('damage_total_' + special);
   if (attackerID.substring(0, 2) === '40') {//オブジェクト等の攻撃の場合
@@ -557,7 +557,9 @@ async function damage_target(victimID, attackerID, v_maxHP, a_maxHP, actionID, s
         typeinput.push(attack_target.join("_"));
         if (v_maxHP === Core_Tower_HP) {//Tower Core
           typeinput.push("damage_tower");
-        } else {
+        } else if(damage > 100000/*Big Damage*/){
+          typeinput.push("damage_tower");
+        } else{
           typeinput.push("damage_maton");
         }
       }

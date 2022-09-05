@@ -2,7 +2,7 @@ const BCName = 'GorgeOverlay_BroadCast';
 var BC_Channel = null;
 var BC_Enable = false;
 
-function connectBC(connect){
+async function connectBC(connect){
   if(connect){
     BC_Channel = new BroadcastChannel(BCName);
   }else {
