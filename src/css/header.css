@@ -1,0 +1,65 @@
+#dispArea{
+    display: grid;
+    /*grid-template-columns: 60% 40%;*/
+}
+#mainArea{
+    border-radius: 1rem;
+    padding: 0.3rem;
+    /*background-color:rgb(77, 72, 72) ;*/
+    background-color: rgba(0,0,0,0.3);
+}
+
+#subArea{
+    /*background-color: transparent;*/
+    background-color: black;
+}
+/*General class*/
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.horizontalLine {
+    padding: 0.3rem 0.1;
+    background-color: var(--default-color);
+    width: 100%;
+    height: 0.2rem;
+}
+.bebasText {
+    font-family: 'Bebas Neue', cursive;
+}
+.spaceLow {
+    padding: 0 0.3rem;
+}
+.spaceExLow {
+    padding: 0 0.15rem;
+}
+.hide {
+    display: none;
+}
+/*simple header*/
+header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+header .header-Top ,header .header-AdditionalLine{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+#zoneName{
+    font-family: 'Bebas Neue', cursive;
+    padding-left: 0.3rem;
+}
+.roundButton {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: gray;
+}
+.headerOpen {
+    display: flex;
+    align-items: center;
+    margin: 0.1rem 0;
+}

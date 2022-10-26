@@ -1,0 +1,313 @@
+import { object_to_array } from "../loglineGrobal.js";
+
+export const Barrier_ID = [
+    //Pld
+    {
+        actionid: '718B',
+        action_potencial: 0,
+        dotid: '0BD2',
+        name: 'ホーリーシェルトロン',
+        potencial: 12000,
+        max: 5,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {//War
+        actionid: '719A',
+        action_potencial: 0,
+        dotid: '0BD7',
+        name: '原初の血煙',
+        potencial: 63000 * 0.1,
+        max: 10,
+        synctype: 'maxhp',
+        damagesync: 0.1,//maxhp 10%
+        damage: false,
+        type: 'barrier'
+    }, {//drk
+        actionid: '71A5',
+        action_potencial: 0,
+        dotid: '051C',
+        name: 'ブラックナイト',
+        potencial: 8000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {//whm
+        actionid: '722B',
+        action_potencial: 0,
+        dotid: '0C0E',
+        name: 'アクアヴェール',
+        potencial: 8000,//成功時は2倍に威力アップ
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {//sch
+        actionid: '7230',
+        action_potencial: 4000,
+        dotid: '0C0F',
+        name: '鼓舞',
+        potencial: 4000,
+        max: 15,
+        synctype: 'buff_check',
+        checkID: '0C16',
+        synctype2: 1.5,
+        damagesync: 1,
+        damage: false,
+        type: 'barrier'
+    }, {
+        actionid: '7238',
+        action_potencial: 4000,
+        dotid: '07F1',
+        name: 'セラフィックヴェール',
+        potencial: 4000,
+        max: 10,
+        synctype: 'heal',
+        damagesync: 1,
+        damage: false,
+        type: 'barrier'
+    }, {
+        actionid: '7239',
+        action_potencial: 4000,
+        dotid: '0C1A',
+        name: 'コンソレイション',
+        potencial: 4000,
+        max: 10,
+        synctype: 'heal',
+        damagesync: 1,
+        damage: false,
+        type: 'barrier'
+    }, {//gnb
+        actionid: '71B8',
+        action_potencial: 1000,
+        dotid: '0BE8',
+        name: 'ジャギュラーリップ',
+        potencial: 4000,
+        max: 7,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {
+        actionid: '71B9',
+        action_potencial: 2000,
+        dotid: '0BE8',
+        name: 'アブドメンテアー',
+        potencial: 5000,
+        max: 7,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {
+        actionid: '71BA',
+        action_potencial: 3000,
+        dotid: '0BE8',
+        name: 'アイガウジ',
+        potencial: 6000,
+        max: 7,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {//ast
+        actionid: '723F',
+        action_potencial: 0,
+        dotid: '0C1C',
+        name: 'アスペクトベネフィク[夜]',
+        potencial: 1200,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {//drg
+        actionid: '733A',
+        action_potencial: 20000,
+        dotid: '0C6D',
+        name: 'スカイシャッター',
+        potencial: 58500 * 0.25,//Hp 25%
+        max: 10,
+        synctype: 'maxhp',
+        damagesync: 0.25,
+        damage: true,
+        type: 'barrier'
+    }, {//rpr
+        actionid: '7370',
+        action_potencial: 0,
+        dotid: '0B2D',
+        name: '守護のクレスト',
+        potencial: 12000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {//sam
+        actionid: '735A',
+        action_potencial: 8000,
+        dotid: '07CF',
+        name: '奥義波切',
+        potencial: 8000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {
+        actionid: '735B',
+        action_potencial: 8000,
+        dotid: '0C80',
+        name: '返し波切',
+        potencial: 8000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    },/*{//dnc
+      actionid:'72F3',
+      action_potencial: 0,
+      dotid:'0C5C',
+      name:'刃の舞い[終]',
+      potencial: 1000,//1000-5000
+      max : 10,
+      synctype: 'stack-buff',
+      checkbuff: [{buffID:'010C5C',potencial:2000},{buffID:'020C5C',potencial:3000},{buffID:'030C5C',potencial:4000},{buffID:'040C5C',potencial:5000}],
+      damagesync : 0,
+      damage : false,
+      type:'barrier'
+    },*/{//smn
+        actionid: '73E6',
+        action_potencial: 0,
+        dotid: '0C98',
+        name: '守りの光',
+        potencial: 10000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {//rdm
+        actionid: '73F9',
+        action_potencial: 6000,
+        dotid: '0CA2',
+        name: 'エンリポスト',
+        potencial: 6000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {
+        actionid: '73FA',
+        action_potencial: 7000,
+        dotid: '0CA3',
+        name: 'エンツヴェルクハウ',
+        potencial: 6000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {
+        actionid: '73FB',
+        action_potencial: 8000,
+        dotid: '0CA4',
+        name: 'エンルドゥブルマン',
+        potencial: 6000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {//blm
+        actionid: '73D9',
+        action_potencial: 16000,
+        dotid: '0C95',
+        name: 'バースト',
+        potencial: 12000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: true,
+        type: 'barrier'
+    }, {//mch
+        actionid: '72E5',
+        action_potencial: 0,
+        dotid: '0C54',
+        name: 'エーテルモーター',
+        potencial: 6000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {//nin
+        actionid: '7347',
+        action_potencial: 0,
+        dotid: '07DB',
+        name: '分身の術',
+        potencial: 8000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {
+        actionid: '7348',
+        action_potencial: 0,
+        dotid: '0C72',
+        name: '風遁の術',
+        potencial: 16000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }, {
+        actionid: '732C',
+        action_potencial: 0,
+        dotid: '0C65',
+        name: '抜重歩法',
+        potencial: 6000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    },
+];
+export const  Special_Barrier_ID = [{
+    actionid: '7249',
+    action_potencial: 0,
+    dotid: '0C25',//logline 26
+    name: 'エウクラシア・ディアグノシス',
+    potencial: 8000,
+    max: 15,
+    synctype: 'calc',
+    damagesync: 0,
+    damage: false,
+    type: 'barrier'
+}, {
+    actionid: '740A',//プネウマ
+    action_potencial: 0,
+    dotid: '0C26',//logline 26
+    name: 'ハイマ',
+    potencial: 2000,
+    max: 10,
+    synctype: 'calc',
+    damagesync: 0,
+    damage: false,
+    type: 'barrier'
+}];
+
+export const Barrier_ID_Array = object_to_array(Barrier_ID, 'dotid');
+
+export const Special_Barrier_ID_Array_Skill = object_to_array(Special_Barrier_ID, 'actionid');
+
+export const Special_Barrier_ID_Array_Dot = object_to_array(Special_Barrier_ID, 'dotid');

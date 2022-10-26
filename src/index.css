@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&display=swap');
+
+:root {
+  --default-color :#ded7be;
+  /*--background-color:rgba(0,0,0,0.3);*/
+  --tank-role-color : #7586e0;
+  --healer-role-color : #76ab67;
+  --melee-role-color : #ad6161;
+  --physical-role-color : #ad6161;
+  --magical-role-color : #ad6161;
+  --transparent-tank-role-color : #7587e0B0;
+  --transparent-healer-role-color : #76ab67B0;
+  --transparent-melee-role-color : #ad6161B0;
+  --transparent-physical-role-color : #ad6161B0;
+  --transparent-magical-role-color : #ad6161B0;
+  --transparent-general-role-color : #ded7beB0;
+  --death-too-much:rgba(255,0,0,0.3);
+  --party:rgba(37,92,80,0.5);
+  --me:rgba(93,81,37,0.7);
+  
+}
+html {
+  font-size: 20px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  /*font-family: 'Bebas Neue', cursive;*/
+  font-family: 'Roboto', sans-serif;
+  /*background-color: #373737;*/
+  color: var(--default-color);
+  user-select: none;
+  white-space: nowrap;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

@@ -1,0 +1,94 @@
+li {
+    display: flex;
+    padding-top: 0.2rem;
+    border-radius: 1rem 0.2rem 0.2rem 1rem;
+    margin-top: 0.2rem;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+.dataArea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 0.2rem;
+}
+
+.jobicon {
+    font-size: 1.4rem;
+    max-height: 3rem;
+    display: flex;
+    align-items: center;
+}
+.dpshps {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+.dps .dps-i {
+    font-size: 1.2rem;
+}
+.dps .dps-d {
+    font-size: 0.8rem;
+}
+.dps {
+    display: flex;
+    max-width: 3.5rem;
+    min-width: 3.5rem;
+    align-items: baseline;
+    padding-right: 0.3rem;
+    justify-content: flex-end;
+    border-right: 0.1rem solid;
+}
+.hps {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    max-width: 2.5rem;
+    min-width: 2.5rem;
+    height: -webkit-fill-available;
+}
+.hps-overPct {
+    margin-left: 0.3rem;
+    font-size: 0.65rem;
+    position: absolute;
+    bottom: 0.9rem;
+    right: 0;
+}
+.hps-5 {
+    font-size: 0.8rem;
+}
+.hps-d{
+    height: 100%;
+    padding-left: 0.3rem;
+    position: relative;
+}
+.nameArea {
+    width: 100%;
+    margin-left: 0.2rem;
+}
+.nameAreaTop {
+    display:flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.name {
+    width: calc(100vw - 9rem);
+    position: relative;
+}
+.PctSpace {
+    display: flex;
+    font-size: 0.65rem;
+    top:-0.5rem;
+    right: 0;
+    position: absolute;
+}
+.PctSpace * {
+    width: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
