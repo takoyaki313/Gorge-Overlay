@@ -16,6 +16,7 @@ window.devMode = {
   webSocket: false,
   logLevel: 0,
   logForceOff: false,
+  sampleType: -1,
 };
 window.Area = new Area();
 window.TBD = new maindata();
@@ -56,7 +57,7 @@ window.addOverlayListener('LogLine', (logline) => {
 });
 
 window.addOverlayListener('ChangeZone', (zone) => window.Area.areaset_Override= zone.zoneID);
-window.addOverlayListener('CombatData', (data) => rootRender(data));
+window.addOverlayListener('CombatData', (data) => window.EncounterState(data));
 window.addOverlayListener("ChangePrimaryPlayer", (player) => {
   window.PRIMARY_PLAYER.nameID = player.charID.toString(16).toUpperCase();
     window.PRIMARY_PLAYER.name = player.charName;

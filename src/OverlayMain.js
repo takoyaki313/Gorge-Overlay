@@ -1,16 +1,15 @@
 import './css/icon.css'
 
 import React, { useState } from 'react'
-import { Flipper, Flipped } from 'react-flip-toolkit'
-//import shuffle from 'lodash.shuffle'
 
 import { HeaderSimple } from './header';
-import { PvEMain, AninationPvEMain } from './pve_Overlay';
+import { PvEMain } from './pve_Overlay';
 import { rootRender } from '.';
 
 
 export const DefaultView = (CombatData) => {
-  const [enc, setEnc] = useState({Encounter:{CurrentZoneName:'Unknown Area',DURATION:'0'},Combatant:{}});
+  let [enc, setEnc] = useState({ Encounter: { CurrentZoneName: 'Unknown Area', DURATION: '0' }, Combatant: {} });
+  
   window.EncounterState =  (CombatData) => {
     setEnc(enc = CombatData);
   }
@@ -32,10 +31,14 @@ const Overlay = (CombatData) => {
   if(Object.keys(CombatData.CombatData).length === 0){
     
     console.log('Sample Encounter');
-    let data = sample_encounter_data();
-    //test();
-    return (<><PvEMain Combatant={data.Combatant}/></>);
-    //return(<div>...</div>)
+    if (window.devMode.sampleType === 0) {
+      let data = sample_encounter_data();
+      //test();
+      return (<><PvEMain Combatant={data.Combatant}/></>);
+    }
+    else {
+      return(<div>...</div>)
+    }
   }
   return (
     <div>

@@ -9,6 +9,43 @@ ul {
     margin: 0;
     padding: 0;
 }
+
+.pveMainRow {
+    position: relative;
+    overflow: hidden;
+}
+
+.backgroundGage {
+    position: absolute;
+    width: 102%;
+    height: 100%;
+    z-index: -1;
+    transition:all 1s ease;
+}
+
+.tank-background-gradient {
+    background: linear-gradient(90deg,var(--transparent-tank-role-color) 0% ,var(--transparent-tank-role-color) 98%,transparent 100%);
+}
+
+.healer-background-gradient {
+    background: linear-gradient(90deg,var(--transparent-healer-role-color) 0% ,var(--transparent-healer-role-color) 98%,transparent 100%);
+}
+
+.melee-background-gradient {
+    background: linear-gradient(90deg,var(--transparent-melee-role-color) 0% ,var(--transparent-melee-role-color) 98%,transparent 100%);
+}
+
+.magical-background-gradient {
+    background: linear-gradient(90deg,var(--transparent-magical-role-color) 0% ,var(--transparent-magical-role-color) 98%,transparent 100%);
+}
+
+.physical-background-gradient {
+    background: linear-gradient(90deg,var(--transparent-physical-role-color) 0% ,var(--transparent-physical-role-color) 98%,transparent 100%);
+}
+
+.general-background-gradient {
+    background: linear-gradient(90deg,var(--transparent-general-role-color) 0% ,var(--transparent-general-role-color) 98%,transparent 100%);
+}
 .dataArea {
     display: flex;
     align-items: center;

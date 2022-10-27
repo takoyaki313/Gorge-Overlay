@@ -62,12 +62,12 @@ const PvEPlayer = (prop) => {
     else if (job === "") {
         job = 'app_world_wanderer';
     }
-    console.log(prop.FlippedProps);
     let damagePct = Data.maxdamage > 0 ? Number(((Number(Data.damage) / Data.maxdamage) * 100).toFixed(0)) : 0;
-    let damagePct_Ex = damagePct + 2;
+    let gage_offset = Math.abs(damagePct - 100) - 2;
     return (
         <li>
-            <div {...prop.FlippedProps} style={{ background: 'linear-gradient(90deg,var(--transparent-' + role + '-role-color) 0% ,var(--transparent-' + role + '-role-color) ' + damagePct + '%,transparent ' + damagePct_Ex + '%,transparent 100%)' /*,order:Data.PartyNumber*/ }}>
+            <div className='pveMainRow' >
+                <div className={'backgroundGage ' + role + '-background-gradient' } style={{right:gage_offset + '%'}}></div>
                 <div className='dataArea'>
                     <div className='dpshps'>
                         <div className='dps'>
@@ -96,15 +96,4 @@ const PvEPlayer = (prop) => {
             </div>
         </li>
     )
-}
-
-
-/*
-<div className='DPSMater' style={{ width: Data["damage%"] }}></div>
-*/
-
-function convertToInt(a) {
-    const alphabet = "abcdefghijklmnopqrstuvwxyz'"
-    const b = a.split('').map((str) => alphabet.indexOf(str) + 1)
-    return Number(b.join(''));
 }
