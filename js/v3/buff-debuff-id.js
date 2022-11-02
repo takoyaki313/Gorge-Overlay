@@ -545,40 +545,40 @@ const EFFECT_ID = {
   },
   '010BED': {//Stack 1
     name: '連続剣[被]',
-    type: [false, false, true, false, false],
-    effect: 1,
+    type: [true, false, true, false, false],
+    effect: 0.96,
     cut: 1.04,
     cut_heal: 1,
     maxtime: 5
   },
   '020BED': {//Stack 2
     name: '連続剣[被]',
-    type: [false, false, true, false, false],
-    effect: 1,
+    type: [true, false, true, false, false],
+    effect: 0.92,
     cut: 1.08,
     cut_heal: 1,
     maxtime: 5
   },
   '030BED': {//Stack 3
     name: '連続剣[被]',
-    type: [false, false, true, false, false],
-    effect: 1,
+    type: [true, false, true, false, false],
+    effect: 0.88,
     cut: 1.12,
     cut_heal: 1,
     maxtime: 5
   },
   '040BED': {//Stack 4
     name: '連続剣[被]',
-    type: [false, false, true, false, false],
-    effect: 1,
+    type: [true, false, true, false, false],
+    effect: 0.84,
     cut: 1.16,
     cut_heal: 1,
     maxtime: 5
   },
   '050BED': {//Stack 5
     name: '連続剣[被]',
-    type: [false, false, true, false, false],
-    effect: 1,
+    type: [true, false, true, false, false],
+    effect: 0.8,
     cut: 1.20,
     cut_heal: 1,
     maxtime: 5
@@ -1068,7 +1068,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1,
     cut_heal: 1,
-    maxtime: 5
+    maxtime: 4
   },
   '0C8B': {
     name: '月影雷獣牙実行可',
@@ -1480,7 +1480,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1,
     cut_heal: 1,
-    maxtime: 5
+    maxtime: 7
   },
   '0C55': {
     name: 'エーテルモーター[害]',
@@ -1488,7 +1488,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1.1,
     cut_heal: 1,
-    maxtime: 5
+    maxtime: 7
   },
   '0C56': {
     name: 'アナライズ',
@@ -1543,7 +1543,7 @@ const EFFECT_ID = {
     name: '刃の舞い',
     type: [false, false, true, false, true],
     effect: 1,
-    cut: 0.8,
+    cut: 0.75,
     cut_heal: 1,
     maxtime: 3
   },
@@ -1739,7 +1739,7 @@ const EFFECT_ID = {
     cut: 1,
     cut_heal: 1,
     maxtime: 10
-  },
+  },/*
   '0C94': {
     name: 'アポカタスタシス',
     type: [false, false, true, false, true],
@@ -1747,7 +1747,7 @@ const EFFECT_ID = {
     cut: 0.9,
     cut_heal: 1,
     maxtime: 1
-  },
+  },*/
   //Summoner
   '0C99': {
     name: 'スリップストリーム',
@@ -1875,16 +1875,16 @@ const EFFECT_ID = {
     type: [false, false, true, true, false],
     effect: 1,
     cut: 1.1,
-    cut_heal: 0.8,
-    maxtime: 10
+    cut_heal: 0.9,
+    maxtime: 8
   },
   '0CA8': {
     name: 'バマジク',
     type: [false, false, true, true, true],
     effect: 1,
     cut: 0.9,
-    cut_heal: 1.2,
-    maxtime: 10
+    cut_heal: 1.1,
+    maxtime: 8
   },
   '0CA1': {
     name: 'ヴァルホーリー、ヴァルフレア実行可',
