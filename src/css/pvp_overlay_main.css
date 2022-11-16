@@ -1,0 +1,180 @@
+.redteamicon {
+    content: url("https://xivapi.com/i/061000/061378_hr1.png");
+    background-size: cover;
+}
+
+.blueteamicon {
+    content: url("https://xivapi.com/i/061000/061379_hr1.png");
+    background-size: cover;
+}
+
+.generalteamicon {
+    content: url("https://xivapi.com/i/061000/061480_hr1.png");
+    background-size: cover;
+}
+
+.redteam {
+    background: linear-gradient(to right, rgba(180, 56, 27, 0.5) 5%, 20%, rgba(180, 56, 27, 0.7));
+}
+
+.blueteam {
+    background: linear-gradient(to right, rgba(27, 56, 180, 0.5) 5%, 20%, rgba(27, 56, 180, 0.7));
+}
+
+.generalteam {
+    background: linear-gradient(to right, rgba(65, 65, 65, 0.5) 5%, 20%, rgba(65, 65, 65, 0.7));
+}
+
+/* role color*/
+.role-background-tank {
+    background-color: var(--tank-role-color) !important;
+}
+
+.role-background-healer {
+    background-color: var(--healer-role-color) !important;
+}
+
+.role-background-melee {
+    background-color: var(--melee-role-color) !important;
+}
+
+.role-background-physical {
+    background-color: var(--physical-role-color) !important;
+}
+
+.role-background-magical {
+    background-color: var(--magical-role-color) !important;
+}
+
+.role-background-general {
+    background-color: var(--general-role-color) !important;
+}
+
+.dunamis_tensyon0 {
+    /*none*/
+}
+
+.dunamis_tensyon1 {
+    content: url("https://xivapi.com/i/061000/061351_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon2 {
+    content: url("https://xivapi.com/i/061000/061352_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon3 {
+    content: url("https://xivapi.com/i/061000/061353_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon4 {
+    content: url("https://xivapi.com/i/061000/061354_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon5 {
+    content: url("https://xivapi.com/i/061000/061355_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon6 {
+    content: url("https://xivapi.com/i/061000/061356_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon7 {
+    content: url("https://xivapi.com/i/061000/061357_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon8 {
+    content: url("https://xivapi.com/i/061000/061358_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon9 {
+    content: url("https://xivapi.com/i/061000/061359_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon10 {
+    content: url("https://xivapi.com/i/061000/061360_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon11 {
+    content: url("https://xivapi.com/i/061000/061361_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon12 {
+    content: url("https://xivapi.com/i/061000/061362_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon13 {
+    content: url("https://xivapi.com/i/061000/061363_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon14 {
+    content: url("https://xivapi.com/i/061000/061364_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon15 {
+    content: url("https://xivapi.com/i/061000/061365_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon16 {
+    content: url("https://xivapi.com/i/061000/061366_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon17 {
+    content: url("https://xivapi.com/i/061000/061367_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon18 {
+    content: url("https://xivapi.com/i/061000/061368_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon19 {
+    content: url("https://xivapi.com/i/061000/061369_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_tensyon20 {
+    content: url("https://xivapi.com/i/061000/061482_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_kouyou1 {
+    content: url("https://xivapi.com/i/061000/061483_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_kouyou2 {
+    content: url("https://xivapi.com/i/061000/061484_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_kouyou3 {
+    content: url("https://xivapi.com/i/061000/061485_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_kouyou4 {
+    content: url("https://xivapi.com/i/061000/061486_hr1.png");
+    background-size: cover;
+}
+
+.dunamis_kouyou5 {
+    content: url("https://xivapi.com/i/061000/061487_hr1.png");
+    background-size: cover;
+}

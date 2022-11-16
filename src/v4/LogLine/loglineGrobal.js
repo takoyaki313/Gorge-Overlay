@@ -13,42 +13,13 @@ export const Core_Tower_HP = 8000000;
 ///////////////////////////////////////////////////////////////////////////////
 export const DoubleRocketPuntch = '26FB';//ダブルロケットパンチ (SkillID)
 export const Kaiki = '740F' //快気(SkillID)
-export const GunyouPosion = '717F' //軍用ポーション(SkillID)
+export const GunyouPortion = '717F' //軍用ポーション(SkillID)
 export const TensyonMax = '06C2';//テンションマックス (buffID)
 ///////////////////////////////////////////////////////////////////////////////
 export const Stack_buff = ['05B9'/*テンション*/, '0BED'/*連続剣*/, '0C5B'/*喝采*/];
 export const EXCLUDE_BUFF = ['07EB', '07EA', '0B37', '0B38'];//スタンス系　カルディア クローズドポジション
 ///////////////////////////////////////////////////////////////////////////////
 export const Send_Action = false;
-
-export class battle_event {
-    constructor() {
-        this.Engage = false;
-        this.Result_Page = false;
-        this.Result_in_time = 0;
-        this.Timer_Start = false;
-        this.Battle_Start_Time = 0;
-        this.Timer_Start_Time = 0;
-        this.Battle_Max_Time = 0;
-        this.Aliance_Data_24 = false;
-        this.TenSyonMax_Me = false;
-    }
-
-    set reset(run) {
-        if (run) {
-            this.Engage = false;
-            this.Result_Page = false;
-            this.Result_in_time = 0;
-            this.Timer_Start = false;
-            this.Battle_Start_Time = 0;
-            this.Timer_Start_Time = 0;
-            this.Battle_Max_Time = 0;
-            this.Aliance_Data_24 = false;
-            this.TenSyonMax_Me = false;
-            owner_id_list_reset();
-        }
-    }
-}
 
 export const object_to_array = (object, key) => {
     let data = [];
@@ -91,6 +62,6 @@ const owner_id_list_search = async (petID) => {
     return ownerID;
 }
 
-const owner_id_list_reset = () => {
+export const owner_id_list_reset = () => {
     window.OWNER_LIST = [];
 }

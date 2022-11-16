@@ -1,6 +1,6 @@
 import { timestamp_change } from "./LogLine/logline_other";
 
-export const Kind = ['damage_kind', 'heal_kind', 'accept_income_heal_kind', 'accept_income_damage_kind'];//重複を許可しない.要素は文字列だけ
+//export const Kind = ['damage_kind', 'heal_kind', 'accept_income_heal_kind', 'accept_income_damage_kind'];//重複を許可しない.要素は文字列だけ
 
 export const insert_maindata = async (target, keyname, key, ...data) => {//データの新規追加ONLY
     let input = { [keyname]: key };
@@ -83,7 +83,7 @@ export const New_update_maindata = async (target, keyname, key, data) => {//デ�
             }
             else if (data[i][1] instanceof Object) {
                 if (data[i][1] instanceof Array) {
-                    if (Kind.indexOf(data[i][0] !== -1)) {
+                    if (/*Kind.indexOf(data[i][0] !== -1||*/false) {
                         window.TBD[target][position][data[i][0]] = window.TBD[target][position][data[i][0]].concat(data[i][1]);
                     } else {
                         window.TBD[target][position][data[i][0]].push(data[i][1]);
@@ -134,7 +134,7 @@ export const New_update_maindata = async (target, keyname, key, data) => {//デ�
                             }
                             else if (data[i][1] instanceof Object) {
                                 if (data[i][1] instanceof Array) {
-                                    if (Kind.indexOf(data[i][0] !== -1)) {
+                                    if (/*Kind.indexOf(data[i][0] !== -1||*/false) {
                                         window.TBD[target][position][data[i][0]] = window.TBD[target][position][data[i][0]].concat(data[i][1]);
                                     } else {
                                         window.TBD[target][position][data[i][0]].push(data[i][1]);
@@ -183,11 +183,11 @@ export const searched_maindata = async (target, keyname, key) =>{
     return -1;
 }
 
-export const aliance_dunamis_update = async (nameID, dunamis, time) => {
+export const alliance_dunamis_update = async (nameID, dunamis, time) => {
     if (nameID.substring(0, 2) === '10') {
-        let read_data = await read_maindata('Player_data', 'nameID', nameID, 'aliance');
-        if (typeof read_data.aliance === 'number') {
-            var number = read_data.aliance;
+        let read_data = await read_maindata('Player_data', 'nameID', nameID, 'alliance');
+        if (typeof read_data.alliance === 'number') {
+            var number = read_data.alliance;
         } else {
             return null;
         }
@@ -197,12 +197,12 @@ export const aliance_dunamis_update = async (nameID, dunamis, time) => {
             return null;
         }
         if (window.Area.Type === 2 && window.BATTLE_EVENT.Engage) {
-            if (window.TBD.Aliance[number].dunamis !== dunamis) {
+            if (window.TBD.Alliance[number].dunamis !== dunamis) {
                 if (dunamis === 20 && number === 1) {
                     window.BATTLE_EVENT.TenSyonMax_Me = true;
                 }
-                window.TBD.Aliance[number].history.push({ from: window.TBD.Aliance[number].dunamis, to: dunamis, time: Math.round((await timestamp_change(time) - window.BATTLE_EVENT.Battle_Start_Time) / 1000) });
-                window.TBD.Aliance[number].dunamis = dunamis;
+                window.TBD.Alliance[number].history.push({ from: window.TBD.Alliance[number].dunamis, to: dunamis, time: Math.round((await timestamp_change(time) - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000) });
+                window.TBD.Alliance[number].dunamis = dunamis;
             }
         }
     }

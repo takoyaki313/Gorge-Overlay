@@ -34,7 +34,7 @@ export const kill_death_main_25 = async (log) => {
     */
     if (data.victim_type === 'player') {
         let time_number = await timestamp_change(data.lastupdate);
-        let time = Math.round((time_number - window.BATTLE_EVENT.Battle_Start_Time) / 1000);
+        let time = Math.round((time_number - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000);
         await update_maindata('Player_data', 'nameID', data.attackerID, ['kill', 1, false], ['kill_name', { toID: data.victimID, name: data.victim, lastupdate: data.lastupdate, time_number: time_number, time: time }, false], ['lastupdate', data.lastupdate, true]);
         await update_maindata('Player_data', 'nameID', data.victimID, ['death', 1, false], ['death_name', { fromID: data.attackerID, name: data.attacker, lastupdate: data.lastupdate, time_number: time_number, time: time }, false], ['lastupdate', data.lastupdate, true]);
     }

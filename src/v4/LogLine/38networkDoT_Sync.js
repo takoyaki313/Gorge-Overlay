@@ -1,6 +1,6 @@
 import { timestamp_change } from "./logline_other.js";
 import { hpdata_add } from "./hpdata.js";
-import { update_maindata, aliance_dunamis_update } from "../maindataEdit.js";
+import { update_maindata, alliance_dunamis_update } from "../maindataEdit.js";
 import { Stack_buff } from "./loglineGrobal.js";
 import { buffID_cordinate } from "./26playerBuffAdd.js";
 
@@ -88,13 +88,13 @@ const dunamis_checker = async (nameID, effectID, rank, lastupdate) => {
             }
             update_maindata('Player_data', 'nameID', nameID, ['dunamis', rank, true]);
             if (window.Area.Type === 2) {
-                aliance_dunamis_update(nameID, rank, lastupdate);
+                alliance_dunamis_update(nameID, rank, lastupdate);
             }
         }
         else {//Tensyon 以外
             update_maindata('Player_data', 'nameID', nameID, ['dunamis', effectID, true]);
             if (window.Area.Type === 2) {
-                aliance_dunamis_update(nameID, 20, lastupdate);
+                alliance_dunamis_update(nameID, 20, lastupdate);
             }
         }
         return 0;

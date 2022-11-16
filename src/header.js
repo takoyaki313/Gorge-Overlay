@@ -1,23 +1,31 @@
+import React from 'react';
+
+
 import './css/header.css'
 
 import { useState } from 'react';
 import { time_change } from './v4/timer/timer_format.js';
-import { sample_encounter_data } from './OverlayMain';
+import { sample_crystal_data_calc, sample_gorge_data_calc } from './v4/sample/workSample.js'
 
-import {sample_crystal_data_calc} from './v4/sample/workSample.js'
-import { rootRender } from '.';
-import { EncounterState } from './OverlayMain';
 var LCS_HEADER_HIDE = false;
 
-export const HeaderSimple = (EncounterData) => {
+export const HeaderSimple = () => {
     const [hide, setActive] = useState(LCS_HEADER_HIDE);
-
+    let [AreaName, ChangeArea] = useState('Unknown');
+    let [DURATION, ChangeTime] = useState(0);
+    window.changeArea_Event = (areaName) => {
+      ChangeArea(AreaName = areaName);
+    }
+    window.changeTime_Event = (BattleTime) => {
+      ChangeTime(DURATION = BattleTime);
+    }
     const hide_toggle = () => {
         setActive(!hide)
-    }
+  }
+  
     return (
         <div>
-            {hide?'' :<HeaderDetail EncounterData={EncounterData}/> }
+        {hide ? '' : <HeaderDetail DURATION={DURATION} AreaName={AreaName} /> }
             <div className='headerOpen' onClick={hide_toggle}>
                 {hide?<div className='roundButton' ></div>:''}
                 <div className='horizontalLine flex-center' style={{backgroundColor:'gray'}}></div>
@@ -26,19 +34,14 @@ export const HeaderSimple = (EncounterData) => {
     );
 }
 
-const HeaderDetail = (EncounterData) => {
-    
-    let Encounter =EncounterData.EncounterData.EncounterData;
-    if(Object.keys(EncounterData).length === 0){
-        Encounter = {CurrentZoneName:'Unknown Zone',DURATION:'0'};
-    }
-    let time = time_change(Number(Encounter.DURATION));
+const HeaderDetail = (prop) => {
+    let time = time_change(Number(prop.DURATION));
     return (
         <header>
             <div className='header-Top'>
                 <div className='flex-center'>
                     <span className='icon-app_fc' onClick={testmoduleStart}></span>
-                    <span id='zoneName'>{Encounter.CurrentZoneName}</span>
+                    <span id='zoneName'>{prop.AreaName}</span>
                 </div>
                 <div className='flex-center'>
                     <span className='bebasText flex-center'>
@@ -55,12 +58,16 @@ const HeaderDetail = (EncounterData) => {
 }
 
 function testmoduleStart() {
-    let data = sample_encounter_data2();
-data.Combatant['YOU'].encdps = '1245.32';
-//delete data.Combatant['Oppresor Tanaka'];
-    //sample_crystal_data_calc(2);
-    console.log(data);
-    window.EncounterState(data);
+  if (window.devMode.sampleType === 2) {
+    sample_gorge_data_calc(2);
+  }
+  else if (window.devMode.sampleType === 5) {
+    sample_crystal_data_calc(2);
+  }
+  else {
+    window.EncounterState(sample_encounter_data2);
+  }
+    
 }
 
 
@@ -762,7 +769,7 @@ export function sample_encounter_data2() {
           "name": "Maxsizeno Namenoohito",
           "duration": "11:54",
           "DURATION": "714",
-          "damage": "126757",
+          "damage": "526757",
           "damage-m": "0.13",
           "damage-b": "0.00",
           "damage-*": "126.76K",
@@ -771,15 +778,15 @@ export function sample_encounter_data2() {
           "DAMAGE-b": "0",
           "DAMAGE-*": "126K",
           "damage%": "1%",
-          "dps": "177.53",
-          "dps-*": "177",
-          "DPS": "178",
+          "dps": "1273.53",
+          "dps-*": "1273",
+          "DPS": "1273",
           "DPS-k": "0",
           "DPS-m": "0",
           "DPS-*": "177",
-          "encdps": "145.03",
-          "encdps-*": "145",
-          "ENCDPS": "145",
+          "encdps": "1273.03",
+          "encdps-*": "1273",
+          "ENCDPS": "1273",
           "ENCDPS-k": "0",
           "ENCDPS-m": "0",
           "ENCDPS-*": "145",
@@ -2253,7 +2260,7 @@ export function sample_encounter_data2() {
           "absorbHeal": "6894"
         }
       },
-      "isActive": "false"
+      "isActive": "true"
     };
     return json;
   }

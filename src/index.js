@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { DefaultView } from './OverlayMain.js';
-import { loglineQuene_Push , calcClock} from './v4/LogLine/loglineClock.js'
+import { DefaultView } from './BattleOverlayLayout/OverlayMain.js';
+import { loglineQuene_Push, calcClock } from './v4/LogLine/loglineClock.js'
 import { Area } from './v4/Area/ChangeZone.js'
 import { maindata } from './v4/maindataFormat.js';
-import { battle_event } from './v4/LogLine/loglineGrobal.js';
+import { battle_event } from './v4/timer/timer_format';
 import { partyChangeEvent } from './party';
 
 //import reportWebVitals from './reportWebVitals';
@@ -16,11 +16,12 @@ window.devMode = {
   webSocket: false,
   logLevel: 0,
   logForceOff: false,
-  sampleType: -1,
+  sampleType: 2,
 };
 window.Area = new Area();
 window.TBD = new maindata();
-window.PRIMARY_PLAYER = {nameID:'',name:'',ACT_name:'YOU'};
+
+export let PRIMARY_PLAYER = { nameID: '', name: '', ACT_name: 'YOU' };
 window.BATTLE_EVENT = new battle_event();
 window.OWNER_LIST = [];
 
@@ -44,7 +45,7 @@ export const rootRender = (data) => {
 //reportWebVitals();
 
 //OverlayPlugin API 
-if (window.devMode.webSocket) {//DevMode ACT WebSocket Required Auto Redirect
+if (window.devMode.webSocket||window.devMode.sampleType === -1) {//DevMode ACT WebSocket Required Auto Redirect
   if (!window.location.href.includes('OVERLAY_WS')) {
     window.location.href = '?OVERLAY_WS=ws://127.0.0.1:10501/ws&HOST_PORT=ws://127.0.0.1/fake/';
   }
@@ -56,20 +57,26 @@ window.addOverlayListener('LogLine', (logline) => {
   }
 });
 
-window.addOverlayListener('ChangeZone', (zone) => window.Area.areaset_Override= zone.zoneID);
+window.addOverlayListener('ChangeZone', (zone) => {
+  window.Area.areaset_Override = zone.zoneID;
+  window.changeArea_Event(zone.zoneName.toUpperCase());
+});
+
 window.addOverlayListener('CombatData', (data) => window.EncounterState(data));
 window.addOverlayListener("ChangePrimaryPlayer", (player) => {
-  window.PRIMARY_PLAYER.nameID = player.charID.toString(16).toUpperCase();
-    window.PRIMARY_PLAYER.name = player.charName;
-    loglineQuene_Push(['101', null, window.PRIMARY_PLAYER.nameID, window.PRIMARY_PLAYER.name]);
+  PRIMARY_PLAYER.nameID = player.charID.toString(16).toUpperCase();
+  PRIMARY_PLAYER.name = player.charName;
+  loglineQuene_Push(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 });
 window.addOverlayListener('EnmityTargetData', (data) => {
   //console.log(data);
 });
 window.addOverlayListener('PartyChanged', (p) => partyChangeEvent(p.party));
-window.startOverlayEvents();
+
 
 //////////////////////////////////
 setInterval(calcClock, CalcInterval);
 
 rootRender({});
+
+window.startOverlayEvents();

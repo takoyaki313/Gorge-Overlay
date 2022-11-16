@@ -2,6 +2,7 @@ import { null_check, timestamp_change } from "./logline_other.js";
 import { Field_ID } from "./loglineGrobal.js";
 import { update_maindata,read_maindata } from "../maindataEdit.js";
 import { owner_id_list_add } from "./loglineGrobal.js";
+import { job_to_role } from "../../role.js";
 
 export const addcombatant = async (log) => {
     let nameID = log[2].toUpperCase();
@@ -21,13 +22,12 @@ export const addcombatant = async (log) => {
     else {
         owner_id = null;
     }
-
     if (nameID !== Field_ID) {
         if (window.BATTLE_EVENT.Engage) {
             let readed_data = await read_maindata('Player_data', 'nameID', nameID, 'job');
             if (typeof readed_data.job === 'string') {
                 if (job !== readed_data.job) {//違うので保存する
-                    await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['jobhistory', { job: readed_data.job, to: job, time: Math.round((time_ms - window.BATTLE_EVENT.Battle_Start_Time) / 1000), lasttime: time_ms, stamp: lastupdate }, false], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
+                    await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['jobhistory', { job: readed_data.job,role:job_to_role(readed_data.job) ,to: job, torole:job_to_role(job),time: Math.round((time_ms - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000), lasttime: time_ms, stamp: lastupdate }, false], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
                 }
                 else {
                     await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);

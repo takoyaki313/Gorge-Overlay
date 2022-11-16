@@ -17,6 +17,22 @@
   --death-too-much:rgba(255,0,0,0.3);
   --party:rgba(37,92,80,0.5);
   --me:rgba(93,81,37,0.7);
+
+  --alliance-color-general : transparent;
+  --alliance-color-1 :#5BB7E5;
+  --alliance-color-2 :#895BE5;
+  --alliance-color-3 :#E55BB7;
+  --alliance-color-4 :#E5895B;
+  --alliance-color-5 :#B7E55B;
+  --alliance-color-6 :#5BE589;
+  --alliance-color-10 :transparent;
+
+  --death-too-much:rgba(255,0,0,0.3);
+  --party:rgba(37,92,80,0.5);
+  --me:rgba(93,81,37,0.7);
+  --robot-hp-remain : #84F8BD;
+  --robot-hp-over : #EB4561;
+  --losstime:darkred;
   
 }
 html {
@@ -35,9 +51,14 @@ body {
   color: var(--default-color);
   user-select: none;
   white-space: nowrap;
+  width: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.bebasText {
+  font-family: 'Bebas Neue', cursive;
 }

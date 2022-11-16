@@ -36,7 +36,6 @@ export const networkAbility_receve = async (log) => {
         db_data.time_accept = data.lastupdate;
         insert_maindata_object('Action_Synced_data', db_data);
     }
-
     //--income damage / heal
     if (db_data.inputname === null) {
         return null;
@@ -63,7 +62,7 @@ const  add_accept_target = async (name, data, income) => {
     let rtn = { target: [], data: [], replace: [] };
     let input_str = 'accept_' + income + '_';
     for (let i = 0; i < name.length; i++) {
-        if (name[i] !== 'counter') {
+        if (name[i] !== 'counter'&&name[i] !== 'lastupdate') {
             rtn.target.push(input_str + name[i]);
             rtn.data.push(data[i]);
             rtn.replace.push(false);

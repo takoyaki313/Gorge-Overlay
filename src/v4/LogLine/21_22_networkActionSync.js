@@ -1,6 +1,6 @@
 import { pet_replace } from "./loglineGrobal.js";
 import { timestamp_change } from "./logline_other.js";
-import { DoubleRocketPuntch, Field_ID, Kaiki, GunyouPosion, Chaiser_HP, Oppresor_HP, Justice_HP, Core_Tower_HP } from "./loglineGrobal.js";
+import { DoubleRocketPuntch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppresor_HP, Justice_HP, Core_Tower_HP } from "./loglineGrobal.js";
 import { update_maindata_change_array, update_maindata, insert_maindata_object, read_maindata } from "../maindataEdit.js";
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
 import { Barrier_ID, Barrier_ID_Array, Special_Barrier_ID, Special_Barrier_ID_Array_Skill} from "./resource/barrierID.js";
@@ -405,9 +405,9 @@ const damage_target_set = async (damage, overdamage, paramName, type, rtn) => {
         }
     }
     if (type === 'damage') {
-        param.push(paramName.concat());
+        /*param.push(paramName.concat());
         paramName.push("damage_kind");
-        replace.push(false);
+        replace.push(false);*/
     } else if (type === 'heal') {
         if (overdamage > 0) {
             let overdamageName = [];
@@ -418,9 +418,11 @@ const damage_target_set = async (damage, overdamage, paramName, type, rtn) => {
             }
             paramName = paramName.concat(overdamageName);
         }
+        /*
         param.push(paramName.concat());
         paramName.push("heal_kind");
         replace.push(false);
+        */
     } else {
         console.error('damage target unknown -> ' + type);
         return rtn;
@@ -449,23 +451,23 @@ const heal_target = async (victimID, attackerID, actionID, special) => {
                 if (actionID === Kaiki) {
                     typeinput.push('heal_kaiki');
                     typeinput.push('heal_kaiki_num');
-                } else if (actionID === GunyouPosion) {
-                    typeinput.push('heal_G_posion');
-                    typeinput.push('heal_G_posion_num');
+                } else if (actionID === GunyouPortion) {
+                    typeinput.push('heal_G_portion');
+                    typeinput.push('heal_G_portion_num');
                 } else {
                     typeinput.push('heal_self_' + special);
                 }
             }
             else {//自分以外のプレイヤー
-                let attacker = await read_maindata('Player_data', 'nameID', attackerID, 'aliance');
-                let victim = await read_maindata('Player_data', 'nameID', victimID, 'aliance');
-                if (typeof attacker.aliance !== 'undefined' && typeof victim.aliance !== 'undefined') {
-                    if (attacker.aliance === 10) {
+                let attacker = await read_maindata('Player_data', 'nameID', attackerID, 'alliance');
+                let victim = await read_maindata('Player_data', 'nameID', victimID, 'alliance');
+                if (typeof attacker.alliance !== 'undefined' && typeof victim.alliance !== 'undefined') {
+                    if (attacker.alliance === 10) {
                         //24人そろってないためパーティ判別不能
                         typeinput.push('heal_ally');
                         typeinput.push('heal_ally_' + special);
                     }
-                    else if (attacker.aliance === victim.aliance) {
+                    else if (attacker.alliance === victim.alliance) {
                         typeinput.push('heal_party');
                         typeinput.push('heal_party_' + special);
                     }

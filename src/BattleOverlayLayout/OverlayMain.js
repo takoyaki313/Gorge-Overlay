@@ -1,72 +1,115 @@
-import './css/icon.css'
+import '../css/icon.css'
 
 import React, { useState } from 'react'
 
-import { HeaderSimple } from './header';
+import { HeaderSimple } from '../header';
 import { PvEMain } from './pve_Overlay';
-import { rootRender } from '.';
+import { rootRender } from '..';
+import { ffXIVAPI } from '../fflogsAPI'
+
+import { battleStart } from '../v4/timer/timer_event';
 
 
-export const DefaultView = (CombatData) => {
-  let [enc, setEnc] = useState({ Encounter: { CurrentZoneName: 'Unknown Area', DURATION: '0' }, Combatant: {} });
-  
-  window.EncounterState =  (CombatData) => {
-    setEnc(enc = CombatData);
+import { PvPMain } from './pvp_main';
+
+const PvPAreaZoneName = [
+  "wolves' den pier",
+  'hidden gorge',
+  'the borderland ruins (secure)',
+  'seal rock (seize)',
+  'the fields of glory (shatter)',
+  'onsal hakair (danshig naadam)',
+  'the palaistra',
+  'the volcanic heart',
+  'cloud nine'
+];
+
+export const DefaultView = () => {
+  let [enc, setEnc] = useState({ Encounter: { CurrentZoneName: 'Unknown Area', DURATION: '0' }, Combatant: {}, isActive: false });
+
+  let [tbdTime, setTBD] = useState(0);
+
+  window.EncounterState = (CombatData) => {
+    if (PvPAreaZoneName.indexOf(CombatData.Encounter.CurrentZoneName.toLowerCase()) === -1) {
+      if (CombatData.isActive === 'true') {
+        setEnc(enc = CombatData);
+        window.changeTime_Event(CombatData.Encounter.DURATION);
+        window.BATTLE_EVENT.encounterStart = true;
+      }
+      else {
+      }
+    }
+    else {
+      if (CombatData.isActive === 'false'&&PvPAreaZoneName[0] === CombatData.Encounter.CurrentZoneName.toLowerCase()) {
+        if (window.BATTLE_EVENT.encounterStart) {
+          window.TBD.resetData = 'PART';
+          window.BATTLE_EVENT.reset = true;
+        }
+      }
+      if (!window.BATTLE_EVENT.Result_Page &&!window.BATTLE_EVENT.Engage && CombatData.isActive === 'true') {
+        //Force BattleEvent Start
+        battleStart(0, '');
+      }
+    }
+  }
+  window.TBDState = (TBDTime) => {
+    setTBD(tbdTime = TBDTime);
   }
 
+  if (!enc.isActive && enc.Encounter.CurrentZoneName === "Wolves' Den Pier") {
+    // simple reset
+    if (window.Area.Type === 4) {
+
+    }
+  }
+  if (window.devMode.sampleType !== -1) {
+    window.Area.Type = window.devMode.sampleType
+  }
+    //ffXIVAPI();
   return (
     <div id="dispArea">
       <div id='mainArea'>
         {/*<HeaderAreaDefaultView />*/}
-        <HeaderSimple EncounterData={enc.Encounter}/>
-        <Overlay CombatData={enc.Combatant}/>
+        <HeaderSimple />
+        <Overlay CombatData={enc.Combatant} isActive={enc.isActive} TBD={tbdTime} />
       </div>
       <div id='subArea'>
       </div>
     </div>
   );
+
 }
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const Overlay = (CombatData) => {
-  if(Object.keys(CombatData.CombatData).length === 0){
-    
-    console.log('Sample Encounter');
-    if (window.devMode.sampleType === 0) {
-      let data = sample_encounter_data();
-      //test();
-      return (<><PvEMain Combatant={data.Combatant}/></>);
-    }
-    else {
-      return(<div>...</div>)
-    }
-  }
+
+const Overlay = (props) => {
+
+  // eslint-disable-next-line no-mixed-operators
   return (
-    <div>
+    <>
       {(() => {//AREA CHECK
         switch (window.Area.Type) {
           case 1: //Seal Rock & Onsal Hakair
-            return (<div>111</div>);
+            return (<><PvPMain tbdTime={props.TBD} /></>);
           case 2://Hidden Gorge
-            return ('');
+            return (<><PvPMain tbdTime={props.TBD} /></>);
           case 3://Border Land Ruins & Fields Of Glory 
-            return ('');
+            return (<><PvPMain tbdTime={props.TBD} /></>);
           case 4://Wolves Den Pier
-            return ('')
+            return (<><PvPMain tbdTime={props.TBD} /></>)
           case 5://Crystal Conflict Area
-            return ('');
+            return (<><PvPMain tbdTime={props.TBD} /></>);
           case 6://Not Use
             return ('');
           default://PvE 
-            return (<><PvEMain Combatant={CombatData.CombatData}/></>)
+            return (<><PvEMain Combatant={props.CombatData} /></>)
         }
       })()
       }
-    </div>
+    </>
   );
 }
 
-async function test(){
-  await _sleep(2000);
+async function test() {
+  //await _sleep(2000);
   let data = sample_encounter_data();
   let oldDamage = data.Combatant["Oppresor Tanaka"].damage;
   data.Combatant["Oppresor Tanaka"].damage = Number(oldDamage) + 100000;

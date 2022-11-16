@@ -12,6 +12,7 @@ import { logline_battle_start_check } from "./33battleStartCheck.js";
 import { networkAbility_receve } from "./37networkAbilityReceve.js";
 import { networkDoT_sync_38 } from "./38networkDoT_Sync.js";
 import { networkupdatehp_39 } from "./39networkUpdateHP.js";
+import { primaryPlayerChanged_101 } from "./logline_other.js";
 
 
 
@@ -22,7 +23,7 @@ export const loglineFirstStep = async (log) => {
         await minimapChange_40(log);
     }
     if (window.Area.Type === 0) {
-        return ;
+        return;
     }
     switch (log[0]) {
         case '01'://Area Change
@@ -93,14 +94,15 @@ export const loglineFirstStep = async (log) => {
         case '41':
             //console.log(log);
             break;
+
+        case '101':
+            await primaryPlayerChanged_101(log);
+            break;
         /*
-                case '101':
-                    primary_player_changed(log);
-                    break;
-                case '102':
-                    party_changed_dataupdate(log);
-                    //console.log(log);
-                    break;*/
+        case '102':
+            party_changed_dataupdate(log);
+            //console.log(log);
+            break;*/
         default:
             break;
     }

@@ -1,3 +1,4 @@
+import { battleStop } from "../timer/timer_event";
 export class Area {
 
     constructor() {
@@ -15,20 +16,24 @@ export class Area {
         if(this.Type !== this.lastType){
             if(this.Type > 0){
                 window.TBD.resetData = 'ALL';
+                window.BATTLE_EVENT.reset = true;
             }
         }
         if(this.Type === 0 && this.lastType === 0){
             window.TBD.resetData = 'ALL';
+            window.BATTLE_EVENT.reset = true;
         }
     }
 
     set areaset_Override(id) {
         this.Type = areaTypeSetEvent(id);
+        battleStop('');
         if(this.Type > 0){
             //ExtOverlay_BATTLEMODE ON
         }
         else{
             //ExtOverlay_BATTLEMODE OFF
+            
         }
     }
 

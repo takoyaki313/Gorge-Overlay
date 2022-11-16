@@ -2,6 +2,9 @@ import { read_maindata, update_maindata_change_array, update_maindata } from "..
 import { assist_main } from "./assistSimulation.js";
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
 import { Chaiser_HP, Oppresor_HP, Justice_HP, EXCLUDE_BUFF } from "./loglineGrobal.js";
+
+import { simulationKDA } from "../maindataFormat.js";
+
 const Assist_Debuff_Reset = false;
 const HP_Update_duplite_data = true;
 const HP_Update_duplite_robride_process = false;
@@ -11,7 +14,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
     let datavalue = [];
     let datareplace = [];
     if (player_data.currenthp === undefined) {
-        if (window.debMode.logLevel > 12) {
+        if (window.devMode.logLevel > 12) {
             console.error('Hp Data is undefined');
             console.error(player_data);
         }
@@ -84,15 +87,16 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                     //既にHPが0になっている
                 }
                 else {
-                    let victim_name = await read_maindata('Player_data', 'nameID', player_data.nameID, 'aliance', 'name', 'job', 'robot', 'robot_data');
+                    let victim_name = await read_maindata('Player_data', 'nameID', player_data.nameID, 'alliance', 'name', 'job', 'robot', 'robot_data');
                     let victim_job = await robot_replace_job(victim_name);
                     let attacker_job = '';
                     let attacker_name = {};
                     if (player_data.nameID.substring(0, 2) === '10') {//死んだ人がプレイヤー
+                        let simulationdata = null;
                         if (attackerID.substring(0, 2) === '10') {//キルした人がプレイヤー
-                            attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'aliance', 'name', 'job', 'robot', 'robot_data');
+                            attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'alliance', 'name', 'job', 'robot', 'robot_data');
                             attacker_job = await robot_replace_job(attacker_name);
-                            await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.aliance, victim_job, attacker_job, attacker_name.name);
+                            simulationdata = await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name,victim_name.alliance);
                         }
                         else if (attackerID.substring(0, 2) === '40') {//キルした人がNPC
                             if (readed_data.attacker.length > 0) {
@@ -103,16 +107,16 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                                     }
                                     else {
                                         if (readed_data.attacker.length === i) {
-                                            if (window.debMode.logLevel > 12) {
+                                            if (window.devMode.logLevel > 12) {
                                                 console.log('attacker is NPC? ->' + attackerID);
                                             }
                                         }
                                     }
                                 }
                             }
-                            attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'aliance', 'name', 'job', 'robot', 'robot_data');
+                            attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'alliance', 'name', 'job', 'robot', 'robot_data');
                             attacker_job = await robot_replace_job(attacker_name);
-                            await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.aliance, victim_job, attacker_job, attacker_name.name);
+                            simulationdata = await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name,victim_name.alliance);
                         }
                         else if (attackerID === ' log_38 ') {
                             if (readed_data.attacker.length > 0) {
@@ -123,27 +127,34 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                                     }
                                     else {
                                         if (readed_data.attacker.length === i) {
-                                            if (window.debMode.logLevel > 12) {
+                                            if (window.devMode.logLevel > 12) {
                                                 console.log('attacker is NPC? ->' + attackerID);
                                             }
                                         }
                                     }
                                 }
-                                attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'aliance', 'name', 'job', 'robot', 'robot_data');
+                                attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'alliance', 'name', 'job', 'robot', 'robot_data');
                                 attacker_job = await robot_replace_job(attacker_name);
-                                await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.aliance, victim_job, attacker_job, attacker_name.name);
+                                simulationdata =  await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name,victim_name.alliance);
                             } else {
-                                if (window.debMode.logLevel > 12) {
+                                if (window.devMode.logLevel > 12) {
                                     console.warn('Warn : Kill Player Unknown->' + attackerID + '->' + player_data.nameID);
                                 }
                             }
                         }
                         else {
-                            if (window.debMode.logLevel > 12) {
+                            if (window.devMode.logLevel > 12) {
                                 console.warn('Warn : Kill Player Unknown->' + attackerID + '->' + player_data.nameID);
                             }
                         }
-                        await update_maindata('Player_data', 'nameID', player_data.nameID, ['s_death', 1, false], ['s-death-name', { attackerID: attackerID, name: attacker_name.name, job: attacker_job, lastupdate: player_data.lastupdate, time_ms: player_data.time_number, time: Math.round((player_data.time_number - window.BATTLE_EVENT.Battle_Start_Time) / 1000) }, false], ['lastupdate', player_data.lastupdate, true]);
+                        if (simulationdata === null) {
+                            simulationdata = new simulationKDA(
+                                attackerID, attacker_name.name, attacker_job, attacker_name.alliance,
+                                player_data.nameID, victim_name.name, victim_job, victim_name.alliance,
+                                [],player_data.time_number,Math.round((player_data.time_number - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000)
+                            );
+                        }
+                        await update_maindata('Player_data', 'nameID', player_data.nameID, ['s_death', 1, false], ['s-death-name',simulationdata, false], ['lastupdate', player_data.lastupdate, true]);
                     }
                 }
             }
@@ -165,7 +176,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
         else if (temp_time === 0) {
             //同一データ?
             if (readed_data.currenthp !== player_data.currenthp || readed_data.maxhp !== player_data.maxhp) {
-                if (window.debMode.logLevel > 12) {
+                if (window.devMode.logLevel > 12) {
                     console.warn('This Data is duplite...?,Not Applied' + attackerID);
                     console.warn(readed_data);
                     console.warn(player_data);
@@ -195,7 +206,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
             await update_maindata_change_array('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
         }
         else {
-            if (window.debMode.logLevel > 12) {
+            if (window.devMode.logLevel > 12) {
                 console.error('This data is probably old->' + nameID);
                 console.log(readed_data);
                 console.log(player_data);
