@@ -143,6 +143,12 @@ async function networkactionsync_21_22_2(log) {
       }
     }
   }
+  else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0) {
+    let time = Math.round((data.time_ms - LOGLINE_ENCOUNTER.Battle_Start_Time) / 1000);
+    attacker_input_data.target.push('limitBreak');
+    attacker_input_data.replace.push(false);
+    attacker_input_data.data.push({LimitBreak:data.actionID,hit:data.hitnum,time:time,time_ms:data.time_ms});
+}
   let marge_input_data = await general_input_type(data.lastupdate, victim_input_data, attacker_input_data);
   await update_maindata_change_array('Player_data', 'nameID', data.attackerID, marge_input_data.target, marge_input_data.data, marge_input_data.replace);
 

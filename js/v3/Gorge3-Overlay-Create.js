@@ -274,6 +274,11 @@ function gorge_create(template, create_time, start_time, battle_data, hide, sele
   row.find('.g-torobot-number').text(already_calc.torobotdamage);
   row.find('.g-maton-number').text(already_calc.matondamage);
   row.find('.g-tower-number').text(already_calc.towerdamage);
+  if (typeof (battle_data.limitBreak) === 'object') {
+    row.find('.g-limit-number').text(battle_data.limitBreak.length);
+  } else {
+    row.find('.g-limit-number').text("0");
+  }
   //row.find('.g-income-space').prop('title', tooltip_income(damage_to_dps(battle_data.incomeselfheal, time).toFixed(0), damage_to_dps(battle_data.incomepartyheal, time).toFixed(0), damage_to_dps(battle_data.incomeallyheal, time).toFixed(0), damage_to_dps(battle_data.incomeotherheal, time).toFixed(0), damage_to_dps(battle_data.personincomedamage, time).toFixed(0), damage_to_dps(battle_data.robincomedamage, time).toFixed(0), damage_to_dps(battle_data.objectincomedamage, time).toFixed(0)));
   //row.find('.g-incomedamage-number').text(damage_to_dps(battle_data.totalincomedamage, time).toFixed(0));
   //row.find('.g-incomeheal-number').text(damage_to_dps(battle_data.totalincomeheal, time).toFixed(0));

@@ -53,7 +53,8 @@ function overlay_update_start(e) {
     }
     else if (e.Encounter.CurrentZoneName.toLowerCase() === 'the palaistra' ||
       e.Encounter.CurrentZoneName.toLowerCase() === 'the volcanic heart' ||
-      e.Encounter.CurrentZoneName.toLowerCase() === 'cloud nine') {
+      e.Encounter.CurrentZoneName.toLowerCase() === 'cloud nine'||
+      e.Encounter.CurrentZoneName.toLowerCase() === 'the clockwork castletown'){
       cc_start();
     }
     else {
@@ -216,6 +217,14 @@ async function area_type_set(zoneID) {
       LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
       break;
     case 1034://Crystal Conflict Cloud Nine
+      AREA.Area_Type = 5;
+      LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
+      break;
+    case 1116://Crystal Conflict  the Clockwork Castletown_1
+      AREA.Area_Type = 5;
+      LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
+      break;
+    case 1117://Crystal Conflict  the Clockwork Castletown_2
       AREA.Area_Type = 5;
       LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
       break;

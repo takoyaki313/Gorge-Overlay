@@ -41,10 +41,10 @@ var DoT_ID = [
     type: 'DoT'
   }, {
     actionid: '45E3',
-    action_potencial: 8000,
+    action_potencial: 12000,
     dotid: '0811',
     name: 'オーロラ',
-    potencial: 4000,
+    potencial: 3000,
     max: 12,
     type: 'HoT'
   }, {
