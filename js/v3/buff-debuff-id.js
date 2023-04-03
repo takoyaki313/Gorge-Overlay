@@ -272,7 +272,7 @@ const EFFECT_ID = {
     name: 'ファランクス',
     type: [false, false, true, false, true],
     effect: 1,
-    cut: 0.5,
+    cut: 0.67,
     cut_heal: 1,
     maxtime: 5
   },

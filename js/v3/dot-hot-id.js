@@ -278,10 +278,10 @@ const Barrier_ID = [
     type: 'barrier'
   }, {//sch
     actionid: '7230',
-    action_potencial: 4000,
+    action_potencial: 3000,
     dotid: '0C0F',
     name: '鼓舞',
-    potencial: 4000,
+    potencial: 6000,
     max: 15,
     synctype: 'buff_check',
     checkID: '0C16',
@@ -357,14 +357,14 @@ const Barrier_ID = [
     type: 'barrier'
   }, {//drg
     actionid: '733A',
-    action_potencial: 20000,
+    action_potencial: 18000,//32000
     dotid: '0C6D',
     name: 'スカイシャッター',
-    potencial: 58500 * 0.25,//Hp 25%
+    potencial: 24000,
     max: 10,
-    synctype: 'maxhp',
+    synctype: 'calc',
     damagesync: 0.25,
-    damage: true,
+    damage: false,
     type: 'barrier'
   }, {//rpr
     actionid: '7370',
@@ -460,7 +460,7 @@ const Barrier_ID = [
     action_potencial: 16000,
     dotid: '0C95',
     name: 'バースト',
-    potencial: 12000,
+    potencial: 16000,
     max: 10,
     synctype: 'calc',
     damagesync: 0,
