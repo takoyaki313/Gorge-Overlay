@@ -1067,7 +1067,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 4
     },
     '0C8B': {
         name: '月影雷獣牙実行可',
@@ -1479,7 +1479,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 7
     },
     '0C55': {
         name: 'エーテルモーター[害]',
@@ -1487,7 +1487,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1.1,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 7
     },
     '0C56': {
         name: 'アナライズ',
@@ -1542,7 +1542,7 @@ export const EFFECT_ID = {
         name: '刃の舞い',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.8,
+        cut: 0.75,
         cut_heal: 1,
         maxtime: 3
     },
@@ -1874,16 +1874,16 @@ export const EFFECT_ID = {
         type: [false, false, true, true, false],
         effect: 1,
         cut: 1.1,
-        cut_heal: 0.8,
-        maxtime: 10
+        cut_heal: 0.9,
+        maxtime: 8
     },
     '0CA8': {
         name: 'バマジク',
         type: [false, false, true, true, true],
         effect: 1,
         cut: 0.9,
-        cut_heal: 1.2,
-        maxtime: 10
+        cut_heal: 1.1,
+        maxtime: 8
     },
     '0CA1': {
         name: 'ヴァルホーリー、ヴァルフレア実行可',

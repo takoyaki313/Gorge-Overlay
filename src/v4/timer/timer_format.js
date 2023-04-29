@@ -1,4 +1,4 @@
-import { owner_id_list_reset } from "../LogLine/loglineGrobal";
+import { owner_id_list_reset } from "../LogLine/loglineGlobal";
 
 export const time_change = (time_sec) => {
     let division_time = [0, 0];
@@ -21,8 +21,8 @@ export class battle_event {
         this.Engage = false;
         this.Result_Page = false;
         this.Timer_Start = false;
-        this.Battle_Start_Time = 0; //Important
         this.Alliance_Data_24 = false;
+        this.partyMaxNum = 1;
         this.TenSyonMax_Me = false;
         this.encounterStart = false;
         this.timer = new timer();
@@ -33,13 +33,18 @@ export class battle_event {
             this.Engage = false;
             this.Result_Page = false;
             this.Timer_Start = false;
-            this.Battle_Start_Time = 0;
             this.Alliance_Data_24 = false;
+            this.partyMaxNum = 1;
             this.TenSyonMax_Me = false;
             this.encounterStart = false;
             owner_id_list_reset();
-
-            this.timer.reset();
+            this.timer.reset = true
+                ;
+        }
+    }  
+    set partyNumUpdate(num) {
+        if (this.partyMaxNum < num) {
+            this.partyMaxNum = num;
         }
     }
 
@@ -86,15 +91,17 @@ class timer {
     get Get_ResultIn() {
         return (this.Result_in_time);
     }
+    
     get Get_EncTime() {
         return (encTime(this));
     }
 
     get Get_RemainTime() {
+        let now = this.Get_ResultIn > 0 ? this.Get_ResultIn : Date.now();
         if (this.LastAdjustCurrentTime.time > 0){
-            return(this.LastAdjustCurrentTime.time - Math.floor((Date.now() - timer.LastAdjustCurrentTime.ref)/1000))
+            return(this.LastAdjustCurrentTime.time - Math.floor((now - this.LastAdjustCurrentTime.ref)/1000))
         } else if (this.Battle_Max_Time_num > 0) {
-            return(this.Battle_Max_Time_num - Math.floor((Date.now() - timer.BattleStartTime)/1000))
+            return(this.Battle_Max_Time_num - Math.floor((now - this.BattleStartTime)/1000))
         } else {
             //Unknown 
             return (encTime(this));

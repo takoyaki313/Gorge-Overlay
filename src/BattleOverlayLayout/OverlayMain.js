@@ -1,14 +1,11 @@
-import '../css/icon.css'
+import '../css/fonticon/style.css'
 
 import React, { useState } from 'react'
 
 import { HeaderSimple } from '../header';
-import { PvEMain } from './pve_Overlay';
-import { rootRender } from '..';
-import { ffXIVAPI } from '../fflogsAPI'
+import { OverlayMCombatants } from './pve_Overlay';
 
-import { battleStart } from '../v4/timer/timer_event';
-
+import { battleStart,battleStop } from '../v4/timer/timer_event';
 
 import { PvPMain } from './pvp_main';
 
@@ -21,7 +18,8 @@ const PvPAreaZoneName = [
   'onsal hakair (danshig naadam)',
   'the palaistra',
   'the volcanic heart',
-  'cloud nine'
+  'cloud nine',
+  'the clockwork castletown'
 ];
 
 export const DefaultView = () => {
@@ -29,25 +27,29 @@ export const DefaultView = () => {
 
   let [tbdTime, setTBD] = useState(0);
 
-  window.EncounterState = (CombatData) => {
+  window.EncounterState = async (CombatData) => {
     if (PvPAreaZoneName.indexOf(CombatData.Encounter.CurrentZoneName.toLowerCase()) === -1) {
       if (CombatData.isActive === 'true') {
         setEnc(enc = CombatData);
         window.changeTime_Event(CombatData.Encounter.DURATION);
-        window.BATTLE_EVENT.encounterStart = true;
       }
       else {
       }
     }
     else {
-      if (CombatData.isActive === 'false'&&PvPAreaZoneName[0] === CombatData.Encounter.CurrentZoneName.toLowerCase()) {
-        if (window.BATTLE_EVENT.encounterStart) {
+      if (PvPAreaZoneName[0] === CombatData.Encounter.CurrentZoneName.toLowerCase()) {
+        if (window.BATTLE_EVENT.encounterStart && CombatData.isActive === 'false') {
           window.TBD.resetData = 'PART';
+          await battleStop('PART');
+          window.BATTLE_EVENT.encounterStart = false;
           window.BATTLE_EVENT.reset = true;
+        } else {
+          window.BATTLE_EVENT.encounterStart = true;
         }
       }
       if (!window.BATTLE_EVENT.Result_Page &&!window.BATTLE_EVENT.Engage && CombatData.isActive === 'true') {
         //Force BattleEvent Start
+
         battleStart(0, '');
       }
     }
@@ -65,7 +67,7 @@ export const DefaultView = () => {
   if (window.devMode.sampleType !== -1) {
     window.Area.Type = window.devMode.sampleType
   }
-    //ffXIVAPI();
+
   return (
     <div id="dispArea">
       <div id='mainArea'>
@@ -100,23 +102,13 @@ const Overlay = (props) => {
           case 6://Not Use
             return ('');
           default://PvE 
-            return (<><PvEMain Combatant={props.CombatData} /></>)
+            return (<><OverlayMCombatants Combatant={props.CombatData} /></>)
         }
       })()
       }
     </>
   );
 }
-
-async function test() {
-  //await _sleep(2000);
-  let data = sample_encounter_data();
-  let oldDamage = data.Combatant["Oppresor Tanaka"].damage;
-  data.Combatant["Oppresor Tanaka"].damage = Number(oldDamage) + 100000;
-  rootRender(data);
-}
-
-
 
 
 

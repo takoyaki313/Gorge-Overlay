@@ -48,7 +48,7 @@ export const New_update_maindata = async (target, keyname, key, data) => {//デ�
     //let position = TBD[target].findIndex(({nameID}) => nameID === key);
     let position = await searched_maindata(target, keyname, key);
     if (position === -1) {//存在しないとき
-        window.TBD[target].push({ [keyname]: key });
+        window.TBD[target].push({ [keyname]: key, AreaType: window.Area.battleType });
         position = await searched_maindata(target, keyname, key);
         if (position === -1) {
             console.error('Error : New Data create failed... [keyname]->' + key);
@@ -56,41 +56,51 @@ export const New_update_maindata = async (target, keyname, key, data) => {//デ�
             return null;
         }
     }
+    let target_playerData = window.TBD[target][position];
+    await New_update_maindata_process(target_playerData, data);
+
+    //robot data 
+    if (window.Area.Type === 2) {//Hidden Gorge
+        if (target === 'Player_data') {
+            if (typeof target_playerData.robot === 'boolean') {
+                if (target_playerData.robot) {
+                    let data_robot = target_playerData.robot_data[target_playerData.robot_data.length - 1].data;
+                    await New_update_maindata_process(data_robot, data , true);
+                }
+            }
+        }
+    }
+}
+
+const New_update_maindata_process = async (update_target, data, isRobot = false) => {
     for (let i = 0; i < data.length; i++) {
-        if (data[i][2]) {//replace
-            window.TBD[target][position][data[i][0]] = data[i][1];
+        if (data[i][0] === 'robot_data' && isRobot) {
+            //skip
+        }
+        else if (data[i][2]) {//replace
+            update_target[data[i][0]] = data[i][1];
         }
         else {//add
-            //console.log(typeof db_data[data[i][0]]);
-            if (typeof window.TBD[target][position][data[i][0]] === 'undefined') {
+            if (typeof update_target[data[i][0]] === 'undefined') {
                 if (typeof data[i][1] === 'number') {
-                    window.TBD[target][position][data[i][0]] = 0;
+                    update_target[data[i][0]] = 0;
                 }
                 else if (typeof data[i][1] === 'string') {
                     //db_data[data[i][0]] = '' ;
-                    window.TBD[target][position][data[i][0]] = [];
+                    update_target[data[i][0]] = [];
                 }
                 else if (data[i][1] instanceof Object) {
-                    window.TBD[target][position][data[i][0]] = [];
+                    update_target[data[i][0]] = [];
                 }
             }
             if (typeof data[i][1] === 'number') {
-                window.TBD[target][position][data[i][0]] += data[i][1];
+                update_target[data[i][0]] += data[i][1];
             }
             else if (typeof data[i][1] === 'string') {
-                //db_data[data[i][0]] += data[i][1];
-                window.TBD[target][position][data[i][0]].push(data[i][1]);
+                update_target[data[i][0]].push(data[i][1]);
             }
             else if (data[i][1] instanceof Object) {
-                if (data[i][1] instanceof Array) {
-                    if (/*Kind.indexOf(data[i][0] !== -1||*/false) {
-                        window.TBD[target][position][data[i][0]] = window.TBD[target][position][data[i][0]].concat(data[i][1]);
-                    } else {
-                        window.TBD[target][position][data[i][0]].push(data[i][1]);
-                    }
-                } else {
-                    window.TBD[target][position][data[i][0]].push(data[i][1]);
-                }
+                update_target[data[i][0]].push(data[i][1]);
             }
             else {
                 console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1] + 'i = ' + i);
@@ -98,65 +108,10 @@ export const New_update_maindata = async (target, keyname, key, data) => {//デ�
             }
         }
     }
-    //robot data を詳細にするためのもの
-    if (window.Area.Type === 2) {//Hidden Gorge
-        if (target === 'Player_data') {
-            if (typeof window.TBD[target][position].robot === 'boolean') {
-                if (window.TBD[target][position].robot) {//ロボ中のとき
-                    //input
-                    let data_robot = window.TBD[target][position].robot_data[window.TBD[target][position].robot_data.length - 1].data;
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i][2]) {//replace
-                            //TBD[target][position].robot_data[TBD[target][position].robot_data.length - 1].data[data[i][0]] = data[i][1];
-                        }
-                        else if (data[i][0] === 'robot_data') {
-                            //Circular reference
-                        }
-                        else {//add
-                            if (typeof data_robot[data[i][0]] === 'undefined') {
-                                if (typeof data[i][1] === 'number') {
-                                    data_robot[data[i][0]] = 0;
-                                }
-                                else if (typeof data[i][1] === 'string') {
-                                    //db_data[data[i][0]] = '' ;
-                                    data_robot[data[i][0]] = [];
-                                }
-                                else if (data[i][1] instanceof Object) {
-                                    data_robot[data[i][0]] = [];
-                                }
-                            }
-                            if (typeof data[i][1] === 'number') {
-                                data_robot[data[i][0]] += data[i][1];
-                            }
-                            else if (typeof data[i][1] === 'string') {
-                                //db_data[data[i][0]] += data[i][1];
-                                data_robot[data[i][0]].push(data[i][1]);
-                            }
-                            else if (data[i][1] instanceof Object) {
-                                if (data[i][1] instanceof Array) {
-                                    if (/*Kind.indexOf(data[i][0] !== -1||*/false) {
-                                        window.TBD[target][position][data[i][0]] = window.TBD[target][position][data[i][0]].concat(data[i][1]);
-                                    } else {
-                                        window.TBD[target][position][data[i][0]].push(data[i][1]);
-                                    }
-                                } else {
-                                    window.TBD[target][position][data[i][0]].push(data[i][1]);
-                                }
-                            }
-                            else {
-                                console.error('Error : Input Data is typeof Unknown ->' + typeof data[i][1] + ':' + data[i][1]);
-                                console.error(data);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
-export const actionSplice = async (target, potision) => {
-    return window.TBD[target].splice(potision, 1);
+export const actionSplice = async (target, position) => {
+    return window.TBD[target].splice(position, 1);
 }
 
 export const action_Search = async (target, searchkey, searchdata, part) => {
@@ -174,7 +129,7 @@ export const action_Search = async (target, searchkey, searchdata, part) => {
     return -1;
 }
 
-export const searched_maindata = async (target, keyname, key) =>{
+export const searched_maindata = async (target, keyname, key) => {
     for (let i = window.TBD[target].length - 1; i >= 0; i--) {
         if (window.TBD[target][i][keyname] === key) {
             return i;
@@ -183,7 +138,7 @@ export const searched_maindata = async (target, keyname, key) =>{
     return -1;
 }
 
-export const alliance_dunamis_update = async (nameID, dunamis, time) => {
+export const alliance_dynamis_update = async (nameID, dynamis, time) => {
     if (nameID.substring(0, 2) === '10') {
         let read_data = await read_maindata('Player_data', 'nameID', nameID, 'alliance');
         if (typeof read_data.alliance === 'number') {
@@ -197,12 +152,12 @@ export const alliance_dunamis_update = async (nameID, dunamis, time) => {
             return null;
         }
         if (window.Area.Type === 2 && window.BATTLE_EVENT.Engage) {
-            if (window.TBD.Alliance[number].dunamis !== dunamis) {
-                if (dunamis === 20 && number === 1) {
+            if (window.TBD.Alliance[number].dynamis !== dynamis) {
+                if (dynamis === 20 && number === 1) {
                     window.BATTLE_EVENT.TenSyonMax_Me = true;
                 }
-                window.TBD.Alliance[number].history.push({ from: window.TBD.Alliance[number].dunamis, to: dunamis, time: Math.round((await timestamp_change(time) - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000) });
-                window.TBD.Alliance[number].dunamis = dunamis;
+                window.TBD.Alliance[number].history.push({ from: window.TBD.Alliance[number].dynamis, to: dynamis, time: Math.round((await timestamp_change(time) - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000) });
+                window.TBD.Alliance[number].dynamis = dynamis;
             }
         }
     }

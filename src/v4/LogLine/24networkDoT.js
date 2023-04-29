@@ -2,7 +2,7 @@ import { read_maindata, insert_maindata, update_maindata, update_maindata_change
 import { timestamp_change } from './logline_other.js';
 import { DoT_ID, DoT_ID_Array, Unique_DoT_ID_Array } from "./resource/dotID.js";
 import { general_input_type, damage_heal_input_type } from "./21_22_networkActionSync.js"
-import { Send_Action, pet_replace } from "./loglineGrobal.js";
+import { Send_Action, pet_replace } from "./loglineGlobal.js";
 
 let check = null;
 let check_2 = null;

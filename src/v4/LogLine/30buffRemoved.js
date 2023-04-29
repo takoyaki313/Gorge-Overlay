@@ -6,7 +6,7 @@ import { timestamp_change } from "./logline_other.js";
 const UniqueID_end = 3;
 const AcceptMarginTime = 100;
 
-export const network_buff_removerd_30 = async (log) => {
+export const network_buff_removed_30 = async (log) => {
     //Calc Target ID ->52B Wild Fire
     //
     for (let i = UniqueID_end; i < Unique_DoT_ID_Array.length; i++) {

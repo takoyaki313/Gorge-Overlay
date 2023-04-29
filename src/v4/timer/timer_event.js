@@ -29,7 +29,12 @@ export const battleStop = async (timestamp) => {
     if (timestamp === '') {
         //Force OFF
         //window.BATTLE_EVENT.Result_in_time = Date.now();
-    } else {
+    } else if(timestamp === 'PART'){
+        window.BATTLE_EVENT.Result_Page = true;
+        window.BATTLE_EVENT.timer.Set_ResultIn = Date.now();
+        Timer_OverlayChangeEvent();
+    }    
+    else {
         window.BATTLE_EVENT.Result_Page = true;
         window.BATTLE_EVENT.timer.Set_ResultIn = await timestamp_change(timestamp);
         Timer_OverlayChangeEvent();
@@ -39,12 +44,13 @@ export const battleStop = async (timestamp) => {
 }
 
 export const adjustTimer = async (time, timestamp) => {
+    /*
     if (!window.BATTLE_EVENT.Result_Page) {
         await battleStart(time, timestamp);
     }
     else {
         //not Adjust
-    }
+    }*/
 }
 
 window.TimerEvent = null;
@@ -63,7 +69,7 @@ const timerStop = async () => {
 
 const Timer_OverlayChangeEvent = () => {
     if (window.BATTLE_EVENT.timer.Battle_Max_Time > 0 && CountDown) {
-        window.changeTime_Event(window.BATTLE_EVENT.timer.Battle_Max_Time - window.BATTLE_EVENT.timer.Get_Time);
+        window.changeTime_Event(window.BATTLE_EVENT.timer.Get_RemainTime);
     } else {
         window.changeTime_Event(window.BATTLE_EVENT.timer.Get_Time);
     }

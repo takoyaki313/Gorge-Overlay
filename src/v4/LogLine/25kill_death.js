@@ -1,5 +1,5 @@
 import { timestamp_change } from "./logline_other.js";
-import { pet_replace } from "./loglineGrobal.js";
+import { pet_replace } from "./loglineGlobal.js";
 import { update_maindata } from "../maindataEdit.js";
 
 export const kill_death_main_25 = async (log) => {

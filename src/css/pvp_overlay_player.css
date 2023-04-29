@@ -1,9 +1,14 @@
-.PvPPlayer{
+.PvPPlayer {
     display: flex;
     margin: 0.15rem 0;
+}
+
+.PvPPlayerMain {
+    display: flex;
     padding: 0.1rem 0;
     overflow: hidden;
 }
+
 .PvPPlayer .leftArea {
     display: grid;
     grid-template-columns: 2.9rem 1.7rem;
@@ -11,18 +16,22 @@
     justify-items: center;
     align-items: center;
 }
+
 .PvPPlayer .dpsNumber {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
 }
+
 .PvPPlayer .dps_d {
     font-size: 1.2rem;
 }
+
 .PvPPlayer .dps_f {
     font-size: 0.9rem;
 }
+
 .PvPPlayer .hpsNumber {
     font-size: 0.9rem;
     width: 100%;
@@ -30,12 +39,15 @@
     justify-content: flex-end;
     align-items: flex-end;
 }
+
 .PvPPlayer .hps_d {
     font-size: 0.9rem;
 }
+
 .PvPPlayer .hps_f {
     font-size: 0.8rem;
 }
+
 .PvPPlayer .jobicon {
     position: relative;
     display: flex;
@@ -46,6 +58,7 @@
     justify-items: center;
     height: 100%;
 }
+
 .PvPPlayer .jobhistory {
     position: absolute;
     top: 0.3rem;
@@ -53,31 +66,36 @@
     width: 0.2rem;
     height: 0.2rem;
     border-radius: 50%;
-    background: blue;/*背景色*/
+    background: blue;
+    /*背景色*/
 }
+
 .PvPPlayer .rightArea {
     width: calc(100% - 4.7rem);
-    display:grid;
+    display: grid;
     grid-template-rows: 1.2rem 1fr 1rem;
     align-items: center;
 }
 
 .PvPPlayer .DPSMaterArea {
     position: relative;
-    overflow: hidden;  
+    overflow: hidden;
     width: 100%;
-    height: 100%; 
+    height: 100%;
 }
+
 .PvPPlayer .DPSMater {
     position: absolute;
     height: 0.2rem;
     width: 100%;
     transition: all 0.5s ease;
 }
+
 .PvPPlayer .topArea {
     display: flex;
     width: 100%;
 }
+
 .PvPPlayer .nameArea {
     width: calc(100vw - 9.5rem);
     margin-right: auto;
@@ -85,44 +103,112 @@
     display: flex;
     align-items: center;
 }
+
 .PvPPlayer .nameArea div:first-child {
     display: grid;
     align-items: center;
     justify-content: center;
     margin-right: 0.1rem;
 }
+
 .PvPPlayer .kdaArea {
     display: flex;
 }
-.PvPPlayer .kdaArea > div{
+
+.PvPPlayer .kdaArea>div {
     margin: 0 0.2rem;
     width: 1rem;
     text-align: end;
 }
+
 .PvPPlayer .bottomArea {
     display: flex;
     width: 100%;
 }
+
 .PvPPlayer .bottomleftArea {
     width: calc(100vw - 10.7rem);
     margin-right: auto;
     overflow: hidden;
 }
+
 .PvPPlayer .incomeArea {
     font-size: 0.85rem;
     display: flex;
     align-items: center;
 }
+
 .PvPPlayer .incomeNumber {
     width: 2.3rem;
     text-align: center;
 }
+
 .PvPPlayer .verticalLine {
     width: 0.1rem;
     height: 70%;
     background-color: var(--default-color);
     margin: 0 0.05rem;
 }
-.PvPPlayer .dunamisArea {
+
+.PvPPlayer .dynamisArea {
     width: 0.8rem;
+}
+
+/*------------------------------------------------*/
+/*New Layout */
+/**************************************************/
+.li_space {
+    display: flex;
+    margin: 0.15rem 0;
+    padding: 0.1rem 0;
+    border-radius: 0.5rem;
+    width: 100%;
+}
+
+
+.AdvancedPvP .incomeArea {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.AdvancedPvP .optionalArea {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+.gageRelative {
+    position: relative;
+    overflow: hidden;
+    flex-direction: column;
+}
+.portionNum, .limitbreakNum , .percentArea{
+    display: flex;
+    align-items: center;
+    padding: 0 0.2rem;
+}
+.gegeAbs {
+    position: absolute;
+    width: 102%;
+    height: 100%;
+    z-index: -1;
+    transition: all 0.5s ease;
+}
+
+.AdvancedPvP {
+    font-size: 0.8rem;
+    margin: 0 1rem;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+.smallPadding {
+    padding: 0 0.2rem;
+}
+.AdvancedPvP .verticalLine{
+    width: 0.1rem;
+    height: 70%;
+    background-color: var(--default-color);
+    margin: 0 0.2rem;
 }

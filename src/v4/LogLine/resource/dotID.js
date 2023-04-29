@@ -1,4 +1,4 @@
-import { object_to_array } from "../loglineGrobal.js";
+import { object_to_array } from "../loglineGlobal.js";
 
 export const DoT_ID = [
     {
@@ -46,7 +46,7 @@ export const DoT_ID = [
         action_potencial: 8000,
         dotid: '0811',
         name: 'オーロラ',
-        potencial: 3000,
+        potencial: 4000,
         max: 12,
         type: 'HoT'
     }, {

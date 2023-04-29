@@ -1,6 +1,6 @@
-import { pet_replace } from "./loglineGrobal.js";
+import { pet_replace,LimitBreak } from "./loglineGlobal.js";
 import { timestamp_change } from "./logline_other.js";
-import { DoubleRocketPuntch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppresor_HP, Justice_HP, Core_Tower_HP } from "./loglineGrobal.js";
+import { DoubleRocketPunch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppressor_HP, Justice_HP, Core_Tower_HP } from "./loglineGlobal.js";
 import { update_maindata_change_array, update_maindata, insert_maindata_object, read_maindata } from "../maindataEdit.js";
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
 import { Barrier_ID, Barrier_ID_Array, Special_Barrier_ID, Special_Barrier_ID_Array_Skill} from "./resource/barrierID.js";
@@ -129,28 +129,34 @@ export const networkactionsync_21_22 = async (log) => {
     if (attacker_effect.name.length > 0) {
         attacker_input_data = await networkaction_calc(data, attacker_effect, "attacker");
     }
-    if (data.actionID === DoubleRocketPuntch) {
+    if (data.actionID === DoubleRocketPunch) {
         if (window.Area.Type === 2) {
             //Hidden Gorge
             if (data.count_row === 0) {
-                attacker_input_data.target.push('totalrocketpuntch');
+                attacker_input_data.target.push('totalrocketpunch');
                 attacker_input_data.replace.push(false);
                 attacker_input_data.data.push(1);
                 if (data.victimID === Field_ID) {
                     //miss shot
-                    attacker_input_data.target.push('missrocketpuntch');
+                    attacker_input_data.target.push('missrocketpunch');
                     attacker_input_data.replace.push(false);
                     attacker_input_data.data.push(1);
                 } else {
-                    attacker_input_data.target.push('hitrocketpuntch');
+                    attacker_input_data.target.push('hitrocketpunch');
                     attacker_input_data.replace.push(false);
                     attacker_input_data.data.push(1);
-                    attacker_input_data.target.push('hitrocketpuntchavarage');
+                    attacker_input_data.target.push('hitrocketpunchavarage');
                     attacker_input_data.replace.push(false);
                     attacker_input_data.data.push(1);
                 }
             }
         }
+    }
+    else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0) {
+        let time = Math.round((data.time_ms - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000);
+        attacker_input_data.target.push('limitBreak');
+        attacker_input_data.replace.push(false);
+        attacker_input_data.data.push({LimitBreak:data.actionID,hit:data.hitnum,time:time,time_ms:data.time_ms});
     }
     let marge_input_data = await general_input_type(data.lastupdate, victim_input_data, attacker_input_data);
     await update_maindata_change_array('Player_data', 'nameID', data.attackerID, marge_input_data.target, marge_input_data.data, marge_input_data.replace);
@@ -505,63 +511,70 @@ const damage_target = async (victimID, attackerID, v_maxHP, a_maxHP, actionID, s
         if (victimID.substring(0, 2) === "10") {
             typeinput.push('damage_player');
             if (window.Area.Type === 2) {//Hidden Gorge
-                let attack_target = ['G_P_attack'];
+                let attack_target = ['G_Player_attack'];
                 //自身のダメージの種類
                 if (actionID === "XXXX") {//Canon
                     attack_target.push("canon");
                 } else {
                     attack_target.push("damage");
+                    typeinput.push(attack_target.join("_"));
                     if (a_maxHP === Chaiser_HP) {
                         attack_target.push("robot");
+                        typeinput.push(attack_target.join("_"));
                         attack_target.push("che");
-                    } else if (a_maxHP === Oppresor_HP) {
+                    } else if (a_maxHP === Oppressor_HP) {
                         attack_target.push("robot");
+                        typeinput.push(attack_target.join("_"));
                         attack_target.push("opp");
                     } else if (a_maxHP === Justice_HP) {
                         attack_target.push("robot");
+                        typeinput.push(attack_target.join("_"));
                         attack_target.push("jus");
                     } else {
                         attack_target.push("person");
                     }
                 }
                 typeinput.push(attack_target.join("_"));
-                let victim_target = ['G_P_to']
+                let victim_target = ['G_Player_to']
                 victim_target.push("damage");
+                typeinput.push(victim_target.join("_"));
                 if (v_maxHP === Chaiser_HP) {
                     victim_target.push("robot");
+                    typeinput.push(victim_target.join("_"));
                     victim_target.push("che");
-                    typeinput.push('torobotdamage');
-                } else if (v_maxHP === Oppresor_HP) {
+                    typeinput.push('damage_robot');
+                } else if (v_maxHP === Oppressor_HP) {
                     victim_target.push("robot");
+                    typeinput.push(victim_target.join("_"));
                     victim_target.push("opp");
-                    typeinput.push('torobotdamage');
+                    typeinput.push('damage_robot');
                 } else if (v_maxHP === Justice_HP) {
                     victim_target.push("robot");
+                    typeinput.push(victim_target.join("_"));
                     victim_target.push("jus");
-                    typeinput.push('torobotdamage');
+                    typeinput.push('damage_robot');
                 } else {
                     victim_target.push("person");
-                    typeinput.push('persondamage');
+                    typeinput.push('damage_person');
                 }
                 typeinput.push(victim_target.join("_"));
             }
             else if (window.Area.Type === 5) {//Crystal Conflict
-                typeinput.push('damage_' + victimID);
-                typeinput.push('damage_from_' + attackerID);
+                typeinput.push('damage_CC_' + victimID);
+                typeinput.push('damage_CC_from_' + attackerID);
             }
         } else {//FieldID / NPC
             typeinput.push('damage_object');
             if (window.Area.Type === 2) {//Hidden Gorge
-                let attack_target = ['G_O_attack'];
+                let attack_target = ['G_Obj_attack'];
                 attack_target.push("damage");
                 if (actionID === "XXXX") {//Canon
                     attack_target.push("canon");
                 } else {
-                    attack_target.push("damage");
                     if (a_maxHP === Chaiser_HP) {
                         attack_target.push("robot");
                         attack_target.push("che");
-                    } else if (a_maxHP === Oppresor_HP) {
+                    } else if (a_maxHP === Oppressor_HP) {
                         attack_target.push("robot");
                         attack_target.push("opp");
                     } else if (a_maxHP === Justice_HP) {
@@ -572,12 +585,16 @@ const damage_target = async (victimID, attackerID, v_maxHP, a_maxHP, actionID, s
                     }
                 }
                 typeinput.push(attack_target.join("_"));
+                typeinput.push("G_obj_to_damage");
                 if (v_maxHP === Core_Tower_HP) {//Tower Core
                     typeinput.push("damage_tower");
+                    typeinput.push("G_obj_to_damage_tower");
                 } else if (damage > 100000/*Big Damage*/) {
                     typeinput.push("damage_tower");
+                    typeinput.push("G_obj_to_damage_tower");
                 } else {
                     typeinput.push("damage_maton");
+                    typeinput.push("G_obj_to_damage_maton");
                 }
             }
         }
@@ -857,7 +874,7 @@ const potencial_to_damage_calc_id = async (target_data, nameID/*effect revise ma
                 return (return_data[0] * return_data[1] * 1);
             }
         } else {
-            if (target_data.maxhp === Chaiser_HP || target_data.maxhp === Oppresor_HP || target_data.maxhp === Justice_HP) {
+            if (target_data.maxhp === Chaiser_HP || target_data.maxhp === Oppressor_HP || target_data.maxhp === Justice_HP) {
                 return ((return_data[1]) * 1);
             }
             else {
@@ -918,7 +935,7 @@ const potencial_to_damage_calc_id = async (target_data, nameID/*effect revise ma
                 return (return_data[1] * return_data[0] * 1);
             }
         } else {
-            if (target_data.maxhp === Chaiser_HP || target_data.maxhp === Oppresor_HP || target_data.maxhp === Justice_HP) {
+            if (target_data.maxhp === Chaiser_HP || target_data.maxhp === Oppressor_HP || target_data.maxhp === Justice_HP) {
                 return ((return_data[1]) * 1);
             }
             else {

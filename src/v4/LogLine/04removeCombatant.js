@@ -1,6 +1,6 @@
 import { update_maindata } from "../maindataEdit.js";
 import { timestamp_change } from "./logline_other.js";
-import { Field_ID } from "./loglineGrobal.js";
+import { Field_ID } from "./loglineGlobal.js";
 
 export const removecombatant = async (log) => {
     let nameID = log[2].toUpperCase();

@@ -2,7 +2,7 @@ import '../css/pvp_overlay_main.css'
 import '../css/pvp_overlay_team.css'
 
 import React, { useState } from 'react';
-import { TooltipJSX } from '../tooltip';
+import { TooltipJSX } from './tooltip/tooltip';
 import { AssistTooltipLayout} from './tooltip/kdaTooltip'
 
 export const TeamData = (prop) => {
@@ -43,7 +43,7 @@ export const TeamData = (prop) => {
     dispdata.Deaths.sort((a, b) => a.time - b.time);
     dispdata.Assists.sort((a, b) => a.time - b.time);
     return (
-        <div className={'pvpTeam ' + prop.team + 'team'}>
+        <div className={'pvpTeam ' + prop.team + 'team'} onClick={prop.toggle}>
             <div className={'teamSymbol ' + prop.team + 'teamicon'}></div>
             <div className='dataArea'>
                 <div className='DPSArea'>

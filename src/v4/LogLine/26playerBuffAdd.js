@@ -3,10 +3,10 @@ import { read_maindata, update_maindata } from "../maindataEdit.js";
 import { potencial_to_damage_calc_effect, effectdata_force4 } from "./21_22_networkActionSync.js";
 import { new_change_accept_damage } from "./24networkDoT.js";
 import { timestamp_change } from "./logline_other.js";
-import { Stack_buff } from "./loglineGrobal.js";
+import { Stack_buff } from "./loglineGlobal.js";
 
 export const player_buff_add_26 = async (log) => {
-    let data = { buffID: await buffID_cordinate(log[2]), attacker: log[5], victim: log[7], buff: log[3], time: Number(log[4]), time_ms: await timestamp_change(log[1]), lastupdate: log[1] };
+    let data = { buffID: await buffID_coordinate(log[2]), attacker: log[5], victim: log[7], buff: log[3], time: Number(log[4]), time_ms: await timestamp_change(log[1]), lastupdate: log[1] };
     if (Stack_buff.indexOf(data.buffID) !== -1) {
         data.buffID = log[9] + data.buffID;
     }
@@ -36,7 +36,7 @@ export const player_buff_add_26 = async (log) => {
     }
 }
 
-export const buffID_cordinate = async (id) => {
+export const buffID_coordinate = async (id) => {
     if (id.length > 4) {
         return id.substring(id.length - 4, id.length);
     } else if (id.length < 4) {

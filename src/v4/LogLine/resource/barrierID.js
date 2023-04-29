@@ -1,4 +1,4 @@
-import { object_to_array } from "../loglineGrobal.js";
+import { object_to_array } from "../loglineGlobal.js";
 
 export const Barrier_ID = [
     //Pld

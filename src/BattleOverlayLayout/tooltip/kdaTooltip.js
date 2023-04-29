@@ -1,13 +1,13 @@
 import React from 'react';
 
 import '../../css/pvp_overlay_main.css'
-import '../../css/icon.css'
+import '../../css/fonticon/style.css'
 import '../../css/tooltip.css'
 import { time_change } from '../../v4/timer/timer_format';
 
 export const AssistTooltipLayout = (prop) => {
     //prop data
-    return (<div className='tooltip-assitKDA tooltip-assist'>
+    return (<div className='tooltip-assistKDA tooltip-assist'>
         {prop.simulationKDA.map((data, index) => {
             let time = time_change(data.time);
             return (
@@ -27,7 +27,7 @@ export const AssistTooltipLayout = (prop) => {
 
 export const KillTooltipLayout = (prop) => {
     //prop data
-    return (<div className='tooltip-assitKDA tooltip-kill'>
+    return (<div className='tooltip-assistKDA tooltip-kill'>
         {prop.simulationKDA.map((data, index) => {
             let time = time_change(data.time);
             return (
@@ -44,7 +44,7 @@ export const KillTooltipLayout = (prop) => {
 
 export const DeathTooltipLayout = (prop) => {
     //prop data
-    return (<div className='tooltip-assitKDA tooltip-death'>
+    return (<div className='tooltip-assistKDA tooltip-death'>
         {prop.simulationKDA.map((data, index) => {
             let time = time_change(data.time);
             return (

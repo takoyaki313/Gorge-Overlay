@@ -44,13 +44,12 @@ const HeaderDetail = (prop) => {
                     <span id='zoneName'>{prop.AreaName}</span>
                 </div>
                 <div className='flex-center'>
-                    <span className='bebasText flex-center'>
-                        <span className='icon-ScheduleTime spaceExLow'></span>
+                    <span className='bebasText flex-center spaceLow'>
                         <span id='BattleTime_min'>{time[0]}</span>
                         <span id='BattleTime_dot'>:</span>
                         <span id='BattleTime_sec'>{time[1]}</span>
                     </span>
-                    <span className='icon-app_drawer_setting spaceExLow' onClick={() => { console.log("SettingButton") }}></span>
+                    <span className='icon-app_drawer_setting' id="settingButton" onClick={() => { console.log("SettingButton") }}></span>
                 </div>
             </div>
         </header>
@@ -65,7 +64,7 @@ function testmoduleStart() {
     sample_crystal_data_calc(2);
   }
   else {
-    window.EncounterState(sample_encounter_data2);
+    window.EncounterState(sample_encounter_data2());
   }
     
 }
@@ -141,7 +140,7 @@ export function sample_encounter_data2() {
         "powerheal-*": "160.00K",
         "kills": "120",
         "deaths": "39",
-        "CurrentZoneName": "Hidden Gorge",
+        "CurrentZoneName": "The Goblet",
         "Last10DPS": "5609",
         "Last30DPS": "5368",
         "Last60DPS": "7686"

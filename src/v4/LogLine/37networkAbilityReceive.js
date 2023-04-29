@@ -1,10 +1,10 @@
 import { timestamp_change } from "./logline_other.js";
 import { action_Search, actionSplice, insert_maindata_object, update_maindata_change_array } from "../maindataEdit.js";
 import { hpdata_add } from "./hpdata.js";
-import { Send_Action } from "./loglineGrobal.js";
+import { Send_Action } from "./loglineGlobal.js";
 
 
-export const networkAbility_receve = async (log) => {
+export const networkAbility_receive = async (log) => {
     let data = {
         nameID: log[2],
         packetID: log[4],
@@ -19,7 +19,7 @@ export const networkAbility_receve = async (log) => {
     };
     let uniqueID = data.packetID + data.nameID;
     if (uniqueID.length !== 16) {
-        console.error('37:networkAbility_receve Search_ID Length Error');
+        console.error('37:networkAbility_receive Search_ID Length Error');
         console.error(data);
         return null;
     }

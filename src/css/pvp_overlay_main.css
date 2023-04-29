@@ -1,3 +1,10 @@
+.P-horizontalLine {
+    margin: 0.3rem 0.1rem;
+    background-color: var(--default-color);
+    width: 100%;
+    height: 0.1rem;
+}
+
 .redteamicon {
     content: url("https://xivapi.com/i/061000/061378_hr1.png");
     background-size: cover;
@@ -27,154 +34,297 @@
 
 /* role color*/
 .role-background-tank {
-    background-color: var(--tank-role-color) !important;
+    background-color: var(--transparent-tank-role-color) !important;
 }
 
 .role-background-healer {
-    background-color: var(--healer-role-color) !important;
+    background-color: var(--transparent-healer-role-color) !important;
 }
 
 .role-background-melee {
-    background-color: var(--melee-role-color) !important;
+    background-color: var(--transparent-melee-role-color) !important;
 }
 
 .role-background-physical {
-    background-color: var(--physical-role-color) !important;
+    background-color: var(--transparent-physical-role-color) !important;
 }
 
 .role-background-magical {
-    background-color: var(--magical-role-color) !important;
+    background-color: var(--transparent-magical-role-color) !important;
 }
 
 .role-background-general {
-    background-color: var(--general-role-color) !important;
+    background-color: var(--transparent-general-role-color) !important;
 }
 
-.dunamis_tensyon0 {
-    /*none*/
+.alliance-background-gradient-1 {
+    background: linear-gradient(90deg, var(--alliance-transparent-color-1) 0%, var(--alliance-transparent-color-1) 98%, transparent 100%);
 }
 
-.dunamis_tensyon1 {
+.alliance-background-gradient-2 {
+    background: linear-gradient(90deg, var(--alliance-transparent-color-2) 0%, var(--alliance-transparent-color-2) 98%, transparent 100%);
+}
+
+.alliance-background-gradient-3 {
+    background: linear-gradient(90deg, var(--alliance-transparent-color-3) 0%, var(--alliance-transparent-color-3) 98%, transparent 100%);
+}
+
+.alliance-background-gradient-4 {
+    background: linear-gradient(90deg, var(--alliance-transparent-color-4) 0%, var(--alliance-transparent-color-4) 98%, transparent 100%);
+}
+
+.alliance-background-gradient-5 {
+    background: linear-gradient(90deg, var(--alliance-transparent-color-5) 0%, var(--alliance-transparent-color-5) 98%, transparent 100%);
+}
+
+.alliance-background-gradient-6 {
+    background: linear-gradient(90deg, var(--alliance-transparent-color-6) 0%, var(--alliance-transparent-color-6) 98%, transparent 100%);
+}
+
+/*
+.dynamis_tensyon0 {
+
+}
+*/
+
+.dynamis_tensyon1 {
     content: url("https://xivapi.com/i/061000/061351_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon2 {
+.dynamis_tensyon2 {
     content: url("https://xivapi.com/i/061000/061352_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon3 {
+.dynamis_tensyon3 {
     content: url("https://xivapi.com/i/061000/061353_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon4 {
+.dynamis_tensyon4 {
     content: url("https://xivapi.com/i/061000/061354_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon5 {
+.dynamis_tensyon5 {
     content: url("https://xivapi.com/i/061000/061355_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon6 {
+.dynamis_tensyon6 {
     content: url("https://xivapi.com/i/061000/061356_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon7 {
+.dynamis_tensyon7 {
     content: url("https://xivapi.com/i/061000/061357_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon8 {
+.dynamis_tensyon8 {
     content: url("https://xivapi.com/i/061000/061358_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon9 {
+.dynamis_tensyon9 {
     content: url("https://xivapi.com/i/061000/061359_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon10 {
+.dynamis_tensyon10 {
     content: url("https://xivapi.com/i/061000/061360_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon11 {
+.dynamis_tensyon11 {
     content: url("https://xivapi.com/i/061000/061361_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon12 {
+.dynamis_tensyon12 {
     content: url("https://xivapi.com/i/061000/061362_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon13 {
+.dynamis_tensyon13 {
     content: url("https://xivapi.com/i/061000/061363_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon14 {
+.dynamis_tensyon14 {
     content: url("https://xivapi.com/i/061000/061364_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon15 {
+.dynamis_tensyon15 {
     content: url("https://xivapi.com/i/061000/061365_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon16 {
+.dynamis_tensyon16 {
     content: url("https://xivapi.com/i/061000/061366_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon17 {
+.dynamis_tensyon17 {
     content: url("https://xivapi.com/i/061000/061367_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon18 {
+.dynamis_tensyon18 {
     content: url("https://xivapi.com/i/061000/061368_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon19 {
+.dynamis_tensyon19 {
     content: url("https://xivapi.com/i/061000/061369_hr1.png");
     background-size: cover;
 }
 
-.dunamis_tensyon20 {
+.dynamis_tensyon20 {
     content: url("https://xivapi.com/i/061000/061482_hr1.png");
     background-size: cover;
 }
 
-.dunamis_kouyou1 {
+.dynamis_kouyou1 {
     content: url("https://xivapi.com/i/061000/061483_hr1.png");
     background-size: cover;
 }
 
-.dunamis_kouyou2 {
+.dynamis_kouyou2 {
     content: url("https://xivapi.com/i/061000/061484_hr1.png");
     background-size: cover;
 }
 
-.dunamis_kouyou3 {
+.dynamis_kouyou3 {
     content: url("https://xivapi.com/i/061000/061485_hr1.png");
     background-size: cover;
 }
 
-.dunamis_kouyou4 {
+.dynamis_kouyou4 {
     content: url("https://xivapi.com/i/061000/061486_hr1.png");
     background-size: cover;
 }
 
-.dunamis_kouyou5 {
+.dynamis_kouyou5 {
     content: url("https://xivapi.com/i/061000/061487_hr1.png");
+    background-size: cover;
+}
+
+/*TANK*/
+.limitbreak_718D {
+    content: url("https://xivapi.com/i/009000/009586_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_719B {
+    content: url("https://xivapi.com/i/009000/009591_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_71A9 {
+    content: url("https://xivapi.com/i/009000/009597_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_71CA {
+    content: url("https://xivapi.com/i/009000/009603_hr1.png");
+    background-size: cover;
+}
+
+/*HEALER*/
+.limitbreak_722E {
+    content: url("https://xivapi.com/i/009000/009610_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_7235 {
+    content: url("https://xivapi.com/i/009000/009614_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_7247 {
+    content: url("https://xivapi.com/i/009000/009621_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_7257 {
+    /*Mesotes 7257*/
+    content: url("https://xivapi.com/i/009000/009624_hr1.png");
+    background-size: cover;
+}
+
+/*RANGE*/
+.limitbreak_72D9 {
+    content: url("https://xivapi.com/i/009000/009629_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_72E7 {
+    content: url("https://xivapi.com/i/009000/009636_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_72F8 {
+    content: url("https://xivapi.com/i/009000/009641_hr1.png");
+    background-size: cover;
+}
+
+/*MELEE*/
+.limitbreak_732D {
+    content: url("https://xivapi.com/i/009000/009646_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_7339 {
+    content: url("https://xivapi.com/i/009000/009652_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_734B {
+    content: url("https://xivapi.com/i/009000/009661_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_7361 {
+    content: url("https://xivapi.com/i/009000/009666_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_7371 {
+    content: url("https://xivapi.com/i/009000/009670_hr1.png");
+    background-size: cover;
+}
+
+/*MAGICAL*/
+.limitbreak_73DE {
+    content: url("https://xivapi.com/i/009000/009673_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_73E9 {
+    content: url("https://xivapi.com/i/009000/009681_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_73EE {
+    content: url("https://xivapi.com/i/009000/009683_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_7408 {
+    content: url("https://xivapi.com/i/009000/009692_hr1.png");
+    background-size: cover;
+}
+
+/**/
+.kaiki-png {
+    content: url("https://xivapi.com/i/009000/009108_hr1.png");
+    background-size: cover;
+}
+
+.portion-png {
+    content: url("https://xivapi.com/i/009000/009582_hr1.png");
     background-size: cover;
 }

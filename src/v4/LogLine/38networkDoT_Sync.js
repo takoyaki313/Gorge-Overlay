@@ -1,8 +1,8 @@
 import { timestamp_change } from "./logline_other.js";
 import { hpdata_add } from "./hpdata.js";
-import { update_maindata, alliance_dunamis_update } from "../maindataEdit.js";
-import { Stack_buff } from "./loglineGrobal.js";
-import { buffID_cordinate } from "./26playerBuffAdd.js";
+import { update_maindata, alliance_dynamis_update } from "../maindataEdit.js";
+import { Stack_buff } from "./loglineGlobal.js";
+import { buffID_coordinate } from "./26playerBuffAdd.js";
 
 export const networkDoT_sync_38 = async (log) => {
     //await dot_calc_main(log);
@@ -54,19 +54,19 @@ const player_buff_list_update = async (data, nameID, lastupdate) => {
         for (let i = 0; i < data_num; i++) {
             //console.log(data[0 + (i * 3)] + ':'+data[1 + (i * 3)] + ':'+data[2 + (i * 3)]);
             if (data[0 + (i * 3)] !== '0' || data[2 + (i * 3)] !== '0') {
-                let effectID = await buffID_cordinate(data[0 + (i * 3)]);
+                let effectID = await buffID_coordinate(data[0 + (i * 3)]);
                 if (Stack_buff.indexOf(effectID) !== -1) {
                     replace_data.push({ buffID: data[0 + (i * 3)], attacker: data[2 + (i * 3)] });
-                    checked += await dunamis_checker(nameID, effectID, parseInt(data[0 + (i * 3)].substring(0, 2), 16), lastupdate);
+                    checked += await dynamis_checker(nameID, effectID, parseInt(data[0 + (i * 3)].substring(0, 2), 16), lastupdate);
                 }
                 else {
                     replace_data.push({ buffID: effectID, attacker: data[2 + (i * 3)] });
-                    checked += await dunamis_checker(nameID, effectID, null, lastupdate);
+                    checked += await dynamis_checker(nameID, effectID, null, lastupdate);
                 }
             }
         }
         if (checked === data_num) {//No Tensyon
-            await update_maindata('Player_hp', 'nameID', nameID, ['effect', replace_data, true], ['dunamis', null, true]);
+            await update_maindata('Player_hp', 'nameID', nameID, ['effect', replace_data, true], ['dynamis', null, true]);
         }
         else {
             await update_maindata('Player_hp', 'nameID', nameID, ['effect', replace_data, true]);
@@ -74,10 +74,10 @@ const player_buff_list_update = async (data, nameID, lastupdate) => {
     }
 }
 
-const dunamis_checker = async (nameID, effectID, rank, lastupdate) => {
-    let dunamis = ['0853', '0854', '0855', '0856', '0857', '05B9', '06C2'];
+const dynamis_checker = async (nameID, effectID, rank, lastupdate) => {
+    let dynamis = ['0853', '0854', '0855', '0856', '0857', '05B9', '06C2'];
     // 05B9 Tensyon    06C2 TensyonMax
-    if (dunamis.indexOf(effectID) !== -1 && nameID.substring(0, 2) === "10") {
+    if (dynamis.indexOf(effectID) !== -1 && nameID.substring(0, 2) === "10") {
         if (effectID === '05B9') {
             if (typeof rank !== 'number') {
                 if (window.devMode.logLevel > 2) {
@@ -86,15 +86,15 @@ const dunamis_checker = async (nameID, effectID, rank, lastupdate) => {
                 }
                 return null;
             }
-            update_maindata('Player_data', 'nameID', nameID, ['dunamis', rank, true]);
+            update_maindata('Player_data', 'nameID', nameID, ['dynamis', rank, true]);
             if (window.Area.Type === 2) {
-                alliance_dunamis_update(nameID, rank, lastupdate);
+                alliance_dynamis_update(nameID, rank, lastupdate);
             }
         }
         else {//Tensyon 以外
-            update_maindata('Player_data', 'nameID', nameID, ['dunamis', effectID, true]);
+            update_maindata('Player_data', 'nameID', nameID, ['dynamis', effectID, true]);
             if (window.Area.Type === 2) {
-                alliance_dunamis_update(nameID, 20, lastupdate);
+                alliance_dynamis_update(nameID, 20, lastupdate);
             }
         }
         return 0;

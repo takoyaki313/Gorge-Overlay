@@ -8,6 +8,7 @@
   --melee-role-color : #ad6161;
   --physical-role-color : #ad6161;
   --magical-role-color : #ad6161;
+  --general-role-color : var(--default-color);
   --transparent-tank-role-color : #7587e0B0;
   --transparent-healer-role-color : #76ab67B0;
   --transparent-melee-role-color : #ad6161B0;
@@ -26,6 +27,15 @@
   --alliance-color-5 :#B7E55B;
   --alliance-color-6 :#5BE589;
   --alliance-color-10 :transparent;
+
+  --alliance-transparent-color-0 : transparent;
+  --alliance-transparent-color-1 :#5BB7E5B0;
+  --alliance-transparent-color-2 :#895BE5B0;
+  --alliance-transparent-color-3 :#E55BB7B0;
+  --alliance-transparent-color-4 :#E5895BB0;
+  --alliance-transparent-color-5 :#B7E55BB0;
+  --alliance-transparent-color-6 :#5BE589B0;
+  --alliance-transparent-color-10 :transparent;
 
   --death-too-much:rgba(255,0,0,0.3);
   --party:rgba(37,92,80,0.5);
@@ -61,4 +71,32 @@ code {
 
 .bebasText {
   font-family: 'Bebas Neue', cursive;
+}
+
+.me_background {
+  background: linear-gradient(90deg, var(--me) 0%, var(--me) 98%, transparent 100%);
+}
+
+.tank-background-gradient {
+  background: linear-gradient(90deg, var(--transparent-tank-role-color) 0%, var(--transparent-tank-role-color) 98%, transparent 100%);
+}
+
+.healer-background-gradient {
+  background: linear-gradient(90deg, var(--transparent-healer-role-color) 0%, var(--transparent-healer-role-color) 98%, transparent 100%);
+}
+
+.melee-background-gradient {
+  background: linear-gradient(90deg, var(--transparent-melee-role-color) 0%, var(--transparent-melee-role-color) 98%, transparent 100%);
+}
+
+.magical-background-gradient {
+  background: linear-gradient(90deg, var(--transparent-magical-role-color) 0%, var(--transparent-magical-role-color) 98%, transparent 100%);
+}
+
+.physical-background-gradient {
+  background: linear-gradient(90deg, var(--transparent-physical-role-color) 0%, var(--transparent-physical-role-color) 98%, transparent 100%);
+}
+
+.general-background-gradient {
+  background: linear-gradient(90deg, var(--transparent-general-role-color) 0%, var(--transparent-general-role-color) 98%, transparent 100%);
 }

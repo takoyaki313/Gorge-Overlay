@@ -10,7 +10,7 @@ export class maindata {
         this.Action_data = [];
         this.Action_Synced_data = [];
         this.Action_Sync_data = [];
-        this.Alliance = new dunamisHistory();
+        this.Alliance = new dynamisHistory();
     }
     set resetData(type/*ALL/PART*/) {
 
@@ -23,7 +23,7 @@ export class maindata {
             this.Action_data = [];
             this.Action_Synced_data = [];
             this.Action_Sync_data = [];
-            this.Alliance = new dunamisHistory();
+            this.Alliance = new dynamisHistory();
             if (window.devMode.logLevel > 2) {
                 console.warn('MainData Reset');
             }
@@ -45,7 +45,7 @@ export class maindata {
             this.Action_data = [];
             this.Action_Synced_data = [];
             this.Action_Sync_data = [];
-            this.Alliance = new dunamisHistory();
+            this.Alliance = new dynamisHistory();
             if (window.devMode.logLevel > 2) {
                 console.lowarng('MainData Reset');
             }
@@ -54,7 +54,9 @@ export class maindata {
             console.error('MainData reset Flag Unknown ->' + type);
         }
     }
-
+    get BattleData_AllyActive() {
+        return (BattleDataGet('AllyActive'));
+    }
     get BattleData_Party() {
         return (BattleDataGet('Party'));
     }
@@ -63,6 +65,9 @@ export class maindata {
     }
     get BattleData_Enemy() {
         return (BattleDataGet('Enemy'));
+    }
+    get BattleData_EnemyActive() {
+        return (BattleDataGet('EnemyActive'));
     }
     get BattleData_PC() {
         return (BattleDataGet('PC'));
@@ -75,17 +80,17 @@ export class maindata {
     }
 }
 
-class dunamisHistory {
+class dynamisHistory {
     constructor() {
         for (let i = 0; i < 7; i++) {
-            this[i] = new dunamisParty();
+            this[i] = new dynamisParty();
         }
     }
 }
 
-class dunamisParty {
+class dynamisParty {
     constructor() {
-        this.dunamis = 0;
+        this.dynamis = 0;
         this.history = [];
     }
 }
@@ -110,6 +115,34 @@ export class simulationKDA {
     }
 }
 
+export const BattleDataGetLimit = (num,tbd_battledata) => {
+    let active_Ally = tbd_battledata;
+    let rtn = [];
+    if (active_Ally.length === 0) {
+        return (rtn);
+    }
+    let isSkip = false;
+    for (let i = 0; i < active_Ally.length; i++) {
+        if (active_Ally[i].alliance === 1) {
+            rtn.push(active_Ally[i]);
+        }
+        if (rtn.length === num) {
+            isSkip = true;
+        }
+    }
+    if (!isSkip) {
+        for (let i = 0; i < active_Ally.length; i++) {
+            if (active_Ally[i].alliance !== 1) {
+                rtn.push(active_Ally[i]);
+            }
+            if (rtn.length === num) {
+                break;
+            }
+        }
+    }
+
+    return (gorgeSortRule(rtn));
+}
 const BattleDataGet = (limit) => {
     // Party Ally Enemy PC NPC
     const Data = window.TBD.Player_data;
@@ -140,6 +173,13 @@ const BattleDataGet = (limit) => {
                 }
             }
             break;
+        case 'EnemyActive':
+                for (let i = 0; i < Data.length; i++) {
+                    if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10'&& Data[i].battle) {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    }
+                }
+                break;
         case 'PC':
             for (let i = 0; i < Data.length; i++) {
                 if (Data[i].nameID.substring(0, 2) === '10') {
@@ -154,16 +194,32 @@ const BattleDataGet = (limit) => {
                 }
             }
             break;
+        case 'AllyActive':
+            for (let i = 0; i < Data.length; i++) {
+                if (Data[i].alliance === 1) {
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                }
+                else if (Data[i].alliance >= 1 && Data[i].battle) {
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                }
+            }
+            break;
         default:
             for (let i = 0; i < Data.length; i++) {
                 rtn.push(new dispPlayerData(Data[i], now, Alliance));
             }
             break;
     }
-    rtn.sort((a, b) => b.damage.ps - a.damage.ps);
-    return (rtn);
+    return (gorgeSortRule(rtn));
 }
-
+const gorgeSortRule = (adjustTBD_rtn) =>{
+    if (window.Area.Type === 2) {
+        adjustTBD_rtn.sort((a, b) => b.damage_prm.ps - a.damage_prm.ps);
+    } else {
+        adjustTBD_rtn.sort((a, b) => b.damage.ps - a.damage.ps);
+    }
+    return (adjustTBD_rtn);
+}
 const BattleTime_Calc = (data, now) => {
     if (typeof (data) === 'undefined') {
         data = [{ time: window.BATTLE_EVENT.timer.Get_BattleStart, battle: true }];
@@ -190,18 +246,27 @@ const BattleTime_Calc = (data, now) => {
             lasttime = data[i].time
         }
     }
-    
+
     if (data[lastposition].battle) {
         time += end_time - lasttime;
     }
-    
+
     let returnValue = Math.ceil(time / 1000)
     if (returnValue === 0) {
         return 1;
     }
     return returnValue;
 }
-
+export const get_dispPlayerData_RobotIndex = (dispData, index) => {
+    console.log(index);
+    let now = dispData.robot[index].getoff;
+    if ( now === 0) {
+        now = Date.now();
+    }
+    let robotData = new dispPlayerData(dispData.robot[index].ridetime, now, dispData.alliance);
+    console.log(robotData);
+    return ("");
+}
 class dispPlayerData {
     constructor(before, now, Alliance) {
         this.nameID = before.nameID;
@@ -216,34 +281,39 @@ class dispPlayerData {
 
         this.time = BattleTime_Calc(before.add_combatant_time, now);
         this.enctime = window.BATTLE_EVENT.timer.Get_EncTime;
+        this.createtime = now;
+        this.battle = typeof (before.battle) === 'boolean' ? before.battle : false;
 
-        this.damage = typeof (before.totaldamage) === 'number' ? { num: before.totaldamage, ps: Number((before.totaldamage / this[useTime]).toFixed(2)), pss: (before.totaldamage / this[useTime]).toFixed(2) } : { num: 0, ps: 0.00, pss: '0.00' };
         this.heal = typeof (before.totalheal) === 'number' ? { num: before.totalheal, ps: Number((before.totalheal / this[useTime]).toFixed(2)), pss: (before.totalheal / this[useTime]).toFixed(2) } : { num: 0, ps: 0.00, pss: '0.00' };
-        this.over_heal = typeof (before.over_totalheal) === 'number' ? { num: before.over_totalheal, ps: Number((before.over_totalheal / this[useTime]).toFixed(1)) } : 0;
+        this.over_heal = typeof (before.over_totalheal) === 'number' ? { num: before.over_totalheal, ps: Number((before.over_totalheal / this[useTime]).toFixed(1)), pss: (before.over_totalheal / this[useTime]).toFixed(1) } : { num: 0, ps: 0.00, pss: '0.00' };
 
         this.accept_income_damage = typeof (before.accept_income_totaldamage) === 'number' ? { num: before.accept_income_totaldamage, ps: Math.round(before.accept_income_totaldamage / this[useTime]) } : { num: 0, ps: 0 };
         this.accept_income_heal = typeof (before.accept_income_totalheal) === 'number' ? { num: before.accept_income_totalheal, ps: Math.round(before.accept_income_totalheal / this[useTime]) } : { num: 0, ps: 0 };
         this.accept_income_over_heal = typeof (before.accept_income_over_totalheal) === 'number' ? { num: before.accept_income_over_totalheal, ps: Math.round(before.accept_income_over_totalheal / this[useTime]) } : { num: 0, ps: 0 };
 
+        this.limitbreak = typeof (before.limitBreak) === 'object' ? before.limitBreak : [];
+        this.robot = typeof (before.robot_data) === 'object' ? before.robot_data : [];
         this.damage_All = [];
         this.heal_All = [];
         this.over_heal_All = [];
 
         this.accept_income_damage_All = [];
+        this.accept_income_damage_G_All = [];
+        this.damage_G_All = [];
         this.accept_income_heal_All = [];
         this.accept_income_over_heal_All = [];
 
-        this.dunamis = typeof (before.dunamis) === 'undefined' ? '' : before.dunamis;
-
+        this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
+        this.AreaType = before.AreaType;
         if (0 < this.alliance && this.alliance < 7) {
-            if (Alliance[this.alliance].dunamis > 0) {
-                this.dunamishistory = Alliance[this.alliance];
+            if (Alliance[this.alliance].dynamis > 0) {
+                this.dynamishistory = Alliance[this.alliance];
             }
             else {
-                this.dunamishistory = null;
+                this.dynamishistory = new dynamisParty();
             }
         } else {
-            this.dunamishistory = null;
+            this.dynamishistory = new dynamisParty();
         }
 
 
@@ -252,15 +322,21 @@ class dispPlayerData {
             if (tbd.indexOf('damage') !== -1) {
                 if (tbd.indexOf('damage') === 0 || tbd === 'totaldamage') {
                     this.damage_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                } else if (tbd.substring(0, 2) === "G_") {
+                    this.damage_G_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 } else {
-                    this.accept_income_damage_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                    if (tbd.substring(0, 16) === "accept_income_G_") {
+                        this.accept_income_damage_G_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                    } else {
+                        this.accept_income_damage_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                    }
                 }
             } else if (tbd.indexOf('heal') !== -1) {
                 let healtype = tbd.indexOf('heal');
                 if (healtype === 0 || tbd === 'totalheal') {
                     this.heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
-                else if (healtype === 5) {
+                else if (healtype === 5 ||tbd === 'over_totalheal') {
                     this.over_heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
                 else if (healtype === 14) {
@@ -276,5 +352,29 @@ class dispPlayerData {
                 }
             }
         }
+        this.damage_person = beforeArray.indexOf('damage_person') !== -1 ? { num: before.damage_person, ps: Math.round(before.damage_person / this[useTime]) } : { num: 0, ps: 0 };
+        this.damage_robot = beforeArray.indexOf('damage_robot') !== -1 ? { num: before.damage_robot, ps: Math.round(before.damage_robot / this[useTime]) } : { num: 0, ps: 0 };
+        this.damage_maton = beforeArray.indexOf('damage_maton') !== -1 ? { num: before.damage_maton, ps: Math.round(before.damage_maton / this[useTime]) } : { num: 0, ps: 0 };
+        this.damage_tower = beforeArray.indexOf('damage_tower') !== -1 ? { num: before.damage_tower, ps: Math.round(before.damage_tower / this[useTime]) } : { num: 0, ps: 0 };
+        let prm_totalDamage = this.damage_person.num + this.damage_robot.num + this.damage_maton.num;
+        this.damage_prm = { num: prm_totalDamage, ps: Number((prm_totalDamage / this[useTime]).toFixed(2)), pss: (prm_totalDamage / this[useTime]).toFixed(2) }
+        this.damage_total = typeof (before.totaldamage) === 'number' ? { num: before.totaldamage, ps: Number((before.totaldamage / this[useTime]).toFixed(2)), pss: (before.totaldamage / this[useTime]).toFixed(2) } : { num: 0, ps: 0.00, pss: '0.00' };
+        if (before.AreaType === 2) {
+            this.damage = this.damage_prm;
+        } else {
+            this.damage = this.damage_total;
+        }
+        this.rocketPunch = {
+            total: typeof (before.totalrocketpunch) === "number" ? before.totalrocketpunch : 0,
+            hit: typeof (before.hitrocketpunch) === "number" ? before.hitrocketpunch : 0,
+            avg: typeof (before.hitrocketpunchavarage) === "number" ? before.hitrocketpunchavarage : 0,
+            miss: typeof (before.missrocketpunch) === "number" ? before.missrocketpunch : 0
+        }
+    }
+    set set_nameID(nameID) {
+        this.nameID = nameID;
+    }
+    set set_alliance(alliance) {
+        this.alliance = alliance;
     }
 }

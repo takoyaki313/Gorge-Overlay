@@ -13,7 +13,7 @@ Gorge-Overlay.code-workspace
 /coverage
 /src/v4/sample
 /src/secret.js
-
+/src/css/fonticon
 # production
 /build
 

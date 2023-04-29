@@ -1,7 +1,7 @@
 import { read_maindata, update_maindata_change_array, update_maindata } from "../maindataEdit.js";
 import { assist_main } from "./assistSimulation.js";
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
-import { Chaiser_HP, Oppresor_HP, Justice_HP, EXCLUDE_BUFF } from "./loglineGrobal.js";
+import { Chaiser_HP, Oppressor_HP, Justice_HP, EXCLUDE_BUFF } from "./loglineGlobal.js";
 
 import { simulationKDA } from "../maindataFormat.js";
 
@@ -292,7 +292,7 @@ const rob_checker = async (maxhp) => {
     switch (maxhp) {
         case Chaiser_HP:
             return 'che';
-        case Oppresor_HP:
+        case Oppressor_HP:
             return 'opp';
         case Justice_HP:
             return 'jas';

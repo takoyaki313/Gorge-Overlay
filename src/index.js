@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { DefaultView } from './BattleOverlayLayout/OverlayMain.js';
-import { loglineQuene_Push, calcClock } from './v4/LogLine/loglineClock.js'
+import { loglineQueue_Push, calcClock } from './v4/LogLine/loglineClock.js'
 import { Area } from './v4/Area/ChangeZone.js'
 import { maindata } from './v4/maindataFormat.js';
 import { battle_event } from './v4/timer/timer_format';
@@ -13,10 +13,12 @@ import { partyChangeEvent } from './party';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const CalcInterval = 1000; // ms
 window.devMode = {
-  webSocket: false,
+  webSocket: true,
   logLevel: 0,
   logForceOff: false,
-  sampleType: 2,
+  sampleType: -1,//default -1
+  calcTime: false,
+  forceReset: false,
 };
 window.Area = new Area();
 window.TBD = new maindata();
@@ -53,20 +55,27 @@ if (window.devMode.webSocket||window.devMode.sampleType === -1) {//DevMode ACT W
 
 window.addOverlayListener('LogLine', (logline) => {
   if (!window.devMode.logForceOff) {
-    loglineQuene_Push(logline.line);
+    loglineQueue_Push(logline.line);
   }
 });
 
-window.addOverlayListener('ChangeZone', (zone) => {
-  window.Area.areaset_Override = zone.zoneID;
-  window.changeArea_Event(zone.zoneName.toUpperCase());
+window.addOverlayListener('ChangeMap', (minimap) => {
+  window.changeArea_Event(minimap.placeName.toUpperCase());
+  if (window.Area.battleId !== minimap.mapID) {
+    window.Area.areaset_changeMap = minimap.mapID;
+  }
 });
+
+/*
+window.addOverlayListener('InCombat', (combat) => {
+  console.log(combat);
+});*/
 
 window.addOverlayListener('CombatData', (data) => window.EncounterState(data));
 window.addOverlayListener("ChangePrimaryPlayer", (player) => {
   PRIMARY_PLAYER.nameID = player.charID.toString(16).toUpperCase();
   PRIMARY_PLAYER.name = player.charName;
-  loglineQuene_Push(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
+  loglineQueue_Push(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 });
 window.addOverlayListener('EnmityTargetData', (data) => {
   //console.log(data);

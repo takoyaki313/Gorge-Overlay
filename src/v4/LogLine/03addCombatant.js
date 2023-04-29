@@ -1,7 +1,7 @@
 import { null_check, timestamp_change } from "./logline_other.js";
-import { Field_ID } from "./loglineGrobal.js";
+import { Field_ID } from "./loglineGlobal.js";
 import { update_maindata,read_maindata } from "../maindataEdit.js";
-import { owner_id_list_add } from "./loglineGrobal.js";
+import { owner_id_list_add } from "./loglineGlobal.js";
 import { job_to_role } from "../../role.js";
 
 export const addcombatant = async (log) => {

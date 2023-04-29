@@ -3,6 +3,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
 }
 
 .pvpTeam .dataArea {

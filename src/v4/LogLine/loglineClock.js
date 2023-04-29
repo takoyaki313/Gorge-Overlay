@@ -5,14 +5,14 @@ let LOG_QUEUE = [];
 let PROMISE_ARRAY = [];
 let PROCESS_TIME = { start: 0, end: 0 };
 
-export const loglineQuene_Push = (log) => {
+export const loglineQueue_Push = (log) => {
     LOG_QUEUE.push(log);
 }
 
 
 export const calcClock = async () => {
     if (!LOG_PROCESS) {
-        if (window.devMode.logLevel > 5) {
+        if (window.devMode.calcTime) {
             PROCESS_TIME.start = performance.now();
         }
         let promise = Promise.resolve();
@@ -24,16 +24,14 @@ export const calcClock = async () => {
             PROMISE_ARRAY.push(promise);
         }
         promise = promise.then(async () => {
-            if (window.devMode.logLevel > 99) {
+            if (window.devMode.calcTime) {
                 PROCESS_TIME.end = performance.now();
                 let time = PROCESS_TIME.end - PROCESS_TIME.start;
-                console.debug('CLOCK_Sucsessed(' +log_num +')->' + time + 'ms');
+                console.debug('CLOCK_Successes(' +log_num +')->' + time + 'ms');
             }
-            await log_battle_time();
-            await duplicate_delete();
         });
         PROMISE_ARRAY.push(promise);
-        if (window.devMode.logLevel > 2) {
+        if (!window.devMode.forceReset) {
             Promise.all(PROMISE_ARRAY).then(() => LOG_PROCESS = false);
         } else {
             Promise.all(PROMISE_ARRAY).then(() => LOG_PROCESS = false)
@@ -48,10 +46,3 @@ export const calcClock = async () => {
         console.error('LOG_PROCESS WORKING...->' + LOG_QUEUE.length);
     }
 }
-
-const log_battle_time = () =>{
-    //Activeなメンバーのtimeに1秒addする
-};
-const duplicate_delete = () => {
-    //重複して入れたデータを削除する。
-};

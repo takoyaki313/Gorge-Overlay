@@ -7,9 +7,9 @@ import { networkDoT_24 } from "./24networkDoT.js";
 import { kill_death_main_25 } from "./25kill_death.js";
 import { player_buff_add_26 } from "./26playerBuffAdd.js";
 import { marker_data_check } from "./29marker_data_check.js";
-import { network_buff_removerd_30 } from "./30buffRemoved.js";
+import { network_buff_removed_30 } from "./30buffRemoved.js";
 import { logline_battle_start_check } from "./33battleStartCheck.js";
-import { networkAbility_receve } from "./37networkAbilityReceve.js";
+import { networkAbility_receive } from "./37networkAbilityReceive.js";
 import { networkDoT_sync_38 } from "./38networkDoT_Sync.js";
 import { networkupdatehp_39 } from "./39networkUpdateHP.js";
 import { primaryPlayerChanged_101 } from "./logline_other.js";
@@ -21,6 +21,9 @@ export const loglineFirstStep = async (log) => {
     if (log[0] === '40') {
         //AREATYPE
         await minimapChange_40(log);
+    }
+    else if (log[0] === '01') {
+        console.log(log);
     }
     if (window.Area.Type === 0) {
         return;
@@ -43,13 +46,11 @@ export const loglineFirstStep = async (log) => {
             break;
         case '21':
             if (window.BATTLE_EVENT.Engage) {
-                //await networkactionsync_21_22(log);
                 await networkactionsync_21_22(log);
             }
             break;
         case '22':
             if (window.BATTLE_EVENT.Engage) {
-                //await networkactionsync_21_22(log);
                 await networkactionsync_21_22(log);
             }
             break;
@@ -72,15 +73,15 @@ export const loglineFirstStep = async (log) => {
             await marker_data_check(log);
             break;
         case '30':
-            await network_buff_removerd_30(log);
+            await network_buff_removed_30(log);
             break;
 
         case '33':
             logline_battle_start_check(log);
             break;
         case '37':
-            //await networkAbility_receve(log);
-            await networkAbility_receve(log);
+            //await networkAbility_receive(log);
+            await networkAbility_receive(log);
             break;
         case '38':
             if (window.BATTLE_EVENT.Engage) {

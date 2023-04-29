@@ -1,0 +1,136 @@
+.m1_overlay {
+    display: flex;
+}
+
+.m1_overlay .mainRow {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.m1_overlay .backgroundGage {
+    position: absolute;
+    width: 102%;
+    height: 100%;
+    z-index: -1;
+    transition: all 0.5s ease;
+}
+
+.m1_overlay .dataArea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 0.2rem;
+}
+
+.m1_overlay .jobicon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    justify-items: center;
+    height: 100%;
+    padding: 0 0.2rem;
+}
+
+.m1_overlay .jobhistory {
+    position: absolute;
+    top: 0rem;
+    right: 0.15rem;
+    width: 0.2rem;
+    height: 0.2rem;
+    border-radius: 50%;
+    background: blue;
+    /*背景色*/
+}
+
+.m1_overlay .dpshps {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.m1_overlay .dps .dps-i {
+    font-size: 1.2rem;
+}
+
+.m1_overlay .dps .dps-d {
+    font-size: 0.8rem;
+}
+
+.m1_overlay .dps {
+    display: flex;
+    max-width: 3.5rem;
+    min-width: 3.5rem;
+    align-items: baseline;
+    padding-right: 0.3rem;
+    justify-content: center;
+    border-right: 0.1rem solid;
+}
+
+.m1_overlay .hps {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    max-width: 2.5rem;
+    min-width: 2.5rem;
+    height: -webkit-fill-available;
+}
+
+.m1_overlay .hps-overPct {
+    margin-left: 0.3rem;
+    font-size: 0.65rem;
+    position: absolute;
+    bottom: 0.9rem;
+    right: 0;
+}
+
+.m1_overlay .hps-5 {
+    font-size: 0.8rem;
+}
+
+.m1_overlay .hps-d {
+    height: 100%;
+    padding-left: 0.3rem;
+    position: relative;
+}
+
+.m1_overlay .nameArea {
+    width: 100%;
+    margin-left: 0.2rem;
+}
+
+.m1_overlay .nameAreaTop {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.m1_overlay .name {
+    width: calc(100vw - 9rem);
+    position: relative;
+    display: flex;
+}
+
+.m1_overlay .dynamis_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    font-size: 0.8rem;
+}
+.m1_overlay .rightSpace {
+    display: flex;
+    font-size: 0.65rem;
+    top: -0.5rem;
+    right: 0;
+    position: absolute;
+}
+
+.m1_overlay .rightSpace .rightSpace_child {
+    width: 1.8rem;
+    display: flex;
+    justify-content: flex-end;
+}

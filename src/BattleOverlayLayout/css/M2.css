@@ -1,0 +1,93 @@
+.m2_overlay {
+    display: flex;
+    width: 100%;
+}
+
+.m2_overlay .rightArea {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.m2_overlay .maindps {
+    font-size: 1.2rem;
+}
+
+.m2_overlay .maindpsArea {
+    width: 3rem;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 0.3rem;
+    border-right: 0.1rem solid;
+}
+
+.m2_overlay .mainhps {
+    font-size: 1rem;
+}
+
+.m2_overlay .mainhpsArea {
+    width: 2.6rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.m2_overlay .jobicon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    justify-items: center;
+    height: 100%;
+    padding: 0 0.2rem;
+}
+
+.m2_overlay .jobhistory {
+    position: absolute;
+    top: 0rem;
+    right: 0.15rem;
+    width: 0.2rem;
+    height: 0.2rem;
+    border-radius: 50%;
+    background: blue;
+    /*背景色*/
+}
+
+.m2_overlay .leftArea {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.m2_overlay .nameArea {
+    width: calc(100vw - 12.6rem);
+    margin-right: auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.m2_overlay .nameArea div:first-child {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.1rem;
+}
+
+.m2_overlay .dynamis_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    font-size: 0.8rem;
+}
+
+.m2_overlay .kdaArea {
+    display: flex;
+}
+
+.m2_overlay .kdaArea>div {
+    margin: 0 0.2rem;
+    width: 1rem;
+    text-align: end;
+}
