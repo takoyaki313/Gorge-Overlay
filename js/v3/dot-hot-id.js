@@ -363,7 +363,7 @@ const Barrier_ID = [
     potencial: 24000,
     max: 10,
     synctype: 'calc',
-    damagesync: 0.25,
+    damagesync: 0,
     damage: false,
     type: 'barrier'
   }, {//rpr
@@ -422,7 +422,7 @@ const Barrier_ID = [
     damagesync: 0,
     damage: false,
     type: 'barrier'
-  }, {//rdm
+  }, {//rdm-  10%UP not compatible
     actionid: '73F9',
     action_potencial: 6000,
     dotid: '0CA2',
