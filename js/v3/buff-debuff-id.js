@@ -272,7 +272,7 @@ const EFFECT_ID = {
     name: 'ファランクス',
     type: [false, false, true, false, true],
     effect: 1,
-    cut: 0.5,
+    cut: 0.67,
     cut_heal: 1,
     maxtime: 5
   },
@@ -857,7 +857,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1.1,
     cut_heal: 1,
-    maxtime: 5
+    maxtime: 6
   },
   '0C24': {
     name: 'エウクラシア・ドシスIII',
@@ -954,7 +954,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1,
     cut_heal: 1,
-    maxtime: 5
+    maxtime: 10
   },
   '0C66': {
     name: 'メテオドライヴ',//強化スタン
@@ -1060,7 +1060,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1,
     cut_heal: 1,
-    maxtime: 30
+    maxtime: 20
   },
   '0524': {
     name: 'かくれる',
@@ -1397,8 +1397,8 @@ const EFFECT_ID = {
     name: '時神の護り',
     type: [false, false, true, true, true],
     effect: 1,
-    cut: 0.8,
-    cut_heal: 1.2,
+    cut: 0.75,
+    cut_heal: 1.25,
     maxtime: 5
   },
   '0C44': {

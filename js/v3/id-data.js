@@ -19,6 +19,8 @@ const DoubleRocketPuntch = '26FB';//ダブルロケットパンチ (SkillID)
 const Kaiki = '740F' //快気(SkillID)
 const GunyouPosion = '717F' //軍用ポーション(SkillID)
 const TensyonMax = '06C2';//テンションマックス (buffID)
+const LimitBreak = [/*TANK*/'718D', '719B', '71A9', '71CA',/*HEALER*/'722E', '7235', '7247', '7257',
+/*Range*/'72D9', '72E7', '72F8',/*MELEE*/'732D', '7339', '734B', '7361', '7371',/*MAGICAL*/'73DE', '73E9', '73EE', '7408'];
 /////////////////////
 //////// Setting
 /////////////////////

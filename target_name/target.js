@@ -84,18 +84,8 @@ function target_overlay_fontsize(size){
 
 ////////////////
 function target_overlay_area_check(area){
-  if (area.zoneName === 'Hidden Gorge'
-  ||area.zoneID == 376
-  ||area.zoneName.indexOf('Seal Rock')!== -1
-  ||area.zoneID == 554
-  ||area.zoneName.indexOf('Onsal Hakair')!== -1
-  ||area.zoneName.indexOf('Wolves')!== -1
-  ||area.zoneName.indexOf('Astragalos')!== -1
-  ||area.zoneName.indexOf('Lichenweed')!== -1
-  ||area.zoneName.indexOf('Crystal Tower Training Grounds')!== -1
-  ||area.zoneID == 1032
-  ||area.zoneID == 1033
-  ||area.zoneID == 1034) {
+  const PvPArea = [791,376,431,554,888,1032,1033,1034,1116,250];
+  if (PvPArea.indexOf(area.zoneID) !== -1) {
     Overlay_On = true;
   }
   else {
