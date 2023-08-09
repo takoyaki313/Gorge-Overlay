@@ -1188,7 +1188,7 @@ const EFFECT_ID = {
     effect: 1,
     cut: 1,
     cut_heal: 1,
-    maxtime: 5
+    maxtime: 4
   },
   //Samurai
   '0C7F': {
@@ -1644,7 +1644,7 @@ const EFFECT_ID = {
     cut_heal: 1,
     maxtime: 30
   },
-  /*'0C8D'*/'0D35': {　
+  /*'0C8D'*/'0D35': {
     name: 'アストラルファイアIII',
     type: [false, false, false, false, true],
     effect: 1,
