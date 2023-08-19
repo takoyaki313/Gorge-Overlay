@@ -1,4 +1,3 @@
-import { timestamp_change } from "./logline_other.js";
 import { battleStart,battleStop,adjustTimer } from "../timer/timer_event.js";
 //////////////////////////////////////////////////////////////
 const Battle_Start_Envioroment_ID = '40000001';

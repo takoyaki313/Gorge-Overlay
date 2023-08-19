@@ -2,33 +2,53 @@ import '../css/fonticon/style.css'
 
 import React, { useState } from 'react'
 
+import { SettingPageStart } from '../localsetting/settingPage';
+
 import { HeaderSimple } from '../header';
 import { OverlayMCombatants } from './pve_Overlay';
 
-import { battleStart,battleStop } from '../v4/timer/timer_event';
+import { battleStart, battleStop } from '../v4/timer/timer_event';
 
 import { PvPMain } from './pvp_main';
 
-const PvPAreaZoneName = [
-  "wolves' den pier",
-  'hidden gorge',
+const PvPAreaZoneFL = [
   'the borderland ruins (secure)',
   'seal rock (seize)',
   'the fields of glory (shatter)',
-  'onsal hakair (danshig naadam)',
+  'onsal hakair (danshig naadam)'
+];
+
+const PvPAreaZoneRW = ['hidden gorge'];
+
+const PvPAreaZoneCC = [
   'the palaistra',
   'the volcanic heart',
   'cloud nine',
   'the clockwork castletown'
 ];
 
+const PvPAreaZoneOt = ["wolves' den pier"];
+const encounterZoneGet = (Encounter) => {
+  if (PvPAreaZoneFL.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+    return 3;
+  } else if (PvPAreaZoneRW.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+    return 2;
+  } else if (PvPAreaZoneCC.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+    return 5;
+  } else if (PvPAreaZoneOt.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+    return 4;
+  } else {
+    return 0;
+  }
+}
 export const DefaultView = () => {
   let [enc, setEnc] = useState({ Encounter: { CurrentZoneName: 'Unknown Area', DURATION: '0' }, Combatant: {}, isActive: false });
-
+  let [settingVisible, settingPage] = useState(false);
   let [tbdTime, setTBD] = useState(0);
 
   window.EncounterState = async (CombatData) => {
-    if (PvPAreaZoneName.indexOf(CombatData.Encounter.CurrentZoneName.toLowerCase()) === -1) {
+    let areaZone = encounterZoneGet(CombatData.Encounter);
+    if (areaZone === 0) {
       if (CombatData.isActive === 'true') {
         setEnc(enc = CombatData);
         window.changeTime_Event(CombatData.Encounter.DURATION);
@@ -37,19 +57,18 @@ export const DefaultView = () => {
       }
     }
     else {
-      if (PvPAreaZoneName[0] === CombatData.Encounter.CurrentZoneName.toLowerCase()) {
+      if (areaZone === 4) {
         if (window.BATTLE_EVENT.encounterStart && CombatData.isActive === 'false') {
           window.TBD.resetData = 'PART';
-          await battleStop('PART');
           window.BATTLE_EVENT.encounterStart = false;
           window.BATTLE_EVENT.reset = true;
-        } else {
+          await battleStop('PART');
+        } else if(CombatData.isActive === 'true'){
           window.BATTLE_EVENT.encounterStart = true;
         }
-      }
-      if (!window.BATTLE_EVENT.Result_Page &&!window.BATTLE_EVENT.Engage && CombatData.isActive === 'true') {
+      } 
+      if (!window.BATTLE_EVENT.Result_Page && !window.BATTLE_EVENT.Engage && CombatData.isActive === 'true') {
         //Force BattleEvent Start
-
         battleStart(0, '');
       }
     }
@@ -57,8 +76,8 @@ export const DefaultView = () => {
   window.TBDState = (TBDTime) => {
     setTBD(tbdTime = TBDTime);
   }
-
-  if (!enc.isActive && enc.Encounter.CurrentZoneName === "Wolves' Den Pier") {
+  let areaType = encounterZoneGet(enc.Encounter);
+  if (!enc.isActive && areaType === 4) {
     // simple reset
     if (window.Area.Type === 4) {
 
@@ -67,19 +86,26 @@ export const DefaultView = () => {
   if (window.devMode.sampleType !== -1) {
     window.Area.Type = window.devMode.sampleType
   }
+  if (settingVisible) {
+    return (
+      <>
+        <SettingPageStart setting={settingPage} />
+      </>
+    )
 
-  return (
-    <div id="dispArea">
-      <div id='mainArea'>
-        {/*<HeaderAreaDefaultView />*/}
-        <HeaderSimple />
-        <Overlay CombatData={enc.Combatant} isActive={enc.isActive} TBD={tbdTime} />
+  } else {
+    return (
+      <div id="dispArea">
+        <div id='mainArea'>
+          {/*<HeaderAreaDefaultView />*/}
+          <HeaderSimple setting={settingPage} />
+          <Overlay CombatData={enc.Combatant} isActive={enc.isActive} TBD={tbdTime} />
+        </div>
+        <div id='subArea'>
+        </div>
       </div>
-      <div id='subArea'>
-      </div>
-    </div>
-  );
-
+    );
+  }
 }
 
 const Overlay = (props) => {
@@ -90,15 +116,15 @@ const Overlay = (props) => {
       {(() => {//AREA CHECK
         switch (window.Area.Type) {
           case 1: //Seal Rock & Onsal Hakair
-            return (<><PvPMain tbdTime={props.TBD} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} /></>);
           case 2://Hidden Gorge
-            return (<><PvPMain tbdTime={props.TBD} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"rw"} /></>);
           case 3://Border Land Ruins & Fields Of Glory 
-            return (<><PvPMain tbdTime={props.TBD} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} /></>);
           case 4://Wolves Den Pier
-            return (<><PvPMain tbdTime={props.TBD} /></>)
+            return (<><PvPMain tbdTime={props.TBD} area={"cc"} /></>)
           case 5://Crystal Conflict Area
-            return (<><PvPMain tbdTime={props.TBD} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"cc"} /></>);
           case 6://Not Use
             return ('');
           default://PvE 

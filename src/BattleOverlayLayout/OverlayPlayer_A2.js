@@ -21,7 +21,7 @@ export const GorgeAdvance = (prop) => {
             <div className='incomeArea'>
                 <TooltipJSX icon="" class='flex-center' setID={data.nameID + 'incomeDamage'} text={data.accept_income_damage} html={data.accept_income_damage_Tooltip} />
                 <div className="verticalLine" ></div>
-                <div className='incomeNumber'>{data.accept_income_heal}</div>
+                <TooltipJSX icon="" class='flex-center' setID={data.nameID + 'incomeHeal'} text={data.accept_income_heal} html={data.accept_income_heal_Tooltip} />
             </div>
         </div>
     )

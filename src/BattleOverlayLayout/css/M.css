@@ -1,0 +1,110 @@
+.kill-1 {
+    color: var(--dps-green);
+}
+
+.kill-2 {
+    color: var(--dps-blue);
+}
+
+.kill-3 {
+    color: var(--dps-purple);
+}
+
+.kill-4 {
+    color: var(--dps-orange);
+}
+
+.kill-5 {
+    color: var(--dps-pink);
+}
+
+.kill-6 {
+    color: var(--dps-yellow);
+}
+
+.death {
+    color: var(--death)
+}
+
+.gaming {
+    background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+    animation: gaming 2s linear infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes gaming {
+    100% {
+        background-position-x: 200%;
+    }
+}
+
+.redblink {
+    animation: redblink 1s linear infinite;
+    color: var(--death);
+}
+
+@keyframes redblink {
+    0% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.death-rob {
+    color: var(--robot-hp-over);
+}
+
+.alive-rob {
+    color: var(--robot-hp-remain)
+}
+
+.gaming2-background {
+    background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+    animation: gaming 1s linear infinite;
+}
+
+.gaming2 {
+    /* 横長で虹色を作る */
+    background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
+    animation: gaming 1s linear infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.robotHistory .green {
+    background: var(--dps-green);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.robotHistory .green-background {
+    background: var(--dps-green) !important;
+}
+
+.robotHistory .blue {
+    background: var(--dps-blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.robotHistory .blue-background {
+    background: var(--dps-blue) !important;
+}
+
+.robotHistory .purple {
+    background: var(--dps-purple);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.robotHistory .purple-background {
+    background: var(--dps-purple) !important;
+}

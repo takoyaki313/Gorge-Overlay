@@ -44,6 +44,9 @@ export const loglineFirstStep = async (log) => {
                 log_party_push(log);
             }
             break;
+        case '12':
+            
+            break;
         case '21':
             if (window.BATTLE_EVENT.Engage) {
                 await networkactionsync_21_22(log);

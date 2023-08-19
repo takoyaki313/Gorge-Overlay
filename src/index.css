@@ -1,50 +1,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto&display=swap');
 
 :root {
-  --default-color :#ded7be;
+  --default-color: #ded7be;
   /*--background-color:rgba(0,0,0,0.3);*/
-  --tank-role-color : #7586e0;
-  --healer-role-color : #76ab67;
-  --melee-role-color : #ad6161;
-  --physical-role-color : #ad6161;
-  --magical-role-color : #ad6161;
-  --general-role-color : var(--default-color);
-  --transparent-tank-role-color : #7587e0B0;
-  --transparent-healer-role-color : #76ab67B0;
-  --transparent-melee-role-color : #ad6161B0;
-  --transparent-physical-role-color : #ad6161B0;
-  --transparent-magical-role-color : #ad6161B0;
-  --transparent-general-role-color : #ded7beB0;
-  --death-too-much:rgba(255,0,0,0.3);
-  --party:rgba(37,92,80,0.5);
-  --me:rgba(93,81,37,0.7);
+  --tank-role-color: #7586e0;
+  --healer-role-color: #76ab67;
+  --melee-role-color: #ad6161;
+  --physical-role-color: #ad6161;
+  --magical-role-color: #ad6161;
+  --general-role-color: var(--default-color);
+  --transparent-tank-role-color: #7587e0B0;
+  --transparent-healer-role-color: #76ab67B0;
+  --transparent-melee-role-color: #ad6161B0;
+  --transparent-physical-role-color: #ad6161B0;
+  --transparent-magical-role-color: #ad6161B0;
+  --transparent-general-role-color: #ded7beB0;
+  --death-too-much: rgba(255, 0, 0, 0.3);
+  --party: rgba(37, 92, 80, 0.5);
+  --me: rgba(93, 81, 37, 0.7);
 
-  --alliance-color-general : transparent;
-  --alliance-color-1 :#5BB7E5;
-  --alliance-color-2 :#895BE5;
-  --alliance-color-3 :#E55BB7;
-  --alliance-color-4 :#E5895B;
-  --alliance-color-5 :#B7E55B;
-  --alliance-color-6 :#5BE589;
-  --alliance-color-10 :transparent;
+  --alliance-color-general: transparent;
+  --alliance-color-1: #5BB7E5;
+  --alliance-color-2: #895BE5;
+  --alliance-color-3: #E55BB7;
+  --alliance-color-4: #E5895B;
+  --alliance-color-5: #B7E55B;
+  --alliance-color-6: #5BE589;
+  --alliance-color-10: transparent;
 
-  --alliance-transparent-color-0 : transparent;
-  --alliance-transparent-color-1 :#5BB7E5B0;
-  --alliance-transparent-color-2 :#895BE5B0;
-  --alliance-transparent-color-3 :#E55BB7B0;
-  --alliance-transparent-color-4 :#E5895BB0;
-  --alliance-transparent-color-5 :#B7E55BB0;
-  --alliance-transparent-color-6 :#5BE589B0;
-  --alliance-transparent-color-10 :transparent;
+  --alliance-transparent-color-0: transparent;
+  --alliance-transparent-color-1: #5BB7E5B0;
+  --alliance-transparent-color-2: #895BE5B0;
+  --alliance-transparent-color-3: #E55BB7B0;
+  --alliance-transparent-color-4: #E5895BB0;
+  --alliance-transparent-color-5: #B7E55BB0;
+  --alliance-transparent-color-6: #5BE589B0;
+  --alliance-transparent-color-10: transparent;
 
-  --death-too-much:rgba(255,0,0,0.3);
-  --party:rgba(37,92,80,0.5);
-  --me:rgba(93,81,37,0.7);
-  --robot-hp-remain : #84F8BD;
-  --robot-hp-over : #EB4561;
-  --losstime:darkred;
-  
+  --death-too-much: rgba(255, 0, 0, 0.3);
+  --party: rgba(37, 92, 80, 0.5);
+  --me: rgba(93, 81, 37, 0.7);
+  --death:#EB4561;
+  --robot-hp-remain: #84F8BD;
+  --robot-hp-over: var(--death);
+  --losstime: darkred;
+
+  --root-padding: 0.6rem;
+
+  --dps-green:#1EFF00;
+  --dps-blue:#0070FF;
+  --dps-purple:#A335EE;
+  --dps-orange:#FF8000;
+  --dps-pink:#E268A8;
+  --dps-yellow:#E5CC80;
+
+/*
+100%  : #E5CC80
+99%   : #E268A8
+95%   : #FF8000
+75%   : #A335EE
+50%   : #0070FF
+25%   : #1EFF00
+*/
 }
+
 html {
   font-size: 20px;
 }

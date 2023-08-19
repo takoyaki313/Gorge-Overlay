@@ -71,3 +71,9 @@
     justify-items: center;
     grid-template-columns: auto 0.6rem auto;
 }
+.tooltip-damage-cc {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 0.1rem 2rem auto 2rem 1.2rem;
+    justify-items: center;
+}

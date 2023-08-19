@@ -5,6 +5,13 @@
     height: 0.1rem;
 }
 
+.P2-horizontalLine {
+    margin: 0.1rem 3rem;
+    background-color: var(--default-color);
+    width: 98%;
+    height: 1px;
+}
+
 .redteamicon {
     content: url("https://xivapi.com/i/061000/061378_hr1.png");
     background-size: cover;

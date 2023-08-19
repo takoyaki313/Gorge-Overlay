@@ -4,7 +4,7 @@
 }
 #mainArea{
     border-radius: 1rem;
-    padding: 0.3rem;
+    padding: calc(var(--root-padding) / 2 );
     /*background-color:rgb(77, 72, 72) ;*/
     background-color: rgba(0,0,0,0.3);
 }

@@ -22,7 +22,19 @@ export const Stack_buff = ['05B9'/*テンション*/, '0BED'/*連続剣*/, '0C5B
 export const EXCLUDE_BUFF = ['07EB', '07EA', '0B37', '0B38'];//スタンス系　カルディア クローズドポジション
 ///////////////////////////////////////////////////////////////////////////////
 export const Send_Action = false;
-
+export const robotHP_Get = (rob) => {
+    if (rob === 'che') {
+        return Chaiser_HP;
+    }
+    else if (rob === 'opp') {
+        return Oppressor_HP;
+    }
+    else if (rob === 'jas') {
+        return Justice_HP;
+    } else {
+        return 0;
+    }
+}
 export const object_to_array = (object, key) => {
     let data = [];
     for (let i = 0; i < object.length; i++) {

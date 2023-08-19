@@ -95,7 +95,6 @@ class dynamisParty {
     }
 }
 
-
 export class simulationKDA {
     constructor(killerID, killerName, killerJob, killerAlliance, victimID, victimName, victimJob, victimAlliance, assist, time_number, time) {
         this.killerID = killerID;
@@ -115,7 +114,7 @@ export class simulationKDA {
     }
 }
 
-export const BattleDataGetLimit = (num,tbd_battledata) => {
+export const BattleDataGetLimit = (num, tbd_battledata) => {
     let active_Ally = tbd_battledata;
     let rtn = [];
     if (active_Ally.length === 0) {
@@ -143,76 +142,98 @@ export const BattleDataGetLimit = (num,tbd_battledata) => {
 
     return (gorgeSortRule(rtn));
 }
+
 const BattleDataGet = (limit) => {
     // Party Ally Enemy PC NPC
     const Data = window.TBD.Player_data;
     const Alliance = window.TBD.Alliance;
     let rtn = [];
     let now = new Date();
-    now = now.getTime();
+    let battleEndTime = window.BATTLE_EVENT.timer.Get_ResultIn;
+    if (battleEndTime !== 0) {
+        now = battleEndTime;
+    } else {
+        now = now.getTime();
+    }
 
+    let nameID_Job = [];
+    if (Data.length > 0) {
+        if (Data[0].AreaType === 5) {
+            for (let i = 0; i < Data.length; i++) {
+                if (Data[i].nameID.substring(0, 2) === "10") {
+                    nameID_Job.push({
+                        nameID: Data[i].nameID,
+                        name: typeof (Data[i].name) !== 'undefined' ? Data[i].name : "",
+                        job: typeof (Data[i].job) !== 'undefined' ? Data[i].job : "",
+                        alliance: typeof (Data[i].alliance) !== 'undefined' ? Data[i].alliance : 0
+                    });
+                }
+            }
+        }
+    }
     switch (limit) {
         case 'Party':
             for (let i = 0; i < Data.length; i++) {
                 if (Data[i].alliance === 1) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
             }
             break;
         case 'Ally':
             for (let i = 0; i < Data.length; i++) {
                 if (Data[i].alliance >= 1) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
             }
             break;
         case 'Enemy':
             for (let i = 0; i < Data.length; i++) {
                 if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10') {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
             }
             break;
         case 'EnemyActive':
-                for (let i = 0; i < Data.length; i++) {
-                    if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10'&& Data[i].battle) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance));
-                    }
+            for (let i = 0; i < Data.length; i++) {
+                if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10' && Data[i].battle) {
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
-                break;
+            }
+            break;
         case 'PC':
             for (let i = 0; i < Data.length; i++) {
                 if (Data[i].nameID.substring(0, 2) === '10') {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
             }
             break;
         case 'NPC':
             for (let i = 0; i < Data.length; i++) {
                 if (Data[i].nameID.substring(0, 2) === '40' || Data[i].nameID.substring(0, 2) === 'E0') {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
             }
             break;
         case 'AllyActive':
             for (let i = 0; i < Data.length; i++) {
                 if (Data[i].alliance === 1) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
                 else if (Data[i].alliance >= 1 && Data[i].battle) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
                 }
             }
             break;
         default:
             for (let i = 0; i < Data.length; i++) {
-                rtn.push(new dispPlayerData(Data[i], now, Alliance));
+                rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
             }
             break;
     }
     return (gorgeSortRule(rtn));
 }
-const gorgeSortRule = (adjustTBD_rtn) =>{
+
+const gorgeSortRule = (adjustTBD_rtn) => {
     if (window.Area.Type === 2) {
         adjustTBD_rtn.sort((a, b) => b.damage_prm.ps - a.damage_prm.ps);
     } else {
@@ -220,6 +241,7 @@ const gorgeSortRule = (adjustTBD_rtn) =>{
     }
     return (adjustTBD_rtn);
 }
+
 const BattleTime_Calc = (data, now) => {
     if (typeof (data) === 'undefined') {
         data = [{ time: window.BATTLE_EVENT.timer.Get_BattleStart, battle: true }];
@@ -257,18 +279,20 @@ const BattleTime_Calc = (data, now) => {
     }
     return returnValue;
 }
-export const get_dispPlayerData_RobotIndex = (dispData, index) => {
-    console.log(index);
-    let now = dispData.robot[index].getoff;
-    if ( now === 0) {
-        now = Date.now();
+
+export const get_dispPlayerData_Robot = (dispData, createTime) => {
+    let now = dispData.getoff;
+    if (now === 0) {
+        now = createTime;
     }
-    let robotData = new dispPlayerData(dispData.robot[index].ridetime, now, dispData.alliance);
-    console.log(robotData);
-    return ("");
+    dispData.data.add_combatant_time = [{ battle: true, time: dispData.ridetime, timestamp: "robot" }, { battle: false, time: now, timestamp: "robot" }];
+    dispData.data.job = dispData.ride_type;
+    let robotData = new dispPlayerData(dispData.data, now, [], []);
+    return (robotData);
 }
+
 class dispPlayerData {
-    constructor(before, now, Alliance) {
+    constructor(before, now, Alliance, nameID_Job) {
         this.nameID = before.nameID;
         this.name = typeof (before.name) === 'string' ? before.name : before.nameID;
         this.server = typeof (before.server) === 'string' ? before.server : '';
@@ -295,6 +319,11 @@ class dispPlayerData {
         this.robot = typeof (before.robot_data) === 'object' ? before.robot_data : [];
         this.damage_All = [];
         this.heal_All = [];
+        this.damage_All_CC = [];
+        this.heal_All_CC = [];
+        this.accept_damage_All_CC = [];
+        this.accept_heal_All_CC = [];
+        this.nameID_Job_CC = nameID_Job;
         this.over_heal_All = [];
 
         this.accept_income_damage_All = [];
@@ -320,26 +349,61 @@ class dispPlayerData {
         let beforeArray = Object.keys(before);
         for (let tbd of beforeArray) {
             if (tbd.indexOf('damage') !== -1) {
-                if (tbd.indexOf('damage') === 0 || tbd === 'totaldamage') {
+                if (tbd.substring(0, 12) === 'damage_CC_10') {
+                    let changed_nameID_name = { nameID: tbd.substring(10), name: "", job: "", alliance: -1 }
+                    for (let nameID_name of nameID_Job) {
+                        if (nameID_name.nameID === changed_nameID_name.nameID) {
+                            changed_nameID_name = nameID_name;
+                            break;
+                        }
+                    }
+                    this.damage_All_CC.push({ type: tbd, nameData: changed_nameID_name, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                } else if (tbd.substring(0, 31) === 'accept_income_damage_CC_from_10') {
+                    let changed_nameID_name = { nameID: tbd.substring(29), name: "", job: "", alliance: -1 }
+                    for (let nameID_name of nameID_Job) {
+                        if (nameID_name.nameID === changed_nameID_name.nameID) {
+                            changed_nameID_name = nameID_name;
+                            break;
+                        }
+                    }
+                    this.accept_damage_All_CC.push({ type: tbd, nameData: changed_nameID_name, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                } else if (tbd.indexOf('damage') === 0 || tbd === 'totaldamage') {
                     this.damage_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 } else if (tbd.substring(0, 2) === "G_") {
                     this.damage_G_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                } else if (tbd.substring(0, 16) === "accept_income_G_") {
+                    this.accept_income_damage_G_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 } else {
-                    if (tbd.substring(0, 16) === "accept_income_G_") {
-                        this.accept_income_damage_G_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
-                    } else {
-                        this.accept_income_damage_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
-                    }
+                    this.accept_income_damage_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
             } else if (tbd.indexOf('heal') !== -1) {
                 let healtype = tbd.indexOf('heal');
-                if (healtype === 0 || tbd === 'totalheal') {
+                if (tbd.substring(0, 7) === 'heal_10') {
+                    let changed_nameID_name = { nameID: tbd.substring(5), name: "", job: "", alliance: -1 }
+                    for (let nameID_name of nameID_Job) {
+                        if (nameID_name.nameID === changed_nameID_name.nameID) {
+                            changed_nameID_name = nameID_name;
+                            break;
+                        }
+                    }
+                    this.heal_All_CC.push({ type: tbd, nameData: changed_nameID_name, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                } else if (tbd.substring(0, 26) === 'accept_income_heal_from_10') {
+                    let changed_nameID_name = { nameID: tbd.substring(24), name: "", job: "", alliance: -1 }
+                    for (let nameID_name of nameID_Job) {
+                        if (nameID_name.nameID === changed_nameID_name.nameID) {
+                            changed_nameID_name = nameID_name;
+                            break;
+                        }
+                    }
+                    this.accept_heal_All_CC.push({ type: tbd, nameData: changed_nameID_name, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
+                }
+                else if (healtype === 0 || tbd === 'totalheal') {
                     this.heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
-                else if (healtype === 5 ||tbd === 'over_totalheal') {
+                else if (healtype === 5 || tbd === 'over_totalheal') {
                     this.over_heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
-                else if (healtype === 14) {
+                else if (healtype === 14 || tbd === 'accept_income_totalheal') {
                     this.accept_income_heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
                 else if (healtype === 19) {
@@ -350,6 +414,7 @@ class dispPlayerData {
                         console.error('healtype unknowkn->' + tbd);
                     }
                 }
+
             }
         }
         this.damage_person = beforeArray.indexOf('damage_person') !== -1 ? { num: before.damage_person, ps: Math.round(before.damage_person / this[useTime]) } : { num: 0, ps: 0 };

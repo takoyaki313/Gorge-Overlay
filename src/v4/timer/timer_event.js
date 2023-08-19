@@ -16,7 +16,7 @@ export const battleStart = async (time, timestamp) => {
     }
     else {
         //Adjust
-        window.BATTLE_EVENT.timer.Set_AdjustTime = { time: time, ref: await timestamp_change(timestamp) };
+        //window.BATTLE_EVENT.timer.Set_AdjustTime = { time: time, ref: await timestamp_change(timestamp) };
     }
     window.BATTLE_EVENT.Engage = true;
     //timer Start 
@@ -63,7 +63,7 @@ const timerStart = async (time) => {
 
     window.TimerEvent = setInterval(Timer_OverlayChangeEvent,OverlayClockTime);
 }
-const timerStop = async () => {
+export const timerStop = async () => {
     clearInterval(window.TimerEvent);
 }
 
@@ -73,6 +73,8 @@ const Timer_OverlayChangeEvent = () => {
     } else {
         window.changeTime_Event(window.BATTLE_EVENT.timer.Get_Time);
     }
+
     window.BATTLE_EVENT.timer.Set_Time = 1;
     window.TBDState(window.BATTLE_EVENT.timer.Get_Time);
+    
 }

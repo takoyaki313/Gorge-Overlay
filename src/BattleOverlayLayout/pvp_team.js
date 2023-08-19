@@ -1,9 +1,9 @@
 import '../css/pvp_overlay_main.css'
 import '../css/pvp_overlay_team.css'
 
-import React, { useState } from 'react';
 import { TooltipJSX } from './tooltip/tooltip';
 import { AssistTooltipLayout} from './tooltip/kdaTooltip'
+import { getLastKDA } from './OverlayPlayer_M';
 
 export const TeamData = (prop) => {
     //marge player data
@@ -53,9 +53,9 @@ export const TeamData = (prop) => {
                 </div>
                 <div className='verticalLineThin'></div>
                 <div className='KDArea'>
-                    <div className='TeamKills'><TooltipJSX class="" setID={prop.team +'kill'} text={"K:" + dispdata.Kills.length} html={<AssistTooltipLayout simulationKDA={dispdata.Kills} />} /></div>
-                    <div className='TeamDeaths'><TooltipJSX class="" setID={prop.team +'death'} text={"D:" + dispdata.Deaths.length} html={<AssistTooltipLayout simulationKDA={dispdata.Deaths} />} /></div>
-                    <div className='TeamAssists'><TooltipJSX class="" setID={prop.team +'assist'} text={"A:" + dispdata.Assists.length} html={<AssistTooltipLayout simulationKDA={dispdata.Assists} />} /></div>
+                    <div className='TeamKills'><TooltipJSX class="" setID={prop.team +'kill'} text={"K:" + dispdata.Kills.length + ' (' + getLastKDA(dispdata.Kills,prop.data[0].createtime,30000,'num') + ')'} html={<AssistTooltipLayout simulationKDA={dispdata.Kills} />} /></div>
+                    <div className='TeamDeaths'><TooltipJSX class="" setID={prop.team +'death'} text={"D:" + dispdata.Deaths.length+ ' (' + getLastKDA(dispdata.Deaths,prop.data[0].createtime,30000,'num') + ')'} html={<AssistTooltipLayout simulationKDA={dispdata.Deaths} />} /></div>
+                    {/*<div className='TeamAssists'><TooltipJSX class="" setID={prop.team + 'assist'} text={"A:" + dispdata.Assists.length} html={<AssistTooltipLayout simulationKDA={dispdata.Assists} />} /></div>*/}
                 </div>
             </div>
         </div>

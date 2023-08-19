@@ -3,7 +3,7 @@ import React from 'react';
 import { m_dataCombatant } from './OverlayPlayer_M';
 import { PRIMARY_PLAYER } from '..';
 import { OverlayM1 } from './OverlayPlayer_M1';
-
+import { local } from '..';
 export const OverlayMCombatants = (Combatants) => {
     let Combatants_Array = [];
     let names = Object.keys(Combatants.Combatant);
@@ -13,7 +13,7 @@ export const OverlayMCombatants = (Combatants) => {
         return (<div>No Data...</div>)
     }
     let maxdamage = 0;
-    for (let i = 0; i < names.length; i++) {
+    for (let i = 0; i < Math.min(names.length, local.pveMax); i++) {
         let data = new m_dataCombatant();
         data.push_data = Combatants.Combatant[names[i]];
         Combatants_Array.push(data);

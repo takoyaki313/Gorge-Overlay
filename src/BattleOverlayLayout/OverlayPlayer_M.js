@@ -27,10 +27,13 @@ class m_dataLayout {
 
         this.r_left = '';
         this.r_left_tooltip = '';
+        this.r_left_color = '';
         this.r_center = '';
+        this.r_center_color = '';
         this.r_center_tooltip = '';
         this.r_right = '';
         this.r_right_tooltip = '';
+        this.r_right_color = '';
 
         this.dynamis_text = '';
         this.dynamis_icon = '';
@@ -47,10 +50,10 @@ export class m_dataCombatant extends m_dataLayout {
         let sep_dps = separate_d_i(combatant_dps_formatChange(0, combatant.encdps));
         this.dps_i = sep_dps.int;
         this.dps_d = sep_dps.dec === '' ? '' : '.' + sep_dps.dec;
-        this.dps_tooltip = 'encdps';
+        this.dps_tooltip = combatant.damage + ' | ' + combatant.maxhit;
         let sep_hps = separate_d_i(combatant_dps_formatChange(0, combatant.enchps));
         this.hps = sep_hps.int;
-        this.hps_tooltip = 'enchps';
+        this.hps_tooltip = combatant.heal;
         this.name = combatant.name;
         this.name_tooltip = '';
         this.nameID = combatant.name.replace("'", "");
@@ -81,7 +84,7 @@ export class m_dataCombatant extends m_dataLayout {
 
 export class m_data extends m_dataLayout {
     set push_data(d_Data) {
-
+        this.all_color = '';
         this.damage = d_Data.damage.num;
         let sep_dps = separate_d_i(d_Data.damage);
         this.dps_i = sep_dps.int;
@@ -89,11 +92,13 @@ export class m_data extends m_dataLayout {
 
 
         this.dps_tooltip = d_Data.damage_All.length > 0 ? <DamageTooltipLayout data={d_Data} /> : "";
+        this.dps_color = '';
         let sep_hps = separate_d_i(d_Data.heal);
         this.hps = sep_hps.int
         this.hps_tooltip = d_Data.heal_All.length > 0 ? <HealTooltipLayout data={d_Data} /> : "";
         this.name = d_Data.name;
         this.name_tooltip = d_Data.server;
+
         this.nameID = d_Data.nameID;
         this.job = d_Data.job;
 
@@ -104,13 +109,16 @@ export class m_data extends m_dataLayout {
             this.overPct = Math.round((d_Data.over_heal.num / d_Data.heal.num) * 100) + '%'
         }
         this.overPct_tooltip = d_Data.over_heal.num;
-
+        const kda_Time = 15000;
         this.r_left = d_Data.kills.length;
         this.r_left_tooltip = d_Data.kills.length > 0 ? <KillTooltipLayout simulationKDA={d_Data.kills} /> : '';
+        this.r_left_color = getLastKDA(d_Data.kills, d_Data.createtime, kda_Time);
         this.r_center = d_Data.deaths.length;
         this.r_center_tooltip = d_Data.deaths.length > 0 ? <DeathTooltipLayout simulationKDA={d_Data.deaths} /> : '';
+        this.r_center_color = getLastKDA(d_Data.deaths, d_Data.createtime, kda_Time, 'death');
         this.r_right = d_Data.assists.length;
         this.r_right_tooltip = d_Data.assists.length > 0 ? <AssistTooltipLayout simulationKDA={d_Data.assists} /> : '';
+        this.r_right_color = getLastKDA(d_Data.assists, d_Data.createtime, kda_Time);
 
         let dynamisCheck = { text: '', class: '' }
         if (d_Data.AreaType === 2) {
@@ -125,14 +133,80 @@ export class m_data extends m_dataLayout {
             dynamisCheck.class = dynamis_detect(d_Data.dynamis)
         }
         else {
-            console.warn('OverlayCreate Type Not Matched (Area Input Error)');
+            console.warn('OverlayCreate Type Not Matched (Area Input Error)', d_Data.AreaType);
             dynamisCheck = { text: '', class: '' }
         }
 
         this.dynamis_text = dynamisCheck.text;
         this.dynamis_icon = dynamisCheck.class;
         this.dynamis_tooltip = d_Data.dynamishistory.history.length > 0 ? <DynamishistoryTooltipLayout data={d_Data.dynamishistory.history} /> : '';
+
+        this.name_color = '';
+        if (d_Data.time > 120) {
+            if (this.damage === 0&& this.heal === 0) {
+                this.name_tooltip += ' / damage = 0 and heal = 0 (neglect?)';
+                this.name = '* ' + this.name;
+                this.all_color = 'redblink';
+            } else if(d_Data.deaths.length >= 8){
+                this.name_color = 'death';
+                this.name_tooltip += ' / Too Dead (8-Over)';
+            } else if (d_Data.AreaType === 5 && d_Data.time > 180 && d_Data.time / d_Data.deaths.length < 60) {
+                this.name_color = 'death';
+                this.name_tooltip += ' / Too Dead (Pace under 60s)';
+            }
+        }
     }
+}
+
+export const getLastKDA = (simulationKDA, createTime, kda_Time, type = '') => {
+
+    if (simulationKDA.length === 0) {
+        return ''
+    }
+
+    let num = 0;
+    let lastTime = createTime;
+    for (let i = simulationKDA.length - 1; i >= 0; i--) {
+        let last_kda = simulationKDA[i];
+        if (kda_Time > lastTime - last_kda.time_number) {
+            num++;
+            if (type === '') {
+                lastTime = last_kda.time_number;
+            }
+        } else {
+            break;
+        }
+    }
+    if (type === 'num') {
+        return num;
+    }
+    else if (type === 'death') {
+        if (num === 0) {
+            return '';
+        } else {
+            return 'death'
+        }
+    } else {
+        switch (num) {
+            case 0:
+                return ''
+            case 1:
+                return 'kill-1'
+            case 2:
+                return 'kill-2'
+            case 3:
+                return 'kill-3'
+            case 4:
+                return 'kill-4'
+            case 5:
+                return 'kill-5'
+            case 6:
+                return 'kill-6'
+            default:
+                return 'gaming'
+        }
+    }
+
 }
 
 const combatant_dps_formatChange = (damage, dps) => {

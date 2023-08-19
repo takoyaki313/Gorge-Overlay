@@ -1,3 +1,5 @@
+import { timerStop } from "../timer/timer_event";
+
 export class Area {
 
     constructor() {
@@ -12,13 +14,14 @@ export class Area {
         this.lastType = this.Type;
         this.id = id;
         this.Type = areaTypeSet_40(id);
-        if(this.Type !== this.lastType){
-            if(this.Type > 0){
+        if (this.Type !== this.lastType) {
+            timerStop();
+            if (this.Type > 0) {
                 window.TBD.resetData = 'ALL';
                 window.BATTLE_EVENT.reset = true;
             }
         }
-        if(this.Type === 0 && this.lastType === 0){
+        if (this.Type === 0 && this.lastType === 0) {
             window.TBD.resetData = 'ALL';
             window.BATTLE_EVENT.reset = true;
         }

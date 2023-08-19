@@ -48,10 +48,10 @@ export const Barrier_ID = [
         type: 'barrier'
     }, {//sch
         actionid: '7230',
-        action_potencial: 4000,
+        action_potencial: 3000,
         dotid: '0C0F',
         name: '鼓舞',
-        potencial: 4000,
+        potencial: 6000,
         max: 15,
         synctype: 'buff_check',
         checkID: '0C16',
@@ -119,7 +119,7 @@ export const Barrier_ID = [
         action_potencial: 0,
         dotid: '0C1C',
         name: 'アスペクトベネフィク[夜]',
-        potencial: 1200,
+        potencial: 5000,
         max: 10,
         synctype: 'calc',
         damagesync: 0,
@@ -127,15 +127,15 @@ export const Barrier_ID = [
         type: 'barrier'
     }, {//drg
         actionid: '733A',
-        action_potencial: 20000,
+        action_potencial: 16000,
         dotid: '0C6D',
         name: 'スカイシャッター',
-        potencial: 58500 * 0.25,//Hp 25%
+        potencial: 24000,
         max: 10,
         synctype: 'maxhp',
-        damagesync: 0.25,
+        damagesync: 0,
         damage: true,
-        type: 'barrier'
+        type: 'calc'
     }, {//rpr
         actionid: '7370',
         action_potencial: 0,

@@ -1,6 +1,8 @@
 import { read_maindata, update_maindata } from "../maindataEdit.js";
 import { what_include_buff } from "./hpdata.js";
 import { simulationKDA } from "../maindataFormat.js";
+import { local } from "../../index.js";
+import { killSound_play } from "../sound.js";
 
 export const assist_main = async (kill_player, death_player, death_attacker, lastupdate, time_number, death_player_name, attacker_alliance, death_job, attacker_job, attacker_name,death_alliance) => {
     let ally_kill = false;
@@ -29,8 +31,8 @@ export const assist_main = async (kill_player, death_player, death_attacker, las
         //console.log(assist_player);
     }
     //kill list {}
-    if (attacker_alliance === 1 && window.BATTLE_EVENT.TenSyonMax_Me/* && KILLSOUND*/) {
-        //killsound_play();
+    if (attacker_alliance === 1 && window.BATTLE_EVENT.TenSyonMax_Me && local.rw_killSound) {
+        killSound_play();
     }
     let s_kill_data = new simulationKDA(
         kill_player, attacker_name, attacker_job, attacker_alliance,

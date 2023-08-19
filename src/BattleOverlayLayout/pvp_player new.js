@@ -5,7 +5,6 @@ import '../css/fonticon/style.css'
 import React, { useState } from 'react';
 
 import { job_to_role } from '../role';
-import { get_dispPlayerData_RobotIndex } from '../v4/maindataFormat';
 
 import { PRIMARY_PLAYER } from '..';
 import { m_data } from './OverlayPlayer_M';
@@ -15,6 +14,8 @@ import { OverlayM2 } from './OverlayPlayer_M2';
 import { NormalAdvance } from './OverlayPlayer_A1';
 import { GorgeAdvance } from './OverlayPlayer_A2';
 import { RobotHistory } from './OverlayPlayer_R';
+
+import { local } from '..';
 
 export const PvPPlayerNewMain = (prop) => {
     if (prop.data.length === 0) {
@@ -29,7 +30,7 @@ export const PvPPlayerNewMain = (prop) => {
     return (
         <div>
             {prop.data.map((data, index) => {
-                return (<PvPPlayer key={data.nameID} data={data} maxdps={maxdps} start={start} now={now} />)
+                return (<PvPPlayer key={data.nameID} data={data} maxdps={maxdps} start={start} now={now} mode={prop.mode} area={prop.area} />)
             })}
         </div>
 
@@ -48,7 +49,13 @@ const PvPPlayer = (prop) => {
 
     if (!firstRead) {
         isRead(!firstRead);
-        if (prop.data.alliance === 1) {
+        if (PRIMARY_PLAYER.nameID === prop.data.nameID && local[prop.area + '_advancedOverlay_me']) {
+            hide_toggle();
+        }else if (prop.data.alliance === 1 && local[prop.area + '_advancedOverlay_party']) {
+            hide_toggle();
+        }else if (prop.data.alliance === 0 && local[prop.area + '_advancedOverlay_ally']) {
+            hide_toggle();
+        }else if (prop.data.alliance > 1 && local[prop.area + '_advancedOverlay_enemy']) {
             hide_toggle();
         }
     }
@@ -59,6 +66,7 @@ const PvPPlayer = (prop) => {
         if (data.AreaType === 2) {
             return (
                 <>
+                    <div className='P2-horizontalLine'></div>
                     <GorgeAdvance data={data} />
                 </>)    
         } else {
@@ -69,29 +77,20 @@ const PvPPlayer = (prop) => {
         }
     }
 
-    let background_color_row = '';
-    if (PRIMARY_PLAYER.nameID === data.nameID) {
-        background_color_row = 'me_background';
-    }
-    else if (data.AreaType === 5) {
-        background_color_row = role + '-background-gradient';
-    }
-    else if (7 > data.alliance&&data.alliance > 0) {
-        background_color_row = 'alliance-background-gradient-' + data.alliance;
-    } else {
-        background_color_row = role + '-background-gradient';
-    }
+    let background_color_row = backgroundColorGet(data.nameID,data.AreaType,data.alliance,role);
+
     let Created_m_data = new m_data();
 
     let Created_a_data = new a_data(data);
     Created_m_data.push_data = data;
-    let createType = 'OverlayM2';
+    let createType = 'OverlayM' + prop.mode;
     if (createType === 'OverlayM1') {
         return (
             <li className='flex-center gageRelative li_space' onClick={hide_toggle}>
                 <div className={'gegeAbs ' + background_color_row} style={{ right: gage_offset + '%' }}></div>
                 <OverlayM1 data={Created_m_data} />
-                {simple?<AdvancedPvP data={Created_a_data} />:""}
+                {simple ? <AdvancedPvP data={Created_a_data} /> : ""}
+                {data.AreaType === 2 ? <RobotHistory data={data.robot} start={prop.start} now={prop.now} nameID={data.nameID} rocketPunch={data.rocketPunch} /> : ""}
             </li>
         );
     } else if (createType === 'OverlayM2') {
@@ -104,4 +103,20 @@ const PvPPlayer = (prop) => {
             </li>
         );
     }
+}
+
+export const backgroundColorGet = (nameID, areaType, alliance, role) =>{
+    let background_color_row = '';
+    if (PRIMARY_PLAYER.nameID === nameID) {
+        background_color_row = 'me_background';
+    }
+    else if (areaType === 5) {
+        background_color_row = role + '-background-gradient';
+    }
+    else if (7 > alliance && alliance > 0) {
+        background_color_row = 'alliance-background-gradient-' + alliance;
+    } else {
+        background_color_row = role + '-background-gradient';
+    }
+    return background_color_row;
 }

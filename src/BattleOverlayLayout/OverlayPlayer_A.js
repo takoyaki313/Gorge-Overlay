@@ -1,9 +1,10 @@
 import { LimitBreakTooltipLayout } from "./tooltip/limitbreakTooltip";
 import { PortionTooltipLayout } from "./tooltip/portionTooltip";
-import { IncomeTooltipLayout } from "./tooltip/incomeTooltip";
+import { IncomeDamageTooltipLayout } from "./tooltip/incomeDamageTooltip";
 import { DamagePersonToolTipLayout } from "./tooltip/damageTooltip";
 import { RobotDamageToolTipLayout } from "./tooltip/damageTooltip";
 import { ObjectDamageToolTipLayout } from "./tooltip/damageTooltip";
+import { IncomeHealTooltipLayout } from "./tooltip/incomeHealTooltip";
 
 export class a_data {
     constructor(d_Data) {
@@ -68,8 +69,9 @@ export class a_data {
         }
 
         this.accept_income_damage = d_Data.accept_income_damage.ps;
-        this.accept_income_damage_Tooltip = <IncomeTooltipLayout normal={d_Data.accept_income_damage_All} gorge={d_Data.accept_income_damage_G_All} />
+        this.accept_income_damage_Tooltip = <IncomeDamageTooltipLayout data={d_Data} />
         this.accept_income_heal = d_Data.accept_income_heal.ps;
+        this.accept_income_heal_Tooltip = <IncomeHealTooltipLayout data={d_Data} />
     }
 
 }

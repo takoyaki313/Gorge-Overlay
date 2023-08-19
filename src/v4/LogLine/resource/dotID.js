@@ -6,7 +6,7 @@ export const DoT_ID = [
         action_potencial: 18000,
         dotid: '07F6',
         name: 'テンパランス：効果',
-        potencial: 4000,
+        potencial: 3000,
         max: 5,
         type: 'HoT'
     }, {
@@ -43,19 +43,19 @@ export const DoT_ID = [
         type: 'DoT'
     }, {
         actionid: '45E3',
-        action_potencial: 8000,
+        action_potencial: 12000,
         dotid: '0811',
         name: 'オーロラ',
-        potencial: 4000,
+        potencial: 3000,
         max: 12,
         type: 'HoT'
     }, {
         actionid: '723B',
-        action_potencial: 0,//4000-8000 HP可変
+        action_potencial: 0,//5000-10000 HP可変
         dotid: '0C1B',
         name: 'アスペクトベネフィク[日]',
-        potencial: 1000,
-        max: 12,
+        potencial: 2000,
+        max: 15,
         type: 'HoT'
     }, {
         actionid: '7249',
@@ -81,7 +81,7 @@ export const DoT_ID = [
         potencial: 4000,
         max: 12,
         type: 'DoT'
-    }, {
+    }, {//black mage
         actionid: '73DD',
         action_potencial: 0,//3000-6000-9000可変
         dotid: '0C92',
@@ -102,7 +102,7 @@ export const DoT_ID = [
         action_potencial: 0,
         dotid: '0C9E',
         name: '不死鳥の翼',
-        potencial: 3000,
+        potencial: 4000,
         max: 15,
         type: 'HoT'
     }, {

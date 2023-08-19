@@ -1,0 +1,105 @@
+#settingPage {
+    background-color: #252525;
+    width: 100vw;
+    height: 100vh;
+}
+
+#settingPage header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    align-items: center;
+    width: calc(100% - 1rem);
+    padding: .5rem;
+}
+
+#settingTabs input[type="radio"]:checked+label {
+    background-color: rgba(255, 174, 0, 0.35);
+}
+
+#settingTabs {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+input[id^="setting-tabs-"]+label {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0rem;
+    margin: 0 0.1rem;
+}
+
+.setting-Text {
+    display: grid;
+    padding: 0.4rem;
+    margin-top: 0.3rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1.2rem 0.8rem;
+    align-items: center;
+    font-size: 0.9rem;
+    overflow: scroll;
+}
+
+.setting-Number {
+    display: grid;
+    padding: 0.4rem;
+    margin-top: 0.3rem;
+    grid-template-columns: calc(100vw - 3.3rem) 2.5rem;
+    grid-template-rows: 1.2rem 0.8rem;
+    align-items: center;
+    font-size: 0.9rem;
+    overflow: scroll;
+}
+
+.setting-Toggle {
+    display: grid;
+    padding: 0.4rem;
+    margin-top: 0.3rem;
+    grid-template-columns: calc(100vw - 3.3rem) 2.5rem;
+    grid-template-rows: 1.2rem 0.8rem;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[id^="Setting-Toggle-"]:checked + label {
+    /* スイッチONの時のSwitchの背景色*/
+    background-color: rgba(255, 174, 0, 0.35);
+}
+
+
+input[id^="Setting-Toggle-"]:checked + label::before  {
+    /* スイッチONの時の左側余白 */
+    left: 1.9em;
+}
+
+input[id^="Setting-Toggle-"] + label {
+    position: relative;
+    background-color: #4f4f4f;
+    /* スイッチOFF時の背景色 */
+    border-radius: 1em;
+    /* 角丸 */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 0.65rem;
+    width: 3.75em;
+    height: 2em;
+    transition: 0.2s;
+}
+
+input[id^="Setting-Toggle-"] + label::before {
+    position: absolute;
+    background-color: var(--default-color);
+    border-radius: 0.85em;
+    content: "";
+    width: 1.7em;
+    height: 1.7em;
+    left: 0.15em;
+    transition: 0.2s ease-out;
+}

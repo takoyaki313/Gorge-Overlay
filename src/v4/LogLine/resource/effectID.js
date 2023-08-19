@@ -271,7 +271,7 @@ export const EFFECT_ID = {
         name: 'ファランクス',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.5,
+        cut: 0.67,
         cut_heal: 1,
         maxtime: 5
     },
@@ -769,32 +769,32 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 15
     },
-    '0C1F': {
-        name: 'ドロー：ビエルゴの塔',
+    '0D48': {
+        name: 'ドロー：世界樹の幹',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 15
     },
-    '053D': {
-        name: 'ビエルゴの塔',
+    '053B': {
+        name: '世界樹の幹',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.9,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '0D4C': {
+        name: 'ドロー：オシュオンの矢',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 15
     },
-    '0C1E': {
-        name: 'ドロー：サリャクの水瓶',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '053C': {
-        name: 'サリャクの水瓶',
+    '0D4A': {
+        name: 'オシュオンの矢',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -856,7 +856,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1.1,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 6
     },
     '0C24': {
         name: 'エウクラシア・ドシスIII',
@@ -1187,7 +1187,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 4
     },
     //Samurai
     '0C7F': {
@@ -1220,7 +1220,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 3
+        maxtime: 4
     },
     '0528': {
         name: '名鏡止水',
@@ -1396,8 +1396,8 @@ export const EFFECT_ID = {
         name: '時神の護り',
         type: [false, false, true, true, true],
         effect: 1,
-        cut: 0.8,
-        cut_heal: 1.2,
+        cut: 0.75,
+        cut_heal: 1.25,
         maxtime: 5
     },
     '0C44': {
