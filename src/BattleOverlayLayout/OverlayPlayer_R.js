@@ -71,7 +71,7 @@ export const RobotHistory = (prop) => {
                     if (time === 0) {
                         time = prop.now - data.ridetime;
                     }
-                    if (time > 300) {
+                    if (time > 700) {
                         if (data.ride_type === 'person') {
                             return (
                                 <React.Fragment key={index}>
@@ -81,7 +81,6 @@ export const RobotHistory = (prop) => {
                             )
                         } else {
                             const RobotHistoryIconLine = (prop) => {
-                                let time = time_change(Math.round((prop.time) / 1000));
                                 let disp = get_dispPlayerData_Robot(prop.data, prop.now);
                                 let obj_color = objectdamage_color_add(disp.job, disp.damage_tower.num);
                                 return (
@@ -92,7 +91,7 @@ export const RobotHistory = (prop) => {
                                             </div>
                                         </div>
                                         <ReactTooltip
-                                            html={ReactDOMServer.renderToString(<RobotTooltipLayout data={disp} />)}
+                                            html={ReactDOMServer.renderToString(<RobotTooltipLayout data={disp} ridetime={data.ridetime} getoff={data.getoff} />)}
                                             anchorId={prop.setID}
                                             className='tooltip_general'
                                             positionStrategy='fixed'

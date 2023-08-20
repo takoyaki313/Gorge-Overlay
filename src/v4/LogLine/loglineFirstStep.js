@@ -22,9 +22,6 @@ export const loglineFirstStep = async (log) => {
         //AREATYPE
         await minimapChange_40(log);
     }
-    else if (log[0] === '01') {
-        console.log(log);
-    }
     if (window.Area.Type === 0) {
         return;
     }

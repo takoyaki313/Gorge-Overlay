@@ -14,6 +14,10 @@ export const RobotTooltipLayout = (prop) => {
     let robotHP = robotHP_Get(data.job);
     return (
         <div>
+            <div>
+                <span>Ride</span><span></span>
+
+            </div>
             <div className='tooltip-damage'>
                 <div>
                     <DamageTotalToolTipLayout damage_All={data.damage_All} time={data.time} />

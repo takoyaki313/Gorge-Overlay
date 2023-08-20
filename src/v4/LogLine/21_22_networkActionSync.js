@@ -1,9 +1,9 @@
-import { pet_replace,LimitBreak } from "./loglineGlobal.js";
+import { pet_replace, LimitBreak, LimitBreak_Extend } from "./loglineGlobal.js";
 import { timestamp_change } from "./logline_other.js";
-import { DoubleRocketPunch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppressor_HP, Justice_HP, Core_Tower_HP } from "./loglineGlobal.js";
+import { DoubleRocketPunch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppressor_HP, Justice_HP, Core_Tower_HP, OpticalSight, BigMissile } from "./loglineGlobal.js";
 import { update_maindata_change_array, update_maindata, insert_maindata_object, read_maindata } from "../maindataEdit.js";
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
-import { Barrier_ID, Barrier_ID_Array, Special_Barrier_ID, Special_Barrier_ID_Array_Skill} from "./resource/barrierID.js";
+import { Barrier_ID, Barrier_ID_Array, Special_Barrier_ID, Special_Barrier_ID_Array_Skill } from "./resource/barrierID.js";
 import { DoT_ID, DoT_ID_Array } from "./resource/dotID.js";
 
 
@@ -21,6 +21,14 @@ export const networkactionsync_21_22 = async (log) => {
     let effectdata = await effectdata_exchangeInt(await network_action_datatype(log));
     //    attackerID : log[2],      attacker : log[3],
     let petcheck = await pet_replace(log[2], log[3]);
+    let attacker_MaxHP = Number(log[35]);
+    if (log[2] !== petcheck.nameID) {
+        if (log[4] === OpticalSight) {
+            attacker_MaxHP = Chaiser_HP;
+        } else if (log[4] === BigMissile) {
+            attacker_MaxHP = Oppressor_HP;
+        }
+    }
     let data = {
         attackerID: petcheck.nameID,
         attacker: petcheck.name,
@@ -31,7 +39,7 @@ export const networkactionsync_21_22 = async (log) => {
         victimCurrentHP: Number(log[24]),
         victimmaxHP: Number(log[25]),
         attackerCurrentHP: Number(log[34]),
-        attackermaxHP: Number(log[35]),
+        attackermaxHP: attacker_MaxHP,
         networknumber: log[44],
         lastupdate: log[1],
         time_ms: await timestamp_change(log[1]),
@@ -44,25 +52,7 @@ export const networkactionsync_21_22 = async (log) => {
     let attacker_effect = { name: [], param: [] };
     for (let i = 0; i < effectmax; i++) {
         if (Update_attacker.indexOf(effectdata.name[i]) === -1 && !effectdata.special[i]) {//victim 側への影響
-        /*if('normal-damage' === effectdata.name[i] && effectdata.special[i]){
-          //counter damage
-          let counter_position = victim_effect.name.indexOf('counter');
-          if(counter_position !== -1){//2個目以降のdamage
-            if(typeof effectdata.param[i] === 'number'){
-              victim_effect.param[counter_position].param += effectdata.param[i];
-            }else {
-              if(window.devMode.logLevel > 2){
-                console.error('21-22 連続攻撃の合算が出来ませんでした。');
-                console.error(log);
-                console.error(effectdata);
-              }
-            }
-          }else {
-            victim_effect.name.push('counter');
-            victim_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
-          }
-        }
-        else */if ('normal-damage' === effectdata.name[i]) {
+            if ('normal-damage' === effectdata.name[i]) {
                 //victim_effect.name.push('damage');
                 //victim_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
                 let damage_position = victim_effect.name.indexOf('damage');
@@ -156,9 +146,15 @@ export const networkactionsync_21_22 = async (log) => {
         let time = Math.round((data.time_ms - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
-        attacker_input_data.data.push({LimitBreak:data.actionID,hit:data.hitnum,time:time,time_ms:data.time_ms});
+        attacker_input_data.data.push({ LimitBreak: data.actionID, use: 1, hit: data.hitnum, time: time, time_ms: data.time_ms });
+    } else if (LimitBreak_Extend.indexOf(data.actionID) !== -1 && data.count_row === 0) {
+        let time = Math.round((data.time_ms - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000);
+        attacker_input_data.target.push('limitBreak');
+        attacker_input_data.replace.push(false);
+        attacker_input_data.data.push({ LimitBreak: data.actionID, use: 0, hit: data.hitnum, time: time, time_ms: data.time_ms });
     }
     let marge_input_data = await general_input_type(data.lastupdate, victim_input_data, attacker_input_data);
+
     await update_maindata_change_array('Player_data', 'nameID', data.attackerID, marge_input_data.target, marge_input_data.data, marge_input_data.replace);
 
     let special_Barrier = Special_Barrier_ID_Array_Skill.indexOf(data.actionID);
@@ -328,7 +324,7 @@ const networkaction_calc = async (data, effect, type) => {
     return input_data;
     //------------------------------
 }
-export const general_input_type = async (lastupdate, damage_target, heal_target) =>{
+export const general_input_type = async (lastupdate, damage_target, heal_target) => {
     let rtn = { target: ['lastupdate'], data: [lastupdate], replace: [true] };
     if (damage_target.target.length > 0) {
         rtn.target = rtn.target.concat(damage_target.target);

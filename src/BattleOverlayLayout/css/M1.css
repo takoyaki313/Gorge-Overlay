@@ -27,7 +27,7 @@
 .m1_overlay .jobicon {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     font-size: 1.2rem;
     justify-items: center;
     height: 100%;
@@ -99,6 +99,8 @@
 .m1_overlay .nameArea {
     width: 100%;
     margin-left: 0.2rem;
+    display: flex;
+    height: 100%;
 }
 
 .m1_overlay .nameAreaTop {

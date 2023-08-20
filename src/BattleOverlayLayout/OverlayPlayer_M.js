@@ -161,7 +161,10 @@ export class m_data extends m_dataLayout {
 export const getLastKDA = (simulationKDA, createTime, kda_Time, type = '') => {
 
     if (simulationKDA.length === 0) {
-        return ''
+        if (type === 'num') {
+            return 0;
+        }
+        return '';
     }
 
     let num = 0;

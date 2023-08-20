@@ -36,7 +36,7 @@ const encounterZoneGet = (Encounter) => {
   } else if (PvPAreaZoneCC.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
     return 5;
   } else if (PvPAreaZoneOt.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
-    return 4;
+    return 0;
   } else {
     return 0;
   }
@@ -53,8 +53,6 @@ export const DefaultView = () => {
         setEnc(enc = CombatData);
         window.changeTime_Event(CombatData.Encounter.DURATION);
       }
-      else {
-      }
     }
     else {
       if (areaZone === 4) {
@@ -63,10 +61,13 @@ export const DefaultView = () => {
           window.BATTLE_EVENT.encounterStart = false;
           window.BATTLE_EVENT.reset = true;
           await battleStop('PART');
-        } else if(CombatData.isActive === 'true'){
-          window.BATTLE_EVENT.encounterStart = true;
         }
       } 
+
+      if (!window.BATTLE_EVENT.encounterStart && CombatData.isActive === 'true') {
+        window.BATTLE_EVENT.encounterStart = true;
+      }
+
       if (!window.BATTLE_EVENT.Result_Page && !window.BATTLE_EVENT.Engage && CombatData.isActive === 'true') {
         //Force BattleEvent Start
         battleStart(0, '');
@@ -116,15 +117,15 @@ const Overlay = (props) => {
       {(() => {//AREA CHECK
         switch (window.Area.Type) {
           case 1: //Seal Rock & Onsal Hakair
-            return (<><PvPMain tbdTime={props.TBD} area={"fl"} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false}/></>);
           case 2://Hidden Gorge
-            return (<><PvPMain tbdTime={props.TBD} area={"rw"} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"rw"} wolves={false}/></>);
           case 3://Border Land Ruins & Fields Of Glory 
-            return (<><PvPMain tbdTime={props.TBD} area={"fl"} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false}/></>);
           case 4://Wolves Den Pier
-            return (<><PvPMain tbdTime={props.TBD} area={"cc"} /></>)
+            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={true} /></>)
           case 5://Crystal Conflict Area
-            return (<><PvPMain tbdTime={props.TBD} area={"cc"} /></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={false}/></>);
           case 6://Not Use
             return ('');
           default://PvE 

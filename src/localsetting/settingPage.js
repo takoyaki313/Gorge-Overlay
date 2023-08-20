@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { local } from '..';
 
 export const SettingPageStart = (prop) => {
-    const [tabs_kind, tabs] = useState('PvE');
+    const [tabs_kind, tabs] = useState('General');
     const tabs_change = (event) => {
         tabs(event.target.value);
     }
-    const tabs_Text = ['PvE', 'FL', 'RW', 'CC'];
+    const tabs_Text = ['General', 'FL', 'RW', 'CC'];
     return (
         <div id="settingPage">
             <header>
@@ -37,7 +37,7 @@ export const SettingPageStart = (prop) => {
                 })}
             </div>
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
-            {tabs_kind === 'PvE' ? <PvESettingPage /> : ""}
+            {tabs_kind === 'General' ? <PvESettingPage /> : ""}
             {tabs_kind === 'FL' ? <FLSettingPage /> : ""}
             {tabs_kind === 'RW' ? <RWSettingPage /> : ""}
             {tabs_kind === 'CC' ? <CCSettingPage /> : ""}
@@ -56,6 +56,7 @@ const PvESettingPage = () => {
                 init={local.root_ACTName}
                 lang={local.language}
             />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
             <SettingNumberInput
                 ja_main={"PvEレイアウト時の最大表示数"}
                 ja_sub={"最大何人分表示するかを指定します"}
@@ -66,6 +67,18 @@ const PvESettingPage = () => {
                 init={local.pveMax}
                 lang={local.language}
             />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
+            <SettingToggleInput
+                ja_main={"チームの合計表示のアイコン表示"}
+                ja_sub={"消すことでスペースを節約できます"}
+                en_main={"Icon display for team total display"}
+                en_sub={"Save space by turning off"}
+                local={(v) => local.setTeamSymbol = v}
+                uID={"teamSymbol"}
+                init={local.teamSymbol}
+                lang={local.language}
+            />
+            
         </div>
     )
 }
@@ -183,6 +196,16 @@ const FLSettingPage = () => {
                 init={local.fl_advancedOverlay_enemy}
                 lang={local.language}
             />
+            <SettingToggleInput
+                ja_main={"追加スペースのポーション数表示"}
+                ja_sub={"オフにすることでスペースを確保できます"}
+                en_main={"Added potion count display"}
+                en_sub={"can save space by turning it off"}
+                local={(v) => local.setFL_AdvancedOverlay_slim = v}
+                uID={"fl-AdvancedOverlaySlim"}
+                init={local.fl_advancedOverlay_slim}
+                lang={local.language}
+            />
         </div>
     )
 }
@@ -298,6 +321,16 @@ const RWSettingPage = () => {
                 local={(v) => local.setRW_AdvancedOverlay_enemy = v}
                 uID={"rw-AdvancedOverlayEnemy"}
                 init={local.rw_advancedOverlay_enemy}
+                lang={local.language}
+            />
+            <SettingToggleInput
+                ja_main={"追加スペースのポーション数表示"}
+                ja_sub={"オフにすることでスペースを確保できます"}
+                en_main={"Added potion count display"}
+                en_sub={"can save space by turning it off"}
+                local={(v) => local.setRW_AdvancedOverlay_slim = v}
+                uID={"rw-AdvancedOverlaySlim"}
+                init={local.rw_advancedOverlay_slim}
                 lang={local.language}
             />
             <SettingToggleInput
@@ -445,6 +478,16 @@ const CCSettingPage = () => {
                 local={(v) => local.setCC_AdvancedOverlay_enemy = v}
                 uID={"cc-AdvancedOverlayEnemy"}
                 init={local.cc_advancedOverlay_enemy}
+                lang={local.language}
+            />
+            <SettingToggleInput
+                ja_main={"追加スペースのポーション数表示"}
+                ja_sub={"オフにすることでスペースを確保できます"}
+                en_main={"Added potion count display"}
+                en_sub={"can save space by turning it off"}
+                local={(v) => local.setCC_AdvancedOverlay_slim = v}
+                uID={"cc-AdvancedOverlaySlim"}
+                init={local.cc_advancedOverlay_slim}
                 lang={local.language}
             />
         </div>

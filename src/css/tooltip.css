@@ -37,7 +37,7 @@
     align-items: center;
     grid-row-gap: 0.1rem;
     justify-items: center;
-    grid-template-columns: 1.2rem 2.2rem 1.5rem 2.2rem;
+    grid-template-columns: 1.2rem 2.2rem 1fr 2.2rem 2.2rem;
 }
 .tooltip-portion {
     display: grid;

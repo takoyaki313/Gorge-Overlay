@@ -17,6 +17,7 @@ export const LimitBreakTooltipLayout = (prop) => {
                 <React.Fragment key={index}>
                     <div className={"tooltip_png_iconSize limitbreak_" + data.LimitBreak}></div>
                     <div>Hit : {data.hit}</div>
+                    <div>{data.exCount !== ""?" - " + data.exCount + " ":""}</div>
                     <div>{time[0]}:{time[1]}</div>
                     <div>{beforeUse + "s"}</div>
                 </React.Fragment>

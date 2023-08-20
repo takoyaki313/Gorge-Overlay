@@ -3,7 +3,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.1rem;
     margin-bottom: 0.5rem;
     border-radius: 0.5rem;
     width: calc(100vw - var(--root-padding));
@@ -30,6 +29,7 @@
     justify-content: space-evenly;
     width: calc(50%);
     min-width: fit-content;
+    align-items: flex-end;
 }
 
 .pvpTeam .TeamDeaths {

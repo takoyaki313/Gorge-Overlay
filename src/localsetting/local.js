@@ -11,6 +11,7 @@ export class GorgeOverlay_Local {
         this.root_ACTName = typeof (data.root_ACTName) !== 'undefined' ? data.root_ACTName : "YOU";
         this.language = typeof (data.language) !== 'undefined' ? data.language : 'English';
         this.pveMax = typeof (data.pveMax) !== 'undefined' ? data.pveMax : 12;
+        this.teamSymbol = typeof (data.teamSymbol) !== 'undefined' ? data.teamSymbol : true;
         //
         this.fl_layout = typeof (data.fl_layout) !== 'undefined' ? data.fl_layout : 2;
         this.fl_allyData = typeof (data.fl_allyData) !== 'undefined' ? data.fl_allyData : true;
@@ -23,6 +24,7 @@ export class GorgeOverlay_Local {
         this.fl_advancedOverlay_party = typeof (data.fl_advancedOverlay_party) !== 'undefined' ? data.fl_advancedOverlay_party : true;
         this.fl_advancedOverlay_ally = typeof (data.fl_advancedOverlay_ally) !== 'undefined' ? data.fl_advancedOverlay_ally : false;
         this.fl_advancedOverlay_enemy = typeof (data.fl_advancedOverlay_enemy) !== 'undefined' ? data.fl_advancedOverlay_enemy : false;
+        this.fl_advancedOverlay_slim = typeof (data.fl_advancedOverlay_slim) !== 'undefined' ? data.fl_advancedOverlay_slim : true;
         //
         this.rw_layout = typeof (data.rw_layout) !== 'undefined' ? data.rw_layout : 2;
         this.rw_allyData = typeof (data.rw_allyData) !== 'undefined' ? data.rw_allyData : true;
@@ -35,6 +37,7 @@ export class GorgeOverlay_Local {
         this.rw_advancedOverlay_party = typeof (data.rw_advancedOverlay_party) !== 'undefined' ? data.rw_advancedOverlay_party : true;
         this.rw_advancedOverlay_ally = typeof (data.rw_advancedOverlay_ally) !== 'undefined' ? data.rw_advancedOverlay_ally : false;
         this.rw_advancedOverlay_enemy = typeof (data.rw_advancedOverlay_enemy) !== 'undefined' ? data.rw_advancedOverlay_enemy : false;
+        this.rw_advancedOverlay_slim = typeof (data.rw_advancedOverlay_slim) !== 'undefined' ? data.rw_advancedOverlay_slim : true;
         this.rw_killSound = typeof (data.rw_killSound) !== 'undefined' ? data.rw_killSound : false;
         this.rw_killSound_Volume = typeof (data.rw_killSound_Volume) !== 'undefined' ? data.rw_killSound_Volume : 50;
         this.rw_killSound_Path = typeof (data.rw_killSound_Path) !== 'undefined' ? data.rw_killSound_Path : "https://takoyaki313.github.io/Gorge-Overlay/sound/zyaki.wav";
@@ -50,6 +53,7 @@ export class GorgeOverlay_Local {
         this.cc_advancedOverlay_party = typeof (data.cc_advancedOverlay_party) !== 'undefined' ? data.cc_advancedOverlay_party : true;
         this.cc_advancedOverlay_ally = typeof (data.cc_advancedOverlay_ally) !== 'undefined' ? data.cc_advancedOverlay_ally : true;
         this.cc_advancedOverlay_enemy = typeof (data.cc_advancedOverlay_enemy) !== 'undefined' ? data.cc_advancedOverlay_enemy : true;
+        this.cc_advancedOverlay_slim = typeof (data.cc_advancedOverlay_slim) !== 'undefined' ? data.cc_advancedOverlay_slim : true;
         //
 
         PRIMARY_PLAYER.ACT_name = this.root_ACTName;
@@ -69,6 +73,10 @@ export class GorgeOverlay_Local {
         } else {
             this.language = 'English';
         }
+        saveLocalStorage(this);
+    }
+    set setTeamSymbol(data) {
+        this.teamSymbol = data;
         saveLocalStorage(this);
     }
     set setACTName(actName) {
@@ -120,6 +128,10 @@ export class GorgeOverlay_Local {
         this.fl_advancedOverlay_enemy = data;
         saveLocalStorage(this);
     }
+    set setFL_AdvancedOverlay_slim(data) {
+        this.fl_advancedOverlay_slim = data;
+        saveLocalStorage(this);
+    }
     set setRW_Layout(layout) {
         this.rw_layout = layout;
         saveLocalStorage(this);
@@ -158,6 +170,10 @@ export class GorgeOverlay_Local {
     }
     set setRW_AdvancedOverlay_ally(data) {
         this.rw_advancedOverlay_ally = data;
+        saveLocalStorage(this);
+    }
+    set setRW_AdvancedOverlay_slim(data) {
+        this.rw_advancedOverlay_slim = data;
         saveLocalStorage(this);
     }
     set setRW_killSound(data) {
@@ -217,6 +233,10 @@ export class GorgeOverlay_Local {
     }
     set setCC_AdvancedOverlay_enemy(data) {
         this.cc_advancedOverlay_enemy = data;
+        saveLocalStorage(this);
+    }
+    set setCC_AdvancedOverlay_slim(data) {
+        this.cc_advancedOverlay_slim = data;
         saveLocalStorage(this);
     }
 }

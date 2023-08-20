@@ -59,11 +59,28 @@ export class a_data {
             }
         }
         this.portion_Tooltip = <PortionTooltipLayout data={portion_TooltipData} />
-        this.limitbreakNum = d_Data.limitbreak.length;
+        this.limitbreakNum = 0;
         this.limitbreak_Tooltip = "";
-        if (this.limitbreakNum > 0) {
-            this.limitbreak_Tooltip = <LimitBreakTooltipLayout data={d_Data.limitbreak} />;
-            this.last_limitbreak = d_Data.enctime - d_Data.limitbreak[d_Data.limitbreak.length - 1].time;
+        if (d_Data.limitbreak.length > 0) {
+            let backup_limit = { count: -1, time: 0 };
+            let new_limitbreak = [];
+            for (let i = d_Data.limitbreak.length-1; i >= 0; i--) {
+                if (d_Data.limitbreak[i].use === 0) {
+                    backup_limit = { count: d_Data.limitbreak[i].hit, time: d_Data.limitbreak[i].time_ms };
+                } else {
+                    new_limitbreak.push(d_Data.limitbreak[i]);
+                    if (backup_limit.count !== -1) {
+                        new_limitbreak[new_limitbreak.length - 1].exCount = backup_limit.count;
+                    } else {
+                        new_limitbreak[new_limitbreak.length - 1].exCount = "";
+                    }
+                    backup_limit = { count: -1, time: 0 };
+                }
+            }
+            new_limitbreak.sort((a, b) => a.time_ms - b.time_ms);
+            this.limitbreakNum = d_Data.limitbreak.reduce((sum, d) => sum + d.use, 0);
+            this.limitbreak_Tooltip = <LimitBreakTooltipLayout data={new_limitbreak} />;
+            this.last_limitbreak = d_Data.enctime - d_Data.limitbreak[new_limitbreak.length - 1].time;
         } else {
             this.last_limitbreak = "X"
         }

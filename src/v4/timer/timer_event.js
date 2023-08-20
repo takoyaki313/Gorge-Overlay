@@ -13,15 +13,16 @@ export const battleStart = async (time, timestamp) => {
         } else {
             window.BATTLE_EVENT.timer.Set_BattleMaxTime = time;
         }
+        //timer Start 
+        //console.log('timer start', time, timestamp);
+        timerStart(time);
     }
     else {
         //Adjust
         //window.BATTLE_EVENT.timer.Set_AdjustTime = { time: time, ref: await timestamp_change(timestamp) };
     }
     window.BATTLE_EVENT.Engage = true;
-    //timer Start 
-    console.log('timer start', time, timestamp);
-    timerStart(time);
+
 }
 
 export const battleStop = async (timestamp) => {
@@ -29,11 +30,11 @@ export const battleStop = async (timestamp) => {
     if (timestamp === '') {
         //Force OFF
         //window.BATTLE_EVENT.Result_in_time = Date.now();
-    } else if(timestamp === 'PART'){
+    } else if (timestamp === 'PART') {
         window.BATTLE_EVENT.Result_Page = true;
         window.BATTLE_EVENT.timer.Set_ResultIn = Date.now();
         Timer_OverlayChangeEvent();
-    }    
+    }
     else {
         window.BATTLE_EVENT.Result_Page = true;
         window.BATTLE_EVENT.timer.Set_ResultIn = await timestamp_change(timestamp);
@@ -55,15 +56,16 @@ export const adjustTimer = async (time, timestamp) => {
 
 window.TimerEvent = null;
 let OverlayClockTime = 1000;
-let CountDown = true;
+let CountDown = false;
 
 const timerStart = async (time) => {
     clearInterval(window.TimerEvent);
     window.TimerEvent = time;
 
-    window.TimerEvent = setInterval(Timer_OverlayChangeEvent,OverlayClockTime);
+    window.TimerEvent = setInterval(Timer_OverlayChangeEvent, OverlayClockTime);
 }
 export const timerStop = async () => {
+    //console.log('Timer Stopped');
     clearInterval(window.TimerEvent);
 }
 
@@ -73,8 +75,8 @@ const Timer_OverlayChangeEvent = () => {
     } else {
         window.changeTime_Event(window.BATTLE_EVENT.timer.Get_Time);
     }
-
     window.BATTLE_EVENT.timer.Set_Time = 1;
-    window.TBDState(window.BATTLE_EVENT.timer.Get_Time);
-    
+    if (window.BATTLE_EVENT.encounterStart) {
+        window.TBDState(window.BATTLE_EVENT.timer.Get_Time);
+    }
 }

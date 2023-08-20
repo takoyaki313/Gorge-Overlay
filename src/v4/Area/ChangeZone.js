@@ -68,6 +68,7 @@ const areaTypeSet_40 = (zoneID) => {
             return 5;
         case 822://Crystal Conflict The Clockwork Castletown 
             return 5;
+        /*
         case 51://Wolves Den Pier
             return 4;
         /*

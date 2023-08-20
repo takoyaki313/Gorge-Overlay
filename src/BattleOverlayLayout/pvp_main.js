@@ -16,7 +16,7 @@ export const PvPMain = (prop) => {
     let resultAllAlly = local[prop.area + "_resultAllAlly"];
     let resultAllEnemy = local[prop.area + "_resultAllEnemy"];
     let playerMode = Number(local[prop.area + "_layout"]);
-    
+
     const [allyPlayer, allyPlayerToggle] = useState(true);
     const [enemyPlayer, enemyPlayerToggle] = useState(true);
     const toggleAllyPlayer = () => {
@@ -24,6 +24,12 @@ export const PvPMain = (prop) => {
     }
     const toggleEnemyPlayer = () => {
         enemyPlayerToggle(!enemyPlayer);
+    }
+    if (prop.wolves) {
+        allyData = true;
+        enemyData = false;
+        allyMax = 24;
+        enemyMax = 0;
     }
     let ally_Limit = BattleDataGetLimit(allyMax,window.TBD.BattleData_AllyActive);
     let ally = window.TBD.BattleData_Ally

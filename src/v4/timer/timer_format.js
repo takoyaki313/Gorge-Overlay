@@ -38,8 +38,7 @@ export class battle_event {
             this.TenSyonMax_Me = false;
             this.encounterStart = false;
             owner_id_list_reset();
-            this.timer.reset = true
-                ;
+            this.timer.reset = true;
         }
     }  
     set partyNumUpdate(num) {

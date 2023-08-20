@@ -46,7 +46,7 @@ const PvPPlayer = (prop) => {
     const hide_toggle = () => {
         setActive(!simple)
     }
-
+    let advanced_slimOff = local[prop.area + '_advancedOverlay_slim'];
     if (!firstRead) {
         isRead(!firstRead);
         if (PRIMARY_PLAYER.nameID === prop.data.nameID && local[prop.area + '_advancedOverlay_me']) {
@@ -58,6 +58,7 @@ const PvPPlayer = (prop) => {
         }else if (prop.data.alliance > 1 && local[prop.area + '_advancedOverlay_enemy']) {
             hide_toggle();
         }
+        
     }
     let gage_offset = Math.abs((data.damage.ps / prop.maxdps) * 100 - 100) - 2;
 
@@ -67,12 +68,12 @@ const PvPPlayer = (prop) => {
             return (
                 <>
                     <div className='P2-horizontalLine'></div>
-                    <GorgeAdvance data={data} />
+                    <GorgeAdvance data={data} slim={prop.slim} />
                 </>)    
         } else {
             return (
                 <>
-                    <NormalAdvance data={data} />
+                    <NormalAdvance data={data} slim={prop.slim}/>
                 </>)    
         }
     }
@@ -89,7 +90,7 @@ const PvPPlayer = (prop) => {
             <li className='flex-center gageRelative li_space' onClick={hide_toggle}>
                 <div className={'gegeAbs ' + background_color_row} style={{ right: gage_offset + '%' }}></div>
                 <OverlayM1 data={Created_m_data} />
-                {simple ? <AdvancedPvP data={Created_a_data} /> : ""}
+                {simple ? <AdvancedPvP data={Created_a_data} slim={advanced_slimOff} /> : ""}
                 {data.AreaType === 2 ? <RobotHistory data={data.robot} start={prop.start} now={prop.now} nameID={data.nameID} rocketPunch={data.rocketPunch} /> : ""}
             </li>
         );
@@ -98,7 +99,7 @@ const PvPPlayer = (prop) => {
             <li className='flex-center gageRelative li_space' onClick={hide_toggle}>
                 <div className={'gegeAbs ' + background_color_row} style={{ right: gage_offset + '%' }}></div>
                 <OverlayM2 data={Created_m_data} />
-                {simple ? <AdvancedPvP data={Created_a_data} /> : ""}
+                {simple ? <AdvancedPvP data={Created_a_data} slim={advanced_slimOff} /> : ""}
                 {data.AreaType === 2 ? <RobotHistory data={data.robot} start={prop.start} now={prop.now} nameID={data.nameID} rocketPunch={data.rocketPunch} /> : ""}
             </li>
         );
