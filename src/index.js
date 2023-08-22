@@ -53,7 +53,7 @@ export const rootRender = (data) => {
 }
 
 //OverlayPlugin API 
-if (window.devMode.webSocket || window.devMode.sampleType === -1) {//DevMode ACT WebSocket Required Auto Redirect
+if (window.devMode.webSocket && window.devMode.sampleType === -1) {//DevMode ACT WebSocket Required Auto Redirect
   if (!window.location.href.includes('OVERLAY_WS')) {
     window.location.href = '?OVERLAY_WS=ws://127.0.0.1:10501/ws&HOST_PORT=ws://127.0.0.1/fake/';
   }

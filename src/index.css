@@ -40,21 +40,23 @@
   --death-too-much: rgba(255, 0, 0, 0.3);
   --party: rgba(37, 92, 80, 0.5);
   --me: rgba(93, 81, 37, 0.7);
-  --death:#EB4561;
+  --death: #EB4561;
   --robot-hp-remain: #84F8BD;
   --robot-hp-over: var(--death);
   --losstime: darkred;
 
   --root-padding: 0.6rem;
 
-  --dps-green:#1EFF00;
-  --dps-blue:#0070FF;
-  --dps-purple:#A335EE;
-  --dps-orange:#FF8000;
-  --dps-pink:#E268A8;
-  --dps-yellow:#E5CC80;
+  --dps-green: #1EFF00;
+  --dps-blue: #0070FF;
+  --dps-purple: #A335EE;
+  --dps-orange: #FF8000;
+  --dps-pink: #E268A8;
+  --dps-yellow: #E5CC80;
 
-/*
+  --rootFontSize: 16px;
+
+  /*
 100%  : #E5CC80
 99%   : #E268A8
 95%   : #FF8000
@@ -65,7 +67,7 @@
 }
 
 html {
-  font-size: 20px;
+  font-size: var(--rootFontSize);
 }
 
 ::-webkit-scrollbar {

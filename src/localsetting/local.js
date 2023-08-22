@@ -9,6 +9,7 @@ export class GorgeOverlay_Local {
     constructor(data) {
         this.root_header = typeof (data.root_header) !== 'undefined' ? data.root_header : false;
         this.root_ACTName = typeof (data.root_ACTName) !== 'undefined' ? data.root_ACTName : "YOU";
+        this.rootFontSize = typeof (data.rootFontSize) !== 'undefined' ? data.rootFontSize : 16;
         this.language = typeof (data.language) !== 'undefined' ? data.language : 'English';
         this.pveMax = typeof (data.pveMax) !== 'undefined' ? data.pveMax : 12;
         this.teamSymbol = typeof (data.teamSymbol) !== 'undefined' ? data.teamSymbol : true;
@@ -55,7 +56,7 @@ export class GorgeOverlay_Local {
         this.cc_advancedOverlay_enemy = typeof (data.cc_advancedOverlay_enemy) !== 'undefined' ? data.cc_advancedOverlay_enemy : true;
         this.cc_advancedOverlay_slim = typeof (data.cc_advancedOverlay_slim) !== 'undefined' ? data.cc_advancedOverlay_slim : true;
         //
-
+        rootFontSizeChange(this.rootFontSize);
         PRIMARY_PLAYER.ACT_name = this.root_ACTName;
         saveLocalStorage(this);
     }
@@ -73,6 +74,11 @@ export class GorgeOverlay_Local {
         } else {
             this.language = 'English';
         }
+        saveLocalStorage(this);
+    }
+    set setRootFontSize(data) {
+        this.rootFontSize = data;
+        rootFontSizeChange(data);
         saveLocalStorage(this);
     }
     set setTeamSymbol(data) {
@@ -239,6 +245,9 @@ export class GorgeOverlay_Local {
         this.cc_advancedOverlay_slim = data;
         saveLocalStorage(this);
     }
+}
+const rootFontSizeChange = (size) => {
+    document.documentElement.style.setProperty('--rootFontSize',size + 'px');
 }
 const saveLocalStorage = (data) => {
     localStorage.setItem(GorgeOverlay_LocalStorage, JSON.stringify(data));

@@ -78,7 +78,17 @@ const PvESettingPage = () => {
                 init={local.teamSymbol}
                 lang={local.language}
             />
-            
+            <SettingNumberInput
+                ja_main={"オーバーレイの拡大縮小"}
+                ja_sub={""}
+                en_main={"Scaling the overlay"}
+                en_sub={""}
+                local={(v) => local.setRootFontSize = v}
+                max={32}
+                min={10}
+                init={local.rootFontSize}
+                lang={local.language}
+            />
         </div>
     )
 }
@@ -577,7 +587,7 @@ const SettingNumberInput = (prop) => {
     const [inputNum, setVal] = useState(prop.init);
     const updateCheck = (e) => {
         setVal(e.target.value);
-        prop.local(e.target.value);
+        prop.local(Number(e.target.value));
     }
     if (prop.lang === 'Japanese') {
         text.main = prop.ja_main;
