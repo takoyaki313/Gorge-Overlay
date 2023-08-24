@@ -14,21 +14,29 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 5rem;
+    justify-content: flex-end;
 }
 .AdvancedPvP .optionalArea {
     display: flex;
-    width: 100%;
+    width: calc(100% - 5rem);
     justify-content: space-around;
+}
+.AdvancedPvP .optionalArea > *{
+    width: 4rem;
 }
 .gageRelative {
     position: relative;
     overflow: hidden;
     flex-direction: column;
 }
-.portionNum, .limitbreakNum , .percentArea{
+.portionNum, .limitbreakNum , .percentArea, .limitbreakNumA2{
     display: flex;
     align-items: center;
     padding: 0 0.2rem;
+}
+.limitbreakNumA2 {
+    width: 2rem!important;
 }
 .gegeAbs {
     position: absolute;

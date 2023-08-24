@@ -14,7 +14,7 @@ export const GorgeAdvance = (prop) => {
                         <TooltipJSX icon="icon-Frasco smallPadding" class='flex-center' setID={data.nameID + 'Frasco'} text={data.kaiki + "(" + data.portion + ")"} html={data.portion_Tooltip} />
                     </div>
                     : ""}
-                <div className="limitbreakNum">
+                <div className="limitbreakNumA2">
                     <TooltipJSX icon="smallPadding" class='flex-center' setID={data.nameID + 'LimitBreak'} text={"L-" + data.limitbreakNum} html={data.limitbreak_Tooltip} />
                 </div>
             </div>

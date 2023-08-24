@@ -78,7 +78,6 @@ export class GorgeOverlay_Local {
     }
     set setRootFontSize(data) {
         this.rootFontSize = data;
-        rootFontSizeChange(data);
         saveLocalStorage(this);
     }
     set setTeamSymbol(data) {

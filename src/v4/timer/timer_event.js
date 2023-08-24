@@ -76,7 +76,7 @@ const Timer_OverlayChangeEvent = () => {
         window.changeTime_Event(window.BATTLE_EVENT.timer.Get_Time);
     }
     window.BATTLE_EVENT.timer.Set_Time = 1;
-    if (window.BATTLE_EVENT.encounterStart) {
+    if (window.BATTLE_EVENT.encounterStart || window.devMode.sampleType !== -1) {
         window.TBDState(window.BATTLE_EVENT.timer.Get_Time);
     }
 }
