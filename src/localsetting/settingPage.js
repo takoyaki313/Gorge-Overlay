@@ -67,6 +67,17 @@ const PvESettingPage = () => {
                 init={local.pveMax}
                 lang={local.language}
             />
+            <SettingNumberInput
+                ja_main={"PvEでのレイアウト"}
+                ja_sub={"mode_1 / mode_2"}
+                en_main={"Overlay layout type in PvE"}
+                en_sub={"mode_1 / mode_2"}
+                local={(v) => local.setPvE_Layout = v}
+                init={local.pve_Layout}
+                min={1}
+                max={2}
+                lang={local.language}
+            />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
             <SettingToggleInput
                 ja_main={"チームの合計表示のアイコン表示"}

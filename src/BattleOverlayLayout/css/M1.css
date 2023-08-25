@@ -125,14 +125,13 @@
 }
 .m1_overlay .rightSpace {
     display: flex;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     top: -0.5rem;
     right: 0;
     position: absolute;
 }
 
 .m1_overlay .rightSpace .rightSpace_child {
-    width: 1.8rem;
     display: flex;
     justify-content: flex-end;
 }

@@ -3,6 +3,7 @@ import React from 'react';
 import { m_dataCombatant } from './OverlayPlayer_M';
 import { PRIMARY_PLAYER } from '..';
 import { OverlayM1 } from './OverlayPlayer_M1';
+import { OverlayM2 } from './OverlayPlayer_M2';
 import { local } from '..';
 export const OverlayMCombatants = (Combatants) => {
     let Combatants_Array = [];
@@ -33,7 +34,7 @@ export const OverlayMCombatants = (Combatants) => {
             return (
                 <li className='flex-center gageRelative m1_overlay li_space' key={data.nameID}>
                     <div className={'gegeAbs ' + background_color_row} style={{ right: gage_offset + '%' }}></div>
-                    <OverlayM1 data={data} />
+                    {local.pve_Layout === 1 ? <OverlayM1 data={data} /> : <OverlayM2 data={data} />}
                 </li>
             )
         })}

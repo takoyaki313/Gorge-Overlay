@@ -12,6 +12,7 @@ export class GorgeOverlay_Local {
         this.rootFontSize = typeof (data.rootFontSize) !== 'undefined' ? data.rootFontSize : 16;
         this.language = typeof (data.language) !== 'undefined' ? data.language : 'English';
         this.pveMax = typeof (data.pveMax) !== 'undefined' ? data.pveMax : 12;
+        this.pve_Layout = typeof (data.pve_Layout) !== 'undefined' ? data.pve_Layout : 1;
         this.teamSymbol = typeof (data.teamSymbol) !== 'undefined' ? data.teamSymbol : true;
         //
         this.fl_layout = typeof (data.fl_layout) !== 'undefined' ? data.fl_layout : 2;
@@ -87,6 +88,10 @@ export class GorgeOverlay_Local {
     set setACTName(actName) {
         this.root_ACTName = actName;
         PRIMARY_PLAYER.ACT_name = this.root_ACTName;
+        saveLocalStorage(this);
+    }
+    set setPvE_Layout(layout) {
+        this.pve_Layout = layout;
         saveLocalStorage(this);
     }
     set setFL_Layout(layout) {

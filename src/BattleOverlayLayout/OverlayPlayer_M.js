@@ -40,6 +40,7 @@ class m_dataLayout {
         this.dynamis_tooltip = '';
 
         this.alliance = 0;
+        this.createSource = "Unknown";
     }
 
 }
@@ -53,7 +54,7 @@ export class m_dataCombatant extends m_dataLayout {
         this.dps_tooltip = combatant.damage + ' | ' + combatant.maxhit;
         let sep_hps = separate_d_i(combatant_dps_formatChange(0, combatant.enchps));
         this.hps = sep_hps.int;
-        this.hps_tooltip = combatant.heal;
+        this.hps_tooltip = combatant.OverHealPct;
         this.name = combatant.name;
         this.name_tooltip = '';
         this.nameID = combatant.name.replace("'", "");
@@ -79,6 +80,8 @@ export class m_dataCombatant extends m_dataLayout {
         this.r_center_tooltip = 'DirectHit%';
         this.r_right = combatant.CritDirectHitPct;
         this.r_right_tooltip = 'CritDirectHit%';
+
+        this.createSource = "combatant";
     }
 }
 
@@ -155,6 +158,7 @@ export class m_data extends m_dataLayout {
                 this.name_tooltip += ' / Too Dead (Pace under 60s)';
             }
         }
+        this.createSource = "original";
     }
 }
 
