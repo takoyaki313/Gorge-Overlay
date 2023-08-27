@@ -100,6 +100,18 @@ const PvESettingPage = () => {
                 init={local.rootFontSize}
                 lang={local.language}
             />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
+            <SettingNumberInput
+                ja_main={"MP表示アドインの文字サイズ"}
+                ja_sub={"TargetMP"}
+                en_main={"MP display add-in font size"}
+                en_sub={"TargetMP"}
+                local={(v) => local.setaddInFontSize_MP = v}
+                max={64}
+                min={10}
+                init={local.addInFontSize_MP}
+                lang={local.language}
+            />
         </div>
     )
 }

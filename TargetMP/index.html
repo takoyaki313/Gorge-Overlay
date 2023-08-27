@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <title>IntLB</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+    :root {
+      --rootFontSize: 18;
+    }
+
+    html {
+      font-size: var(--rootFontSize);
+    }
+
+    body {
+      background-color: transparent;
+      font-family: 'Lato', sans-serif;
+      grid-template-columns: 3rem 1rem 1rem;
+      justify-items: center;
+      color: white;
+    }
+  </style>
+  <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script>
+    ////////////////////
+    //setting
+    ////////////////////
+    class targetMP {
+      constructor() {
+        this.disp = false;
+        this.nameID = "";
+        this.MP = 0;
+      }
+      set isVisible(is) {
+        this.disp = is;
+        if (this.disp) {
+          document.body.style.display = 'grid';
+        } else {
+          document.body.style.display = 'none';
+        }
+      }
+      get remainNum (){
+        return Math.floor(this.MP / 2500);
+      }
+
+    }
+
+    const PvPAreaID = [376, 481, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
+    let main = new targetMP();
+    window.onload = () => {
+      addOverlayListener('ChangeZone', (zone) => target_overlay_area_check(zone, main));
+      //addOverlayListener('LogLine', (logline) => log_start(logline.line));
+      target_overlay_localstrage_get();
+      addOverlayListener('EnmityTargetData', (e) => dispTargetData(e.Target, main));
+      startOverlayEvents();
+    }
+
+
+
+    function log_start(log) {
+
+    }
+    function target_overlay_localstrage_get() {
+      let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
+      if (data === null) {
+        target_overlay_fontsize(18);
+      }
+      else {
+        target_overlay_fontsize(data.addInFontSize_MP);
+      }
+    }
+
+    function target_overlay_disp(text) {
+
+    }
+
+    function target_overlay_hide() {
+
+    }
+
+    function target_overlay_fontsize(size) {
+      document.documentElement.style.setProperty('--rootFontSize', size + 'px');
+    }
+
+    ////////////////
+    function target_overlay_area_check(area, main) {
+      MaxLB = 0;
+      LastLB = 0;
+      if (PvPAreaID.indexOf(area.zoneID) !== -1) {
+        main.isVisible = true;
+      }
+      else {
+        main.isVisible = false;
+      }
+    }
+    ////
+
+    const dispTargetData = (e,main) => {
+      if (e === null){
+        if (main.disp){
+          main.isVisible = false;
+        }
+        return null;
+      }
+      let nameID = Number(e.ID).toString(16).toUpperCase();
+      if (nameID.substring(0,2) !== "10"){
+        if (main.disp){
+          main.isVisible = false;
+        }
+        return null;
+      }
+      if (main.nameID === nameID && e.CurrentMP === main.MP && main.disp){
+        return null;
+      }
+      main.isVisible = true;
+      main.nameID = nameID;
+      main.MP = e.CurrentMP;
+      //update
+      const t_MP = document.getElementById('targetMP');
+      const t_rN = document.getElementById('remainNum');
+      t_MP.textContent = main.MP;
+      t_rN.textContent = main.remainNum;
+    }
+  </script>
+</head>
+
+<body>
+  <div id="targetMP">?</div>
+  <div>/</div>
+  <div id="remainNum">?</div>
+</body>

@@ -65,7 +65,7 @@
     min-width: 3.5rem;
     align-items: baseline;
     padding-right: 0.3rem;
-    justify-content: center;
+    justify-content: flex-end;
     border-right: 0.1rem solid;
 }
 

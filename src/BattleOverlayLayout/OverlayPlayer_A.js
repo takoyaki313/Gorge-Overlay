@@ -79,8 +79,15 @@ export class a_data {
             }
             new_limitbreak.sort((a, b) => a.time_ms - b.time_ms);
             this.limitbreakNum = d_Data.limitbreak.reduce((sum, d) => sum + d.use, 0);
-            this.limitbreak_Tooltip = <LimitBreakTooltipLayout data={new_limitbreak} />;
-            this.last_limitbreak = d_Data.enctime - d_Data.limitbreak[new_limitbreak.length - 1].time;
+            
+            if (new_limitbreak.length > 0) {
+                this.last_limitbreak = d_Data.enctime - new_limitbreak[new_limitbreak.length - 1].time;
+                this.limitbreak_Tooltip = <LimitBreakTooltipLayout data={new_limitbreak} />;
+            } else {
+                this.last_limitbreak = d_Data.enctime - d_Data.limitbreak[d_Data.limitbreak.length - 1].time;
+                this.limitbreak_Tooltip = <LimitBreakTooltipLayout data={d_Data.limitbreak} />;
+            }
+            
         } else {
             this.last_limitbreak = "X"
         }

@@ -29,7 +29,7 @@ window.devMode = {
   logForceOff: false,
   sampleType: -1,//default -1
   calcTime: false,
-  forceReset: false,
+  forceReset: true,
 };
 window.Area = new Area();
 window.TBD = new maindata();

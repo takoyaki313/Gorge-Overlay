@@ -38,7 +38,8 @@ class m_dataLayout {
         this.dynamis_text = '';
         this.dynamis_icon = '';
         this.dynamis_tooltip = '';
-
+        
+        this.all_color = '';
         this.alliance = 0;
         this.createSource = "Unknown";
     }
@@ -56,7 +57,7 @@ export class m_dataCombatant extends m_dataLayout {
         this.hps = sep_hps.int;
         this.hps_tooltip = combatant.OverHealPct;
         this.name = combatant.name;
-        this.name_tooltip = '';
+        this.name_tooltip = "Death : " + combatant.deaths;
         this.nameID = combatant.name.replace("'", "");
 
         if (combatant.Job === "Limit Break") {

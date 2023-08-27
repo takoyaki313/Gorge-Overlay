@@ -14,6 +14,7 @@ export class GorgeOverlay_Local {
         this.pveMax = typeof (data.pveMax) !== 'undefined' ? data.pveMax : 12;
         this.pve_Layout = typeof (data.pve_Layout) !== 'undefined' ? data.pve_Layout : 1;
         this.teamSymbol = typeof (data.teamSymbol) !== 'undefined' ? data.teamSymbol : true;
+        this.addInFontSize_MP = typeof (data.addInFontSize_MP) !== 'undefined' ? data.addInFontSize_MP : 18;
         //
         this.fl_layout = typeof (data.fl_layout) !== 'undefined' ? data.fl_layout : 2;
         this.fl_allyData = typeof (data.fl_allyData) !== 'undefined' ? data.fl_allyData : true;
@@ -79,6 +80,10 @@ export class GorgeOverlay_Local {
     }
     set setRootFontSize(data) {
         this.rootFontSize = data;
+        saveLocalStorage(this);
+    }
+    set setaddInFontSize_MP(data) {
+        this.addInFontSize_MP = data;
         saveLocalStorage(this);
     }
     set setTeamSymbol(data) {

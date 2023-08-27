@@ -8,8 +8,9 @@ export const OverlayM2 = (prop) => {
     return (
         <div className={'m2_overlay ' + data.all_color}>
             <div className='rightArea'>
-                <TooltipJSX setID={data.nameID + 'dpsArea'} b_class="maindpsArea" class={"maindps " + data.damage_color} text={data.dps_i} html={data.dps_tooltip} />
-                <TooltipJSX setID={data.nameID + 'hpsArea'} b_class="mainhpsArea" class="mainhps" text={data.hps} html={data.hps_tooltip} />
+                <TooltipJSX setID={data.nameID + 'dpsArea'} b_class={data.createSource === "combatant" ? "maindpsArea maindpsArea-combatant":"maindpsArea maindpsArea-original"} class={"maindps " + data.damage_color} text={data.dps_i} html={data.dps_tooltip} />
+                
+                <TooltipJSX setID={data.nameID + 'hpsArea'} b_class="mainhpsArea" class={String(data.hps).length < 5 ? "hps-d " : "hps-d hps-5"} text={data.hps} html={data.hps_tooltip} />
                 <div className=' jobicon'>
                 {typeof data.job_tooltip === 'object' ? <><TooltipJSX icon={'icon-' + data.job} setID={data.nameID + 'jobhistory'} text={''} html={data.job_tooltip} /><div className='jobhistory'></div></> : <div className={'icon-' + data.job}></div>}
                 </div>

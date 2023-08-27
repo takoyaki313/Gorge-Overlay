@@ -14,13 +14,19 @@
 }
 
 .m2_overlay .maindpsArea {
-    width: 3rem;
     display: flex;
     justify-content: flex-end;
     padding-right: 0.3rem;
     border-right: 0.1rem solid;
 }
 
+.m2_overlay .maindpsArea-combatant {
+    width: 3.7rem;
+}
+
+.m2_overlay .maindpsArea-original {
+    width: 3rem;
+}
 .m2_overlay .mainhps {
     font-size: 1rem;
 }
@@ -99,5 +105,5 @@
     margin: 0 0.2rem;
     width: 1.7rem;
     text-align: end;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }

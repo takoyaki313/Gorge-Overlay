@@ -334,7 +334,7 @@ class dispPlayerData {
 
         this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
         this.AreaType = before.AreaType;
-        if (0 < this.alliance && this.alliance < 7) {
+        if (0 < this.alliance && this.alliance < 7 && Alliance.length > 0) {
             if (Alliance[this.alliance].dynamis > 0) {
                 this.dynamishistory = Alliance[this.alliance];
             }
