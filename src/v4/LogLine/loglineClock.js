@@ -12,6 +12,8 @@ export const loglineQueue_Push = (log) => {
 
 export const calcClock = async () => {
     if (!LOG_PROCESS) {
+        LOG_PROCESS = true;
+        PROMISE_ARRAY = [];
         if (window.devMode.calcTime) {
             PROCESS_TIME.start = performance.now();
         }

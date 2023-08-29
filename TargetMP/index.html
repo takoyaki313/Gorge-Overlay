@@ -17,6 +17,7 @@
     }
 
     body {
+      display: grid;
       background-color: transparent;
       font-family: 'Lato', sans-serif;
       grid-template-columns: 3rem 1rem 1rem;
@@ -31,15 +32,25 @@
     ////////////////////
     class targetMP {
       constructor() {
+        this.areaDisp = false;
         this.disp = false;
         this.nameID = "";
         this.MP = 0;
       }
       set isVisible(is) {
+        if (!this.areaDisp){
+          return;
+        }
         this.disp = is;
         if (this.disp) {
           document.body.style.display = 'grid';
         } else {
+          document.body.style.display = 'none';
+        }
+      }
+      set isArea(is) {
+        this.areaDisp = is;
+        if (!this.areaDisp) {
           document.body.style.display = 'none';
         }
       }
@@ -91,15 +102,18 @@
       MaxLB = 0;
       LastLB = 0;
       if (PvPAreaID.indexOf(area.zoneID) !== -1) {
-        main.isVisible = true;
+        main.isArea = true;
       }
       else {
-        main.isVisible = false;
+        main.isArea = false;
       }
     }
     ////
 
     const dispTargetData = (e,main) => {
+      if (!main.areaDisp){
+        return null;
+      }
       if (e === null){
         if (main.disp){
           main.isVisible = false;
@@ -129,7 +143,7 @@
 </head>
 
 <body>
-  <div id="targetMP">?</div>
+  <div id="targetMP"></div>
   <div>/</div>
-  <div id="remainNum">?</div>
+  <div id="remainNum"></div>
 </body>
