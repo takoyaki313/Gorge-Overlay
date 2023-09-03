@@ -64,3 +64,9 @@
     background-color: var(--default-color);
     margin: 0 0.2rem;
 }
+.AdvancedPvP .matonTower {
+    width: 7.4rem!important;
+}
+.AdvancedPvP .PortionNum2 {
+    width: 3rem!important;
+}

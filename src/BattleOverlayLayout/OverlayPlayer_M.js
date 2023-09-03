@@ -127,7 +127,7 @@ export class m_data extends m_dataLayout {
         let dynamisCheck = { text: '', class: '' }
         if (d_Data.AreaType === 2) {
             //Gorge
-            if (d_Data.dynamis === TensyonMax) {
+            if (d_Data.dynamis === 20 ||d_Data.dynamis === TensyonMax) {
                 dynamisCheck.class = dynamis_detect(d_Data.dynamis)
             } else {
                 dynamisCheck.text = d_Data.dynamis;

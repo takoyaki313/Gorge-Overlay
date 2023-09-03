@@ -8,9 +8,9 @@ export const GorgeAdvance = (prop) => {
 
                 <TooltipJSX icon="icon-person1 smallPadding" class='flex-center' setID={data.nameID + 'person_damage'} text={data.damage_person} html={data.damage_person_Tooltip} />
                 <TooltipJSX icon="icon-hammer smallPadding" class='flex-center' setID={data.nameID + 'robot_damage'} text={data.damage_robot} html={data.damage_robot_Tooltip} />
-                <TooltipJSX icon="icon-maton smallPadding" class='flex-center' setID={data.nameID + 'object_damage'} text={data.damage_maton + " + " + data.damage_tower} html={data.damage_maton_Tooltip} />
+                <TooltipJSX b_class={"matonTower"} icon="icon-maton smallPadding" class='flex-center' setID={data.nameID + 'object_damage'} text={data.damage_maton + " + " + 17845} html={data.damage_maton_Tooltip} />
                 {prop.slim ?
-                    <div className="portionNum">
+                    <div className="portionNum PortionNum2">
                         <TooltipJSX icon="icon-Frasco smallPadding" class='flex-center' setID={data.nameID + 'Frasco'} text={data.kaiki + "(" + data.portion + ")"} html={data.portion_Tooltip} />
                     </div>
                     : ""}

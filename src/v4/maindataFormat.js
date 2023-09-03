@@ -287,7 +287,7 @@ export const get_dispPlayerData_Robot = (dispData, createTime) => {
     }
     dispData.data.add_combatant_time = [{ battle: true, time: dispData.ridetime, timestamp: "robot" }, { battle: false, time: now, timestamp: "robot" }];
     dispData.data.job = dispData.ride_type;
-    let robotData = new dispPlayerData(dispData.data, now, [], []);
+    let robotData = new dispPlayerData(dispData.data, now, window.TBD.Alliance, []);
     return (robotData);
 }
 
@@ -332,17 +332,19 @@ class dispPlayerData {
         this.accept_income_heal_All = [];
         this.accept_income_over_heal_All = [];
 
-        this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
         this.AreaType = before.AreaType;
-        if (0 < this.alliance && this.alliance < 7 && Alliance.length > 0) {
+        if (0 < this.alliance && this.alliance < 7 && this.AreaType === 2) {
             if (Alliance[this.alliance].dynamis > 0) {
                 this.dynamishistory = Alliance[this.alliance];
+                this.dynamis = this.dynamishistory.dynamis;
             }
             else {
                 this.dynamishistory = new dynamisParty();
+                this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
             }
         } else {
             this.dynamishistory = new dynamisParty();
+            this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
         }
 
 
