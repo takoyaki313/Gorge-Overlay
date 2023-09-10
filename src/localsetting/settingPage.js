@@ -117,7 +117,7 @@ const PvESettingPage = () => {
                 ja_sub={"targetmarker"}
                 en_main={"Target marker add-in font size"}
                 en_sub={"targetmarker"}
-                local={(v) => local.addInTargetMarker_Size = v}
+                local={(v) => local.setaddInTargetMarker_Size = v}
                 max={64}
                 min={8}
                 init={local.addInTargetMarker_Size}
@@ -128,7 +128,7 @@ const PvESettingPage = () => {
                 ja_sub={"下から = ON 上から = OFF"}
                 en_main={"Marker add-in direction"}
                 en_sub={"From bottom = ON From top = OFF"}
-                local={(v) => local.addInTargetMarker_Reverse = v}
+                local={(v) => local.setaddInTargetMarker_Reverse = v}
                 uID={"a_targetReverse"}
                 init={local.addInTargetMarker_Reverse}
                 lang={local.language}
