@@ -112,6 +112,27 @@ const PvESettingPage = () => {
                 init={local.addInFontSize_MP}
                 lang={local.language}
             />
+            <SettingNumberInput
+                ja_main={"マーカーアドインの文字サイズ"}
+                ja_sub={"targetmarker"}
+                en_main={"Target marker add-in font size"}
+                en_sub={"targetmarker"}
+                local={(v) => local.addInTargetMarker_Size = v}
+                max={64}
+                min={8}
+                init={local.addInTargetMarker_Size}
+                lang={local.language}
+            />
+            <SettingToggleInput
+                ja_main={"マーカーアドインの方向"}
+                ja_sub={"下から = ON 上から = OFF"}
+                en_main={"Marker add-in direction"}
+                en_sub={"From bottom = ON From top = OFF"}
+                local={(v) => local.addInTargetMarker_Reverse = v}
+                uID={"a_targetReverse"}
+                init={local.addInTargetMarker_Reverse}
+                lang={local.language}
+            />
         </div>
     )
 }

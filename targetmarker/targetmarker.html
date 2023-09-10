@@ -93,100 +93,32 @@
     //setting
     ////////////////////
     var Overlay_On = true;
-    var Link_GorgeOverlay = false;
-    const PvPAreaID = [376,481,554,888,1032,1058,1033,1059,1034,1060,1116,1117,250,717,791];
+    const PvPAreaID = [376, 481, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
+    var nameMap = new Map();
     ////////////////////
     $(function () {
       'use strict';
       targetmarker_overlay_localstrage_get();
-      if (Link_GorgeOverlay) {
-        console.debug("TargetMarker Link Mode");
-        connectBC(true);
-        sendBC("general", { source: "targetLog", message: "Connect" });
-        BC_Channel.onmessage = function (evt) {
-          let messageObject = evt.data;
-          if (messageObject.type === "targetlog") {
-            if (!Overlay_On) {
-              targetmarker_overlay_disp();
-              Overlay_On = true;
-            }
-            //disp
-            let Receive = messageObject.data;
-            let detail = null;
-            let type_str = "";
-            if (Receive.source === "28") {//Field Marker
-              return null;
-              detail = FieldMarkerID[Receive.target];
-              type_str = "field";
-            } else if (Receive.source === "29") {//Target Marker
-              detail = MarkerTargetID[Receive.target];
-              type_str = "marker";
-            } else {
-              console.warn("Log line type that does not match");
-              console.warn(messageObject);
-              return null;
-            }
-            let add = '';
-            if (Receive.add === 'Add') {
-              add = '+';
-            } else if (Receive.add === 'Delete') {
-              add = '-';
-            }
-            //
-            let disp_data = {
-              type: type_str,
-              name: detail.name,
-              url: detail.icon,
-              From: Receive.From,
-              FromJob: Receive.From_Job,
-              To: Receive.To,
-              ToJob: Receive.To_Job,
-              add: add,
-              time: Receive.time,
-              date: new Date(Receive.time),
-            }
-            
-            if (disp_data.From.substring(0,2) === "10") {
-              disp_data.From = "Player";
-            }else if(disp_data.From.substring(0,2) === "40"){
-              disp_data.From = "Object";
-            }
-            if (disp_data.To.substring(0,2) === "10") {
-              disp_data.To = "Player";
-            }else if(disp_data.To.substring(0,2) === "40"){
-              disp_data.To = "Object";
-            }
-
-            data_disp(disp_data);
-          } else if (messageObject.type === "general") {
-            if (messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Connect") {
-              targetmarker_overlay_disp();
-              Overlay_On = true;
-            } else if (messageObject.data.source === "GorgeOverlay" && messageObject.data.message === "Disconnect") {
-              targetmarker_overlay_hide();
-              Overlay_On = false;
-            }
-          }
-        }
-      } else {
-        console.debug("TargetMarker Standalone Mode");
-        addOverlayListener('ChangeZone', (zone) => targetmarker_overlay_area_check(zone));
-        addOverlayListener('LogLine', (logline) => log_start(logline.line));
-        startOverlayEvents();
-      }
+      nameMap.clear();
+      addOverlayListener('ChangeZone', (zone) => targetmarker_overlay_area_check(zone));
+      addOverlayListener('LogLine', (logline) => log_start(logline.line));
+      startOverlayEvents();
     });
     //--------Standalone Mode
     function log_start(log) {
       if (Overlay_On) {
         if (log[0] === '28') {
-          marker_disp2829(log, 'field');
+          //marker_disp2829(log, 'field');
         } else if (log[0] === '29') {
           marker_disp2829(log, 'marker');
+        } else if (log[0] === '03') {
+          addcombatant_cut(log);
         }
       }
     }
     let reverse = false;
-    function marker_disp2829(log, type) {
+    async function marker_disp2829 (log, type) {
+      console.log(log);
       if (log[2] === 'Delete' && log[4] === '0000') {
         //置き換えの削除
         return null;
@@ -204,22 +136,193 @@
       } else if (log[2] === 'Delete') {
         add = '-';
       }
-
-
+      let fromID = await nameMap.get(log[4].toUpperCase());
+      let toID = await nameMap.get(log[6].toUpperCase());
       let data = {
         type: type,
         name: detail.name,
         url: detail.icon,
-        From: log[5],
-        FromJob: "",
-        To: log[7],
-        ToJob: "",
+        From: typeof (fromID) === 'undefined' ? log[5] : fromID.name,
+        FromJob: typeof (fromID) === 'undefined' ? "" : fromID.job,
+        To: typeof (toID) === 'undefined' ? log[7] : toID.name,
+        ToJob: typeof (toID) === 'undefined' ? "" : toID.job,
         add: add,
         time: Date.parse(log[1]),
         date: null,
       }
+      console.log(data);
+      if (data.From === ""){
+        if(log[4].toUpperCase().substring(0,2) === '10'){
+          data.From = "Player";
+        }else{
+          data.From = "Object";
+        }
+      }
+      if (data.To === ""){
+        if(log[6].toUpperCase().substring(0,2) === '10'){
+          data.To = "Player";
+        }else{
+          data.To = "Object";
+        }
+      }
       data.date = new Date(data.time);
       data_disp(data);
+    }
+    const addcombatant_cut = (log) => {
+      let nameID = log[2].toUpperCase();
+      let name = log[3];
+      if (name === "") {
+        return null;
+      }
+      let job = jobID_to_string(log[4]);
+
+      if (name !== '' && job !== '') {
+        nameMap.set(nameID, { name: name, job: job });
+      }
+    }
+
+    const jobID_to_string = (id) => {
+      if (typeof id === 'string') {
+        id = parseInt(id, 16);
+      }
+      let job = null;
+      switch (id) {
+        case 0:
+          job = null;
+          break;
+        case 1:
+          job = 'gla';
+          break;
+        case 2:
+          job = 'pgl';
+          break;
+        case 3:
+          job = 'mrd';
+          break;
+        case 4:
+          job = 'lnc';
+          break;
+        case 5:
+          job = 'arc';
+          break;
+        case 6:
+          job = 'cnj';
+          break;
+        case 7:
+          job = 'thm';
+          break;
+        case 8:
+          job = 'crp';
+          break;
+        case 9:
+          job = 'bsm';
+          break;
+        case 10:
+          job = 'arm';
+          break;
+        case 11:
+          job = 'gsm';
+          break;
+        case 12:
+          job = 'ltw';
+          break;
+        case 13:
+          job = 'wvr';
+          break;
+        case 14:
+          job = 'alc';
+          break;
+        case 15:
+          job = 'cul';
+          break;
+        case 16:
+          job = 'nin';
+          break;
+        case 17:
+          job = 'btn';
+          break;
+        case 18:
+          job = 'fsh';
+          break;
+        case 19:
+          job = 'pld';
+          break;
+        case 20:
+          job = 'mnk';
+          break;
+        case 21:
+          job = 'war';
+          break;
+        case 22:
+          job = 'drg';
+          break;
+        case 23:
+          job = 'brd';
+          break;
+        case 24:
+          job = 'whm';
+          break;
+        case 25:
+          job = 'blm';
+          break;
+        case 26:
+          job = 'acn';
+          break;
+        case 27:
+          job = 'smn';
+          break;
+        case 28:
+          job = 'sch';
+          break;
+        case 29:
+          job = 'rog';
+          break;
+        case 30:
+          job = 'nin';
+          break;
+        case 31:
+          job = 'mch';
+          break;
+        case 32:
+          job = 'drk';
+          break;
+        case 33:
+          job = 'ast';
+          break;
+        case 34:
+          job = 'sam';
+          break;
+        case 35:
+          job = 'rdm';
+          break;
+        case 36:
+          job = 'bdm';
+          break;
+        case 37:
+          job = 'gnb';
+          break;
+        case 38:
+          job = 'dnc';
+          break;
+        case 39:
+          job = 'rpr';
+          break;
+        case 40:
+          job = 'sge';
+          break;
+        case 50:
+          job = 'opp';
+          break;
+        case 51:
+          job = 'che';
+          break;
+        case 52:
+          job = 'jas';
+          break;
+        default:
+          job = null;
+      }
+      return job;
     }
     //----------------------------------------------------------------
     let MarkerTargetID = [
@@ -278,6 +381,18 @@
       {
         name: '三角',
         icon: 'https://xivapi.com/i/060000/060714.png'
+      }, 
+      {
+        name: '攻撃6',
+        icon: 'https://xivapi.com/i/061000/061206.png'
+      },
+      {
+        name: '攻撃7',
+        icon: 'https://xivapi.com/i/061000/061207.png'
+      }, 
+      {
+        name: '攻撃8',
+        icon: 'https://xivapi.com/i/061000/061208.png'
       }
     ];
     let FieldMarkerID = [
@@ -315,14 +430,13 @@
       },
     ]
     function targetmarker_overlay_localstrage_get() {
-      let data = JSON.parse(localStorage.getItem('Gorge-Overlay3'));
+      let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
       if (data === null) {
         targetmarker_overlay_fontsize(18);
       }
       else {
-        targetmarker_overlay_fontsize(data.target_marker_fontsize);
-        targetmarker_overlay_reverse(data.target_marker_repeat);
-        Link_GorgeOverlay = data.bc_Enable;
+        targetmarker_overlay_fontsize(data.addInTargetMarker_Size);
+        targetmarker_overlay_reverse(data.addInTargetMarker_Reverse);
       }
     }
 
@@ -345,6 +459,7 @@
       }
     }
     ////////////////
+    let lastArea = -1;
     function targetmarker_overlay_area_check(area) {
       MaxLB = 0;
       LastLB = 0;
@@ -356,6 +471,10 @@
         Overlay_On = false;
         targetmarker_overlay_hide();
       }
+      if (lastArea !== area.zoneID) {
+        nameMap.clear();
+      }
+      lastArea = area.zoneID;
     }
     function data_disp(data) {
       let template = $('#template .row');
