@@ -87,7 +87,6 @@
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
-  <script src="https://takoyaki313.github.io/Gorge-Overlay/js/v3/Gorgebc.js"></script>
   <script>
     ////////////////////
     //setting
@@ -118,7 +117,6 @@
     }
     let reverse = false;
     async function marker_disp2829 (log, type) {
-      console.log(log);
       if (log[2] === 'Delete' && log[4] === '0000') {
         //置き換えの削除
         return null;
@@ -150,7 +148,6 @@
         time: Date.parse(log[1]),
         date: null,
       }
-      console.log(data);
       if (data.From === ""){
         if(log[4].toUpperCase().substring(0,2) === '10'){
           data.From = "Player";
@@ -328,23 +325,23 @@
     let MarkerTargetID = [
       {
         name: '攻撃1',
-        icon: 'https://xivapi.com/i/060000/060701.png'
+        icon: 'https://xivapi.com/i/061000/061201.png'
       },
       {
         name: '攻撃2',
-        icon: 'https://xivapi.com/i/060000/060702.png'
+        icon: 'https://xivapi.com/i/061000/061202.png'
       },
       {
         name: '攻撃3',
-        icon: 'https://xivapi.com/i/060000/060703.png'
+        icon: 'https://xivapi.com/i/061000/061203.png'
       },
       {
         name: '攻撃4',
-        icon: 'https://xivapi.com/i/060000/060704.png'
+        icon: 'https://xivapi.com/i/061000/061204.png'
       },
       {
         name: '攻撃5',
-        icon: 'https://xivapi.com/i/060000/060705.png'
+        icon: 'https://xivapi.com/i/061000/061205.png'
       },
       {
         name: '鎖1',
@@ -452,10 +449,10 @@
     }
     function targetmarker_overlay_reverse(bool) {
       if (bool) {
+        $('#main').css('flex-direction', 'column');
+      } else { 
         $('#main').css('flex-direction', 'column-reverse');
         reverse = true;
-      } else {
-        $('#main').css('flex-direction', 'column');
       }
     }
     ////////////////
