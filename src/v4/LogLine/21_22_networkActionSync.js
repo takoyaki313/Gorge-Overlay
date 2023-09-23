@@ -797,7 +797,12 @@ export const potencial_to_damage_calc_effect = async (attackerID, victimID, defa
     <-damage->
     potencial * (buff - debuff) * revise -> (buff - debuff) * revise = damage
     */
-    if (damage_type === 'DoT') {//damage
+    if (damage_type === 'Text') {
+        let attacker = await potencial_to_damage_calc_id(attacker_data, attackerID, 'damage', true);
+        let victim = await potencial_to_damage_calc_id(victim_data, victimID, 'damage', false);
+        return { attacker: Number(attacker.toFixed(2)), victim: Number(victim.toFixed(2)) };
+    }
+    else if (damage_type === 'DoT') {//damage
         let attacker = await potencial_to_damage_calc_id(attacker_data, attackerID, 'damage', true);
         let victim = await potencial_to_damage_calc_id(victim_data, victimID, 'damage', false);
         if (window.devMode.logLevel > 11) {

@@ -2073,7 +2073,7 @@ export const EFFECT_ID = {
     '06C2': {
         name: 'テンションマックス',
         type: [true, true, false, false, true],
-        effect: 1.5,
+        effect: 1.4,
         cut: 1,
         cut_heal: 1
     },
@@ -2101,8 +2101,8 @@ export const EFFECT_ID = {
     },
     '06C1': {// 6.2-
         name: '不退転',
-        type: [false, false, false, false, true],
-        effect: 1,
+        type: [true, false, false, false, true],
+        effect: 1.5,
         cut: 1,
         cut_heal: 1,
         maxtime: 9999
