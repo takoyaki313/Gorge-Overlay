@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <title>TargetFrom</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+    :root {
+      --rootFontSize: 18;
+    }
+
+    html {
+      font-size: var(--rootFontSize);
+    }
+
+    body {
+      display: grid;
+      background-color: transparent;
+      font-family: 'Lato', sans-serif;
+      grid-template-columns: 3rem 1rem 1rem;
+      justify-items: center;
+      color: white;
+    }
+  </style>
+  <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script>
+    ////////////////////
+    //setting
+    ////////////////////
+    class targetFrom {
+      constructor() {
+        this.areaDisp = false;
+        this.disp = false;
+        this.nameID = "";
+        this.name = "";
+        this.num = 0;
+      }
+      set isVisible(is) {
+        if (!this.areaDisp) {
+          return;
+        }
+        this.disp = is;
+        if (this.disp) {
+          document.body.style.display = 'grid';
+        } else {
+          document.body.style.display = 'none';
+        }
+      }
+      set isArea(is) {
+        this.areaDisp = is;
+        if (this.areaDisp) {
+          //visible
+          document.body.style.display = 'grid';
+          if (!intervalID) {
+            intervalID = setInterval(async () => {
+              this.tagetNum = await window.callOverlayHandler({ call: 'getCombatants' });
+            }, 400);
+          }
+        } else {
+          //hidden
+          document.body.style.display = 'none';
+          if (intervalID) {
+            clearInterval(intervalID);
+            this.setNum = 0;
+            intervalID = null;
+          }
+        }
+
+      }
+      set tagetNum(e) {
+        if (e.combatants.length === 0) {
+          return null;
+        }
+        let count = 0;
+        for (let i = 0; i < e.combatants.length; i++) {
+          if (e.combatants[i].TargetID === this.nameID) {
+            count++;
+          }
+
+        }
+        this.setNum = count;
+      }
+      set setNum(count) {
+        const t_rN = document.getElementById('Num');
+        this.num = count;
+        t_rN.textContent = count;
+      }
+    }
+
+    const PvPAreaID = [376, 481, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
+    var main = new targetFrom();
+    let intervalID;
+
+    window.onload = () => {
+      addOverlayListener('ChangeZone', (zone) => target_overlay_area_check(zone, main));
+      window.addOverlayListener("ChangePrimaryPlayer", (player) => {
+        main.nameID = player.charID;
+        main.name = player.charName;
+      });
+      target_overlay_localstrage_get();
+      startOverlayEvents();
+    }
+
+
+
+    function target_overlay_localstrage_get() {
+      let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
+      if (data === null) {
+        target_overlay_fontsize(18);
+      }
+      else {
+        target_overlay_fontsize(data.addInFontSize_MP);
+      }
+    }
+
+    function target_overlay_fontsize(size) {
+      document.documentElement.style.setProperty('--rootFontSize', size + 'px');
+    }
+
+    ////////////////
+    function target_overlay_area_check(area, main) {
+      MaxLB = 0;
+      LastLB = 0;
+      if (PvPAreaID.indexOf(area.zoneID) !== -1 || true) {
+        main.isArea = true;
+      }
+      else {
+        main.isArea = false;
+      }
+    }
+    ////
+  </script>
+</head>
+
+<body>
+
+  <div id="Num"></div>
+</body>
