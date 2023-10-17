@@ -8,7 +8,7 @@ var PvP_Area_Only = true;
 var Temp = null;
 var Overlay_On = true;
 ////////////////////
-const PvPAreaID = [376,481,554,888,1032,1058,1033,1059,1034,1060,1116,1117,250,717,791];
+const PvPAreaID = [376,431,554,888,1032,1058,1033,1059,1034,1060,1116,1117,250,717,791];
 $(function (){
   'use strict';
   target_overlay_localstrage_get();
