@@ -96,6 +96,7 @@
         this.name = "";
         this.num = 0;
         this.last = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.lastIcon = "";
       }
       set isVisible(is) {
         if (!this.areaDisp) {
@@ -161,27 +162,46 @@
         return Number((this.last.reduce((a, b) => a + b) / this.last.length).toFixed(2));
       }
     }
+    const IconResetClass = (clsL) => {
+      clsL.remove("icon-arrow-right");
+      clsL.remove("icon-arrow-up");
+      clsL.remove("icon-arrow-up-right");
+      clsL.remove("icon-arrow-down-right");
+    }
     const AvgIconSet = (avg, now) => {
       const t_avg = document.getElementById('AvgIcon');
-      t_avg.classList.remove("icon-arrow-right");
-      t_avg.classList.remove("icon-arrow-up");
-      t_avg.classList.remove("icon-arrow-up-right");
-      t_avg.classList.remove("icon-arrow-down-right");
+
       if (avg === now) {
         //eq
-        t_avg.classList.add("icon-arrow-right");
+        if(this.lastIcon !== "eq"){
+          IconResetClass(t_avg.classList);
+          t_avg.classList.add("icon-arrow-right");
+        }
+        this.lastIcon = "eq";
       }
       else if (avg < now) {
         if (now - avg > 2) {
           //Gekiyaba
-          t_avg.classList.add("icon-arrow-up");
+          if (this.lastIcon !== "up"){
+            IconResetClass(t_avg.classList);
+            t_avg.classList.add("icon-arrow-up");
+          }
+          this.lastIcon = "up";
         } else {
           //Yabai
-          t_avg.classList.add("icon-arrow-up-right");
+          if (this.lastIcon !== "rup"){
+            IconResetClass(t_avg.classList);
+            t_avg.classList.add("icon-arrow-up-right");
+          }
+          this.lastIcon = "rup";
         }
       } else if (avg > now) {
         //Safe
-        t_avg.classList.add("icon-arrow-down-right");
+        if(this.lastIcon !== "rdown"){
+          IconResetClass(t_avg.classList);
+          t_avg.classList.add("icon-arrow-down-right");
+        }
+        this.lastIcon = "rdown";
       }
     }
     const PvPAreaID = [376, 481, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
@@ -218,7 +238,7 @@
     function target_overlay_area_check(area, main) {
       MaxLB = 0;
       LastLB = 0;
-      if (PvPAreaID.indexOf(area.zoneID) !== -1 || true) {
+      if (PvPAreaID.indexOf(area.zoneID) !== -1) {
         main.isArea = true;
       }
       else {
