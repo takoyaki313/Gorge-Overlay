@@ -138,7 +138,7 @@
         let count = 0;
         for (let i = 0; i < e.combatants.length; i++) {
           if (e.combatants[i].TargetID === this.nameID) {
-            if (e.combatants.Type === 1 && e.combatants.PartyType === 0) {
+            if (e.combatants[i].Type === 1 && e.combatants[i].PartyType === 0) {
               count++;
             }
           }
