@@ -108,10 +108,7 @@ const PvPPlayer = (prop) => {
 
 export const backgroundColorGet = (nameID, areaType, alliance, role) =>{
     let background_color_row = '';
-    if (PRIMARY_PLAYER.nameID === nameID) {
-        background_color_row = 'me_background';
-    }
-    else if (areaType === 5) {
+    if (areaType === 5) {
         background_color_row = role + '-background-gradient';
     }
     else if (7 > alliance && alliance > 0) {

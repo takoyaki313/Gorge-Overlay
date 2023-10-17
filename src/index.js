@@ -86,8 +86,10 @@ window.addOverlayListener("ChangePrimaryPlayer", (player) => {
   loglineQueue_Push(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 });
 
-window.addOverlayListener('PartyChanged', (p) => partyChangeEvent(p.party));
-
+window.addOverlayListener('PartyChanged', (p) => {
+  partyChangeEvent(p.party);
+  //console.log(p);
+});
 
 //////////////////////////////////
 setInterval(calcClock, CalcInterval);

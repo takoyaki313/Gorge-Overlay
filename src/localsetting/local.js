@@ -17,6 +17,7 @@ export class GorgeOverlay_Local {
         this.addInFontSize_MP = typeof (data.addInFontSize_MP) !== 'undefined' ? data.addInFontSize_MP : 18;
         this.addInTargetMarker_Size = typeof (data.addInTargetMarker_Size) !== 'undefined' ? data.addInTargetMarker_Size : 16;
         this.addInTargetMarker_Reverse = typeof (data.addInTargetMarker_Reverse) !== 'undefined' ? data.addInTargetMarker_Reverse : true;
+        this.addInTargetFrom_Size = typeof (data.addInTargetFrom_Size) !== 'undefined' ? data.addInTargetFrom_Size : 16;
         //
         this.fl_layout = typeof (data.fl_layout) !== 'undefined' ? data.fl_layout : 2;
         this.fl_allyData = typeof (data.fl_allyData) !== 'undefined' ? data.fl_allyData : true;
@@ -90,6 +91,10 @@ export class GorgeOverlay_Local {
     }
     set setaddInTargetMarker_Size(data) {
         this.addInTargetMarker_Size = data;
+        saveLocalStorage(this);
+    }
+    set setaddInTargetFrom_Size(data) {
+        this.addInTargetFrom_Size = data;
         saveLocalStorage(this);
     }
     set setaddInTargetMarker_Reverse(data) {

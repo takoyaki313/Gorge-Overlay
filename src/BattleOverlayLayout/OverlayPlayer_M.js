@@ -6,6 +6,7 @@ import { KillTooltipLayout, DeathTooltipLayout, AssistTooltipLayout } from './to
 import { DynamishistoryTooltipLayout } from './tooltip/dynamisTooltip';
 import { DamageTooltipLayout } from './tooltip/damageTooltip';
 import { HealTooltipLayout } from "./tooltip/healTooltip";
+import { PRIMARY_PLAYER } from '..';
 
 class m_dataLayout {
     constructor() {
@@ -38,7 +39,7 @@ class m_dataLayout {
         this.dynamis_text = '';
         this.dynamis_icon = '';
         this.dynamis_tooltip = '';
-        
+
         this.all_color = '';
         this.alliance = 0;
         this.createSource = "Unknown";
@@ -82,6 +83,9 @@ export class m_dataCombatant extends m_dataLayout {
         this.r_right = combatant.CritDirectHitPct;
         this.r_right_tooltip = 'CritDirectHit%';
 
+        if (PRIMARY_PLAYER.ACT_name === this.name) {
+            this.name_color = 'name_me';
+        }
         this.createSource = "combatant";
     }
 }
@@ -127,7 +131,7 @@ export class m_data extends m_dataLayout {
         let dynamisCheck = { text: '', class: '' }
         if (d_Data.AreaType === 2) {
             //Gorge
-            if (d_Data.dynamis === 20 ||d_Data.dynamis === TensyonMax) {
+            if (d_Data.dynamis === 20 || d_Data.dynamis === TensyonMax) {
                 dynamisCheck.class = dynamis_detect(d_Data.dynamis)
             } else {
                 dynamisCheck.text = d_Data.dynamis;
@@ -146,12 +150,15 @@ export class m_data extends m_dataLayout {
         this.dynamis_tooltip = d_Data.dynamishistory.history.length > 0 ? <DynamishistoryTooltipLayout data={d_Data.dynamishistory.history} /> : '';
 
         this.name_color = '';
+        if (this.nameID === PRIMARY_PLAYER.nameID) {
+            this.name_color = 'name_me';
+        }
         if (d_Data.time > 120) {
-            if (this.damage === 0&& this.heal === 0) {
-                this.name_tooltip += ' / damage = 0 and heal = 0 (neglect?)';
+            if (this.damage === 0) {
+                this.name_tooltip += ' / damage = 0 (neglect?)';
                 this.name = '* ' + this.name;
                 this.all_color = 'redblink';
-            } else if(d_Data.deaths.length >= 8){
+            } else if (d_Data.deaths.length >= 8) {
                 this.name_color = 'death';
                 this.name_tooltip += ' / Too Dead (8-Over)';
             } else if (d_Data.AreaType === 5 && d_Data.time > 180 && d_Data.time / d_Data.deaths.length < 60) {

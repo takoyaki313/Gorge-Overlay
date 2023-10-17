@@ -133,6 +133,17 @@ const PvESettingPage = () => {
                 init={local.addInTargetMarker_Reverse}
                 lang={local.language}
             />
+            <SettingNumberInput
+                ja_main={"ターゲット人数の文字サイズ"}
+                ja_sub={"targetfrom"}
+                en_main={"TargetFrom add-in font size"}
+                en_sub={"targetfrom"}
+                local={(v) => local.setaddInTargetFrom_Size = v}
+                max={128}
+                min={8}
+                init={local.addInTargetFrom_Size}
+                lang={local.language}
+            />
         </div>
     )
 }

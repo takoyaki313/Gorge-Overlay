@@ -25,11 +25,7 @@ export const OverlayMCombatants = (Combatants) => {
     return (<div style={{ display: 'flex', flexDirection: 'column' }}>
         {Combatants_Array.map((data) => {
             let background_color_row = '';
-            if (PRIMARY_PLAYER.ACT_name === data.nameID) {
-                background_color_row = 'me_background';
-            } else {
-                background_color_row = data.role + '-background-gradient';
-            }
+            background_color_row = data.role + '-background-gradient';
             let gage_offset = Math.abs((data.damage / maxdamage) * 100 - 100) - 2;
             return (
                 <li className='flex-center gageRelative m1_overlay li_space' key={data.nameID}>

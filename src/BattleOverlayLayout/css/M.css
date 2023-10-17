@@ -26,10 +26,14 @@
     color: var(--death)
 }
 
+.name_me {
+    font-weight: bold;
+}
+
 .gaming {
     background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
     animation: gaming 2s linear infinite;
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -40,7 +44,8 @@
 }
 
 .redblink {
-    animation: redblink 1s linear infinite;
+    animation: redblink 3s linear infinite;
+    font-weight: bold;
     color: var(--death);
 }
 
@@ -75,13 +80,13 @@
     /* 横長で虹色を作る */
     background: linear-gradient(to right, Magenta, yellow, Cyan, Magenta) 0% center/200%;
     animation: gaming 1s linear infinite;
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .robotHistory .green {
     background: var(--dps-green);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -91,7 +96,7 @@
 
 .robotHistory .blue {
     background: var(--dps-blue);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -101,7 +106,7 @@
 
 .robotHistory .purple {
     background: var(--dps-purple);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
