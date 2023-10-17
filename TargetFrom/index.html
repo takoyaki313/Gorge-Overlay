@@ -20,9 +20,67 @@
       display: grid;
       background-color: transparent;
       font-family: 'Lato', sans-serif;
-      grid-template-columns: 3rem 1rem 1rem;
+      grid-template-columns: 2rem 1.5rem;
       justify-items: center;
+      align-items: baseline;
       color: white;
+    }
+  </style>
+  <style>
+    @font-face {
+      font-family: 'icomoon';
+      src: url('fonts/icomoon.eot?w3ap5s');
+      src: url('fonts/icomoon.eot?w3ap5s#iefix') format('embedded-opentype'),
+        url('fonts/icomoon.ttf?w3ap5s') format('truetype'),
+        url('fonts/icomoon.woff?w3ap5s') format('woff'),
+        url('fonts/icomoon.svg?w3ap5s#icomoon') format('svg');
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }
+
+    [class^="icon-"],
+    [class*=" icon-"] {
+      /* use !important to prevent issues with browser extensions that change fonts */
+      font-family: 'icomoon' !important;
+      speak: never;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+
+      /* Better Font Rendering =========== */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .icon-alert-circle:before {
+      content: "\e900";
+    }
+
+    .icon-alert-triangle:before {
+      content: "\e901";
+    }
+
+    .icon-arrow-down:before {
+      content: "\e902";
+    }
+
+    .icon-arrow-down-right:before {
+      content: "\e903";
+    }
+
+    .icon-arrow-right:before {
+      content: "\e904";
+    }
+
+    .icon-arrow-up:before {
+      content: "\e905";
+    }
+
+    .icon-arrow-up-right:before {
+      content: "\e906";
     }
   </style>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
@@ -37,6 +95,7 @@
         this.nameID = "";
         this.name = "";
         this.num = 0;
+        this.last = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       }
       set isVisible(is) {
         if (!this.areaDisp) {
@@ -65,6 +124,7 @@
           if (intervalID) {
             clearInterval(intervalID);
             this.setNum = 0;
+            this.last = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             intervalID = null;
           }
         }
@@ -77,19 +137,53 @@
         let count = 0;
         for (let i = 0; i < e.combatants.length; i++) {
           if (e.combatants[i].TargetID === this.nameID) {
-            count++;
+            if (e.combatants.Type === 1 && e.combatants.PartyType === 0) {
+              count++;
+            }
           }
-
         }
+
         this.setNum = count;
       }
       set setNum(count) {
         const t_rN = document.getElementById('Num');
         this.num = count;
         t_rN.textContent = count;
+        AvgIconSet(this.avg, count);
+        this.lastNum = count;
+      }
+
+      set lastNum(now) {
+        this.last.shift();
+        this.last.push(now);
+      }
+      get avg() {
+        return Number((this.last.reduce((a, b) => a + b) / this.last.length).toFixed(2));
       }
     }
-
+    const AvgIconSet = (avg, now) => {
+      const t_avg = document.getElementById('AvgIcon');
+      t_avg.classList.remove("icon-arrow-right");
+      t_avg.classList.remove("icon-arrow-up");
+      t_avg.classList.remove("icon-arrow-up-right");
+      t_avg.classList.remove("icon-arrow-down-right");
+      if (avg === now) {
+        //eq
+        t_avg.classList.add("icon-arrow-right");
+      }
+      else if (avg < now) {
+        if (now - avg > 2) {
+          //Gekiyaba
+          t_avg.classList.add("icon-arrow-up");
+        } else {
+          //Yabai
+          t_avg.classList.add("icon-arrow-up-right");
+        }
+      } else if (avg > now) {
+        //Safe
+        t_avg.classList.add("icon-arrow-down-right");
+      }
+    }
     const PvPAreaID = [376, 481, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
     var main = new targetFrom();
     let intervalID;
@@ -102,6 +196,7 @@
       });
       target_overlay_localstrage_get();
       startOverlayEvents();
+      main.areaDisp = true;
     }
 
 
@@ -112,7 +207,7 @@
         target_overlay_fontsize(18);
       }
       else {
-        target_overlay_fontsize(data.addInFontSize_MP);
+        target_overlay_fontsize(data.addInTargetFrom_Size);
       }
     }
 
@@ -136,6 +231,6 @@
 </head>
 
 <body>
-
-  <div id="Num"></div>
+  <div id="Num" style="font-size: 1.5rem;"></div>
+  <div id="AvgIcon"></div>
 </body>
