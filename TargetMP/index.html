@@ -26,6 +26,13 @@
     }
   </style>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script type="module">
+    import {bc_send, G_bc} from '/src/bc/bc.js';
+    //bc_send("dd","TKD")
+    G_bc.onmessage = (event) => {
+      console.log(event);
+    }
+  </script>
   <script>
     ////////////////////
     //setting
@@ -60,7 +67,7 @@
 
     }
 
-    const PvPAreaID = [376, 481, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
+    const PvPAreaID = [376, 431, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
     let main = new targetMP();
     window.onload = () => {
       addOverlayListener('ChangeZone', (zone) => target_overlay_area_check(zone, main));

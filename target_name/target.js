@@ -8,6 +8,7 @@ var PvP_Area_Only = true;
 var Temp = null;
 var Overlay_On = true;
 ////////////////////
+const PvPAreaID = [376,431,554,888,1032,1058,1033,1059,1034,1060,1116,1117,250,717,791];
 $(function (){
   'use strict';
   target_overlay_localstrage_get();
@@ -84,8 +85,7 @@ function target_overlay_fontsize(size){
 
 ////////////////
 function target_overlay_area_check(area){
-  const PvPArea = [791,376,431,554,888,1032,1033,1034,1116,250];
-  if (PvPArea.indexOf(area.zoneID) !== -1) {
+  if (PvPAreaID.indexOf(area.zoneID) !== -1) {
     Overlay_On = true;
   }
   else {
