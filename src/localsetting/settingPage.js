@@ -9,7 +9,13 @@ export const SettingPageStart = (prop) => {
     const tabs_change = (event) => {
         tabs(event.target.value);
     }
-    const tabs_Text = ['General', 'FL', 'RW', 'CC'];
+    let tabs_Text = [];
+    if (local.AddInMode) {
+        tabs_Text = ['General', 'FL', 'RW', 'CC', 'Plugin']
+    } else {
+        tabs_Text = ['General', 'FL', 'RW', 'CC']
+    }
+
     return (
         <div id="settingPage">
             <header>
@@ -41,6 +47,7 @@ export const SettingPageStart = (prop) => {
             {tabs_kind === 'FL' ? <FLSettingPage /> : ""}
             {tabs_kind === 'RW' ? <RWSettingPage /> : ""}
             {tabs_kind === 'CC' ? <CCSettingPage /> : ""}
+            {tabs_kind === 'Plugin' ? <ADSettingPage /> : ""}
         </div>
     )
 }
@@ -101,47 +108,15 @@ const PvESettingPage = () => {
                 lang={local.language}
             />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
-            <SettingNumberInput
-                ja_main={"MP表示アドインの文字サイズ"}
-                ja_sub={"TargetMP"}
-                en_main={"MP display add-in font size"}
-                en_sub={"TargetMP"}
-                local={(v) => local.setaddInFontSize_MP = v}
-                max={64}
-                min={10}
-                init={local.addInFontSize_MP}
-                lang={local.language}
-            />
-            <SettingNumberInput
-                ja_main={"マーカーアドインの文字サイズ"}
-                ja_sub={"targetmarker"}
-                en_main={"Target marker add-in font size"}
-                en_sub={"targetmarker"}
-                local={(v) => local.setaddInTargetMarker_Size = v}
-                max={64}
-                min={8}
-                init={local.addInTargetMarker_Size}
-                lang={local.language}
-            />
+
             <SettingToggleInput
-                ja_main={"マーカーアドインの方向"}
-                ja_sub={"下から = ON 上から = OFF"}
-                en_main={"Marker add-in direction"}
-                en_sub={"From bottom = ON From top = OFF"}
-                local={(v) => local.setaddInTargetMarker_Reverse = v}
-                uID={"a_targetReverse"}
-                init={local.addInTargetMarker_Reverse}
-                lang={local.language}
-            />
-            <SettingNumberInput
-                ja_main={"ターゲット人数の文字サイズ"}
-                ja_sub={"targetfrom"}
-                en_main={"TargetFrom add-in font size"}
-                en_sub={"targetfrom"}
-                local={(v) => local.setaddInTargetFrom_Size = v}
-                max={128}
-                min={8}
-                init={local.addInTargetFrom_Size}
+                ja_main={"Add-ins tab"}
+                ja_sub={"シークレットモード"}
+                en_main={"Add-ins tab"}
+                en_sub={"secret"}
+                local={(v) => local.setAddInMode = v}
+                uID={"addinMode"}
+                init={local.AddInMode}
                 lang={local.language}
             />
         </div>
@@ -558,6 +533,157 @@ const CCSettingPage = () => {
         </div>
     )
 }
+const ADSettingPage = () => {
+    return (
+        <div>
+            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/TargetMP/</div>
+            <SettingNumberInput
+                ja_main={"MP表示アドインの文字サイズ"}
+                ja_sub={"TargetMP"}
+                en_main={"MP display add-in font size"}
+                en_sub={"TargetMP"}
+                local={(v) => local.setaddInFontSize_MP = v}
+                max={64}
+                min={10}
+                init={local.addInFontSize_MP}
+                lang={local.language}
+            />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
+            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/targetmarker/targetmarker.html</div>
+            <SettingNumberInput
+                ja_main={"マーカーアドインの文字サイズ"}
+                ja_sub={"targetmarker"}
+                en_main={"Target marker add-in font size"}
+                en_sub={"targetmarker"}
+                local={(v) => local.setaddInTargetMarker_Size = v}
+                max={64}
+                min={8}
+                init={local.addInTargetMarker_Size}
+                lang={local.language}
+            />
+            <SettingToggleInput
+                ja_main={"マーカーアドインの方向"}
+                ja_sub={"下から = ON 上から = OFF"}
+                en_main={"Marker add-in direction"}
+                en_sub={"From bottom = ON From top = OFF"}
+                local={(v) => local.setaddInTargetMarker_Reverse = v}
+                uID={"a_targetReverse"}
+                init={local.addInTargetMarker_Reverse}
+                lang={local.language}
+            />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
+            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/TargetFrom/</div>
+            <SettingNumberInput
+                ja_main={"ターゲット人数の文字サイズ"}
+                ja_sub={"targetfrom"}
+                en_main={"TargetFrom add-in font size"}
+                en_sub={"targetfrom"}
+                local={(v) => local.setaddInTargetFrom_Size = v}
+                max={256}
+                min={8}
+                init={local.addInTargetFrom_Size}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"更新レート(ms)"}
+                ja_sub={"targetfrom"}
+                en_main={"TargetFrom add-in font size"}
+                en_sub={"targetfrom"}
+                local={(v) => local.setaddInTargetFrom_Size = v}
+                max={3000}
+                min={100}
+                init={local.addInTargetFrom_Size}
+                lang={local.language}
+            />
+            <SettingTextInput
+                ja_main={"閾値に達した時のサウンド"}
+                ja_sub={"[Network FIle] 指定した閾値に達すると再生します"}
+                en_main={"Sound when threshold is reached"}
+                en_sub={"[Network FIle] Plays when the specified threshold is reached"}
+                local={(t) => local.setad_tf_sound_Path = t}
+                init={local.ad_tf_sound_Path}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"閾値サウンド音量(0-100)"}
+                ja_sub={""}
+                en_main={"Threshold sound volume (0-100)"}
+                en_sub={""}
+                local={(v) => local.setad_tf_Volume = v}
+                max={0}
+                min={100}
+                init={local.ad_tf_Volume}
+                lang={local.language}
+            />
+            <SettingTextInput
+                ja_main={"閾値に達した時のサウンド(急増)"}
+                ja_sub={"[Network FIle] 指定した閾値に達すると再生します"}
+                en_main={"Sound when threshold is reached(Rapid increase)"}
+                en_sub={"[Network FIle] Plays when the specified threshold is reached"}
+                local={(t) => local.setad_tf_sound_Path2 = t}
+                init={local.ad_tf_sound_Path2}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"閾値サウンド音量(0-100)"}
+                ja_sub={""}
+                en_main={"Threshold sound volume (0-100)"}
+                en_sub={""}
+                local={(v) => local.setad_tf_Volume2 = v}
+                max={0}
+                min={100}
+                init={local.ad_tf_Volume2}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"急増判定値"}
+                ja_sub={"10回の平均からの差"}
+                en_main={"Rapid increase determination value"}
+                en_sub={"Difference from the average of 10 times"}
+                local={(v) => local.setad_tf_inc_num = v}
+                max={0}
+                min={100}
+                init={local.ad_tf_inc_num}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"警告サウンド再生基準値(RW)"}
+                ja_sub={"Reset when it reaches 0"}
+                en_main={"Warning playback reference value(RW)"}
+                en_sub={"Reset when it reaches 0"}
+                local={(v) => local.setad_tf_rw_num = v}
+                max={1}
+                min={100}
+                init={local.ad_tf_rw_num}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"警告サウンド再生基準値(CC)"}
+                ja_sub={"Reset when it reaches 0"}
+                en_main={"Warning playback reference value(CC)"}
+                en_sub={"Reset when it reaches 0"}
+                local={(v) => local.setad_tf_cc_num = v}
+                max={1}
+                min={100}
+                init={local.ad_tf_cc_num}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"警告サウンド再生基準値(FL)"}
+                ja_sub={"Reset when it reaches 0"}
+                en_main={"Warning playback reference value(FL)"}
+                en_sub={"Reset when it reaches 0"}
+                local={(v) => local.setad_tf_fl_num = v}
+                max={1}
+                min={100}
+                init={local.ad_tf_fl_num}
+                lang={local.language}
+            />
+        </div>
+
+    )
+}
+
 const SettingToggleInput = (prop) => {
     let text = { main: "", sub: "" };
     const [inputToggle, setToggle] = useState(prop.init);

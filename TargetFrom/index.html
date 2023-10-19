@@ -88,15 +88,68 @@
     ////////////////////
     //setting
     ////////////////////
+    class localVal {
+      constructor() {
+        this.volume1 = 50;
+        this.volume2 = 50;
+        this.updatems = 300;
+        this.path1 = "";
+        this.path2 = "";
+        this.inc = 2;
+        this.rw = 2;
+        this.cc = 2;
+        this.fl = 3;
+        this.font = 18;
+        this.sound1 = null;
+        this.sound2 = null;
+      }
+      set setLocalVal(data) {
+        this.volume1 = data.ad_tf_Volume;
+        this.volume2 = data.ad_tf_Volume2;
+        this.updatems = data.ad_tf_updateMS;
+        this.path1 = data.ad_tf_sound_Path;
+        this.path2 = data.ad_tf_sound_Path2;
+        this.inc = data.ad_tf_inc_num;
+        this.rw = data.ad_tf_rw_num;
+        this.cc = data.ad_tf_cc_num;
+        this.fl = data.ad_tf_fl_num;
+        this.font = data.addInTargetFrom_Size;
+        if (this.path1 !== "") {
+          this.sound1 = new Audio(this.path1);
+          this.sound1.volume = this.volume1 / 100;
+        }
+        if (this.path2 !== "") {
+          this.sound2 = new Audio(this.path2);
+          this.sound2.volume = this.volume2 / 100;
+        }
+      }
+    }
+    const play1 = () => {
+        if (local_V.sound1 !== null && !main.isPlay) {
+          local_V.sound1.play();
+          main.isPlay = true;
+        }
+        return null;
+      }
+    const play2 = () => {
+        if (local_V.sound2 !== null) {
+          local_V.sound2.play();
+          main.isPlay = true;
+        }
+        return null;
+      }
     class targetFrom {
       constructor() {
         this.areaDisp = false;
+        this.areaType = 0;
         this.disp = false;
         this.nameID = "";
         this.name = "";
         this.num = 0;
         this.last = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.isPlay = false;
         this.lastIcon = "";
+        this.nowtNum = 2;
       }
       set isVisible(is) {
         if (!this.areaDisp) {
@@ -126,6 +179,7 @@
             clearInterval(intervalID);
             this.setNum = 0;
             this.last = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            this.isPlay = false;
             intervalID = null;
           }
         }
@@ -150,8 +204,12 @@
         const t_rN = document.getElementById('Num');
         this.num = count;
         t_rN.textContent = count;
-        AvgIconSet(this.avg, count);
+        AvgIconSet(this.avg, count, this.nowtNum, local_V.inc);
+
         this.lastNum = count;
+        if (this.avg === 0) {
+          this.isPlay = false;
+        }
       }
 
       set lastNum(now) {
@@ -162,50 +220,60 @@
         return Number((this.last.reduce((a, b) => a + b) / this.last.length).toFixed(2));
       }
     }
+
     const IconResetClass = (clsL) => {
       clsL.remove("icon-arrow-right");
       clsL.remove("icon-arrow-up");
       clsL.remove("icon-arrow-up-right");
       clsL.remove("icon-arrow-down-right");
     }
-    const AvgIconSet = (avg, now) => {
+    const AvgIconSet = (avg, now, nowtNum, inc) => {
       const t_avg = document.getElementById('AvgIcon');
 
       if (avg === now) {
         //eq
-        if(this.lastIcon !== "eq"){
+        if (main.lastIcon !== "eq") {
           IconResetClass(t_avg.classList);
           t_avg.classList.add("icon-arrow-right");
         }
-        this.lastIcon = "eq";
+        main.lastIcon = "eq";
       }
       else if (avg < now) {
-        if (now - avg > 2) {
+        if (now - avg > inc) {
           //Gekiyaba
-          if (this.lastIcon !== "up"){
+          if (main.lastIcon !== "up") {
             IconResetClass(t_avg.classList);
             t_avg.classList.add("icon-arrow-up");
           }
-          this.lastIcon = "up";
+          play2();
+          main.lastIcon = "up";
         } else {
           //Yabai
-          if (this.lastIcon !== "rup"){
+          if (main.lastIcon !== "rup") {
             IconResetClass(t_avg.classList);
             t_avg.classList.add("icon-arrow-up-right");
           }
-          this.lastIcon = "rup";
+          main.lastIcon = "rup";
         }
       } else if (avg > now) {
         //Safe
-        if(this.lastIcon !== "rdown"){
+        if (main.lastIcon !== "rdown") {
           IconResetClass(t_avg.classList);
           t_avg.classList.add("icon-arrow-down-right");
         }
-        this.lastIcon = "rdown";
+        main.lastIcon = "rdown";
+      }
+      if (now >= nowtNum) {
+        play1();
       }
     }
     const PvPAreaID = [376, 431, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
+    const FL_ID = [376, 431, 554, 888];
+    const CC_ID = [1032, 1033, 1034, 1058, 1059, 1060, 1116, 1117, 250, 717];
+    const RW_ID = [791];
+
     var main = new targetFrom();
+    var local_V = new localVal();
     let intervalID;
 
     window.onload = () => {
@@ -218,16 +286,12 @@
       startOverlayEvents();
     }
 
-
-
     function target_overlay_localstrage_get() {
       let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
-      if (data === null) {
-        target_overlay_fontsize(18);
+      if (data !== null) {
+        local_V.setLocalVal = data;
       }
-      else {
-        target_overlay_fontsize(data.addInTargetFrom_Size);
-      }
+      target_overlay_fontsize(local_V.font);
     }
 
     function target_overlay_fontsize(size) {
@@ -241,6 +305,19 @@
       LastLB = 0;
       if (PvPAreaID.indexOf(area.zoneID) !== -1) {
         main.isArea = true;
+        if (FL_ID.indexOf(area.zoneID) !== -1) {
+          main.areaType = 3;
+          main.nowtNum = local_V.fl;
+        } else if (CC_ID.indexOf(area.zoneID) !== -1) {
+          main.areaType = 5;
+          main.nowtNum = local_V.cc;
+        } else if (RW_ID.indexOf(area.zoneID) !== -1) {
+          main.areaType = 2;
+          main.nowtNum = local_V.rw;
+        } else {
+          main.areaType = 5;
+          main.nowtNum = local_V.cc;
+        }
       }
       else {
         main.isArea = false;

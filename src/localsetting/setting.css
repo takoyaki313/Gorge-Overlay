@@ -19,11 +19,13 @@
 }
 
 #settingTabs {
-    display: grid;
+    display: flex;
     justify-content: space-between;
     grid-template-columns: 25% 25% 25% 25%;
 }
-
+#settingTabs >*{
+    width: 25%;
+}
 input[id^="setting-tabs-"]+label {
     display: flex;
     justify-content: center;

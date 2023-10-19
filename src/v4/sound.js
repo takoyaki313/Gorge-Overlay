@@ -20,3 +20,9 @@ export const killSound_Load = (play = false) => {
         KILL_SOUND.play();
     }
 }
+
+export const samplePlay = (path, volume) =>{
+    let sound = new Audio(path);
+    sound.volume = volume / 100;
+    sound.play();
+}

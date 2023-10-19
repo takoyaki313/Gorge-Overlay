@@ -1,7 +1,7 @@
 //import { local } from "..";
 import { PRIMARY_PLAYER } from "..";
 
-import { killSound_Load } from "../v4/sound";
+import { killSound_Load, samplePlay } from "../v4/sound";
 
 export const GorgeOverlay_LocalStorage = "GorgeOverlay_4";
 
@@ -61,6 +61,16 @@ export class GorgeOverlay_Local {
         this.cc_advancedOverlay_enemy = typeof (data.cc_advancedOverlay_enemy) !== 'undefined' ? data.cc_advancedOverlay_enemy : true;
         this.cc_advancedOverlay_slim = typeof (data.cc_advancedOverlay_slim) !== 'undefined' ? data.cc_advancedOverlay_slim : true;
         //
+        this.AddInMode = typeof (data.AddInMode) !== 'undefined' ? data.AddInMode : true;
+        this.ad_tf_Volume = typeof (data.ad_tf_Volume) !== 'undefined' ? data.ad_tf_Volume : 50;
+        this.ad_tf_Volume2 = typeof (data.ad_tf_Volume2) !== 'undefined' ? data.ad_tf_Volume2 : 50;
+        this.ad_tf_updateMS = typeof (data.ad_tf_updateMS) !== 'undefined' ? data.ad_tf_updateMS : 400;
+        this.ad_tf_sound_Path = typeof (data.ad_tf_sound_Path) !== 'undefined' ? data.ad_tf_sound_Path : "htts://takoyaki313.github.io/Gorge-Overlay/sound/maou_se_system13.wav";
+        this.ad_tf_sound_Path2 = typeof (data.ad_tf_sound_Path2) !== 'undefined' ? data.ad_tf_sound_Path2 : "https://takoyaki313.github.io/Gorge-Overlay/sound/maou_se_system27.wav";
+        this.ad_tf_inc_num = typeof (data.ad_tf_inc_num) !== 'undefined' ? data.ad_tf_inc_num : 2;
+        this.ad_tf_rw_num = typeof (data.ad_tf_rw_num) !== 'undefined' ? data.ad_tf_rw_num : 2;
+        this.ad_tf_cc_num = typeof (data.ad_tf_cc_num) !== 'undefined' ? data.ad_tf_cc_num : 2;
+        this.ad_tf_fl_num = typeof (data.ad_tf_fl_num) !== 'undefined' ? data.ad_tf_fl_num : 3;
         rootFontSizeChange(this.rootFontSize);
         PRIMARY_PLAYER.ACT_name = this.root_ACTName;
         saveLocalStorage(this);
@@ -269,9 +279,53 @@ export class GorgeOverlay_Local {
         this.cc_advancedOverlay_slim = data;
         saveLocalStorage(this);
     }
+    set setAddInMode(data) {
+        this.AddInMode = data;
+        saveLocalStorage(this);
+    }
+    set setad_tf_Volume(data) {
+        this.ad_tf_Volume = data;
+        saveLocalStorage(this);
+        samplePlay(this.ad_tf_sound_Path, this.ad_tf_Volume);
+    }
+    set setad_tf_Volume2(data) {
+        this.ad_tf_Volume2 = data;
+        saveLocalStorage(this);
+        samplePlay(this.ad_tf_sound_Path2, this.ad_tf_Volume2);
+    }
+    set setad_tf_updateMS(data) {
+        this.ad_tf_updateMS = data;
+        saveLocalStorage(this);
+    }
+    set setad_tf_sound_Path(data) {
+        this.ad_tf_sound_Path = data;
+        saveLocalStorage(this);
+        samplePlay(this.ad_tf_sound_Path, this.ad_tf_Volume);
+    }
+    set setad_tf_sound_Path2(data) {
+        this.ad_tf_sound_Path2 = data;
+        saveLocalStorage(this);
+        samplePlay(this.ad_tf_sound_Path2, this.ad_tf_Volume2);
+    }
+    set setad_tf_inc_num(data) {
+        this.ad_tf_inc_num = data;
+        saveLocalStorage(this);
+    }
+    set setad_tf_rw_num(data) {
+        this.ad_tf_rw_num = data;
+        saveLocalStorage(this);
+    }
+    set setad_tf_cc_num(data) {
+        this.ad_tf_cc_num = data;
+        saveLocalStorage(this);
+    }
+    set setad_tf_fl_num(data) {
+        this.ad_tf_fl_num = data;
+        saveLocalStorage(this);
+    }
 }
 const rootFontSizeChange = (size) => {
-    document.documentElement.style.setProperty('--rootFontSize',size + 'px');
+    document.documentElement.style.setProperty('--rootFontSize', size + 'px');
 }
 const saveLocalStorage = (data) => {
     localStorage.setItem(GorgeOverlay_LocalStorage, JSON.stringify(data));
