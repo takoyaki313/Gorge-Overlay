@@ -92,7 +92,7 @@
       constructor() {
         this.volume1 = 50;
         this.volume2 = 50;
-        this.updatems = 300;
+        this.updatems = 400;
         this.path1 = "";
         this.path2 = "";
         this.inc = 2;
@@ -170,7 +170,7 @@
           if (!intervalID) {
             intervalID = setInterval(async () => {
               this.tagetNum = await window.callOverlayHandler({ call: 'getCombatants' });
-            }, 400);
+            }, local_V.updatems);
           }
         } else {
           //hidden

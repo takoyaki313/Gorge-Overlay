@@ -586,13 +586,13 @@ const ADSettingPage = () => {
             />
             <SettingNumberInput
                 ja_main={"更新レート(ms)"}
-                ja_sub={"targetfrom"}
-                en_main={"TargetFrom add-in font size"}
-                en_sub={"targetfrom"}
-                local={(v) => local.setaddInTargetFrom_Size = v}
+                ja_sub={""}
+                en_main={"Update rate (ms)"}
+                en_sub={""}
+                local={(v) => local.setad_tf_updateMS = v}
                 max={3000}
                 min={100}
-                init={local.addInTargetFrom_Size}
+                init={local.ad_tf_updateMS}
                 lang={local.language}
             />
             <SettingTextInput
