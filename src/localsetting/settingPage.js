@@ -110,12 +110,12 @@ const PvESettingPage = () => {
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
 
             <SettingToggleInput
-                ja_main={"Add-ins tab"}
-                ja_sub={"シークレットモード"}
-                en_main={"Add-ins tab"}
+                ja_main={"DevelopMode"}
+                ja_sub={""}
+                en_main={"DevelopMode"}
                 en_sub={"secret"}
                 local={(v) => local.setAddInMode = v}
-                uID={"addinMode"}
+                uID={"devMode"}
                 init={local.AddInMode}
                 lang={local.language}
             />
@@ -536,6 +536,18 @@ const CCSettingPage = () => {
 const ADSettingPage = () => {
     return (
         <div>
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
+            <SettingToggleInput
+                ja_main={"sampleLogMode"}
+                ja_sub={"Debugging"}
+                en_main={"sampleLogMode"}
+                en_sub={"Debugging"}
+                local={(v) => local.setsampleMode = v}
+                uID={"a_sampleLogMode"}
+                init={local.sampleMode}
+                lang={local.language}
+            />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
             <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/TargetMP/</div>
             <SettingNumberInput
                 ja_main={"MP表示アドインの文字サイズ"}
@@ -610,8 +622,8 @@ const ADSettingPage = () => {
                 en_main={"Threshold sound volume (0-100)"}
                 en_sub={""}
                 local={(v) => local.setad_tf_Volume = v}
-                max={0}
-                min={100}
+                max={100}
+                min={0}
                 init={local.ad_tf_Volume}
                 lang={local.language}
             />
@@ -630,8 +642,8 @@ const ADSettingPage = () => {
                 en_main={"Threshold sound volume (0-100)"}
                 en_sub={""}
                 local={(v) => local.setad_tf_Volume2 = v}
-                max={0}
-                min={100}
+                max={100}
+                min={0}
                 init={local.ad_tf_Volume2}
                 lang={local.language}
             />
@@ -641,8 +653,8 @@ const ADSettingPage = () => {
                 en_main={"Rapid increase determination value"}
                 en_sub={"Difference from the average of 10 times"}
                 local={(v) => local.setad_tf_inc_num = v}
-                max={0}
-                min={100}
+                max={100}
+                min={0}
                 init={local.ad_tf_inc_num}
                 lang={local.language}
             />
@@ -652,8 +664,8 @@ const ADSettingPage = () => {
                 en_main={"Warning playback reference value(RW)"}
                 en_sub={"Reset when it reaches 0"}
                 local={(v) => local.setad_tf_rw_num = v}
-                max={1}
-                min={100}
+                max={100}
+                min={0}
                 init={local.ad_tf_rw_num}
                 lang={local.language}
             />
@@ -663,8 +675,8 @@ const ADSettingPage = () => {
                 en_main={"Warning playback reference value(CC)"}
                 en_sub={"Reset when it reaches 0"}
                 local={(v) => local.setad_tf_cc_num = v}
-                max={1}
-                min={100}
+                max={100}
+                min={0}
                 init={local.ad_tf_cc_num}
                 lang={local.language}
             />
@@ -674,8 +686,8 @@ const ADSettingPage = () => {
                 en_main={"Warning playback reference value(FL)"}
                 en_sub={"Reset when it reaches 0"}
                 local={(v) => local.setad_tf_fl_num = v}
-                max={1}
-                min={100}
+                max={100}
+                min={0}
                 init={local.ad_tf_fl_num}
                 lang={local.language}
             />

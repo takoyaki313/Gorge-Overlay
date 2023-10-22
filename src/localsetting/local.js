@@ -2,7 +2,7 @@
 import { PRIMARY_PLAYER } from "..";
 
 import { killSound_Load, samplePlay } from "../v4/sound";
-
+import { devMode } from "..";
 export const GorgeOverlay_LocalStorage = "GorgeOverlay_4";
 
 export class GorgeOverlay_Local {
@@ -14,10 +14,6 @@ export class GorgeOverlay_Local {
         this.pveMax = typeof (data.pveMax) !== 'undefined' ? data.pveMax : 12;
         this.pve_Layout = typeof (data.pve_Layout) !== 'undefined' ? data.pve_Layout : 1;
         this.teamSymbol = typeof (data.teamSymbol) !== 'undefined' ? data.teamSymbol : true;
-        this.addInFontSize_MP = typeof (data.addInFontSize_MP) !== 'undefined' ? data.addInFontSize_MP : 18;
-        this.addInTargetMarker_Size = typeof (data.addInTargetMarker_Size) !== 'undefined' ? data.addInTargetMarker_Size : 16;
-        this.addInTargetMarker_Reverse = typeof (data.addInTargetMarker_Reverse) !== 'undefined' ? data.addInTargetMarker_Reverse : true;
-        this.addInTargetFrom_Size = typeof (data.addInTargetFrom_Size) !== 'undefined' ? data.addInTargetFrom_Size : 16;
         //
         this.fl_layout = typeof (data.fl_layout) !== 'undefined' ? data.fl_layout : 2;
         this.fl_allyData = typeof (data.fl_allyData) !== 'undefined' ? data.fl_allyData : true;
@@ -61,11 +57,17 @@ export class GorgeOverlay_Local {
         this.cc_advancedOverlay_enemy = typeof (data.cc_advancedOverlay_enemy) !== 'undefined' ? data.cc_advancedOverlay_enemy : true;
         this.cc_advancedOverlay_slim = typeof (data.cc_advancedOverlay_slim) !== 'undefined' ? data.cc_advancedOverlay_slim : true;
         //
-        this.AddInMode = typeof (data.AddInMode) !== 'undefined' ? data.AddInMode : true;
+
+        this.AddInMode = typeof (data.AddInMode) !== 'undefined' ? data.AddInMode : false;
+        this.sampleMode = typeof (data.sampleMode) !== 'undefined' ? data.sampleMode : false;
+        this.addInFontSize_MP = typeof (data.addInFontSize_MP) !== 'undefined' ? data.addInFontSize_MP : 18;
+        this.addInTargetMarker_Size = typeof (data.addInTargetMarker_Size) !== 'undefined' ? data.addInTargetMarker_Size : 16;
+        this.addInTargetMarker_Reverse = typeof (data.addInTargetMarker_Reverse) !== 'undefined' ? data.addInTargetMarker_Reverse : true;
+        this.addInTargetFrom_Size = typeof (data.addInTargetFrom_Size) !== 'undefined' ? data.addInTargetFrom_Size : 16;
         this.ad_tf_Volume = typeof (data.ad_tf_Volume) !== 'undefined' ? data.ad_tf_Volume : 50;
         this.ad_tf_Volume2 = typeof (data.ad_tf_Volume2) !== 'undefined' ? data.ad_tf_Volume2 : 50;
         this.ad_tf_updateMS = typeof (data.ad_tf_updateMS) !== 'undefined' ? data.ad_tf_updateMS : 400;
-        this.ad_tf_sound_Path = typeof (data.ad_tf_sound_Path) !== 'undefined' ? data.ad_tf_sound_Path : "htts://takoyaki313.github.io/Gorge-Overlay/sound/maou_se_system13.wav";
+        this.ad_tf_sound_Path = typeof (data.ad_tf_sound_Path) !== 'undefined' ? data.ad_tf_sound_Path : "https://takoyaki313.github.io/Gorge-Overlay/sound/maou_se_system13.wav";
         this.ad_tf_sound_Path2 = typeof (data.ad_tf_sound_Path2) !== 'undefined' ? data.ad_tf_sound_Path2 : "https://takoyaki313.github.io/Gorge-Overlay/sound/maou_se_system27.wav";
         this.ad_tf_inc_num = typeof (data.ad_tf_inc_num) !== 'undefined' ? data.ad_tf_inc_num : 2;
         this.ad_tf_rw_num = typeof (data.ad_tf_rw_num) !== 'undefined' ? data.ad_tf_rw_num : 2;
@@ -73,6 +75,7 @@ export class GorgeOverlay_Local {
         this.ad_tf_fl_num = typeof (data.ad_tf_fl_num) !== 'undefined' ? data.ad_tf_fl_num : 3;
         rootFontSizeChange(this.rootFontSize);
         PRIMARY_PLAYER.ACT_name = this.root_ACTName;
+        devMode.sampleGet = this.sampleMode;
         saveLocalStorage(this);
     }
     set setHeader(isHeader) {
@@ -321,6 +324,11 @@ export class GorgeOverlay_Local {
     }
     set setad_tf_fl_num(data) {
         this.ad_tf_fl_num = data;
+        saveLocalStorage(this);
+    }
+    set setsampleMode(data) {
+        this.sampleMode = data;
+        devMode.sampleGet = data;
         saveLocalStorage(this);
     }
 }

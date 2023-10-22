@@ -2,6 +2,7 @@ import { Unique_DoT, Unique_DoT_ID_Array } from "./resource/dotID.js";
 import { read_maindata, update_maindata } from "../maindataEdit.js";
 import { new_change_accept_damage } from "./24networkDoT.js";
 import { timestamp_change } from "./logline_other.js";
+import { devMode } from "../../index.js";
 
 const UniqueID_end = 3;
 const AcceptMarginTime = 100;
@@ -24,21 +25,21 @@ const unique_buff_remove_action = async (log, dot_name) => {
     let victimmaxhp = 48000;
     let read_data = await read_maindata('Player_hp', 'nameID', victimID, dot_name, 'currenthp', 'maxhp');
     if (Object.keys(read_data).length === 0) {
-        if (window.devMode.logLevel > 6) {
+        if (devMode.logLevel > 6) {
             console.warn(dot_name + ' Data Not Found');
             console.warn(log);
         }
         return null;
     }
     if (read_data[dot_name] === undefined) {
-        if (window.devMode.logLevel > 6) {
+        if (devMode.logLevel > 6) {
             console.log(dot_name + ' Data Not Found [undefined]');
             console.log(log);
         }
         return null;
     }
     if (read_data[dot_name].length === 0) {
-        if (window.devMode.logLevel > 6) {
+        if (devMode.logLevel > 6) {
             console.log(dot_name + ' Data Not Found [length = 0]');
             console.log(log);
         }
@@ -71,7 +72,7 @@ const unique_buff_remove_action = async (log, dot_name) => {
     }
     else {
         now = now - dot_data[dot_data.length - 1].time_ms;
-        if (window.devMode.logLevel > 6) {
+        if (devMode.logLevel > 6) {
             console.warn(dot_name + ':Accept Action Time Not Found->' + now);
             console.warn(log);
         }

@@ -8,8 +8,9 @@ import { HeaderSimple } from '../header';
 import { OverlayMCombatants } from './pve_Overlay';
 
 import { battleStart, battleStop } from '../v4/timer/timer_event';
-
+import { battleEvent, AreaData, devMode } from '..';
 import { PvPMain } from './pvp_main';
+import { TBD } from '../v4/maindataFormat';
 
 const PvPAreaZoneFL = [
   'the borderland ruins (secure)',
@@ -56,19 +57,19 @@ export const DefaultView = () => {
     }
     else {
       if (areaZone === 4) {
-        if (window.BATTLE_EVENT.encounterStart && CombatData.isActive === 'false') {
-          window.TBD.resetData = 'PART';
-          window.BATTLE_EVENT.encounterStart = false;
-          window.BATTLE_EVENT.reset = true;
+        if (battleEvent.encounterStart && CombatData.isActive === 'false') {
+          TBD.resetData = 'PART';
+          battleEvent.encounterStart = false;
+          battleEvent.reset = true;
           await battleStop('PART');
         }
       } 
 
-      if (!window.BATTLE_EVENT.encounterStart && CombatData.isActive === 'true') {
-        window.BATTLE_EVENT.encounterStart = true;
+      if (!battleEvent.encounterStart && CombatData.isActive === 'true') {
+        battleEvent.encounterStart = true;
       }
 
-      if (!window.BATTLE_EVENT.Result_Page && !window.BATTLE_EVENT.Engage && CombatData.isActive === 'true') {
+      if (!battleEvent.Result_Page && !battleEvent.Engage && CombatData.isActive === 'true') {
         //Force BattleEvent Start
         battleStart(0, '');
       }
@@ -80,12 +81,12 @@ export const DefaultView = () => {
   let areaType = encounterZoneGet(enc.Encounter);
   if (!enc.isActive && areaType === 4) {
     // simple reset
-    if (window.Area.Type === 4) {
+    if (AreaData.Type === 4) {
 
     }
   }
-  if (window.devMode.sampleType !== -1) {
-    window.Area.Type = window.devMode.sampleType
+  if (devMode.sampleType !== -1) {
+    AreaData.Type = devMode.sampleType
   }
   if (settingVisible) {
     return (
@@ -115,7 +116,7 @@ const Overlay = (props) => {
   return (
     <>
       {(() => {//AREA CHECK
-        switch (window.Area.Type) {
+        switch (AreaData.Type) {
           case 1: //Seal Rock & Onsal Hakair
             return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false}/></>);
           case 2://Hidden Gorge

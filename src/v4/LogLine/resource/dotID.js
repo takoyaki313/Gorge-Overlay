@@ -1,4 +1,4 @@
-import { object_to_array } from "../loglineGlobal.js";
+import { object_to_array } from "./resource";
 
 export const DoT_ID = [
     {

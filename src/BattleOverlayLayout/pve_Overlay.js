@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { m_dataCombatant } from './OverlayPlayer_M';
-import { PRIMARY_PLAYER } from '..';
+
 import { OverlayM1 } from './OverlayPlayer_M1';
 import { OverlayM2 } from './OverlayPlayer_M2';
 import { local } from '..';

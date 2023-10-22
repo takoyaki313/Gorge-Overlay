@@ -3,6 +3,7 @@ import { what_include_buff } from "./hpdata.js";
 import { simulationKDA } from "../maindataFormat.js";
 import { local } from "../../index.js";
 import { killSound_play } from "../sound.js";
+import { battleEvent } from "../../index.js";
 
 export const assist_main = async (kill_player, death_player, death_attacker, lastupdate, time_number, death_player_name, attacker_alliance, death_job, attacker_job, attacker_name,death_alliance) => {
     let ally_kill = false;
@@ -31,14 +32,14 @@ export const assist_main = async (kill_player, death_player, death_attacker, las
         //console.log(assist_player);
     }
     //kill list {}
-    if (attacker_alliance === 1 && window.BATTLE_EVENT.TenSyonMax_Me && local.rw_killSound) {
+    if (attacker_alliance === 1 && battleEvent.TenSyonMax_Me && local.rw_killSound) {
         killSound_play();
     }
     let s_kill_data = new simulationKDA(
         kill_player, attacker_name, attacker_job, attacker_alliance,
         death_player, death_player_name, death_job, death_alliance,
         assist_player,
-        time_number,Math.round((time_number - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000)
+        time_number,Math.round((time_number - battleEvent.timer.Get_BattleStart) / 1000)
     );
 
     await update_maindata('Player_data', 'nameID', kill_player, ['s_kill', 1, false], ['s-kill-name', s_kill_data , false], ['lastupdate', lastupdate, true]);

@@ -4,6 +4,7 @@ import { potencial_to_damage_calc_effect, effectdata_force4 } from "./21_22_netw
 import { new_change_accept_damage } from "./24networkDoT.js";
 import { timestamp_change } from "./logline_other.js";
 import { Stack_buff } from "./loglineGlobal.js";
+import { devMode } from "../../index.js";
 
 export const player_buff_add_26 = async (log) => {
     let data = { buffID: await buffID_coordinate(log[2]), attacker: log[5], victim: log[7], buff: log[3], time: Number(log[4]), time_ms: await timestamp_change(log[1]), lastupdate: log[1] };
@@ -18,7 +19,7 @@ export const player_buff_add_26 = async (log) => {
             victim.currenthp = 33333;
             victim.maxhp = 11111;
             //DUMMY
-            if (window.devMode.logLevel > 1) {
+            if (devMode.logLevel > 1) {
                 console.warn('26:VICTIM DUMMY_HP APPLY');
             }
         }

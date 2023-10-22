@@ -7,6 +7,8 @@ import { TeamData } from './pvp_team'
 import { PvPPlayerNewMain } from './pvp_player new';
 import { BattleDataGetLimit } from '../v4/maindataFormat';
 import { local } from '..';
+import { battleEvent } from '..';
+import { TBD } from '../v4/maindataFormat';
 
 export const PvPMain = (prop) => {
     let allyData= local[prop.area + "_allyData"];
@@ -31,11 +33,12 @@ export const PvPMain = (prop) => {
         allyMax = 24;
         enemyMax = 0;
     }
-    let ally_Limit = BattleDataGetLimit(allyMax,window.TBD.BattleData_AllyActive);
-    let ally = window.TBD.BattleData_Ally
-    let enemy = window.TBD.BattleData_Enemy;
-    let enemy_Limit = BattleDataGetLimit(enemyMax, window.TBD.BattleData_EnemyActive);
-    if (window.BATTLE_EVENT.Result_Page) {
+    let ally_Limit = BattleDataGetLimit(allyMax,TBD.BattleData_AllyActive);
+    let ally = TBD.BattleData_Ally
+    let enemy = TBD.BattleData_Enemy;
+    let enemy_Limit = BattleDataGetLimit(enemyMax, TBD.BattleData_EnemyActive);
+
+    if (battleEvent.Result_Page) {
         if (resultAllAlly) {
             ally_Limit = ally;
             allyData = true;
@@ -44,8 +47,6 @@ export const PvPMain = (prop) => {
             enemy_Limit = enemy;
             enemyData = true;
         }
-        
-        
     }
     return (
         <div>

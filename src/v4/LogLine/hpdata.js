@@ -2,6 +2,7 @@ import { read_maindata, update_maindata_change_array, update_maindata } from "..
 import { assist_main } from "./assistSimulation.js";
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
 import { Chaiser_HP, Oppressor_HP, Justice_HP, EXCLUDE_BUFF } from "./loglineGlobal.js";
+import { battleEvent, AreaData, devMode } from "../../index.js";
 
 import { simulationKDA } from "../maindataFormat.js";
 
@@ -14,7 +15,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
     let datavalue = [];
     let datareplace = [];
     if (player_data.currenthp === undefined) {
-        if (window.devMode.logLevel > 12) {
+        if (devMode.logLevel > 12) {
             console.error('Hp Data is undefined');
             console.error(player_data);
         }
@@ -107,7 +108,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                                     }
                                     else {
                                         if (readed_data.attacker.length === i) {
-                                            if (window.devMode.logLevel > 12) {
+                                            if (devMode.logLevel > 12) {
                                                 console.log('attacker is NPC? ->' + attackerID);
                                             }
                                         }
@@ -127,7 +128,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                                     }
                                     else {
                                         if (readed_data.attacker.length === i) {
-                                            if (window.devMode.logLevel > 12) {
+                                            if (devMode.logLevel > 12) {
                                                 console.log('attacker is NPC? ->' + attackerID);
                                             }
                                         }
@@ -137,13 +138,13 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                                 attacker_job = await robot_replace_job(attacker_name);
                                 simulationdata =  await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name,victim_name.alliance);
                             } else {
-                                if (window.devMode.logLevel > 12) {
+                                if (devMode.logLevel > 12) {
                                     console.warn('Warn : Kill Player Unknown->' + attackerID + '->' + player_data.nameID);
                                 }
                             }
                         }
                         else {
-                            if (window.devMode.logLevel > 12) {
+                            if (devMode.logLevel > 12) {
                                 console.warn('Warn : Kill Player Unknown->' + attackerID + '->' + player_data.nameID);
                             }
                         }
@@ -151,16 +152,16 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                             simulationdata = new simulationKDA(
                                 attackerID, attacker_name.name, attacker_job, attacker_name.alliance,
                                 player_data.nameID, victim_name.name, victim_job, victim_name.alliance,
-                                [],player_data.time_number,Math.round((player_data.time_number - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000)
+                                [],player_data.time_number,Math.round((player_data.time_number - battleEvent.timer.Get_BattleStart) / 1000)
                             );
                         }
                         await update_maindata('Player_data', 'nameID', player_data.nameID, ['s_death', 1, false], ['s-death-name',simulationdata, false], ['lastupdate', player_data.lastupdate, true]);
                     }
                 }
             }
-            if (window.Area.Type === 2) {//Hidden Gorge
+            if (AreaData.Type === 2) {//Hidden Gorge
                 if (temp_time > 0 || HP_Update_duplite_robride_process) {//duplite Hpdata exclude
-                    if (window.BATTLE_EVENT.Engage) {
+                    if (battleEvent.Engage) {
                         await rob_ride_check(nameID, readed_data, player_data);
                     }
                 }
@@ -176,7 +177,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
         else if (temp_time === 0) {
             //同一データ?
             if (readed_data.currenthp !== player_data.currenthp || readed_data.maxhp !== player_data.maxhp) {
-                if (window.devMode.logLevel > 12) {
+                if (devMode.logLevel > 12) {
                     console.warn('This Data is duplite...?,Not Applied' + attackerID);
                     console.warn(readed_data);
                     console.warn(player_data);
@@ -206,7 +207,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
             await update_maindata_change_array('Player_hp', 'nameID', nameID, dataname, datavalue, datareplace);
         }
         else {
-            if (window.devMode.logLevel > 12) {
+            if (devMode.logLevel > 12) {
                 console.error('This data is probably old->' + nameID);
                 console.log(readed_data);
                 console.log(player_data);
@@ -225,7 +226,7 @@ export const what_include_buff = async (effect, buff_type) => {
     } else if (buff_type === 'debuff') {
         search_type = false;
     } else {
-        if (window.devMode.logLevel > 12) {
+        if (devMode.logLevel > 12) {
             console.error('Buff_type unknown ->' + buff_type);
         }
         return [];

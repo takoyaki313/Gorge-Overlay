@@ -1,4 +1,8 @@
+import { battleEvent, AreaData, devMode } from "..";
+import { sampleJSON } from "./sample/workSample";
+
 export let useTime = 'time';//enctime or time
+
 
 export class maindata {
     constructor() {
@@ -24,7 +28,7 @@ export class maindata {
             this.Action_Synced_data = [];
             this.Action_Sync_data = [];
             this.Alliance = new dynamisHistory();
-            if (window.devMode.logLevel > 2) {
+            if (devMode.logLevel > 2) {
                 console.warn('MainData Reset');
             }
         }
@@ -46,12 +50,15 @@ export class maindata {
             this.Action_Synced_data = [];
             this.Action_Sync_data = [];
             this.Alliance = new dynamisHistory();
-            if (window.devMode.logLevel > 2) {
+            if (devMode.logLevel > 2) {
                 console.lowarng('MainData Reset');
             }
         }
         else {
             console.error('MainData reset Flag Unknown ->' + type);
+        }
+        if (devMode.sampleGet) {
+            sampleJSON.resetData();
         }
     }
     get BattleData_AllyActive() {
@@ -145,11 +152,11 @@ export const BattleDataGetLimit = (num, tbd_battledata) => {
 
 const BattleDataGet = (limit) => {
     // Party Ally Enemy PC NPC
-    const Data = window.TBD.Player_data;
-    const Alliance = window.TBD.Alliance;
+    const Data = TBD.Player_data;
+    const Alliance = TBD.Alliance;
     let rtn = [];
     let now = new Date();
-    let battleEndTime = window.BATTLE_EVENT.timer.Get_ResultIn;
+    let battleEndTime = battleEvent.timer.Get_ResultIn;
     if (battleEndTime !== 0) {
         now = battleEndTime;
     } else {
@@ -234,7 +241,7 @@ const BattleDataGet = (limit) => {
 }
 
 const gorgeSortRule = (adjustTBD_rtn) => {
-    if (window.Area.Type === 2) {
+    if (AreaData.Type === 2) {
         adjustTBD_rtn.sort((a, b) => b.damage_prm.ps - a.damage_prm.ps);
     } else {
         adjustTBD_rtn.sort((a, b) => b.damage.ps - a.damage.ps);
@@ -244,13 +251,13 @@ const gorgeSortRule = (adjustTBD_rtn) => {
 
 const BattleTime_Calc = (data, now) => {
     if (typeof (data) === 'undefined') {
-        data = [{ time: window.BATTLE_EVENT.timer.Get_BattleStart, battle: true }];
+        data = [{ time: battleEvent.timer.Get_BattleStart, battle: true }];
     }
     if (data.length === 0) {
-        data[0] = [{ time: window.BATTLE_EVENT.timer.Get_BattleStart, battle: true }];
+        data[0] = [{ time: battleEvent.timer.Get_BattleStart, battle: true }];
     }
-    let start_time = window.BATTLE_EVENT.timer.Get_BattleStart === 0 ? data[0].time : window.BATTLE_EVENT.timer.Get_BattleStart;
-    let end_time = window.BATTLE_EVENT.timer.Get_ResultIn === 0 ? now : window.BATTLE_EVENT.timer.Get_ResultIn;
+    let start_time = battleEvent.timer.Get_BattleStart === 0 ? data[0].time : battleEvent.timer.Get_BattleStart;
+    let end_time = battleEvent.timer.Get_ResultIn === 0 ? now : battleEvent.timer.Get_ResultIn;
     let lasttime = start_time;
     let lastposition = 0;
     let time = 0;
@@ -287,7 +294,7 @@ export const get_dispPlayerData_Robot = (dispData, createTime) => {
     }
     dispData.data.add_combatant_time = [{ battle: true, time: dispData.ridetime, timestamp: "robot" }, { battle: false, time: now, timestamp: "robot" }];
     dispData.data.job = dispData.ride_type;
-    let robotData = new dispPlayerData(dispData.data, now, window.TBD.Alliance, []);
+    let robotData = new dispPlayerData(dispData.data, now, TBD.Alliance, []);
     return (robotData);
 }
 
@@ -304,7 +311,7 @@ class dispPlayerData {
         this.assists = typeof (before['s-assist']) === 'object' ? before['s-assist'] : [];
 
         this.time = BattleTime_Calc(before.add_combatant_time, now);
-        this.enctime = window.BATTLE_EVENT.timer.Get_EncTime;
+        this.enctime = battleEvent.timer.Get_EncTime;
         this.createtime = now;
         this.battle = typeof (before.battle) === 'boolean' ? before.battle : false;
 
@@ -412,7 +419,7 @@ class dispPlayerData {
                     this.accept_income_over_heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
                 else {
-                    if (window.devMode.logLevel > 1) {
+                    if (devMode.logLevel > 1) {
                         console.error('healtype unknowkn->' + tbd);
                     }
                 }
@@ -445,3 +452,5 @@ class dispPlayerData {
         this.alliance = alliance;
     }
 }
+
+export const TBD = new maindata();

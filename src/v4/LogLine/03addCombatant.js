@@ -1,8 +1,9 @@
 import { null_check, timestamp_change } from "./logline_other.js";
 import { Field_ID } from "./loglineGlobal.js";
-import { update_maindata,read_maindata } from "../maindataEdit.js";
+import { update_maindata, read_maindata } from "../maindataEdit.js";
 import { owner_id_list_add } from "./loglineGlobal.js";
 import { job_to_role } from "../../role.js";
+import { battleEvent, AreaData } from "../../index.js";
 
 export const addcombatant = async (log) => {
     let nameID = log[2].toUpperCase();
@@ -23,11 +24,11 @@ export const addcombatant = async (log) => {
         owner_id = null;
     }
     if (nameID !== Field_ID) {
-        if (window.BATTLE_EVENT.Engage) {
+        if (battleEvent.Engage) {
             let readed_data = await read_maindata('Player_data', 'nameID', nameID, 'job');
             if (typeof readed_data.job === 'string') {
                 if (job !== readed_data.job) {//違うので保存する
-                    await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['jobhistory', { job: readed_data.job,role:job_to_role(readed_data.job) ,to: job, torole:job_to_role(job),time: Math.round((time_ms - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000), lasttime: time_ms, stamp: lastupdate }, false], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
+                    await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['jobhistory', { job: readed_data.job, role: job_to_role(readed_data.job), to: job, torole: job_to_role(job), time: Math.round((time_ms - battleEvent.timer.Get_BattleStart) / 1000), lasttime: time_ms, stamp: lastupdate }, false], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
                 }
                 else {
                     await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
@@ -51,24 +52,24 @@ export const addcombatant = async (log) => {
 }
 
 const damage_revise = async (nameID, job, lastupdate) => {
-    if (window.Area.Type === 1 || window.Area.Type === 3) {//FL
-        let class_A = ['pld', 'war', 'drk', 'gnb', 'mnk', 'sam', 'rpr', 'drg', 'nin'];
-        let class_B = ['whm', 'sch', 'smn'];
-        //let class_C = ['rdm'];
+    if (AreaData.Type === 1 || AreaData.Type === 3) {//FL
+        let class_A = ['pld', 'gnb', 'mnk', 'sam', 'rpr', 'drg', 'nin'];
+        let class_B = ['whm', 'smn'];
+        let class_C = ['war', 'drk'];
         if (class_A.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.4 }, true], ['lastupdate', lastupdate, true]);
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
         }
         else if (class_B.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.7 }, true], ['lastupdate', lastupdate, true]);
-        }/*
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.75 }, true], ['lastupdate', lastupdate, true]);
+        }
         else if (class_C.indexOf(job) !== -1) {
-            await update_maindata('Player_hp','nameID',nameID,['revise',{damage:1,income:0.8},true],['lastupdate',lastupdate,true]);
-        }*/
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
+        }
         else {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.7 }, true], ['lastupdate', lastupdate, true]);
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.75 }, true], ['lastupdate', lastupdate, true]);
         }
     }
-    else if (window.Area.Type === 2) {//Gorge
+    else if (AreaData.Type === 2) {//Gorge
         let class_A = ['pld', 'war', 'drk', 'gnb', 'mnk', 'sam', 'rpr', 'drg', 'nin'];
         //let class_B = ['drg', 'nin'];
         //let class_C = ['rdm'];
@@ -90,7 +91,7 @@ const damage_revise = async (nameID, job, lastupdate) => {
     }
 }
 
-const  jobID_to_string = (id) => {
+export const jobID_to_string = (id) => {
     if (typeof id === 'string') {
         id = parseInt(id, 16);
     }

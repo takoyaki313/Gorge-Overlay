@@ -5,7 +5,7 @@ import '../css/fonticon/style.css'
 import React, { useState } from 'react';
 
 import { job_to_role } from '../role';
-
+import { battleEvent } from '..';
 import { PRIMARY_PLAYER } from '..';
 import { m_data } from './OverlayPlayer_M';
 import { a_data } from './OverlayPlayer_A';
@@ -22,10 +22,10 @@ export const PvPPlayerNewMain = (prop) => {
         return (null);
     }
     let maxdps = prop.data[0].damage.ps;
-    let start = window.BATTLE_EVENT.timer.Get_BattleStart;
+    let start = battleEvent.timer.Get_BattleStart;
     let now = Date.now();
-    if (window.BATTLE_EVENT.timer.Get_ResultIn !== 0) {
-        now = Math.min(now, window.BATTLE_EVENT.timer.Get_ResultIn);
+    if (battleEvent.timer.Get_ResultIn !== 0) {
+        now = Math.min(now, battleEvent.timer.Get_ResultIn);
     }
     return (
         <div>
@@ -39,27 +39,30 @@ export const PvPPlayerNewMain = (prop) => {
 
 const PvPPlayer = (prop) => {
     const [simple, setActive] = useState(false);
-    const [firstRead, isRead] = useState(false);
+    const [isReset, setReset] = useState(true);
     let data = prop.data;
     let role = job_to_role(data.job);
 
     const hide_toggle = () => {
         setActive(!simple)
     }
+
     let advanced_slimOff = local[prop.area + '_advancedOverlay_slim'];
-    if (!firstRead) {
-        isRead(!firstRead);
+    if (isReset) {
+        setReset(false);
         if (PRIMARY_PLAYER.nameID === prop.data.nameID && local[prop.area + '_advancedOverlay_me']) {
-            hide_toggle();
+            setActive(true);
         }else if (prop.data.alliance === 1 && local[prop.area + '_advancedOverlay_party']) {
-            hide_toggle();
+            setActive(true);
         }else if (prop.data.alliance === 0 && local[prop.area + '_advancedOverlay_ally']) {
-            hide_toggle();
+            setActive(true);
         }else if (prop.data.alliance > 1 && local[prop.area + '_advancedOverlay_enemy']) {
-            hide_toggle();
+            setActive(true);
+        } else {
+            setActive(false);
         }
-        
     }
+
     let gage_offset = Math.abs((data.damage.ps / prop.maxdps) * 100 - 100) - 2;
 
     const AdvancedPvP = (prop) => {

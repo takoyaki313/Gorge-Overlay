@@ -1,17 +1,17 @@
 import { timestamp_change } from "../LogLine/logline_other"
+import { battleEvent, devMode } from "../..";
 
 export const battleStart = async (time, timestamp) => {
-
-    if (!window.BATTLE_EVENT.Engage) {
+    if (!battleEvent.Engage) {
         if (timestamp === '') {
-            window.BATTLE_EVENT.timer.Set_BattleStart = Date.now();
+            battleEvent.timer.Set_BattleStart = Date.now();
         } else {
-            window.BATTLE_EVENT.timer.Set_BattleStart = await timestamp_change(timestamp);
+            battleEvent.timer.Set_BattleStart = await timestamp_change(timestamp);
         }
         if (time === 0) {
-            window.BATTLE_EVENT.timer.Set_BattleMaxTime = Date.now();
+            battleEvent.timer.Set_BattleMaxTime = Date.now();
         } else {
-            window.BATTLE_EVENT.timer.Set_BattleMaxTime = time;
+            battleEvent.timer.Set_BattleMaxTime = time;
         }
         //timer Start 
         //console.log('timer start', time, timestamp);
@@ -19,25 +19,25 @@ export const battleStart = async (time, timestamp) => {
     }
     else {
         //Adjust
-        //window.BATTLE_EVENT.timer.Set_AdjustTime = { time: time, ref: await timestamp_change(timestamp) };
+        //battleEvent.timer.Set_AdjustTime = { time: time, ref: await timestamp_change(timestamp) };
     }
-    window.BATTLE_EVENT.Engage = true;
+    battleEvent.Engage = true;
 
 }
 
 export const battleStop = async (timestamp) => {
-    window.BATTLE_EVENT.Engage = false;
+    battleEvent.Engage = false;
     if (timestamp === '') {
         //Force OFF
-        //window.BATTLE_EVENT.Result_in_time = Date.now();
+        //battleEvent.Result_in_time = Date.now();
     } else if (timestamp === 'PART') {
-        window.BATTLE_EVENT.Result_Page = true;
-        window.BATTLE_EVENT.timer.Set_ResultIn = Date.now();
+        battleEvent.Result_Page = true;
+        battleEvent.timer.Set_ResultIn = Date.now();
         Timer_OverlayChangeEvent();
     }
     else {
-        window.BATTLE_EVENT.Result_Page = true;
-        window.BATTLE_EVENT.timer.Set_ResultIn = await timestamp_change(timestamp);
+        battleEvent.Result_Page = true;
+        battleEvent.timer.Set_ResultIn = await timestamp_change(timestamp);
         Timer_OverlayChangeEvent();
     }
     console.log('timer end');
@@ -46,7 +46,7 @@ export const battleStop = async (timestamp) => {
 
 export const adjustTimer = async (time, timestamp) => {
     /*
-    if (!window.BATTLE_EVENT.Result_Page) {
+    if (!battleEvent.Result_Page) {
         await battleStart(time, timestamp);
     }
     else {
@@ -70,13 +70,13 @@ export const timerStop = async () => {
 }
 
 const Timer_OverlayChangeEvent = () => {
-    if (window.BATTLE_EVENT.timer.Battle_Max_Time > 0 && CountDown) {
-        window.changeTime_Event(window.BATTLE_EVENT.timer.Get_RemainTime);
+    if (battleEvent.timer.Battle_Max_Time > 0 && CountDown) {
+        window.changeTime_Event(battleEvent.timer.Get_RemainTime);
     } else {
-        window.changeTime_Event(window.BATTLE_EVENT.timer.Get_Time);
+        window.changeTime_Event(battleEvent.timer.Get_Time);
     }
-    window.BATTLE_EVENT.timer.Set_Time = 1;
-    if (window.BATTLE_EVENT.encounterStart || window.devMode.sampleType !== -1) {
-        window.TBDState(window.BATTLE_EVENT.timer.Get_Time);
+    battleEvent.timer.Set_Time = 1;
+    if (battleEvent.encounterStart || devMode.sampleType !== -1) {
+        window.TBDState(battleEvent.timer.Get_Time);
     }
 }

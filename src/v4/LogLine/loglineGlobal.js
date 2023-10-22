@@ -1,4 +1,5 @@
 import { read_maindata } from "../maindataEdit.js";
+
 ///////////////////////////////////////////////////////////////////////////////
 export const Field_ID = 'E0000000';
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,6 +26,7 @@ export const Stack_buff = ['05B9'/*テンション*/, '0BED'/*連続剣*/, '0C5B
 export const EXCLUDE_BUFF = ['07EB', '07EA', '0B37', '0B38'];//スタンス系　カルディア クローズドポジション
 ///////////////////////////////////////////////////////////////////////////////
 export const Send_Action = false;
+
 export const robotHP_Get = (rob) => {
     if (rob === 'che') {
         return Chaiser_HP;
@@ -38,17 +40,12 @@ export const robotHP_Get = (rob) => {
         return 0;
     }
 }
-export const object_to_array = (object, key) => {
-    let data = [];
-    for (let i = 0; i < object.length; i++) {
-        data.push(object[i][key]);
-    }
-    return data;
-}
 
 ////////////////////////////////////////////////////////////////////////////
 //OWNER ID LIST (03)
 ////////////////////////////////////////////////////////////////////////////
+export let OWNER_LIST = [];
+
 export const pet_replace = async (nameID, name) => {
     let rtn = { nameID: nameID, name: name };
     if (nameID.substring(0, 2) === '40') {//もしペットIDならIDと名前を本人に入れ替える。
@@ -65,14 +62,14 @@ export const pet_replace = async (nameID, name) => {
 }
 
 export const owner_id_list_add = async (ownerID, petID, ownername) => {
-    window.OWNER_LIST.push([petID, ownerID, ownername]);
+    OWNER_LIST.push([petID, ownerID, ownername]);
 }
 
 const owner_id_list_search = async (petID) => {
     let ownerID = null;
-    for (let i = 0; i < window.OWNER_LIST.length; i++) {
-        if (window.OWNER_LIST[i][0] === petID) {
-            ownerID = window.OWNER_LIST[i][1];
+    for (let i = 0; i < OWNER_LIST.length; i++) {
+        if (OWNER_LIST[i][0] === petID) {
+            ownerID = OWNER_LIST[i][1];
             return ownerID;
         }
     }
@@ -80,5 +77,5 @@ const owner_id_list_search = async (petID) => {
 }
 
 export const owner_id_list_reset = () => {
-    window.OWNER_LIST = [];
+    OWNER_LIST = [];
 }

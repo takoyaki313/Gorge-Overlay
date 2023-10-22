@@ -3,6 +3,7 @@ import { timestamp_change } from './logline_other.js';
 import { DoT_ID, DoT_ID_Array, Unique_DoT_ID_Array } from "./resource/dotID.js";
 import { general_input_type, damage_heal_input_type } from "./21_22_networkActionSync.js"
 import { Send_Action, pet_replace } from "./loglineGlobal.js";
+import { devMode } from '../../index.js';
 
 let check = null;
 let check_2 = null;
@@ -33,7 +34,7 @@ export const networkDoT_24 = async (log) => {
         //await update_maindata('Player_data','nameID',data.victimID,['incomeHoT',data.damage,false],['totalincomeheal',data.damage,false],['lastupdate',data.lastupdate,true]);
     }
     else {
-        if (window.devMode.logLevel > 4) {
+        if (devMode.logLevel > 4) {
             console.error('Eroor : This log Dot type unknown->' + data.DoTType);
         }
     }
@@ -43,7 +44,7 @@ export const networkDoT_24 = async (log) => {
         check_2 = log;
     }
     else {
-        if (window.devMode.logLevel > 4) {
+        if (devMode.logLevel > 4) {
             console.error('This ID is Not Unique->' + uniqueID);
             console.error(log);
             console.error(check_2);
@@ -52,7 +53,7 @@ export const networkDoT_24 = async (log) => {
     if (data.effectID === '0') {
         let effect = await read_maindata('Player_hp', 'nameID', data.victimID, 'effect', 'dot_potencial');
         if (effect.effect === undefined) {
-            if (window.devMode.logLevel > 4) {
+            if (devMode.logLevel > 4) {
                 console.warn('DoT Simulation failed...');
                 console.warn(log);
             }
@@ -94,7 +95,7 @@ export const networkDoT_24 = async (log) => {
         }
 
         if (effect_position.length === 0) {
-            if (window.devMode.logLevel > 4) {
+            if (devMode.logLevel > 4) {
                 console.warn(data.DoTType + '-Unknown :effectID not include Player_Hp');
                 console.warn(log);
                 console.warn(effect);
@@ -115,7 +116,7 @@ export const networkDoT_24 = async (log) => {
             }
         }
         if (sum === 0) {
-            if (window.devMode.logLevel > 4) {
+            if (devMode.logLevel > 4) {
                 console.error('sum === ' + sum + ': dot distribution failed');
             }
             return null;
@@ -156,7 +157,7 @@ export const networkDoT_24 = async (log) => {
         }*/
 
     } else {
-        if (window.devMode.logLevel > 4) {
+        if (devMode.logLevel > 4) {
             console.error('Warn : DoT EffectID Unknown ->' + data.effectID);
             console.error(log);
         }
@@ -177,7 +178,7 @@ const dot_damage_distribution = async (data, sum, totaldamage, totaloverdamage) 
             overdamage = totaloverdamage * (data[i].potencial / sum);
             /*
             if(damage > 10000){
-              if(window.devMode.logLevel > 4){
+              if(devMode.logLevel > 4){
                 console.error('total->' + totaldamage + ' sum->' + sum);
                 console.error(damage);
                 console.error(data);
@@ -212,7 +213,7 @@ const meteor_drive = async (data) => {
             }
             //------------
             if (attacker === null) {
-                if (window.devMode.logLevel > 4) {
+                if (devMode.logLevel > 4) {
                     console.warn('Meteor Drive effect not include->');
                     console.warn(read_data);
                     console.warn(data);
@@ -234,7 +235,7 @@ const kardia_heal = async (data) => {
                     if (attacker === null) {
                         attacker = read_data.effect[i].attacker;
                     } else {
-                        if (window.devMode.logLevel > 4) {
+                        if (devMode.logLevel > 4) {
                             console.warn('Warn : 複数人からカルディアを受けている。');
                             console.warn(read_data);
                         }
@@ -243,7 +244,7 @@ const kardia_heal = async (data) => {
                 }
             }
             if (attacker === null) {
-                if (window.devMode.logLevel > 4) {
+                if (devMode.logLevel > 4) {
                     console.warn('Kardia effect not include->' + data.victimID);
                 }
             } else {

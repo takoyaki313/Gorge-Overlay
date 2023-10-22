@@ -3,6 +3,7 @@ import { hpdata_add } from "./hpdata.js";
 import { update_maindata, alliance_dynamis_update } from "../maindataEdit.js";
 import { Stack_buff } from "./loglineGlobal.js";
 import { buffID_coordinate } from "./26playerBuffAdd.js";
+import { AreaData, devMode } from "../../index.js";
 
 export const networkDoT_sync_38 = async (log) => {
     //await dot_calc_main(log);
@@ -36,7 +37,7 @@ export const networkDoT_sync_38 = async (log) => {
 
 const player_buff_list_update = async (data, nameID, lastupdate) => {
     if (data.length % 3 !== 0) {
-        if (window.devMode.logLevel > 2) {
+        if (devMode.logLevel > 2) {
             console.error('This data area is %3 === 0 -> ' + data.length);
             console.error(data);
         }
@@ -80,20 +81,20 @@ const dynamis_checker = async (nameID, effectID, rank, lastupdate) => {
     if (dynamis.indexOf(effectID) !== -1 && nameID.substring(0, 2) === "10") {
         if (effectID === '05B9') {
             if (typeof rank !== 'number') {
-                if (window.devMode.logLevel > 2) {
+                if (devMode.logLevel > 2) {
                     console.error('Tensyon_num is unknown', rank);
                     //console.error(Log);
                 }
                 return null;
             }
             update_maindata('Player_data', 'nameID', nameID, ['dynamis', rank, true]);
-            if (window.Area.Type === 2) {
+            if (AreaData.Type === 2) {
                 alliance_dynamis_update(nameID, rank, lastupdate);
             }
         }
         else {//Tensyon 以外
             update_maindata('Player_data', 'nameID', nameID, ['dynamis', effectID, true]);
-            if (window.Area.Type === 2) {
+            if (AreaData.Type === 2) {
                 alliance_dynamis_update(nameID, 20, lastupdate);
             }
         }

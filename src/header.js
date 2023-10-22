@@ -4,7 +4,7 @@ import './css/header.css'
 
 import { useState } from 'react';
 import { time_change } from './v4/timer/timer_format.js';
-import { sample_crystal_data_calc, sample_gorge_data_calc } from './v4/sample/workSample.js'
+import { saveOrRead_JSON } from './v4/sample/workSample';
 
 import { local } from '.';
 
@@ -36,11 +36,15 @@ export const HeaderSimple = (prop) => {
 
 const HeaderDetail = (prop) => {
   let time = time_change(Number(prop.DURATION));
+  const contextMenu_Main = (e) => {
+    e.preventDefault();
+    saveOrRead_JSON();
+  }
   return (
     <header>
       <div className='header-Top'>
         <div className='flex-center'>
-          <span className='icon-app_fc' onClick={testmoduleStart}></span>
+          <span className='icon-app_fc' onClick={testmoduleStart} onContextMenu={(e) => contextMenu_Main(e)}></span>
           <span id='zoneName'>{prop.AreaName}</span>
         </div>
         <div className='flex-center'>
@@ -57,16 +61,7 @@ const HeaderDetail = (prop) => {
 }
 
 function testmoduleStart() {
-  if (window.devMode.sampleType === 2) {
-    sample_gorge_data_calc(2);
-  }
-  else if (window.devMode.sampleType === 5) {
-    sample_crystal_data_calc(2);
-  }
-  else {
-    window.EncounterState(sample_encounter_data2());
-  }
-
+  window.EncounterState(sample_encounter_data2());
 }
 
 

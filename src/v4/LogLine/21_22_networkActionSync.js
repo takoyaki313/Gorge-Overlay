@@ -5,7 +5,7 @@ import { update_maindata_change_array, update_maindata, insert_maindata_object, 
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
 import { Barrier_ID, Barrier_ID_Array, Special_Barrier_ID, Special_Barrier_ID_Array_Skill } from "./resource/barrierID.js";
 import { DoT_ID, DoT_ID_Array } from "./resource/dotID.js";
-
+import { battleEvent, AreaData, devMode } from "../../index.js";
 
 const Update_attacker = ['add-buff-attacker', 'tp-recover', 'mp-recover'/*,'additional-effect'*/];
 
@@ -120,7 +120,7 @@ export const networkactionsync_21_22 = async (log) => {
         attacker_input_data = await networkaction_calc(data, attacker_effect, "attacker");
     }
     if (data.actionID === DoubleRocketPunch) {
-        if (window.Area.Type === 2) {
+        if (AreaData.Type === 2) {
             //Hidden Gorge
             if (data.count_row === 0) {
                 attacker_input_data.target.push('totalrocketpunch');
@@ -143,12 +143,12 @@ export const networkactionsync_21_22 = async (log) => {
         }
     }
     else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0) {
-        let time = Math.round((data.time_ms - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000);
+        let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
         attacker_input_data.data.push({ LimitBreak: data.actionID, use: 1, hit: data.hitnum, time: time, time_ms: data.time_ms });
     } else if (LimitBreak_Extend.indexOf(data.actionID) !== -1 && data.count_row === 0) {
-        let time = Math.round((data.time_ms - window.BATTLE_EVENT.timer.Get_BattleStart) / 1000);
+        let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
         attacker_input_data.data.push({ LimitBreak: data.actionID, use: 0, hit: data.hitnum, time: time, time_ms: data.time_ms });
@@ -382,7 +382,7 @@ export const damage_heal_input_type = async (uniqueID, attackerID, victimID, a_m
             overdamage = 0;
         }
         if (damage < overdamage) {
-            if (window.devMode.logLevel > 2) {
+            if (devMode.logLevel > 2) {
                 console.error('Overdamage Calc Error->' + damage + ' < ' + overdamage);
                 console.error(' v_CurrentHP ->' + v_CurrentHP + ' v_maxHP->' + v_maxHP);
                 //console.error(Log);
@@ -482,7 +482,7 @@ const heal_target = async (victimID, attackerID, actionID, special) => {
                     typeinput.push('heal_ally');
                     typeinput.push('heal_ally_' + special);
                 }
-                if (window.Area.Type === 5) {//Crystal Conflict
+                if (AreaData.Type === 5) {//Crystal Conflict
                     typeinput.push('heal_' + victimID);
                     typeinput.push('heal_from_' + attackerID);
                 }
@@ -506,7 +506,7 @@ const damage_target = async (victimID, attackerID, v_maxHP, a_maxHP, actionID, s
     else if (attackerID.substring(0, 2) === '10') {
         if (victimID.substring(0, 2) === "10") {
             typeinput.push('damage_player');
-            if (window.Area.Type === 2) {//Hidden Gorge
+            if (AreaData.Type === 2) {//Hidden Gorge
                 let attack_target = ['G_Player_attack'];
                 //自身のダメージの種類
                 if (actionID === "XXXX") {//Canon
@@ -555,13 +555,13 @@ const damage_target = async (victimID, attackerID, v_maxHP, a_maxHP, actionID, s
                 }
                 typeinput.push(victim_target.join("_"));
             }
-            else if (window.Area.Type === 5) {//Crystal Conflict
+            else if (AreaData.Type === 5) {//Crystal Conflict
                 typeinput.push('damage_CC_' + victimID);
                 typeinput.push('damage_CC_from_' + attackerID);
             }
         } else {//FieldID / NPC
             typeinput.push('damage_object');
-            if (window.Area.Type === 2) {//Hidden Gorge
+            if (AreaData.Type === 2) {//Hidden Gorge
                 let attack_target = ['G_Obj_attack'];
                 attack_target.push("damage");
                 if (actionID === "XXXX") {//Canon
@@ -701,7 +701,7 @@ const networkAbility_damage_calc = async (damage_bit) => {
         return { damage: 0, return: false };
     }
     else {
-        if (window.devMode.logLevel > 2) {
+        if (devMode.logLevel > 2) {
             console.warn('Error: networkAbility-damage is not 4 lower length ...->' + damage_bit);
         }
         return { damage: 0, return: false };
@@ -731,7 +731,7 @@ const potencial_action_search_tool = async (target, actionID, dotid, position) =
                 return target[search_position];
             }
         } else {
-            if (window.devMode.logLevel > 2) {
+            if (devMode.logLevel > 2) {
                 console.warn('EFFECTID Not Matched... dotid:' + dotid + ' actionID:' + actionID);
             }
             return target[position];
@@ -744,7 +744,7 @@ const potencial_check_from_damage = async (dot_detail, id_data_position, data) =
         let dot_id_position = DoT_ID_Array.indexOf(dot_detail.dotid, id_data_position + 1);
         dot_detail = DoT_ID[dot_id_position];
         if (dot_id_position === -1) {
-            if (window.devMode.logLevel > 2) {
+            if (devMode.logLevel > 2) {
                 console.error('dot data not found');
                 console.error(data);
             }
@@ -754,7 +754,7 @@ const potencial_check_from_damage = async (dot_detail, id_data_position, data) =
             dot_id_position = DoT_ID_Array.indexOf(dot_detail.dotid, dot_id_position + 1);
             dot_detail = DoT_ID[dot_id_position];
             if (dot_id_position === -1) {
-                if (window.devMode.logLevel > 2) {
+                if (devMode.logLevel > 2) {
                     console.error('dot data not found');
                     console.error(data);
                 }
@@ -764,7 +764,7 @@ const potencial_check_from_damage = async (dot_detail, id_data_position, data) =
 
             }
             if (dot_detail.actionid !== data.actionID) {
-                if (window.devMode.logLevel > 2) {
+                if (devMode.logLevel > 2) {
                     console.error('dot data not found');
                     console.error(data);
                 }
@@ -788,7 +788,7 @@ export const potencial_to_damage_calc_effect = async (attackerID, victimID, defa
         victim_data = await read_maindata('Player_hp', 'nameID', victimID, 'effect', 'revise', 'maxhp');
     }
     if (Object.keys(attacker_data).length === 0 || Object.keys(victim_data).length === 0) {
-        if (window.devMode.logLevel > 2) {
+        if (devMode.logLevel > 2) {
             console.warn('read_error potencial calc failed->');
         }
         return default_potencial;
@@ -805,7 +805,7 @@ export const potencial_to_damage_calc_effect = async (attackerID, victimID, defa
     else if (damage_type === 'DoT') {//damage
         let attacker = await potencial_to_damage_calc_id(attacker_data, attackerID, 'damage', true);
         let victim = await potencial_to_damage_calc_id(victim_data, victimID, 'damage', false);
-        if (window.devMode.logLevel > 11) {
+        if (devMode.logLevel > 11) {
             console.log(default_potencial + ' * ' + attacker + ' * ' + victim + ' = ' + default_potencial * attacker * victim);
         }
         //console.log(default_potencial +' : '+ attacker + ' : '+ victim);
@@ -813,7 +813,7 @@ export const potencial_to_damage_calc_effect = async (attackerID, victimID, defa
     } else {//heal
         let attacker = await potencial_to_damage_calc_id(attacker_data, attackerID, 'heal', true);
         let victim = await potencial_to_damage_calc_id(victim_data, victimID, 'heal', false);
-        if (window.devMode.logLevel > 11) {
+        if (devMode.logLevel > 11) {
             console.log(default_potencial + ' * ' + attacker + ' * ' + victim + ' = ' + default_potencial * attacker * victim);
         }
         //console.log(default_potencial +' : '+ attacker + ' : '+ victim);
@@ -824,7 +824,7 @@ const potencial_to_damage_calc_id = async (target_data, nameID/*effect revise ma
     let return_data = [1, 1, 1];
     if (send) {//与えた側
         if (target_data.effect !== undefined) {
-            if (window.devMode.logLevel > 101) {
+            if (devMode.logLevel > 101) {
                 console.log(target_data);
             }
             for (let i = 0; i < target_data.effect.length; i++) {
@@ -857,14 +857,14 @@ const potencial_to_damage_calc_id = async (target_data, nameID/*effect revise ma
             }
         }
         else {
-            if (window.devMode.logLevel > 11) {
+            if (devMode.logLevel > 11) {
                 console.warn(target_data);
             }
         }
         if (target_data.revise !== undefined) {
             return_data[2] = target_data.revise.damage;
         }
-        if (window.devMode.logLevel > 102) {
+        if (devMode.logLevel > 102) {
             console.log('buff->' + return_data[0] + ' debuff->' + return_data[1] + ' default_revise->' + return_data[2]);
         }
         if (nameID.substring(0, 2) === '40') {
@@ -888,7 +888,7 @@ const potencial_to_damage_calc_id = async (target_data, nameID/*effect revise ma
             return_data[2] = target_data.revise.income;
         }
         if (target_data.effect !== undefined) {
-            if (window.devMode.logLevel > 101) {
+            if (devMode.logLevel > 101) {
                 console.log(target_data);
             }
             for (let i = 0; i < target_data.effect.length; i++) {
@@ -921,11 +921,11 @@ const potencial_to_damage_calc_id = async (target_data, nameID/*effect revise ma
             }
         }
         else {
-            if (window.devMode.logLevel > 11) {
+            if (devMode.logLevel > 11) {
                 console.warn(target_data);
             }
         }
-        if (window.devMode.logLevel > 101) {
+        if (devMode.logLevel > 101) {
             console.log('buff->' + return_data[0] + ' debuff->' + return_data[1] + ' default_revise->' + return_data[2]);
         }
         if (nameID.substring(0, 2) === '40') {
@@ -991,7 +991,7 @@ const network_action_datatype = async (log) => {
             }
             let flagdata = await effect_flag_checker(parseInt(effectdamage, 16));
             if (flagdata === null) {
-                if (window.devMode.logLevel > 2) {
+                if (devMode.logLevel > 2) {
                     console.warn(effectdamage);
                     console.warn(log);
                 }
@@ -1106,7 +1106,7 @@ const effect_flag_checker = async (flag) => {
         case 73:
             return 'un-dead';
         default:
-            if (window.devMode.logLevel > 2) {
+            if (devMode.logLevel > 2) {
                 console.warn(flag);
             }
             return null;

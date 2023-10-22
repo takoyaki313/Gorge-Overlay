@@ -12,9 +12,9 @@ import { logline_battle_start_check } from "./33battleStartCheck.js";
 import { networkAbility_receive } from "./37networkAbilityReceive.js";
 import { networkDoT_sync_38 } from "./38networkDoT_Sync.js";
 import { networkupdatehp_39 } from "./39networkUpdateHP.js";
-import { primaryPlayerChanged_101 } from "./logline_other.js";
-
-
+import { primaryPlayerChanged_101, partyChanged_102 } from "./logline_other.js";
+import { battleEvent, AreaData, devMode } from "../../index.js";
+import { sampleJSON } from "../sample/workSample.js";
 
 //////////////////////////////////////////////////////////////////////////////
 export const loglineFirstStep = async (log) => {
@@ -22,9 +22,14 @@ export const loglineFirstStep = async (log) => {
         //AREATYPE
         await minimapChange_40(log);
     }
-    if (window.Area.Type === 0) {
+    if (AreaData.Type === 0) {
         return;
     }
+    
+    if (devMode.sampleGet) {
+        sampleJSON.pushData = log;
+    }
+
     switch (log[0]) {
         case '01'://Area Change
             break;
@@ -32,30 +37,30 @@ export const loglineFirstStep = async (log) => {
             await addcombatant(log);
             break;
         case '04':
-            if (!window.BATTLE_EVENT.Result_Page) {
+            if (!battleEvent.Result_Page) {
                 await removecombatant(log);
             }
             break;
         case '11':
-            if (window.Area.Type > 0) {
+            if (AreaData.Type > 0) {
                 log_party_push(log);
             }
             break;
         case '12':
-            
+
             break;
         case '21':
-            if (window.BATTLE_EVENT.Engage) {
+            if (battleEvent.Engage) {
                 await networkactionsync_21_22(log);
             }
             break;
         case '22':
-            if (window.BATTLE_EVENT.Engage) {
+            if (battleEvent.Engage) {
                 await networkactionsync_21_22(log);
             }
             break;
         case '24':
-            if (window.BATTLE_EVENT.Engage) {
+            if (battleEvent.Engage) {
                 await networkDoT_24(log);
             }
             break;
@@ -84,7 +89,7 @@ export const loglineFirstStep = async (log) => {
             await networkAbility_receive(log);
             break;
         case '38':
-            if (window.BATTLE_EVENT.Engage) {
+            if (battleEvent.Engage) {
                 await networkDoT_sync_38(log);
             }
             break;
@@ -99,11 +104,10 @@ export const loglineFirstStep = async (log) => {
         case '101':
             await primaryPlayerChanged_101(log);
             break;
-        /*
+
         case '102':
-            party_changed_dataupdate(log);
-            //console.log(log);
-            break;*/
+            await partyChanged_102(log);
+            break;
         default:
             break;
     }

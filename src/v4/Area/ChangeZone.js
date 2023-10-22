@@ -1,4 +1,7 @@
 import { timerStop } from "../timer/timer_event";
+import { battleEvent } from "../..";
+import { TBD } from "../maindataFormat";
+import { sampleJSON } from "../sample/workSample";
 
 export class Area {
 
@@ -17,14 +20,15 @@ export class Area {
         if (this.Type !== this.lastType) {
             timerStop();
             if (this.Type > 0) {
-                window.TBD.resetData = 'ALL';
-                window.BATTLE_EVENT.reset = true;
+                TBD.resetData = 'ALL';
+                battleEvent.reset = true;
             }
         }
         if (this.Type === 0 && this.lastType === 0) {
-            window.TBD.resetData = 'ALL';
-            window.BATTLE_EVENT.reset = true;
+            TBD.resetData = 'ALL';
+            battleEvent.reset = true;
         }
+        sampleJSON.applyArea = this.Type;
     }
 
     set areaset_changeMap(id) {
