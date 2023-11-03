@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta name="color-scheme" content="light dark">
 <html>
 <head>
   <meta charset="utf-8">
@@ -14,6 +15,7 @@
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script src="../areaID.js"></script>
   <script>
   ////////////////////
   //setting
@@ -34,18 +36,17 @@
     if(Overlay_On){
       if(log[0] === '36'){
         let lb = parseInt(log[2],16);
-
         target_overlay_disp(lb + percentage(lb));
       }
     }
   }
   function target_overlay_localstrage_get(){
-    let data = JSON.parse(localStorage.getItem('Gorge-Overlay3'));
+    let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
     if(data === null){
       target_overlay_fontsize(18);
     }
     else {
-      target_overlay_fontsize(data.lb_int_fontsize);
+      target_overlay_fontsize(data.addInIntLB);
     }
   }
 
@@ -62,8 +63,7 @@
   function target_overlay_area_check(area){
     MaxLB = 0;
     LastLB = 0;
-    const PvPArea = [791,376,431,554,888,1032,1033,1034,1116,250];
-    if (PvPArea.indexOf(area.zoneID) !== -1) {
+    if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
       Overlay_On = true;
       target_overlay_disp(0);
     }
