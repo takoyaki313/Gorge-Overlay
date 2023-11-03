@@ -571,7 +571,7 @@ const ADSettingPage = () => {
                 lang={local.language}
             />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
-            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/TargetName/</div>
+            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/targetName/</div>
             <SettingNumberInput
                 ja_main={"ターゲット名アドイン文字サイズ"}
                 ja_sub={"targetName"}
