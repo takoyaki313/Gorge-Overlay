@@ -953,7 +953,7 @@ async function minimap_change_area_check(log) {
   //759 is The Palaistra
   //760 is The Volcanic Heart
   //761 is Cloud Nine
-  if (log[2] === '488' || log[2] === '242' || log[2] === '296' || log[2] === '568' || log[2] === '167' || log[2] === '759' || log[2] === '760' || log[2] === '761'||log[2] === '822') {
+  if (log[2] === '488' || log[2] === '242' || log[2] === '296' || log[2] === '568' || log[2] === '167' || log[2] === '759' || log[2] === '760' || log[2] === '761'||log[2] === '822'||log[2] === '854') {
     if (AREA.Area_Type <= 0) {
       if (DEBUG_LOG) {
         console.error('Area Changed Event later logline event than');

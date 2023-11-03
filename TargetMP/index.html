@@ -26,6 +26,7 @@
     }
   </style>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script src="../areaID.js"></script>
   <script type="module">
     import {bc_send, G_bc} from '/src/bc/bc.js';
     //bc_send("dd","TKD")
@@ -43,6 +44,7 @@
         this.disp = false;
         this.nameID = "";
         this.MP = 0;
+        this.portionVisible = true;
       }
       set isVisible(is) {
         if (!this.areaDisp){
@@ -64,10 +66,14 @@
       get remainNum (){
         return Math.floor(this.MP / 2500);
       }
-
+      set set_portionVisible (is){
+        if(!is){
+          document.body.style["grid-template-columns"] = "3rem";
+        }
+        this.portionVisible = is;
+      }
     }
 
-    const PvPAreaID = [376, 431, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
     let main = new targetMP();
     window.onload = () => {
       addOverlayListener('ChangeZone', (zone) => target_overlay_area_check(zone, main));
@@ -89,6 +95,7 @@
       }
       else {
         target_overlay_fontsize(data.addInFontSize_MP);
+        main.set_portionVisible = data.addInMP_Portion;
       }
     }
 
@@ -108,7 +115,7 @@
     function target_overlay_area_check(area, main) {
       MaxLB = 0;
       LastLB = 0;
-      if (PvPAreaID.indexOf(area.zoneID) !== -1) {
+      if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
         main.isArea = true;
       }
       else {
@@ -116,7 +123,6 @@
       }
     }
     ////
-
     const dispTargetData = (e,main) => {
       if (!main.areaDisp){
         return null;
@@ -142,15 +148,22 @@
       main.MP = e.CurrentMP;
       //update
       const t_MP = document.getElementById('targetMP');
+      const t_rS = document.getElementById('remainSlash');
       const t_rN = document.getElementById('remainNum');
       t_MP.textContent = main.MP;
-      t_rN.textContent = main.remainNum;
+      if (main.portionVisible){
+        t_rS.textContent = "/";
+        t_rN.textContent = main.remainNum;
+      }else{
+        t_rS.textContent = "";
+        t_rN.textContent = "";
+      }
     }
   </script>
 </head>
 
 <body>
   <div id="targetMP"></div>
-  <div>/</div>
+  <div id="remainSlash"></div>
   <div id="remainNum"></div>
 </body>

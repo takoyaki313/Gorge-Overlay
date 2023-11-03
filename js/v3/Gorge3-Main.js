@@ -53,8 +53,9 @@ function overlay_update_start(e) {
     }
     else if (e.Encounter.CurrentZoneName.toLowerCase() === 'the palaistra' ||
       e.Encounter.CurrentZoneName.toLowerCase() === 'the volcanic heart' ||
-      e.Encounter.CurrentZoneName.toLowerCase() === 'cloud nine'||
-      e.Encounter.CurrentZoneName.toLowerCase() === 'the clockwork castletown'){
+      e.Encounter.CurrentZoneName.toLowerCase() === 'cloud nine' ||
+      e.Encounter.CurrentZoneName.toLowerCase() === 'the clockwork castletown' ||
+      e.Encounter.CurrentZoneName.toLowerCase() === 'the red sans') {
       cc_start();
     }
     else {
@@ -114,23 +115,23 @@ function primary_player(player) {
   log_queue_insert(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 }
 let BC_Channel_Active = false;
-async function broadcast_Check(){
+async function broadcast_Check() {
   if (AREA.Area_Type === 0) {
-    if(AREA.Last_Area_type !== -1&&BC_Channel_Active){
-      sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
+    if (AREA.Last_Area_type !== -1 && BC_Channel_Active) {
+      sendBC("general", { source: "GorgeOverlay", message: "Disconnect" });
       connectBC(false);
       BC_Channel_Active = false;
-    }else if(AREA.Last_Area_type === -1){
+    } else if (AREA.Last_Area_type === -1) {
       await connectBC(true);
-      sendBC("general",{source:"GorgeOverlay",message:"Disconnect"});
+      sendBC("general", { source: "GorgeOverlay", message: "Disconnect" });
       connectBC(false);
       BC_Channel_Active = false;
     }
-  }else{
+  } else {
     BC_Channel_Active = true;
     connectBC(true);
-    sendBC("general",{source:"GorgeOverlay",message:"Connect"});
-  }  
+    sendBC("general", { source: "GorgeOverlay", message: "Connect" });
+  }
 }
 let PRIMARY_PLAYER = { ACT_NAME: 'YOU', nameID: null, name: null };
 let AREA = { Area_Type: -1, Last_Area_type: null };
@@ -228,7 +229,14 @@ async function area_type_set(zoneID) {
       AREA.Area_Type = 5;
       LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
       break;
-
+    case 1138://Crystal Conflict The RedSans 
+      AREA.Area_Type = 5;
+      LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
+      break;
+    case 1139://Crystal Conflict The RedSans 
+      AREA.Area_Type = 5;
+      LOGLINE_ENCOUNTER.Battle_Max_Time = CC_BattleTime;
+      break;
     case 250://Wolves Den Pier
       AREA.Area_Type = 4;
       LOGLINE_ENCOUNTER.Battle_Max_Time = Test_BattleTime;
@@ -256,7 +264,7 @@ async function sample_gorge_data_calc(type) {
     data = await sample_gorge();
   } else if (type === 3) {
     data = await gorge3_sample();
-  }else if (type === 4){
+  } else if (type === 4) {
     data = await newgorge_sample();
   }
   AREA.Area_Type = 2;
