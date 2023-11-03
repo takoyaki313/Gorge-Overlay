@@ -15,7 +15,7 @@ PvPエリアでしか表示されない（はず）なので、普通のエリ�
 ## インストール
 Overlayを追加し、CustomからMiniParceを選択し、表示するURLに以下をコピペしてください。
 ```
-https://takoyaki313.github.io/Gorge-Overlay/IntLB/IntLB.html
+https://takoyaki313.github.io/Gorge-Overlay/IntLB/
 ```
 ## 前提Plugin
 [ngld/OverlayPlugin](https://github.com/ngld/OverlayPlugin)

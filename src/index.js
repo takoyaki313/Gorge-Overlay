@@ -9,6 +9,7 @@ import { partyChangeEvent } from './party';
 import { GorgeOverlay_Local, GorgeOverlay_LocalStorage } from './localsetting/local';
 import { killSound_Load } from './v4/sound';
 
+import { getDatacenters } from './v4/xivapi/api.js';
 //import reportWebVitals from './reportWebVitals';
 let readLocalData = localStorage.getItem(GorgeOverlay_LocalStorage);
 
@@ -17,13 +18,13 @@ if (readLocalData === null) {
 }
 
 export const devMode = {
-  webSocket: true,
+  webSocket: false,
   logLevel: 0,
   logForceOff: false,
-  sampleGet: true,
+  sampleGet: false,
   sampleType: -1,//default -1
   calcTime: false,
-  forceReset: false,
+  forceReset: true,
 };
 
 export const AreaData = new Area();
@@ -70,7 +71,7 @@ window.addOverlayListener('ChangeMap', (minimap) => {
     AreaData.areaset_changeMap = minimap.mapID;
   }
 });
-const get_data = async () => {
+const getLanguage = async () => {
   let language = await window.callOverlayHandler({ call: 'getLanguage' });
   local.setLanguage = language.language;
 }
@@ -91,5 +92,7 @@ setInterval(calcClock, CalcInterval);
 window.onload = async () => {
   rootRender({});
   window.startOverlayEvents();
-  get_data();
+  getLanguage();
+  getDatacenters();
+
 }

@@ -87,12 +87,13 @@
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script src="../areaID.js"></script>
   <script>
     ////////////////////
     //setting
     ////////////////////
     var Overlay_On = true;
-    const PvPAreaID = [376, 431, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
+
     var nameMap = new Map();
     ////////////////////
     $(function () {
@@ -460,7 +461,7 @@
     function targetmarker_overlay_area_check(area) {
       MaxLB = 0;
       LastLB = 0;
-      if (PvPAreaID.indexOf(area.zoneID) !== -1) {
+      if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
         Overlay_On = true;
         targetmarker_overlay_disp();
       }

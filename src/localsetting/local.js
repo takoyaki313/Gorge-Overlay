@@ -61,6 +61,9 @@ export class GorgeOverlay_Local {
         this.AddInMode = typeof (data.AddInMode) !== 'undefined' ? data.AddInMode : false;
         this.sampleMode = typeof (data.sampleMode) !== 'undefined' ? data.sampleMode : false;
         this.addInFontSize_MP = typeof (data.addInFontSize_MP) !== 'undefined' ? data.addInFontSize_MP : 18;
+        this.addInMP_Portion = typeof (data.addInMP_Portion) !== 'undefined' ? data.addInMP_Portion : true;
+        this.addInTargetName = typeof (data.addInTargetName) !== 'undefined' ? data.addInTargetName : 16;
+        this.addInIntLB = typeof (data.addInIntLB) !== 'undefined' ? data.addInIntLB : 16;
         this.addInTargetMarker_Size = typeof (data.addInTargetMarker_Size) !== 'undefined' ? data.addInTargetMarker_Size : 16;
         this.addInTargetMarker_Reverse = typeof (data.addInTargetMarker_Reverse) !== 'undefined' ? data.addInTargetMarker_Reverse : true;
         this.addInTargetFrom_Size = typeof (data.addInTargetFrom_Size) !== 'undefined' ? data.addInTargetFrom_Size : 16;
@@ -100,6 +103,18 @@ export class GorgeOverlay_Local {
     }
     set setaddInFontSize_MP(data) {
         this.addInFontSize_MP = data;
+        saveLocalStorage(this);
+    }
+    set setaddInMP_Portion(data) {
+        this.addInMP_Portion = data;
+        saveLocalStorage(this);
+    }
+    set setaddInTargetName(data) {
+        this.addInTargetName = data;
+        saveLocalStorage(this);
+    } 
+    set setaddInIntLB(data) {
+        this.addInIntLB = data;
         saveLocalStorage(this);
     }
     set setaddInTargetMarker_Size(data) {

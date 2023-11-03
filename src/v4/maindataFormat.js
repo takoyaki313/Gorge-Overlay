@@ -303,6 +303,7 @@ class dispPlayerData {
         this.nameID = before.nameID;
         this.name = typeof (before.name) === 'string' ? before.name : before.nameID;
         this.server = typeof (before.server) === 'string' ? before.server : '';
+        this.datacenter = typeof (before.dc_server) === 'string' ? before.dc_server : '';
         this.job = typeof (before.job) === 'string' ? before.job : '';
         this.jobhistory = typeof (before.jobhistory) === 'object' ? before.jobhistory : [];
         this.alliance = typeof (before.alliance) === 'number' ? before.alliance : 0;
@@ -454,3 +455,4 @@ class dispPlayerData {
 }
 
 export const TBD = new maindata();
+window.TBD_Obj = TBD;

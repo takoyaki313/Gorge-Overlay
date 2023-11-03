@@ -105,7 +105,12 @@ export class m_data extends m_dataLayout {
         this.hps = sep_hps.int
         this.hps_tooltip = d_Data.heal_All.length > 0 ? <HealTooltipLayout data={d_Data} /> : "";
         this.name = d_Data.name;
-        this.name_tooltip = d_Data.server;
+        
+        if (d_Data.datacenter !== "") {
+            this.name_tooltip = d_Data.datacenter + " / " + d_Data.server;
+        } else {
+            this.name_tooltip = d_Data.server;
+        }
 
         this.nameID = d_Data.nameID;
         this.job = d_Data.job;

@@ -12,7 +12,7 @@ StandAloneモードは近くで起きた情報のみ表示されます。遠方�
 ## インストール
 Overlayを追加し、CustomからMiniParceを選択し、表示するURLに以下をコピペしてください。
 ```
-https://takoyaki313.github.io/Gorge-Overlay/targetmarker/targetmarker.html
+https://takoyaki313.github.io/Gorge-Overlay/targetmarker/
 ```
 ## 前提Plugin
 [ngld/OverlayPlugin](https://github.com/ngld/OverlayPlugin)

@@ -555,21 +555,57 @@ const ADSettingPage = () => {
                 en_main={"MP display add-in font size"}
                 en_sub={"TargetMP"}
                 local={(v) => local.setaddInFontSize_MP = v}
-                max={64}
+                max={256}
                 min={10}
                 init={local.addInFontSize_MP}
                 lang={local.language}
             />
+            <SettingToggleInput
+                ja_main={"残りポーション数"}
+                ja_sub={"TargetMP"}
+                en_main={"Number of remaining potions"}
+                en_sub={"TargetMP"}
+                local={(v) => local.setaddInMP_Portion = v}
+                uID={"a_addInMP_Portion"}
+                init={local.addInMP_Portion}
+                lang={local.language}
+            />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
-            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/targetmarker/targetmarker.html</div>
+            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/TargetName/</div>
+            <SettingNumberInput
+                ja_main={"ターゲット名アドイン文字サイズ"}
+                ja_sub={"targetName"}
+                en_main={"Target name add-in font size"}
+                en_sub={"targetName"}
+                local={(v) => local.setaddInTargetName = v}
+                max={256}
+                min={6}
+                init={local.addInTargetName}
+                lang={local.language}
+            />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
+            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/IntLB/</div>
+            <SettingNumberInput
+                ja_main={"LB数値表示アドイン文字サイズ"}
+                ja_sub={"IntLB"}
+                en_main={"LB numerical display add-in font size"}
+                en_sub={"IntLB"}
+                local={(v) => local.setaddInIntLB = v}
+                max={256}
+                min={6}
+                init={local.addInIntLB}
+                lang={local.language}
+            />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
+            <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/targetmarker/</div>
             <SettingNumberInput
                 ja_main={"マーカーアドインの文字サイズ"}
                 ja_sub={"targetmarker"}
                 en_main={"Target marker add-in font size"}
                 en_sub={"targetmarker"}
                 local={(v) => local.setaddInTargetMarker_Size = v}
-                max={64}
-                min={8}
+                max={256}
+                min={6}
                 init={local.addInTargetMarker_Size}
                 lang={local.language}
             />

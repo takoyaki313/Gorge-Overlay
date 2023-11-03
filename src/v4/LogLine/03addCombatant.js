@@ -4,6 +4,7 @@ import { update_maindata, read_maindata } from "../maindataEdit.js";
 import { owner_id_list_add } from "./loglineGlobal.js";
 import { job_to_role } from "../../role.js";
 import { battleEvent, AreaData } from "../../index.js";
+import { serverList } from "../xivapi/api.js";
 
 export const addcombatant = async (log) => {
     let nameID = log[2].toUpperCase();
@@ -33,11 +34,24 @@ export const addcombatant = async (log) => {
                 else {
                     await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
                 }
-            } else {//
-                await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
+            } else {//Not Found 
+                let dc = "";
+                if (server !== "") {
+                    if (typeof (serverList[server]) !== 'undefined') {
+                        dc = serverList[server].dc;
+                    }
+                }
+                await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ["dc_server", dc, true], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
             }
         } else {
-            await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
+            //Before Engage
+            let dc = "";
+            if (server !== "") {
+                if (typeof (serverList[server]) !== 'undefined') {
+                    dc = serverList[server].dc;
+                }
+            }
+            await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ["dc_server", dc, true], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
         }
     }
     if (job !== null) {

@@ -84,6 +84,7 @@
     }
   </style>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script src="../areaID.js"></script>
   <script>
     ////////////////////
     //setting
@@ -125,19 +126,19 @@
       }
     }
     const play1 = () => {
-        if (local_V.sound1 !== null && !main.isPlay) {
-          local_V.sound1.play();
-          main.isPlay = true;
-        }
-        return null;
+      if (local_V.sound1 !== null && !main.isPlay) {
+        local_V.sound1.play();
+        main.isPlay = true;
       }
+      return null;
+    }
     const play2 = () => {
-        if (local_V.sound2 !== null) {
-          local_V.sound2.play();
-          main.isPlay = true;
-        }
-        return null;
+      if (local_V.sound2 !== null) {
+        local_V.sound2.play();
+        main.isPlay = true;
       }
+      return null;
+    }
     class targetFrom {
       constructor() {
         this.areaDisp = false;
@@ -267,11 +268,6 @@
         play1();
       }
     }
-    const PvPAreaID = [376, 431, 554, 888, 1032, 1058, 1033, 1059, 1034, 1060, 1116, 1117, 250, 717, 791];
-    const FL_ID = [376, 431, 554, 888];
-    const CC_ID = [1032, 1033, 1034, 1058, 1059, 1060, 1116, 1117, 250, 717];
-    const RW_ID = [791];
-
     var main = new targetFrom();
     var local_V = new localVal();
     let intervalID;
@@ -303,19 +299,14 @@
       console.log(area.zoneID);
       MaxLB = 0;
       LastLB = 0;
-      if (PvPAreaID.indexOf(area.zoneID) !== -1) {
+      if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
         main.isArea = true;
-        if (FL_ID.indexOf(area.zoneID) !== -1) {
-          main.areaType = 3;
-          main.nowtNum = local_V.fl;
-        } else if (CC_ID.indexOf(area.zoneID) !== -1) {
-          main.areaType = 5;
-          main.nowtNum = local_V.cc;
-        } else if (RW_ID.indexOf(area.zoneID) !== -1) {
-          main.areaType = 2;
+        main.areaType = areaID[String(area.zoneID)].Type;
+        if (main.areaType === 2) {
           main.nowtNum = local_V.rw;
+        } else if (main.areaType === 1 || main.areaType === 3) {
+          main.nowtNum = local_V.fl;
         } else {
-          main.areaType = 5;
           main.nowtNum = local_V.cc;
         }
       }

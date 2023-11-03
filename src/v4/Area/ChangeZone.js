@@ -53,6 +53,7 @@ export class Area {
 }
 
 const areaTypeSet_40 = (zoneID) => {
+    //console.log("ZoneID-40", zoneID);
     switch (zoneID) {
         case 488://Hidden Gorge
             return 2;
@@ -71,6 +72,8 @@ const areaTypeSet_40 = (zoneID) => {
         case 761://Crystal Conflict Cloud Nine
             return 5;
         case 822://Crystal Conflict The Clockwork Castletown 
+            return 5;
+        case 854://Crystal Conflict The RedSans 
             return 5;
         /*
         case 51://Wolves Den Pier
