@@ -13,7 +13,7 @@ const areaID = {
     1060: { type: 5, name: "Cloud Nine" },
     1116: { type: 5, name: "The Clockwork Castletown " },
     1117: { type: 5, name: "The Clockwork Castletown " },
-    1038: { type: 5, name: "The RedSans " },
+    1138: { type: 5, name: "The RedSans " },
     1139: { type: 5, name: "The RedSans " },
 
     250: { type: 5, name: "Wolves Den Pier" },
