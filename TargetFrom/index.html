@@ -296,12 +296,11 @@
 
     ////////////////
     function target_overlay_area_check(area, main) {
-      console.log(area.zoneID);
       MaxLB = 0;
       LastLB = 0;
       if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
         main.isArea = true;
-        main.areaType = areaID[String(area.zoneID)].Type;
+        main.areaType = areaID[String(area.zoneID)].type;
         if (main.areaType === 2) {
           main.nowtNum = local_V.rw;
         } else if (main.areaType === 1 || main.areaType === 3) {
