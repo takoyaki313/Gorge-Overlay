@@ -42,14 +42,16 @@ const PvPPlayer = (prop) => {
     const [isReset, setReset] = useState(true);
     let data = prop.data;
     let role = job_to_role(data.job);
+    let battleReset = false;
 
     const hide_toggle = () => {
         setActive(!simple)
     }
 
     let advanced_slimOff = local[prop.area + '_advancedOverlay_slim'];
-    if (isReset) {
+    if (isReset || battleReset) {
         setReset(false);
+        battleReset = false;
         if (PRIMARY_PLAYER.nameID === prop.data.nameID && local[prop.area + '_advancedOverlay_me']) {
             setActive(true);
         }else if (prop.data.alliance === 1 && local[prop.area + '_advancedOverlay_party']) {
@@ -63,6 +65,10 @@ const PvPPlayer = (prop) => {
         }
     }
 
+    if (battleEvent.Result_Page) {
+        battleReset = true;
+    }
+    
     let gage_offset = Math.abs((data.damage.ps / prop.maxdps) * 100 - 100) - 2;
 
     const AdvancedPvP = (prop) => {

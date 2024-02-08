@@ -174,7 +174,7 @@ export const Barrier_ID = [
       action_potencial: 0,
       dotid:'0C5C',
       name:'刃の舞い[終]',
-      potencial: 1000,//1000-5000
+      potencial: 1000,//2000-6000
       max : 10,
       synctype: 'stack-buff',
       checkbuff: [{buffID:'010C5C',potencial:2000},{buffID:'020C5C',potencial:3000},{buffID:'030C5C',potencial:4000},{buffID:'040C5C',potencial:5000}],

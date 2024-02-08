@@ -61,30 +61,96 @@ export class maindata {
             sampleJSON.resetData();
         }
     }
-    get BattleData_AllyActive() {
-        return (BattleDataGet('AllyActive'));
+    dataGet = (limit) => {
+        // Party Ally Enemy PC NPC
+        const Data = TBD.Player_data;
+        const Alliance = TBD.Alliance;
+        let rtn = [];
+        let now = 0;
+        let battleEndTime = battleEvent.timer.Get_ResultIn;
+        if (battleEndTime !== 0) {
+            now = battleEndTime;
+        } else {
+            now = Date.now();
+        }
+    
+        let nameID_Job = [];
+        if (Data.length > 0) {
+            if (Data[0].AreaType === 5) {
+                for (let i = 0; i < Data.length; i++) {
+                    if (Data[i].nameID.substring(0, 2) === "10") {
+                        nameID_Job.push({
+                            nameID: Data[i].nameID,
+                            name: typeof (Data[i].name) !== 'undefined' ? Data[i].name : "",
+                            job: typeof (Data[i].job) !== 'undefined' ? Data[i].job : "",
+                            alliance: typeof (Data[i].alliance) !== 'undefined' ? Data[i].alliance : 0
+                        });
+                    }
+                }
+            }
+        }
+        switch (limit) {
+            case 'Party':
+                for (let i = 0; i < Data.length; i++) {
+                    if (Data[i].alliance === 1) {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                }
+                break;
+            case 'Ally':
+                for (let i = 0; i < Data.length; i++) {
+                    if (Data[i].alliance >= 1) {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                }
+                break;
+            case 'Enemy':
+                for (let i = 0; i < Data.length; i++) {
+                    if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10') {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                }
+                break;
+            case 'EnemyActive':
+                for (let i = 0; i < Data.length; i++) {
+                    if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10' && Data[i].battle) {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                }
+                break;
+            case 'PC':
+                for (let i = 0; i < Data.length; i++) {
+                    if (Data[i].nameID.substring(0, 2) === '10') {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                }
+                break;
+            case 'NPC':
+                for (let i = 0; i < Data.length; i++) {
+                    if (Data[i].nameID.substring(0, 2) === '40' || Data[i].nameID.substring(0, 2) === 'E0') {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                }
+                break;
+            case 'AllyActive':
+                for (let i = 0; i < Data.length; i++) {
+                    if (Data[i].alliance === 1) {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                    else if (Data[i].alliance >= 1 && Data[i].battle) {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    }
+                }
+                break;
+            default:
+                for (let i = 0; i < Data.length; i++) {
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                }
+                break;
+        }
+        return (gorgeSortRule(rtn));
     }
-    get BattleData_Party() {
-        return (BattleDataGet('Party'));
-    }
-    get BattleData_Ally() {
-        return (BattleDataGet('Ally'));
-    }
-    get BattleData_Enemy() {
-        return (BattleDataGet('Enemy'));
-    }
-    get BattleData_EnemyActive() {
-        return (BattleDataGet('EnemyActive'));
-    }
-    get BattleData_PC() {
-        return (BattleDataGet('PC'));
-    }
-    get BattleData_NPC() {
-        return (BattleDataGet('NPC'));
-    }
-    get BattleData_All() {
-        return (BattleDataGet('All'));
-    }
+    
 }
 
 class dynamisHistory {
@@ -147,96 +213,6 @@ export const BattleDataGetLimit = (num, tbd_battledata) => {
         }
     }
 
-    return (gorgeSortRule(rtn));
-}
-
-const BattleDataGet = (limit) => {
-    // Party Ally Enemy PC NPC
-    const Data = TBD.Player_data;
-    const Alliance = TBD.Alliance;
-    let rtn = [];
-    let now = new Date();
-    let battleEndTime = battleEvent.timer.Get_ResultIn;
-    if (battleEndTime !== 0) {
-        now = battleEndTime;
-    } else {
-        now = now.getTime();
-    }
-
-    let nameID_Job = [];
-    if (Data.length > 0) {
-        if (Data[0].AreaType === 5) {
-            for (let i = 0; i < Data.length; i++) {
-                if (Data[i].nameID.substring(0, 2) === "10") {
-                    nameID_Job.push({
-                        nameID: Data[i].nameID,
-                        name: typeof (Data[i].name) !== 'undefined' ? Data[i].name : "",
-                        job: typeof (Data[i].job) !== 'undefined' ? Data[i].job : "",
-                        alliance: typeof (Data[i].alliance) !== 'undefined' ? Data[i].alliance : 0
-                    });
-                }
-            }
-        }
-    }
-    switch (limit) {
-        case 'Party':
-            for (let i = 0; i < Data.length; i++) {
-                if (Data[i].alliance === 1) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-            }
-            break;
-        case 'Ally':
-            for (let i = 0; i < Data.length; i++) {
-                if (Data[i].alliance >= 1) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-            }
-            break;
-        case 'Enemy':
-            for (let i = 0; i < Data.length; i++) {
-                if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10') {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-            }
-            break;
-        case 'EnemyActive':
-            for (let i = 0; i < Data.length; i++) {
-                if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10' && Data[i].battle) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-            }
-            break;
-        case 'PC':
-            for (let i = 0; i < Data.length; i++) {
-                if (Data[i].nameID.substring(0, 2) === '10') {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-            }
-            break;
-        case 'NPC':
-            for (let i = 0; i < Data.length; i++) {
-                if (Data[i].nameID.substring(0, 2) === '40' || Data[i].nameID.substring(0, 2) === 'E0') {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-            }
-            break;
-        case 'AllyActive':
-            for (let i = 0; i < Data.length; i++) {
-                if (Data[i].alliance === 1) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-                else if (Data[i].alliance >= 1 && Data[i].battle) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-                }
-            }
-            break;
-        default:
-            for (let i = 0; i < Data.length; i++) {
-                rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
-            }
-            break;
-    }
     return (gorgeSortRule(rtn));
 }
 

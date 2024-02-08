@@ -67,17 +67,33 @@ export const addcombatant = async (log) => {
 
 const damage_revise = async (nameID, job, lastupdate) => {
     if (AreaData.Type === 1 || AreaData.Type === 3) {//FL
-        let class_A = ['pld', 'gnb', 'mnk', 'sam', 'rpr', 'drg', 'nin'];
-        let class_B = ['whm', 'smn'];
-        let class_C = ['war', 'drk'];
+        let class_A = ['pld', 'mnk', 'rpr', 'nin'];// 0-50
+        let class_B = ['gnb'];//5-50
+        let class_C = ['war', 'drg', 'sam'];//10-50
+        let class_D = ['drk'];//15-50
+        let class_E = ['ast'];//5-25
+        let class_F = ['whm'];//10-25
+        let class_G = ['smn'];//15-25
         if (class_A.indexOf(job) !== -1) {
             await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
         }
         else if (class_B.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.75 }, true], ['lastupdate', lastupdate, true]);
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.95, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
         }
         else if (class_C.indexOf(job) !== -1) {
             await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
+        }
+        else if (class_D.indexOf(job) !== -1) {
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.85, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
+        }
+        else if (class_E.indexOf(job) !== -1) {
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.95, income: 0.75 }, true], ['lastupdate', lastupdate, true]);
+        }
+        else if (class_F.indexOf(job) !== -1) {
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.75 }, true], ['lastupdate', lastupdate, true]);
+        }
+        else if (class_G.indexOf(job) !== -1) {
+            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.85, income: 0.75 }, true], ['lastupdate', lastupdate, true]);
         }
         else {
             await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.75 }, true], ['lastupdate', lastupdate, true]);

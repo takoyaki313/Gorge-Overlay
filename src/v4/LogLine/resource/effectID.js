@@ -263,7 +263,7 @@ export const EFFECT_ID = {
         name: 'ナイトの堅守',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.85,
+        cut: 0.8,
         cut_heal: 1,
         maxtime: 10
     },
@@ -945,7 +945,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 8
     },
     '0C65': {
         name: '抜重歩法',
@@ -1285,7 +1285,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 20
     },
     '0B2C': {
         name: 'リターン実行可',
@@ -1390,7 +1390,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 8
     },
     '0882': {
         name: '時神の護り',

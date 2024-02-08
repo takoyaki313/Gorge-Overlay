@@ -33,10 +33,11 @@ export const PvPMain = (prop) => {
         allyMax = 24;
         enemyMax = 0;
     }
-    let ally_Limit = BattleDataGetLimit(allyMax,TBD.BattleData_AllyActive);
-    let ally = TBD.BattleData_Ally
-    let enemy = TBD.BattleData_Enemy;
-    let enemy_Limit = BattleDataGetLimit(enemyMax, TBD.BattleData_EnemyActive);
+  
+    let ally_Limit = BattleDataGetLimit(allyMax,TBD.dataGet("AllyActive"));
+    let ally = TBD.dataGet("Ally");
+    let enemy = TBD.dataGet("Enemy");
+    let enemy_Limit = BattleDataGetLimit(enemyMax, TBD.dataGet("EnemyActive"));
 
     if (battleEvent.Result_Page) {
         if (resultAllAlly) {
