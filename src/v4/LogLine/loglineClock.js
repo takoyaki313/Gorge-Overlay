@@ -1,16 +1,20 @@
 import { loglineFirstStep } from './loglineFirstStep'
+import { enemyPartySimulation } from './enemyPartySimulation';
 import { devMode } from '../..';
 /////////////////////////////////////////////////
 let LOG_PROCESS = false;
 let LOG_QUEUE = [];
+let ENEMY_PARTY_QUEUE = [];
 let PROMISE_ARRAY = [];
 let PROCESS_TIME = { start: 0, end: 0 };
 
 export const loglineQueue_Push = (log) => {
     LOG_QUEUE.push(log);
-
 }
 
+export const enemyPartyQueue_Push = (log) => {
+    ENEMY_PARTY_QUEUE.push(log);
+}
 
 export const calcClock = async () => {
     if (!LOG_PROCESS) {
@@ -27,11 +31,14 @@ export const calcClock = async () => {
             promise = promise.then(async () => await loglineFirstStep(LOG_QUEUE.shift()));
             PROMISE_ARRAY.push(promise);
         }
+        promise = promise.then(async () => await enemyPartySimulation(ENEMY_PARTY_QUEUE));
+        ENEMY_PARTY_QUEUE = [];
+        PROMISE_ARRAY.push(promise);
         promise = promise.then(async () => {
             if (devMode.calcTime) {
                 PROCESS_TIME.end = performance.now();
                 let time = PROCESS_TIME.end - PROCESS_TIME.start;
-                console.debug('CLOCK_Successes(' +log_num +')->' + time + 'ms');
+                console.debug('CLOCK_Successes(' + log_num + ')->' + time + 'ms');
             }
         });
         PROMISE_ARRAY.push(promise);

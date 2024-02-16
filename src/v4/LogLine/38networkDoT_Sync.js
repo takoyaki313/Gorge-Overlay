@@ -1,7 +1,7 @@
 import { timestamp_change } from "./logline_other.js";
 import { hpdata_add } from "./hpdata.js";
 import { update_maindata, alliance_dynamis_update } from "../maindataEdit.js";
-import { Stack_buff } from "./loglineGlobal.js";
+import { Stack_buff, DynamisIconID, TensyonID } from "./loglineGlobal.js";
 import { buffID_coordinate } from "./26playerBuffAdd.js";
 import { AreaData, devMode } from "../../index.js";
 
@@ -76,10 +76,9 @@ const player_buff_list_update = async (data, nameID, lastupdate) => {
 }
 
 const dynamis_checker = async (nameID, effectID, rank, lastupdate) => {
-    let dynamis = ['0853', '0854', '0855', '0856', '0857', '05B9', '06C2'];
     // 05B9 Tensyon    06C2 TensyonMax
-    if (dynamis.indexOf(effectID) !== -1 && nameID.substring(0, 2) === "10") {
-        if (effectID === '05B9') {
+    if (DynamisIconID.indexOf(effectID) !== -1 && nameID.substring(0, 2) === "10") {
+        if (effectID === TensyonID) {
             if (typeof rank !== 'number') {
                 if (devMode.logLevel > 2) {
                     console.error('Tensyon_num is unknown', rank);

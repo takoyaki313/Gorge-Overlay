@@ -56,9 +56,9 @@ const PvPPlayer = (prop) => {
             setActive(true);
         }else if (prop.data.alliance === 1 && local[prop.area + '_advancedOverlay_party']) {
             setActive(true);
-        }else if (prop.data.alliance === 0 && local[prop.area + '_advancedOverlay_ally']) {
+        }else if (prop.data.alliance <= 0 && local[prop.area + '_advancedOverlay_enemy']) {
             setActive(true);
-        }else if (prop.data.alliance > 1 && local[prop.area + '_advancedOverlay_enemy']) {
+        }else if (prop.data.alliance > 1 && local[prop.area + '_advancedOverlay_ally']) {
             setActive(true);
         } else {
             setActive(false);
@@ -122,7 +122,10 @@ export const backgroundColorGet = (nameID, areaType, alliance, role) =>{
     }
     else if (7 > alliance && alliance > 0) {
         background_color_row = 'alliance-background-gradient-' + alliance;
-    } else {
+    } else if (-7 < alliance && alliance < 0) {
+        background_color_row = 'alliance-background-gradient-' + Math.abs(alliance);
+    }
+    else{
         background_color_row = role + '-background-gradient';
     }
     return background_color_row;

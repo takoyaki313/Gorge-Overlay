@@ -15,6 +15,8 @@ export class maindata {
         this.Action_Synced_data = [];
         this.Action_Sync_data = [];
         this.Alliance = new dynamisHistory();
+        this.EnemyAlliance = [new dynamisParty()];
+        this.EnemyUnknownDynamis = [];
     }
     set resetData(type/*ALL/PART*/) {
 
@@ -28,6 +30,8 @@ export class maindata {
             this.Action_Synced_data = [];
             this.Action_Sync_data = [];
             this.Alliance = new dynamisHistory();
+            this.EnemyAlliance = [new dynamisParty()];
+            this.EnemyUnknownDynamis = [];
             if (devMode.logLevel > 2) {
                 console.warn('MainData Reset');
             }
@@ -50,6 +54,8 @@ export class maindata {
             this.Action_Synced_data = [];
             this.Action_Sync_data = [];
             this.Alliance = new dynamisHistory();
+            this.EnemyAlliance = [new dynamisParty()];
+            this.EnemyUnknownDynamis = [];
             if (devMode.logLevel > 2) {
                 console.lowarng('MainData Reset');
             }
@@ -93,58 +99,58 @@ export class maindata {
             case 'Party':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance === 1) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'Ally':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance >= 1) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'Enemy':
                 for (let i = 0; i < Data.length; i++) {
-                    if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10') {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    if (Data[i].alliance < 1 && Data[i].nameID.substring(0, 2) === '10') {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'EnemyActive':
                 for (let i = 0; i < Data.length; i++) {
-                    if (!Data[i].alliance >= 1 && Data[i].nameID.substring(0, 2) === '10' && Data[i].battle) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    if (Data[i].alliance < 1 && Data[i].nameID.substring(0, 2) === '10' && Data[i].battle) {
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'PC':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].nameID.substring(0, 2) === '10') {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'NPC':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].nameID.substring(0, 2) === '40' || Data[i].nameID.substring(0, 2) === 'E0') {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'AllyActive':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance === 1) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                     else if (Data[i].alliance >= 1 && Data[i].battle) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             default:
                 for (let i = 0; i < Data.length; i++) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance, nameID_Job));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
                 }
                 break;
         }
@@ -161,10 +167,11 @@ class dynamisHistory {
     }
 }
 
-class dynamisParty {
+export class dynamisParty {
     constructor() {
         this.dynamis = 0;
         this.history = [];
+        this.memberID = [];
     }
 }
 
@@ -270,12 +277,12 @@ export const get_dispPlayerData_Robot = (dispData, createTime) => {
     }
     dispData.data.add_combatant_time = [{ battle: true, time: dispData.ridetime, timestamp: "robot" }, { battle: false, time: now, timestamp: "robot" }];
     dispData.data.job = dispData.ride_type;
-    let robotData = new dispPlayerData(dispData.data, now, TBD.Alliance, []);
+    let robotData = new dispPlayerData(dispData.data, now, TBD.Alliance,TBD.EnemyAlliance, []);
     return (robotData);
 }
 
 class dispPlayerData {
-    constructor(before, now, Alliance, nameID_Job) {
+    constructor(before, now, Alliance,EnemyAlliance, nameID_Job) {
         this.nameID = before.nameID;
         this.name = typeof (before.name) === 'string' ? before.name : before.nameID;
         this.server = typeof (before.server) === 'string' ? before.server : '';
@@ -317,20 +324,34 @@ class dispPlayerData {
         this.accept_income_over_heal_All = [];
 
         this.AreaType = before.AreaType;
-        if (0 < this.alliance && this.alliance < 7 && this.AreaType === 2) {
-            if (Alliance[this.alliance].dynamis > 0) {
-                this.dynamishistory = Alliance[this.alliance];
-                this.dynamis = this.dynamishistory.dynamis;
+        if (this.AreaType === 2) {
+            if (0 < this.alliance && this.alliance < 7) {
+                if (Alliance[this.alliance].dynamis > 0) {
+                    this.dynamishistory = Alliance[this.alliance];
+                    this.dynamis = this.dynamishistory.dynamis;
+                }
+                else {
+                    this.dynamishistory = new dynamisParty();
+                    this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
+                }
+            } else if (this.alliance < 0) {
+                if (EnemyAlliance[Math.abs(this.alliance)].dynamis > 0) {
+                    this.dynamishistory = EnemyAlliance[Math.abs(this.alliance)];
+                    this.dynamis = this.dynamishistory.dynamis;
+                }
+                else {
+                    this.dynamishistory = new dynamisParty();
+                    this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
+                }
             }
-            else {
+            else{
                 this.dynamishistory = new dynamisParty();
                 this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
             }
-        } else {
-            this.dynamishistory = new dynamisParty();
-            this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
+            if (typeof (this.dynamishistory.history) === 'undefined') {
+                this.dynamishistory = new dynamisParty();
+            }
         }
-
 
         let beforeArray = Object.keys(before);
         for (let tbd of beforeArray) {

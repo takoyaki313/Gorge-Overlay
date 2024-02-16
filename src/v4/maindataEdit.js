@@ -1,7 +1,8 @@
 import { battleEvent, AreaData } from "..";
 
+
 import { timestamp_change } from "./LogLine/logline_other";
-import { TBD } from "./maindataFormat";
+import { TBD, dynamisParty } from "./maindataFormat";
 
 //export const Kind = ['damage_kind', 'heal_kind', 'accept_income_heal_kind', 'accept_income_damage_kind'];//重複を許可しない.要素は文字列だけ
 
@@ -51,7 +52,7 @@ export const New_update_maindata = async (target, keyname, key, data) => {//デ�
     //let position = TBD[target].findIndex(({nameID}) => nameID === key);
     let position = await searched_maindata(target, keyname, key);
     if (position === -1) {//存在しないとき
-        TBD[target].push({ [keyname]: key, AreaType: AreaData.battleType });
+        TBD[target].push({ [keyname]: key, AreaType: AreaData.battleType, alliance: 0 });
         position = await searched_maindata(target, keyname, key);
         if (position === -1) {
             console.error('Error : New Data create failed... [keyname]->' + key);
@@ -141,20 +142,20 @@ export const searched_maindata = async (target, keyname, key) => {
     return -1;
 }
 
-export const alliance_dynamis_update = async (nameID, dynamis, time) => {
+export const alliance_dynamis_update = async (nameID, dynamis, time, alliance = -99, nameIDList = []) => {
     if (nameID.substring(0, 2) === '10') {
-        let read_data = await read_maindata('Player_data', 'nameID', nameID, 'alliance');
-        if (typeof read_data.alliance === 'number') {
-            var number = read_data.alliance;
-        } else {
-            return null;
+        if (alliance === -99) {
+            let read_data = await read_maindata('Player_data', 'nameID', nameID, 'alliance');
+            if (typeof read_data.alliance === 'number') {
+                var number = read_data.alliance;
+            } else {
+                return 0;
+            }
+        }
+        if (!battleEvent.Engage && AreaData.Type !== 2) {
+            return 0
         }
         if (number > 0 && number < 7) {
-
-        } else {
-            return null;
-        }
-        if (AreaData.Type === 2 && battleEvent.Engage) {
             if (TBD.Alliance[number].dynamis !== dynamis) {
                 if (dynamis === 20 && number === 1) {
                     battleEvent.TenSyonMax_Me = true;
@@ -162,6 +163,35 @@ export const alliance_dynamis_update = async (nameID, dynamis, time) => {
                 TBD.Alliance[number].history.push({ from: TBD.Alliance[number].dynamis, to: dynamis, time: Math.round((await timestamp_change(time) - battleEvent.timer.Get_BattleStart) / 1000) });
                 TBD.Alliance[number].dynamis = dynamis;
             }
+        } else {
+            if (alliance === -99) {
+                return 0;
+            }
+            let isBreak = false;
+            //すでに登録されていないか確認
+            for (let i = 0; i < nameIDList.length; i++) {
+                for (let p = 0; p < TBD.EnemyAlliance.length; p++) {
+                    if (TBD.EnemyAlliance[p].memberID.includes(nameIDList[i])) {
+                        alliance = p * -1;
+                        isBreak = true;
+                        break;
+                    }
+
+                }
+                if (isBreak) {
+                    break;
+                }
+            }
+            if (alliance === 0) {
+                //割り当て
+                alliance = TBD.EnemyAlliance.length * -1;
+                TBD.EnemyAlliance.push(new dynamisParty());
+            }
+            TBD.EnemyAlliance[Math.abs(alliance)].history.push({ from: TBD.EnemyAlliance[Math.abs(alliance)].dynamis, to: dynamis, time: Math.round((await timestamp_change(time) - battleEvent.timer.Get_BattleStart) / 1000) });
+            TBD.EnemyAlliance[Math.abs(alliance)].dynamis = dynamis;
+            TBD.EnemyAlliance[Math.abs(alliance)].memberID = [...new Set(TBD.EnemyAlliance[Math.abs(alliance)].memberID.concat(nameIDList))];
+            return alliance;
+
         }
     }
 }
