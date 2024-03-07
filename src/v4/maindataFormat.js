@@ -351,6 +351,9 @@ class dispPlayerData {
             if (typeof (this.dynamishistory.history) === 'undefined') {
                 this.dynamishistory = new dynamisParty();
             }
+        } else {
+            this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
+            this.dynamishistory = new dynamisParty();
         }
 
         let beforeArray = Object.keys(before);
