@@ -108,7 +108,17 @@ const PvESettingPage = () => {
                 lang={local.language}
             />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
-
+            <SettingToggleInput
+                ja_main={"アライアンスの表示"}
+                ja_sub={"Aアライアンス, Bアライアンス..."}
+                en_main={"Display of alliance affiliation"}
+                en_sub={"Something like A alliance or B alliance."}
+                local={(v) => local.setalliance_event = v}
+                uID={"alliance_event"}
+                init={local.alliance_event}
+                lang={local.language}
+            />
+            <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
             <SettingToggleInput
                 ja_main={"DevelopMode"}
                 ja_sub={""}

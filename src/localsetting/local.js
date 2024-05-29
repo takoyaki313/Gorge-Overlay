@@ -14,6 +14,7 @@ export class GorgeOverlay_Local {
         this.pveMax = typeof (data.pveMax) !== 'undefined' ? data.pveMax : 12;
         this.pve_Layout = typeof (data.pve_Layout) !== 'undefined' ? data.pve_Layout : 1;
         this.teamSymbol = typeof (data.teamSymbol) !== 'undefined' ? data.teamSymbol : true;
+        this.alliance_event = typeof (data.alliance_event) !== 'undefined' ? data.alliance_event : true;
         //
         this.fl_layout = typeof (data.fl_layout) !== 'undefined' ? data.fl_layout : 2;
         this.fl_allyData = typeof (data.fl_allyData) !== 'undefined' ? data.fl_allyData : true;
@@ -344,6 +345,10 @@ export class GorgeOverlay_Local {
     set setsampleMode(data) {
         this.sampleMode = data;
         devMode.sampleGet = data;
+        saveLocalStorage(this);
+    }
+    set setalliance_event(data) {
+        this.alliance_event = data;
         saveLocalStorage(this);
     }
 }

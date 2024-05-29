@@ -12,8 +12,8 @@ export const primaryPlayerChanged_101 = async (log) => {
 
 export const partyChanged_102 = async (log) => {
     //data format
-    //102|null|nameID|name|alliance|job
-    update_maindata('Player_data', 'nameID', log[2], ['name', log[3], true], ['job', log[5], true], ['aliance', log[4], true]);
+    //102|null|nameID|name|alliance|job|alliance(ABCDEF)
+    update_maindata('Player_data', 'nameID', log[2], ['name', log[3], true], ['job', log[5], true], ['alliance', log[4], true], ['alliance_ID', log[6], true]);
 }
 
 export const timestamp_change = async (time) => {

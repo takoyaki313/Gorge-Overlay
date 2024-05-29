@@ -1,5 +1,6 @@
 import { timestamp_change } from "../LogLine/logline_other"
 import { battleEvent, devMode } from "../..";
+import { saveHistory } from "../maindataFormat";
 
 export const battleStart = async (time, timestamp) => {
     if (!battleEvent.Engage) {
@@ -42,6 +43,7 @@ export const battleStop = async (timestamp) => {
     }
     console.log('timer end');
     timerStop();
+    saveHistory();
 }
 
 export const adjustTimer = async (time, timestamp) => {
@@ -65,7 +67,6 @@ const timerStart = async (time) => {
     window.TimerEvent = setInterval(Timer_OverlayChangeEvent, OverlayClockTime);
 }
 export const timerStop = async () => {
-    //console.log('Timer Stopped');
     clearInterval(window.TimerEvent);
 }
 

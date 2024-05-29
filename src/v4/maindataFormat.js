@@ -1,5 +1,6 @@
 import { battleEvent, AreaData, devMode } from "..";
 import { sampleJSON } from "./sample/workSample";
+import { PRIMARY_PLAYER } from "..";
 
 export let useTime = 'time';//enctime or time
 
@@ -285,6 +286,7 @@ class dispPlayerData {
     constructor(before, now, Alliance,EnemyAlliance, nameID_Job) {
         this.nameID = before.nameID;
         this.name = typeof (before.name) === 'string' ? before.name : before.nameID;
+        this.me = this.nameID === PRIMARY_PLAYER.nameID ? true : false;
         this.server = typeof (before.server) === 'string' ? before.server : '';
         this.datacenter = typeof (before.dc_server) === 'string' ? before.dc_server : '';
         this.job = typeof (before.job) === 'string' ? before.job : '';
@@ -322,7 +324,7 @@ class dispPlayerData {
         this.damage_G_All = [];
         this.accept_income_heal_All = [];
         this.accept_income_over_heal_All = [];
-
+        this.alliance_Type = typeof (before.alliance_ID) === 'undefined' ? '' : before.alliance_ID;
         this.AreaType = before.AreaType;
         if (this.AreaType === 2) {
             if (0 < this.alliance && this.alliance < 7) {
@@ -453,6 +455,23 @@ class dispPlayerData {
         this.alliance = alliance;
     }
 }
-
 export const TBD = new maindata();
 window.TBD_Obj = TBD;
+
+/*
+export class battleHistory_Layout {
+    constructor(tbd) {
+        this.Ally = tbd.dataGet("Ally");
+        this.Enemy = tbd.dataGet("Enemy");
+        //this.battleEvent = new battle_event();
+        this.battleEvent = battleEvent;
+    }
+}
+
+export const BattleHistory = [];
+window.BattleHistory_obj = BattleHistory;
+*/
+
+export const saveHistory = () => {
+    //BattleHistory.unshift(new battleHistory_Layout(TBD));
+}

@@ -3,7 +3,7 @@ import { owner_id_list_reset } from "../LogLine/loglineGlobal";
 export const time_change = (time_sec) => {
     let division_time = [0, 0];
 
-    if(time_sec < 0){
+    if (time_sec < 0) {
         return division_time;
     }
 
@@ -40,7 +40,7 @@ export class battle_event {
             owner_id_list_reset();
             this.timer.reset = true;
         }
-    }  
+    }
     set partyNumUpdate(num) {
         if (this.partyMaxNum < num) {
             this.partyMaxNum = num;
@@ -55,16 +55,16 @@ class timer {
         this.BattleStartTime = 0;
         this.Result_in_time = 0;
         this.Battle_Max_Time_num = 0;
-        this.LastAdjustCurrentTime = {time:0,ref:0};
+        this.LastAdjustCurrentTime = { time: 0, ref: 0 };
     }
     set reset(bool) {
         this.time = 0;
         this.BattleStartTime = 0;
         this.Result_in_time = 0;
         this.Battle_Max_Time_num = 0;
-        this.LastAdjustCurrentTime = {time:0,ref:0};
+        this.LastAdjustCurrentTime = { time: 0, ref: 0 };
     }
-    
+
     set Set_BattleStart(time_ms) {
         if (this.Result_in_time === 0) {
             this.BattleStartTime = time_ms;
@@ -73,7 +73,7 @@ class timer {
             console.error('Timer StartTime Error->', time_ms);
         }
     }
-    
+
     get Get_BattleStart() {
         return (this.BattleStartTime);
     }
@@ -86,21 +86,21 @@ class timer {
             console.error('Timer Result_in_time Error->', time_ms);
         }
     }
-    
+
     get Get_ResultIn() {
         return (this.Result_in_time);
     }
-    
+
     get Get_EncTime() {
         return (encTime(this));
     }
 
     get Get_RemainTime() {
         let now = this.Get_ResultIn > 0 ? this.Get_ResultIn : Date.now();
-        if (this.LastAdjustCurrentTime.time > 0){
-            return(this.LastAdjustCurrentTime.time - Math.floor((now - this.LastAdjustCurrentTime.ref)/1000))
+        if (this.LastAdjustCurrentTime.time > 0) {
+            return (this.LastAdjustCurrentTime.time - Math.floor((now - this.LastAdjustCurrentTime.ref) / 1000))
         } else if (this.Battle_Max_Time_num > 0) {
-            return(this.Battle_Max_Time_num - Math.floor((now - this.BattleStartTime)/1000))
+            return (this.Battle_Max_Time_num - Math.floor((now - this.BattleStartTime) / 1000))
         } else {
             //Unknown 
             return (encTime(this));
@@ -125,7 +125,7 @@ const encTime = (timer) => {
         return (1);
     }
     if (timer.Result_in_time === 0) {
-        return(Math.ceil((Date.now() - timer.BattleStartTime)/1000))
+        return (Math.ceil((Date.now() - timer.BattleStartTime) / 1000))
     }
-    return(Math.ceil((timer.Result_in_time - timer.BattleStartTime)/1000))
+    return (Math.ceil((timer.Result_in_time - timer.BattleStartTime) / 1000))
 }

@@ -25,6 +25,8 @@ export const devMode = {
   sampleType: -1,//default -1
   calcTime: false,
   forceReset: true,
+  sampleReadMode: false
+  
 };
 
 export const AreaData = new Area();
@@ -94,5 +96,4 @@ window.onload = async () => {
   window.startOverlayEvents();
   getLanguage();
   getDatacenters();
-
 }

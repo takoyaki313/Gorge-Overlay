@@ -42,6 +42,7 @@ class m_dataLayout {
 
         this.all_color = '';
         this.alliance = 0;
+        this.alliance_Type = '';
         this.createSource = "Unknown";
     }
 
@@ -97,8 +98,7 @@ export class m_data extends m_dataLayout {
         let sep_dps = separate_d_i(d_Data.damage);
         this.dps_i = sep_dps.int;
         this.dps_d = sep_dps.dec === '' ? '' : '.' + sep_dps.dec;
-
-
+        this.alliance_Type = d_Data.alliance_Type;
         this.dps_tooltip = d_Data.damage_All.length > 0 ? <DamageTooltipLayout data={d_Data} /> : "";
         this.dps_color = '';
         let sep_hps = separate_d_i(d_Data.heal);
@@ -155,7 +155,7 @@ export class m_data extends m_dataLayout {
         this.dynamis_tooltip = d_Data.dynamishistory.history.length > 0 ? <DynamishistoryTooltipLayout data={d_Data.dynamishistory.history} /> : '';
 
         this.name_color = '';
-        if (this.nameID === PRIMARY_PLAYER.nameID) {
+        if (this.me) {
             this.name_color = 'name_me';
         }
         if (d_Data.time > 120) {

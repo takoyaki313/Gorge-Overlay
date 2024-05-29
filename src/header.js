@@ -22,7 +22,7 @@ export const HeaderSimple = (prop) => {
     setActive(!hide)
     local.setHeader = !hide;
   }
-
+  
   return (
     <div>
       {hide ? '' : <HeaderDetail DURATION={DURATION} AreaName={AreaName} setting={prop.setting} />}

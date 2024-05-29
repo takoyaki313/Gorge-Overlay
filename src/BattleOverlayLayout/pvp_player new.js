@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 
 import { job_to_role } from '../role';
 import { battleEvent } from '..';
-import { PRIMARY_PLAYER } from '..';
 import { m_data } from './OverlayPlayer_M';
 import { a_data } from './OverlayPlayer_A';
 import { OverlayM1 } from './OverlayPlayer_M1';
@@ -52,7 +51,7 @@ const PvPPlayer = (prop) => {
     if (isReset || battleReset) {
         setReset(false);
         battleReset = false;
-        if (PRIMARY_PLAYER.nameID === prop.data.nameID && local[prop.area + '_advancedOverlay_me']) {
+        if (prop.data.me === prop.data.nameID && local[prop.area + '_advancedOverlay_me']) {
             setActive(true);
         }else if (prop.data.alliance === 1 && local[prop.area + '_advancedOverlay_party']) {
             setActive(true);

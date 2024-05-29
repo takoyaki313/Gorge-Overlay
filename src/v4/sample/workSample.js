@@ -70,7 +70,7 @@ export const saveOrRead_JSON = async () => {
     if (!devMode.sampleGet) {
         return null;
     }
-    if (sampleJSON.AreaType !== 0) {
+    if (sampleJSON.AreaType !== 0 && !devMode.sampleReadMode) {
         //save
         await sampleJSON.save();
     } else {
@@ -78,6 +78,7 @@ export const saveOrRead_JSON = async () => {
         TBD.resetData = "ALL";
         await sampleJSON.applyData();
         await sampleJSON.calc();
+        devMode.sampleReadMode = true;
     }
     sampleJSON.resetData();
 }
