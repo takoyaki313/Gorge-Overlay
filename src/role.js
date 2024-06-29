@@ -1,9 +1,9 @@
 export const job_to_role = (job) => {
     let tank = ['pld', 'gla', 'war', 'mrd', 'drk', 'gnb'];
     let healer = ['whm', 'sch', 'ast', 'cnj', 'sge'];
-    let melee = ['mnk', 'drg', 'nin', 'sam', 'pgl', 'lnc', 'rog', 'rpr'];
+    let melee = ['mnk', 'drg', 'nin', 'sam', 'pgl', 'lnc', 'rog', 'rpr', 'vpr'];
     let physical = ['brd', 'mch', 'dnc', 'arc'];
-    let magical = ['blm', 'smn', 'rdm', 'thm', 'acn'];
+    let magical = ['blm', 'smn', 'rdm', 'thm', 'acn', 'pct'];
     if (tank.indexOf(job) !== -1) {
         return 'tank';
     }

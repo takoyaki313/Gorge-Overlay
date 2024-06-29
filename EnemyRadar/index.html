@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <title>TargetFrom</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+    :root {
+      --rootFontSize: 18;
+    }
+
+    html {
+      font-size: var(--rootFontSize);
+    }
+
+    body {
+      display: grid;
+      margin: 0;
+    }
+
+    #canvas {
+      display: block;
+      z-index: 2;
+      opacity: 0.5;
+      position: absolute;
+    }
+
+    html,
+    body,
+    #wrapper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    #canvasBack {
+      display: block;
+      position: absolute;
+      z-index: 1;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+  <script src="../areaID.js"></script>
+  <script>
+    ////////////////////
+    //setting
+    ////////////////////
+    class localVal {
+      constructor() {
+        this.ccView = true;
+        this.flView = true;
+        this.rwView = true;
+        this.font = 16;
+        this.updatems = 500;
+      }
+      set setLocalVal(data) {
+      }
+    }
+
+    class mainData {
+      constructor() {
+        this.areaDisp = false;
+        this.areaType = 0;
+        this.disp = false;
+        this.nameID = "";
+        this.name = "";
+        this.canvas = document.getElementById("canvas");
+        this.canvasB = document.getElementById("canvasBack");
+        this.wrapper = document.getElementById("wrapper");
+        this.data = [];
+        this.offset = {};
+        this.mapID = "";
+      }
+
+      set isVisible(is) {
+        if (!this.areaDisp) {
+          return;
+        }
+        this.disp = is;
+        if (this.disp) {
+          document.body.style.display = 'grid';
+        } else {
+          document.body.style.display = 'none';
+        }
+      }
+
+
+
+      set isArea(is) {
+        this.areaDisp = is;
+        if (this.areaDisp) {
+          //visible
+          document.body.style.display = 'grid';
+          if (!intervalID) {
+            intervalID = setInterval(async () => {
+              let rtn = await window.callOverlayHandler({ call: 'getCombatants' });
+              this.data = [];
+              combatantsPOS(rtn.combatants);
+              maindataApply();
+            }, local_V.updatems);
+          }
+        } else {
+          //hidden
+          document.body.style.display = 'none';
+          if (intervalID) {
+            clearInterval(intervalID);
+            intervalID = null;
+          }
+        }
+      }
+
+      set setMain(playerPOS) {
+        this.data.push(playerPOS);
+      }
+
+
+    }
+
+    var local_V;
+    var main;
+    let intervalID;
+
+    window.onload = () => {
+      main = new mainData();
+      local_V = new localVal();
+
+      window.addOverlayListener('ChangeZone', (zone) => overlay_area_check(zone, main));
+      window.addOverlayListener("ChangePrimaryPlayer", (player) => {
+        main.nameID = player.charID.toString(16).toUpperCase();
+        main.name = player.charName;
+      });
+      overlay_localstrage_get();
+      window.startOverlayEvents();
+
+      resetCanvas();
+      getSizeCanvas();
+    }
+    addEventListener("resize", (event) => {
+      getSizeCanvas();
+      backgroundCanvas();
+    });
+    function overlay_localstrage_get() {
+      let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
+      if (data !== null) {
+        local_V.setLocalVal = data;
+      }
+      overlay_fontsize(local_V.font);
+    }
+
+    function overlay_fontsize(size) {
+      document.documentElement.style.setProperty('--rootFontSize', size + 'px');
+    }
+
+    ////////////////
+    function overlay_area_check(area, main) {
+      //test
+      /*
+      main.isArea = true;
+      main.nowtNum = 500;
+      main.areaType = 2;
+      return
+      */
+      //end
+      if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
+        main.isArea = true;
+        let areaData = areaID[String(area.zoneID)];
+        main.areaType = areaData.type;
+        if (main.areaType === 2) {
+          main.nowtNum = local_V.rw;
+        } else if (main.areaType === 1 || main.areaType === 3) {
+          main.nowtNum = local_V.fl;
+        } else {
+          main.nowtNum = local_V.cc;
+        }
+        main.offset = areaData.offset;
+        main.mapID = areaData.map;
+        backgroundCanvas();
+      }
+      else {
+        main.isArea = false;
+        main.offset = 1;
+        main.mapID = areaData.map;
+        backgroundCanvas();
+      }
+    }
+
+    const getSizeCanvas = () => {
+      main.canvas.width = main.wrapper.offsetWidth;
+      main.canvas.height = main.wrapper.offsetHeight;
+      main.canvasB.width = main.wrapper.offsetWidth;
+      main.canvasB.height = main.wrapper.offsetHeight;
+    }
+
+    const backgroundCanvas = () => {
+      const ctx = main.canvasB.getContext("2d");
+      if (main.areaID === 0) {
+        ctx.clearRect(0, 0, main.canvasB.width, main.canvasB.height);
+      } else {
+        ctx.clearRect(0, 0, main.canvasB.width, main.canvasB.height);
+        let img = new Image();
+        img.onload = function () {
+          //let x = main.canvasB.width / 2 - img.width / 2.86;
+          let x = main.canvasB.width / 2 - (img.width / 2) + (main.offset.x * main.offset.num);
+          let y = main.canvasB.height / 2 - (img.height / 2) + (main.offset.y * main.offset.num);
+          ctx.drawImage(img, x, y, img.width, img.height);
+        };
+        img.src = 'https://xivapi.com/m/' + main.mapID + '/' + main.mapID + '.00.jpg';
+      }
+    }
+
+    const resetCanvas = () => {
+      const ctx = main.canvas.getContext("2d");
+      ctx.clearRect(0, 0, main.canvas.width, main.canvas.height);
+    }
+
+    class PlayerPOS {
+      constructor(combatant) {
+        this.nameID = combatant.ID.toString(16).toUpperCase();
+        this.name = combatant.Name;
+        this.hp = combatant.CurrentHP;
+        this.maxhp = combatant.MaxHP;
+        this.posx = combatant.PosX * main.offset.num;
+        this.posy = combatant.PosY * main.offset.num;
+        this.posz = combatant.PosZ;
+        this.job = combatant.Job;
+        this.party = combatant.PartyType;
+      }
+    }
+
+    const combatantsPOS = async (combatants) => {
+      combatants.forEach(combatant => {
+        if (combatant.ID !== 0 && combatant.Type === 1) {
+
+          let playerPOS = new PlayerPOS(combatant);
+          if (playerPOS.nameID.substring(0, 2) === "10") {
+            main.setMain = playerPOS;
+          }
+        }
+      });
+    }
+
+    const maindataApply = () => {
+      resetCanvas();
+      //getSizeCanvas();
+      let center_x = main.canvas.width / 2;
+      let center_y = main.canvas.height / 2;
+      
+      main.data.forEach(p => {
+        let ctx = main.canvas.getContext('2d');
+        if (main.nameID === p.nameID) {
+          ctx.fillStyle = 'yellow';
+        } else if (p.party !== 0){
+          ctx.fillStyle = 'green';
+        }else{
+          ctx.fillStyle = 'red';
+        }
+        let x = center_x + p.posx;
+        let y = center_y + p.posy;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2, true);
+        ctx.fill();
+      });
+    }
+
+  </script>
+</head>
+
+<body>
+  <div id="wrapper">
+    <canvas id="canvasBack" width="" height=""></canvas>
+    <canvas id="canvas" width="" height=""></canvas>
+  </div>
+</body>

@@ -250,6 +250,12 @@ export const jobID_to_string = (id) => {
         case 40:
             job = 'sge';
             break;
+        case 41:
+            job = 'vpr';
+            break;
+        case 42:
+            job = 'pct';
+            break;
         case 50:
             job = 'opp';
             break;

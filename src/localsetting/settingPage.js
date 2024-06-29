@@ -98,7 +98,7 @@ const PvESettingPage = () => {
             />
             <SettingNumberInput
                 ja_main={"オーバーレイの拡大縮小"}
-                ja_sub={"リロードが必要"}
+                ja_sub={"リロードが必要"}a
                 en_main={"Scaling the overlay"}
                 en_sub={"reload required"}
                 local={(v) => local.setRootFontSize = v}
