@@ -5,6 +5,7 @@ import { killSound_Load, samplePlay } from "../v4/sound";
 import { devMode } from "..";
 export const GorgeOverlay_LocalStorage = "GorgeOverlay_4";
 
+let devModeLock = 0;
 export class GorgeOverlay_Local {
     constructor(data) {
         this.root_header = typeof (data.root_header) !== 'undefined' ? data.root_header : false;
@@ -299,8 +300,15 @@ export class GorgeOverlay_Local {
         saveLocalStorage(this);
     }
     set setAddInMode(data) {
-        this.AddInMode = data;
-        saveLocalStorage(this);
+        if (devModeLock > 10 && data === true) {
+            this.AddInMode = data;
+            saveLocalStorage(this);
+            console.log("DevMode Unlock!");
+        } else {
+            this.AddInMode = false;
+            saveLocalStorage(this);
+            devModeLock++;
+        }
     }
     set setad_tf_Volume(data) {
         this.ad_tf_Volume = data;

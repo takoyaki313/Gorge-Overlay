@@ -18,15 +18,14 @@ if (readLocalData === null) {
 }
 
 export const devMode = {
-  webSocket: false,
+  webSocket: true,
   logLevel: 0,
   logForceOff: false,
   sampleGet: false,
   sampleType: -1,//default -1
   calcTime: false,
-  forceReset: true,
+  forceReset: false,
   sampleReadMode: false
-  
 };
 
 export const AreaData = new Area();

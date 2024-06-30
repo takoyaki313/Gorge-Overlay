@@ -10,14 +10,15 @@ import { battleEvent, AreaData, devMode } from "../../index.js";
 const Update_attacker = ['add-buff-attacker', 'tp-recover', 'mp-recover'/*,'additional-effect'*/];
 
 export const networkactionsync_21_22 = async (log) => {
+    /*
     const logline_21_22_max = 48;
     if (log.length > logline_21_22_max) {
-        if (window.Dev_mode.logLevel > 2) {
+        if (devMode.logLevel > 2) {
             console.error("Error : data length not matched 48/47 ->" + log.length);
             console.error(log);
         }
         return null;
-    }
+    }*/
     let effectdata = await effectdata_exchangeInt(await network_action_datatype(log));
     //    attackerID : log[2],      attacker : log[3],
     let petcheck = await pet_replace(log[2], log[3]);
