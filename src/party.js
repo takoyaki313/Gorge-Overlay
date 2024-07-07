@@ -1,5 +1,5 @@
 import { loglineQueue_Push } from "./v4/LogLine/loglineClock";
-import { jobID_to_string } from "./v4/LogLine/03addCombatant";
+import { jobID_to_string } from "./jobs";
 import { AreaData } from ".";
 import { PRIMARY_PLAYER } from ".";
 export const AllianceMember = new Map();

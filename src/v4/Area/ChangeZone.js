@@ -2,6 +2,7 @@ import { timerStop } from "../timer/timer_event";
 import { battleEvent } from "../..";
 import { TBD } from "../maindataFormat";
 import { sampleJSON } from "../sample/workSample";
+import { devMode } from "../..";
 
 export class Area {
 
@@ -75,13 +76,16 @@ const areaTypeSet_40 = (zoneID) => {
             return 5;
         case 854://Crystal Conflict The RedSans 
             return 5;
-        /*
         case 51://Wolves Den Pier
-            return 4;
-        /*
+            if (devMode.wolves) {
+                return 4;
+            }
+            return 0;
         case 341://The Goblet
-            return 10;
-        */
+            if (devMode.wolves) {
+                return 10;
+            }
+            return 0;
         default:
             return 0
     }

@@ -147,7 +147,7 @@ export const DoT_ID = [
         type: 'DoT'
     }, {
         actionid: '7344',
-        action_potencial: 10000,
+        action_potencial: 8000,
         dotid: '0C75',
         name: '命水',
         potencial: 4000,
@@ -158,7 +158,7 @@ export const DoT_ID = [
         action_potencial: 0,
         dotid: '0C07',
         name: '土遁の術[害]',
-        potencial: 2000,
+        potencial: 3000,
         max: 5,
         type: 'DoT'
     }, {
@@ -171,6 +171,22 @@ export const DoT_ID = [
         potencial: 6000,
         max: 6,
         type: 'HoT'
+    }, {
+        actionid: '9931',
+        action_potencial: 8000,
+        dotid: '1017',
+        name: 'スタープリズム',
+        potencial: 2000,
+        max: 12,
+        type: 'HoT'
+    }, {
+        actionid: '9928',
+        action_potencial: 8000,
+        dotid: '1010',
+        name: 'イマジンファング',
+        potencial: 4000,
+        max: 12,
+        type: 'DoT'
     }, {
         actionid: '26FA',
         action_potencial: 40000,

@@ -21,8 +21,8 @@ export const DynamisIconID = ['0853', '0854', '0855', '0856', '0857', TensyonID 
 export const OpticalSight = '26F4'//ホークブラスター(SkillID)
 export const BigMissile = '26F8'//超大型ミサイル(SkillID)
 export const LimitBreak = [/*TANK*/'718D', '719B', '71A9', '71CA',/*HEALER*/'722E', '7235', '7247', '7257',
-/*Range*/'72D9', '72E7', '72F8',/*MELEE*/'732D', '7339', '734B', '7361', '7371',/*MAGICAL*/'73DE', '73E9', '73EE', '7408', '7409'];
-export const LimitBreak_Extend = [/*SCH*/'7237',/*SMN*/'73EB', '73F0',/*DRG*/'733A'];
+/*Range*/'72D9', '72E7', '72F8',/*MELEE*/'732D', '7339', '734B', '7361', '7371','9916',/*MAGICAL*/'73DE', '73E9', '73EE', '7408', '7409','992F'];
+export const LimitBreak_Extend = [/*SCH*/'7237',/*SMN*/'73EB', '73F0',/*DRG*/'733A',/*PCT*/'9930',/*VPR*/'9905'];
 ///////////////////////////////////////////////////////////////////////////////
 export const Stack_buff = ['05B9'/*テンション*/, '0BED'/*連続剣*/, '0C5B'/*喝采*/];
 export const EXCLUDE_BUFF = ['07EB', '07EA', '0B37', '0B38'];//スタンス系　カルディア クローズドポジション

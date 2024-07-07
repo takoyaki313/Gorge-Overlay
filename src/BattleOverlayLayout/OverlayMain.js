@@ -37,6 +37,9 @@ const encounterZoneGet = (Encounter) => {
   } else if (PvPAreaZoneCC.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
     return 5;
   } else if (PvPAreaZoneOt.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+    if (devMode.wolves) {
+      return 4;
+    }
     return 0;
   } else {
     return 0;
@@ -56,7 +59,7 @@ export const DefaultView = () => {
       }
     }
     else {
-      if (areaZone === 4) {
+      if (areaZone === 4) { 
         if (battleEvent.encounterStart && CombatData.isActive === 'false') {
           TBD.resetData = 'PART';
           battleEvent.encounterStart = false;
@@ -64,7 +67,6 @@ export const DefaultView = () => {
           await battleStop('PART');
         }
       } 
-
       if (!battleEvent.encounterStart && CombatData.isActive === 'true') {
         battleEvent.encounterStart = true;
       }

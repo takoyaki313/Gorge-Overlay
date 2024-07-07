@@ -280,7 +280,41 @@ export const Barrier_ID = [
         damagesync: 0,
         damage: false,
         type: 'barrier'
-    },
+    },//pct
+    {
+        actionid: '992B',
+        action_potencial: 0,
+        dotid: '1012',
+        name: 'テンペラコート',
+        potencial: 12000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    },{
+        actionid: '992C',
+        action_potencial: 0,
+        dotid: '1013',
+        name: 'テンペラグラッサ',
+        potencial: 6000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    },{//vpr
+        actionid: '9911',
+        action_potencial: 0,
+        dotid: '1001',
+        name: '蛇鱗［バリア］',
+        potencial: 6000,
+        max: 4,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
+    }
 ];
 export const  Special_Barrier_ID = [{
     actionid: '7249',

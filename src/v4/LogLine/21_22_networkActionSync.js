@@ -10,15 +10,6 @@ import { battleEvent, AreaData, devMode } from "../../index.js";
 const Update_attacker = ['add-buff-attacker', 'tp-recover', 'mp-recover'/*,'additional-effect'*/];
 
 export const networkactionsync_21_22 = async (log) => {
-    /*
-    const logline_21_22_max = 48;
-    if (log.length > logline_21_22_max) {
-        if (devMode.logLevel > 2) {
-            console.error("Error : data length not matched 48/47 ->" + log.length);
-            console.error(log);
-        }
-        return null;
-    }*/
     let effectdata = await effectdata_exchangeInt(await network_action_datatype(log));
     //    attackerID : log[2],      attacker : log[3],
     let petcheck = await pet_replace(log[2], log[3]);
@@ -720,8 +711,11 @@ export const effectdata_force4 = async (param) => {
     else if (param.length === 1) {
         return '000' + param;
     }
+    else if (param.length === 4) {
+        return param;        
+    }
     else {
-        return null;
+        return param.substring(0,4);
     }
 }
 
@@ -777,6 +771,7 @@ const potencial_check_from_damage = async (dot_detail, id_data_position, data) =
     }
     let potencial = dot_detail.potencial;
     potencial = await potencial_to_damage_calc_effect(data.attackerID, data.victimID, potencial, dot_detail.type);
+    //console.log(potencial)
     await update_maindata('Player_hp', 'nameID', data.victimID, ['dot_potencial', { potencial: potencial, attackerID: data.attackerID, dotID: dot_detail.dotid, actionID: data.actionID, time_ms: data.time_ms, dot_time: dot_detail.max }, false], ['lastupdate', data.lastupdate, true]);
 }
 

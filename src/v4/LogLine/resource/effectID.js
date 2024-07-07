@@ -1941,6 +1941,287 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 6
     },
+    //Pct
+    '1004': {
+        name: '色魔法2実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '1005': {
+        name: '色魔法3実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '1006': {
+        name: 'サブトラクティブパレット',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1007': {
+        name: 'モーグリシンボル',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1008': {
+        name: 'マディーンシンボル',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1009': {
+        name: 'ピクトポンポン',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '100A': {
+        name: 'ピクトウィング',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '100B': {
+        name: 'ピクトクロー',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '100C': {
+        name: 'ピクトファング',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '100D': {
+        name: 'イマジンポンポン',
+        type: [true, true, false, false, true],
+        effect: 1.2,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '100E': {
+        name: 'イマジンウィング',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '100F': {
+        name: 'イマジンクロー',
+        type: [false, false, true, true, false],
+        effect: 1,
+        cut: 1.1,
+        cut_heal: 0.8,
+        maxtime: 10
+    },
+    '1010': {
+        name: 'イマジンファング',
+        type: [false, false, false, false, false],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 12
+    },
+    '1011': {
+        name: 'スマッジ',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 5
+    },
+    '1012': {
+        name: 'テンペラコート',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '1013': {
+        name: 'テンペラグラッサ',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '1014': {
+        name: 'ウォール・オブ・ファット',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '1015': {
+        name: 'ウォール・オブ・ファット【被】',
+        type: [false, false, true, true, true],
+        effect: 1,
+        cut: 0.75,
+        cut_heal: 1.25,
+        maxtime: 5
+    },
+    '1016': {
+        name: 'スタープリズム実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '1017': {
+        name: 'スタープリズム',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 12
+    },//Viper
+    '1018': {
+        name: '猛襲',
+        type: [true, false, false, false, true],
+        effect: 1.1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '1019': {
+        name: '疾速',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '0FFF': {
+        name: '蛇行',
+        type: [true, false, false, false, true],
+        effect: 1.25,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '0FF5': {
+        name: '参の牙【咬撃】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime:10
+    },
+    '0FF6': {
+        name: '壱の蛇【猛襲】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FF7': {
+        name: '弐の蛇【疾速】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '1000': {
+        name: '蛇鱗',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.5,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '1001': {
+        name: '蛇鱗［バリア］',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '0FF8': {
+        name: '飛蛇連尾撃実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '1003': {
+        name: '惨毒',
+        type: [false, false, false, false, false],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFE': {
+        name: '祖霊降ろし',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 20
+    },
+    '0FFA': {
+        name: '祖霊の蛇【壱】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFB': {
+        name: '祖霊の蛇【弐】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFC': {
+        name: '祖霊の蛇【参】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFD': {
+        name: '祖霊の蛇【肆】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
     //General Buff
     '0BEE': {
         name: '防御',

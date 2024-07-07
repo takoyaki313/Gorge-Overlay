@@ -22,6 +22,7 @@ export const loglineFirstStep = async (log) => {
         //AREATYPE
         await minimapChange_40(log);
     }
+    
     if (AreaData.Type === 0) {
         return;
     }
@@ -29,7 +30,6 @@ export const loglineFirstStep = async (log) => {
     if (devMode.sampleGet) {
         sampleJSON.pushData = log;
     }
-
     switch (log[0]) {
         case '01'://Area Change
             break;
@@ -68,10 +68,6 @@ export const loglineFirstStep = async (log) => {
             await kill_death_main_25(log);
             break;
         case '26':
-            /*
-            if (Logline_add_mode) {
-                await action_add_tool(log); //action_tempに未登録 effectID
-            }*/
             await player_buff_add_26(log);
             break;
         case '29':

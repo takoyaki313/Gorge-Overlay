@@ -18,14 +18,15 @@ if (readLocalData === null) {
 }
 
 export const devMode = {
-  webSocket: true,
+  webSocket: false,
   logLevel: 0,
   logForceOff: false,
   sampleGet: false,
   sampleType: -1,//default -1
   calcTime: false,
-  forceReset: false,
-  sampleReadMode: false
+  forceReset: true,
+  sampleReadMode: false,
+  wolves : false
 };
 
 export const AreaData = new Area();
@@ -67,6 +68,7 @@ window.addOverlayListener('ChangeMap', (minimap) => {
   if (typeof (window.changeArea_Event) === 'undefined') {
     return null;
   }
+  
   window.changeArea_Event(minimap.placeName.toUpperCase());
   if (AreaData.battleId !== minimap.mapID) {
     AreaData.areaset_changeMap = minimap.mapID;

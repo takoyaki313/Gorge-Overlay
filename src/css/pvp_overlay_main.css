@@ -304,6 +304,10 @@
     background-size: cover;
 }
 
+.limitbreak_9916 {
+    content: url("https://xivapi.com/i/009000/009731_hr1.png");
+    background-size: cover;
+}
 /*MAGICAL*/
 .limitbreak_73DE {
     content: url("https://xivapi.com/i/009000/009673_hr1.png");
@@ -327,6 +331,11 @@
 
 .limitbreak_7409 {
     content: url("https://xivapi.com/i/009000/009692_hr1.png");
+    background-size: cover;
+}
+
+.limitbreak_992F {
+    content: url("https://xivapi.com/i/009000/009757_hr1.png");
     background-size: cover;
 }
 
