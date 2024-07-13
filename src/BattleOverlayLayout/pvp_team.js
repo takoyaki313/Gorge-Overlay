@@ -58,9 +58,9 @@ export const TeamData = (prop) => {
     }
     //dispdata.DPSData.sort((a, b) => b.DPS - a.DPS);
     //dispdata.HPSData.sort((a, b) => b.HPS - a.HPS);
-    dispdata.Kills.sort((a, b) => a.time - b.time);
-    dispdata.Deaths.sort((a, b) => a.time - b.time);
-    dispdata.Assists.sort((a, b) => a.time - b.time);
+    dispdata.Kills.sort((a, b) => b.time - a.time);
+    dispdata.Deaths.sort((a, b) => b.time - a.time);
+    dispdata.Assists.sort((a, b) => b.time - a.time);
     return (
         <div className={'pvpTeam ' + prop.team + 'team'} onClick={prop.toggle}>
             {local.teamSymbol ? <div className={'teamSymbol ' + prop.team + 'teamicon'}></div> : ""}

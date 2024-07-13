@@ -124,13 +124,13 @@ export class m_data extends m_dataLayout {
         this.overPct_tooltip = d_Data.over_heal.num;
         const kda_Time = 15000;
         this.r_left = d_Data.kills.length;
-        this.r_left_tooltip = d_Data.kills.length > 0 ? <KillTooltipLayout simulationKDA={d_Data.kills} /> : '';
+        this.r_left_tooltip = d_Data.kills.length > 0 ? <KillTooltipLayout simulationKDA={d_Data.kills.slice().reverse()} /> : '';
         this.r_left_color = getLastKDA(d_Data.kills, d_Data.createtime, kda_Time);
         this.r_center = d_Data.deaths.length;
-        this.r_center_tooltip = d_Data.deaths.length > 0 ? <DeathTooltipLayout simulationKDA={d_Data.deaths} /> : '';
+        this.r_center_tooltip = d_Data.deaths.length > 0 ? <DeathTooltipLayout simulationKDA={d_Data.deaths.slice().reverse()} /> : '';
         this.r_center_color = getLastKDA(d_Data.deaths, d_Data.createtime, kda_Time, 'death');
         this.r_right = d_Data.assists.length;
-        this.r_right_tooltip = d_Data.assists.length > 0 ? <AssistTooltipLayout simulationKDA={d_Data.assists} /> : '';
+        this.r_right_tooltip = d_Data.assists.length > 0 ? <AssistTooltipLayout simulationKDA={d_Data.assists.slice().reverse()} /> : '';
         this.r_right_color = getLastKDA(d_Data.assists, d_Data.createtime, kda_Time);
 
         let dynamisCheck = { text: '', class: '' }
