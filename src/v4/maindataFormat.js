@@ -430,6 +430,7 @@ class dispPlayerData {
             }
         }
         this.damage_person = beforeArray.indexOf('damage_person') !== -1 ? { num: before.damage_person, ps: Math.round(before.damage_person / this[useTime]) } : { num: 0, ps: 0 };
+        this.damage_object = beforeArray.indexOf('damage_object') !== -1 ? { num: before.damage_object, ps: Math.round(before.damage_object / this[useTime]) } : { num: 0, ps: 0 };
         this.damage_robot = beforeArray.indexOf('damage_robot') !== -1 ? { num: before.damage_robot, ps: Math.round(before.damage_robot / this[useTime]) } : { num: 0, ps: 0 };
         this.damage_maton = beforeArray.indexOf('damage_maton') !== -1 ? { num: before.damage_maton, ps: Math.round(before.damage_maton / this[useTime]) } : { num: 0, ps: 0 };
         this.damage_tower = beforeArray.indexOf('damage_tower') !== -1 ? { num: before.damage_tower, ps: Math.round(before.damage_tower / this[useTime]) } : { num: 0, ps: 0 };

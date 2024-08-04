@@ -5,6 +5,7 @@ import { DamagePersonToolTipLayout } from "./tooltip/damageTooltip";
 import { RobotDamageToolTipLayout } from "./tooltip/damageTooltip";
 import { ObjectDamageToolTipLayout } from "./tooltip/damageTooltip";
 import { IncomeHealTooltipLayout } from "./tooltip/incomeHealTooltip";
+import { DamageTooltipLayout } from "./tooltip/damageTooltip";
 
 export class a_data {
     constructor(d_Data) {
@@ -20,6 +21,8 @@ export class a_data {
         this.damage_maton = d_Data.damage_maton.ps;
         this.damage_tower = d_Data.damage_tower.ps;
         this.damage_maton_Tooltip = <ObjectDamageToolTipLayout damage_G_All={d_Data.damage_G_All} />
+        this.damage_object = d_Data.damage_object.ps;
+        this.damage_object_Tooltip = <DamageTooltipLayout data={d_Data} />
         this.portion = 0;
         this.kaiki = 0;
         this.overHealPct = '-%';

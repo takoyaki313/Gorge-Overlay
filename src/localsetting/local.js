@@ -68,6 +68,8 @@ export class GorgeOverlay_Local {
         this.addInIntLB = typeof (data.addInIntLB) !== 'undefined' ? data.addInIntLB : 16;
         this.addInTargetMarker_Size = typeof (data.addInTargetMarker_Size) !== 'undefined' ? data.addInTargetMarker_Size : 16;
         this.addInTargetMarker_Reverse = typeof (data.addInTargetMarker_Reverse) !== 'undefined' ? data.addInTargetMarker_Reverse : true;
+        this.addInTargetMarker_PvE = typeof (data.addInTargetMarker_PvE) !== 'undefined' ? data.addInTargetMarker_PvE : false;
+        this.addInTargetMarker_PvEHide = typeof (data.addInTargetMarker_PvEHide) !== 'undefined' ? data.addInTargetMarker_PvEHide : true;        
         this.addInTargetFrom_Size = typeof (data.addInTargetFrom_Size) !== 'undefined' ? data.addInTargetFrom_Size : 16;
         this.ad_tf_Volume = typeof (data.ad_tf_Volume) !== 'undefined' ? data.ad_tf_Volume : 50;
         this.ad_tf_Volume2 = typeof (data.ad_tf_Volume2) !== 'undefined' ? data.ad_tf_Volume2 : 50;
@@ -129,6 +131,14 @@ export class GorgeOverlay_Local {
     }
     set setaddInTargetMarker_Reverse(data) {
         this.addInTargetMarker_Reverse = data;
+        saveLocalStorage(this);
+    }
+    set setaddInTargetMarker_PvEHide(data) {
+        this.addInTargetMarker_PvEHide = data;
+        saveLocalStorage(this);
+    }
+    set setaddInTargetMarker_PvE(data) {
+        this.addInTargetMarker_PvE = data;
         saveLocalStorage(this);
     }
     set setTeamSymbol(data) {

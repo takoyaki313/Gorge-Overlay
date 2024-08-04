@@ -629,6 +629,26 @@ const ADSettingPage = () => {
                 init={local.addInTargetMarker_Reverse}
                 lang={local.language}
             />
+            <SettingToggleInput
+                ja_main={"マーカーアドインのPvEでの表示"}
+                ja_sub={"PvEでもマーカーアドインを表示する"}
+                en_main={"Marker Add-in Display in PvE"}
+                en_sub={"Display marker add-ins in PvE"}
+                local={(v) => local.setaddInTargetMarker_PvE = v}
+                uID={"a_targetPvE"}
+                init={local.addInTargetMarker_PvE}
+                lang={local.language}
+            />
+            <SettingToggleInput
+                ja_main={"マーカーアドインのPvEで0件の場合非表示"}
+                ja_sub={"0件の場合は非表示にします"}
+                en_main={"Marker Add-in PvE: Hide if 0"}
+                en_sub={"If there are 0 items, they will be hidden"}
+                local={(v) => local.setaddInTargetMarker_PvEHide = v}
+                uID={"a_targetPvEHide"}
+                init={local.addInTargetMarker_PvEHide}
+                lang={local.language}
+            />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
             <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/TargetFrom/</div>
             <SettingNumberInput

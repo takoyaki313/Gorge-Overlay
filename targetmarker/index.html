@@ -95,6 +95,9 @@
     var Overlay_On = true;
 
     var nameMap = new Map();
+    let PvEDisp = false;
+    let PvEDispHide = true;
+    let DispNum = 0;
     ////////////////////
     $(function () {
       'use strict';
@@ -117,7 +120,7 @@
       }
     }
     let reverse = false;
-    async function marker_disp2829 (log, type) {
+    async function marker_disp2829(log, type) {
       if (log[2] === 'Delete' && log[4] === '0000') {
         //置き換えの削除
         return null;
@@ -149,17 +152,17 @@
         time: Date.parse(log[1]),
         date: null,
       }
-      if (data.From === ""){
-        if(log[4].toUpperCase().substring(0,2) === '10'){
+      if (data.From === "") {
+        if (log[4].toUpperCase().substring(0, 2) === '10') {
           data.From = "Player";
-        }else{
+        } else {
           data.From = "Object";
         }
       }
-      if (data.To === ""){
-        if(log[6].toUpperCase().substring(0,2) === '10'){
+      if (data.To === "") {
+        if (log[6].toUpperCase().substring(0, 2) === '10') {
           data.To = "Player";
-        }else{
+        } else {
           data.To = "Object";
         }
       }
@@ -167,6 +170,9 @@
       data_disp(data);
     }
     const addcombatant_cut = (log) => {
+      if (nameMap.size > 200) {
+        return 0;
+      }
       let nameID = log[2].toUpperCase();
       let name = log[3];
       if (name === "") {
@@ -308,6 +314,12 @@
         case 40:
           job = 'sge';
           break;
+        case 41:
+          job = 'vpr';
+          break;
+        case 42:
+          job = 'pct';
+          break;
         case 50:
           job = 'opp';
           break;
@@ -379,7 +391,7 @@
       {
         name: '三角',
         icon: 'https://xivapi.com/i/060000/060714.png'
-      }, 
+      },
       {
         name: '攻撃6',
         icon: 'https://xivapi.com/i/061000/061206.png'
@@ -387,7 +399,7 @@
       {
         name: '攻撃7',
         icon: 'https://xivapi.com/i/061000/061207.png'
-      }, 
+      },
       {
         name: '攻撃8',
         icon: 'https://xivapi.com/i/061000/061208.png'
@@ -435,10 +447,15 @@
       else {
         targetmarker_overlay_fontsize(data.addInTargetMarker_Size);
         targetmarker_overlay_reverse(data.addInTargetMarker_Reverse);
+        PvEDisp = typeof (data.addInTargetMarker_PvE) !== 'undefinced' ? data.addInTargetMarker_PvE : false;
+        PvEDispHide = typeof (data.addInTargetMarker_PvEHide) !== 'undefinced' ? data.addInTargetMarker_PvEHide : true;
       }
     }
 
-    function targetmarker_overlay_disp() {
+    function targetmarker_overlay_disp(isPvPZone) {
+      if (PvEDisp && PvEDispHide && DispNum === 0 && !isPvPZone) {
+        $('#bodyR').css('background-color', 'transparent');
+      }
       $('html').css('display', 'block');
     }
     function targetmarker_overlay_hide() {
@@ -451,7 +468,7 @@
     function targetmarker_overlay_reverse(bool) {
       if (bool) {
         $('#main').css('flex-direction', 'column');
-      } else { 
+      } else {
         $('#main').css('flex-direction', 'column-reverse');
         reverse = true;
       }
@@ -461,9 +478,10 @@
     function targetmarker_overlay_area_check(area) {
       MaxLB = 0;
       LastLB = 0;
-      if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
+      let isPvP = areaID_Array.indexOf(String(area.zoneID)) !== -1;
+      if (isPvP || PvEDisp) {
         Overlay_On = true;
-        targetmarker_overlay_disp();
+        targetmarker_overlay_disp(isPvP);
       }
       else {
         Overlay_On = false;
@@ -471,10 +489,21 @@
       }
       if (lastArea !== area.zoneID) {
         nameMap.clear();
+        $('#main').html('');
+        DispNum = 0;
+        if (PvEDisp && PvEDispHide && DispNum === 0 && !isPvP) {
+          $('#bodyR').css('background-color', 'transparent');
+        }
       }
       lastArea = area.zoneID;
     }
     function data_disp(data) {
+      DispNum++;
+      if (PvEDisp && PvEDispHide && DispNum === 0) {
+        $('#bodyR').css('background-color', 'transparent');
+      } else {
+        $('#bodyR').css('background-color', 'rgba(37, 37, 37, 0.3)');
+      }
       let template = $('#template .row');
       //let container = $('#row').clone();
       let row = template.clone();
@@ -505,7 +534,7 @@
   </script>
 </head>
 
-<body>
+<body id="bodyR">
   <div id="template" style="display:none">
     <div class="row">
       <div class="icon-id"></div>

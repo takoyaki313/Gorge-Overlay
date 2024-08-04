@@ -58,9 +58,9 @@ export const TeamData = (prop) => {
     }
     //dispdata.DPSData.sort((a, b) => b.DPS - a.DPS);
     //dispdata.HPSData.sort((a, b) => b.HPS - a.HPS);
-    dispdata.Kills.sort((a, b) => b.time - a.time);
-    dispdata.Deaths.sort((a, b) => b.time - a.time);
-    dispdata.Assists.sort((a, b) => b.time - a.time);
+    dispdata.Kills.sort((a, b) => a.time - b.time);
+    dispdata.Deaths.sort((a, b) => a.time - b.time);
+    dispdata.Assists.sort((a, b) => a.time - b.time);
     return (
         <div className={'pvpTeam ' + prop.team + 'team'} onClick={prop.toggle}>
             {local.teamSymbol ? <div className={'teamSymbol ' + prop.team + 'teamicon'}></div> : ""}
@@ -86,8 +86,8 @@ export const TeamData = (prop) => {
                 </div>
                 <div className='verticalLineThin'></div>
                 <div className='KDArea'>
-                    <div className='TeamKills'><TooltipJSX class="" setID={prop.team + 'kill'} text={"K:" + dispdata.Kills.length + ' - ' + getLastKDA(dispdata.Kills, prop.data[0].createtime, 30000, 'num')} html={<AssistTooltipLayout simulationKDA={dispdata.Kills} />} /></div>
-                    <div className='TeamDeaths'><TooltipJSX class="" setID={prop.team + 'death'} text={"D:" + dispdata.Deaths.length + ' - ' + getLastKDA(dispdata.Deaths, prop.data[0].createtime, 30000, 'num')} html={<AssistTooltipLayout simulationKDA={dispdata.Deaths} />} /></div>
+                    <div className='TeamKills'><TooltipJSX class="" setID={prop.team + 'kill'} text={"K:" + dispdata.Kills.length + ' - ' + getLastKDA(dispdata.Kills, prop.data[0].createtime, 30000, 'num')} html={<AssistTooltipLayout simulationKDA={dispdata.Kills.slice().reverse()} />} /></div>
+                    <div className='TeamDeaths'><TooltipJSX class="" setID={prop.team + 'death'} text={"D:" + dispdata.Deaths.length + ' - ' + getLastKDA(dispdata.Deaths, prop.data[0].createtime, 30000, 'num')} html={<AssistTooltipLayout simulationKDA={dispdata.Deaths.slice().reverse()} />} /></div>
                     {/*<div className='TeamAssists'><TooltipJSX class="" setID={prop.team + 'assist'} text={"A:" + dispdata.Assists.length} html={<AssistTooltipLayout simulationKDA={dispdata.Assists} />} /></div>*/}
                 </div>
             </div>
