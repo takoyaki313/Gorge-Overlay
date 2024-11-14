@@ -57,7 +57,7 @@ class Party {
         }
 
         if (this.PartyNumberVerified) {
-            loglineQueue_Push(['102', null, this.nameID, this.name, this.PartyNumber, this.job, this.AllianceType]);
+            loglineQueue_Push(['102', "", this.nameID, this.name, this.PartyNumber, this.job, this.AllianceType]);
         }
         this.inPary = inParty;
     }

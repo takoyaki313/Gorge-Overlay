@@ -19,7 +19,7 @@ if (readLocalData === null) {
 
 export const devMode = {
   webSocket: false,
-  logLevel: 0,
+  logLevel: 0,//Off 0
   logForceOff: false,
   sampleGet: false,
   sampleType: -1,//default -1
@@ -83,7 +83,7 @@ window.addOverlayListener('CombatData', (data) => window.EncounterState(data));
 window.addOverlayListener("ChangePrimaryPlayer", (player) => {
   PRIMARY_PLAYER.nameID = player.charID.toString(16).toUpperCase();
   PRIMARY_PLAYER.name = player.charName;
-  loglineQueue_Push(['101', null, PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
+  loglineQueue_Push(['101', '', PRIMARY_PLAYER.nameID, PRIMARY_PLAYER.name]);
 });
 
 window.addOverlayListener('PartyChanged', (p) => {

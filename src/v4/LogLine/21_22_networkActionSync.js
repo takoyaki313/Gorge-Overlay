@@ -135,7 +135,7 @@ export const networkactionsync_21_22 = async (log) => {
         }
     }
     else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0) {
-        
+
         let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
@@ -712,10 +712,10 @@ export const effectdata_force4 = async (param) => {
         return '000' + param;
     }
     else if (param.length === 4) {
-        return param;        
+        return param;
     }
     else {
-        return param.substring(0,4);
+        return param.substring(0, 4);
     }
 }
 
@@ -986,7 +986,7 @@ const network_action_datatype = async (log) => {
             if (effectflag.length > 1) {
                 effectdamage = effectflag.substring(effectflag.length - 2, effectflag.length);
             }
-            let flagdata = await effect_flag_checker(parseInt(effectdamage, 16));
+            let flagdata = await effect_flag_checker(parseInt(effectdamage, 16), log);
             if (flagdata === null) {
                 if (devMode.logLevel > 2) {
                     console.warn(effectdamage);
@@ -1017,6 +1017,10 @@ const effect_offset_checker = async (flag, log) => {
             return 'block';
         case '5':
             return 'block';
+        case '00'://追加効果なし　通常Hit（細字）
+            return 'normal';
+        case '20'://HPが～以下の時で成功?（クリティカル）
+            return 'ad-normal';
         case '40':
             return 'normal';
         case '25':
@@ -1028,13 +1032,13 @@ const effect_offset_checker = async (flag, log) => {
         case '61':
             return 'ex-miss';
         default:
-            console.warn('effect type offset unknown -> ' + flag);
-            console.warn(log);
+            console.error('effect type offset unknown -> ' + flag);
+            console.error(log);
             return 'noraml';
     }
 }
 
-const effect_flag_checker = async (flag) => {
+const effect_flag_checker = async (flag, log) => {
     switch (flag) {
         case 1:
             return 'miss-damage';
@@ -1056,8 +1060,7 @@ const effect_flag_checker = async (flag) => {
         case 8:
             return 'esuna-miss';//効果なし
         case 10:
-            console.log('powerdrain');
-            return 'powerdrain';
+            return 'mpdrain';
         case 11:
             return 'mp-recover';
         case 13:

@@ -42,7 +42,7 @@ export class maindata {
             for (let i = 0; i < this.Player_data.length; i++) {
                 let target = this.Player_data[i];
                 if (target.nameID.substring(0, 2) === '10') {
-                    backup.push({ nameID: target.nameID, name: target.name, job: target.job, server: target.server, alliance: target.alliance });
+                    backup.push({ nameID: target.nameID, name: target.name, job: target.job, server: target.server, alliance: target.alliance, AreaType: target.AreaType });
                 }
             }
             ////////////////////////////////////////////
@@ -80,7 +80,7 @@ export class maindata {
         } else {
             now = Date.now();
         }
-    
+
         let nameID_Job = [];
         if (Data.length > 0) {
             if (Data[0].AreaType === 5) {
@@ -100,64 +100,101 @@ export class maindata {
             case 'Party':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance === 1) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'Ally':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance >= 1) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'Enemy':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance < 1 && Data[i].nameID.substring(0, 2) === '10') {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'EnemyActive':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance < 1 && Data[i].nameID.substring(0, 2) === '10' && Data[i].battle) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'PC':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].nameID.substring(0, 2) === '10') {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'NPC':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].nameID.substring(0, 2) === '40' || Data[i].nameID.substring(0, 2) === 'E0') {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             case 'AllyActive':
                 for (let i = 0; i < Data.length; i++) {
                     if (Data[i].alliance === 1) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                     else if (Data[i].alliance >= 1 && Data[i].battle) {
-                        rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                        rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                     }
                 }
                 break;
             default:
                 for (let i = 0; i < Data.length; i++) {
-                    rtn.push(new dispPlayerData(Data[i], now, Alliance,TBD.EnemyAlliance, nameID_Job));
+                    rtn.push(new dispPlayerData(Data[i], now, Alliance, TBD.EnemyAlliance, nameID_Job));
                 }
                 break;
         }
         return (gorgeSortRule(rtn));
     }
-    
+    saveActionData = async () => {
+        try {
+            const fileHandle = await window.showSaveFilePicker({
+                suggestedName: this.AreaType + "_" + Date.now() + ".csv",
+            });
+
+            const writableStream = await fileHandle.createWritable();
+
+            let writeData = [["C_attacker", "C_attackerID", "victim", "victimID", "attacker", "attackerID", "action", "actionID", "effectname", "effectparam", "inputdata", "inputname", "send", "accept", "processtime"]];
+            for (let i = 0; i < this.Action_Synced_data.length; i++) {
+                let data = this.Action_Synced_data[i];
+                let row = [];
+                row.push(data.C_attacker);
+                row.push(data.C_attackerID);
+                row.push(data.victim);
+                row.push(data.victimID);
+                row.push(data.attacker);
+                row.push(data.attackerID);
+                row.push(data.action);
+                row.push(data.actionID);
+                row.push(data.effectname.join("|"));
+                row.push(data.effectparam.join("|"));
+                row.push(data.inputdata.join("|"));
+                row.push(data.inputname.join("|"));
+                row.push(Date.parse(data.time_send));
+                row.push(Date.parse(data.time_accept));
+                row.push(Date.parse(data.time_accept) - Date.parse(data.time_send));
+                writeData.push(row.join(','));
+            }
+            await writableStream.write(writeData.join('\n'));
+            await writableStream.close();
+
+            console.log("CSV-Save-OK");
+        } catch (error) {
+            console.error("JSON-Save-Error: " + error.message);
+        }
+    }
+
 }
 
 class dynamisHistory {
@@ -278,12 +315,12 @@ export const get_dispPlayerData_Robot = (dispData, createTime) => {
     }
     dispData.data.add_combatant_time = [{ battle: true, time: dispData.ridetime, timestamp: "robot" }, { battle: false, time: now, timestamp: "robot" }];
     dispData.data.job = dispData.ride_type;
-    let robotData = new dispPlayerData(dispData.data, now, TBD.Alliance,TBD.EnemyAlliance, []);
+    let robotData = new dispPlayerData(dispData.data, now, TBD.Alliance, TBD.EnemyAlliance, []);
     return (robotData);
 }
 
 class dispPlayerData {
-    constructor(before, now, Alliance,EnemyAlliance, nameID_Job) {
+    constructor(before, now, Alliance, EnemyAlliance, nameID_Job) {
         this.nameID = before.nameID;
         this.name = typeof (before.name) === 'string' ? before.name : before.nameID;
         this.me = this.nameID === PRIMARY_PLAYER.nameID ? true : false;
@@ -346,7 +383,7 @@ class dispPlayerData {
                     this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
                 }
             }
-            else{
+            else {
                 this.dynamishistory = new dynamisParty();
                 this.dynamis = typeof (before.dynamis) === 'undefined' ? '' : before.dynamis;
             }
@@ -418,11 +455,12 @@ class dispPlayerData {
                 else if (healtype === 14 || tbd === 'accept_income_totalheal') {
                     this.accept_income_heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
-                else if (healtype === 19) {
+                else if (healtype === 19 || tbd === 'accept_income_over_totalheal') {
                     this.accept_income_over_heal_All.push({ type: tbd, num: before[tbd], ps: Math.round(before[tbd] / this[useTime]) });
                 }
                 else {
                     if (devMode.logLevel > 1) {
+                        console.error(healtype);
                         console.error('healtype unknowkn->' + tbd);
                     }
                 }

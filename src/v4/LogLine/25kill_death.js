@@ -14,25 +14,6 @@ export const kill_death_main_25 = async (log) => {
         victim_type: log[2].substring(0, 2) === '10' ? 'player' : 'npc',
         lastupdate: log[1]
     };
-    /*
-    if (data.attacker_type === 'npc') {//もしペットIDならIDと名前を本人に入れ替える。
-        let searched = await owner_id_list_search(data.attackerID);
-        if (searched !== null) {
-            data.attackerID = searched;
-            data.attacker_type = await npc_check_nameID(searched);
-            let db = await read_maindata('Player_data', 'nameID', data.attackerID, 'name');
-            if (db !== null) {
-                data.attacker = db.name;
-            }
-        }
-        else if (data.attacker.indexOf('チェイサー') !== -1 || data.attacker.indexOf('オプレッサー') !== -1 || data.attacker.indexOf('分身') !== -1) {
-            if (devMode.logLevel > 1) {
-                console.warn('Warn : ペットの情報がマージされませんでした。' + data.attacker + ':' + data.attackerID);
-                console.warn(log);
-            }
-        }
-    }
-    */
     if (data.victim_type === 'player') {
         let time_number = await timestamp_change(data.lastupdate);
         let time = Math.round((time_number - battleEvent.timer.Get_BattleStart) / 1000);

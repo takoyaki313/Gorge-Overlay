@@ -22,11 +22,11 @@ export const loglineFirstStep = async (log) => {
         //AREATYPE
         await minimapChange_40(log);
     }
-    
+
     if (AreaData.Type === 0) {
         return;
     }
-    
+
     if (devMode.sampleGet) {
         sampleJSON.pushData = log;
     }
@@ -47,7 +47,6 @@ export const loglineFirstStep = async (log) => {
             }
             break;
         case '12':
-
             break;
         case '21':
             if (battleEvent.Engage) {
@@ -76,12 +75,10 @@ export const loglineFirstStep = async (log) => {
         case '30':
             await network_buff_removed_30(log);
             break;
-
         case '33':
             logline_battle_start_check(log);
             break;
         case '37':
-            //await networkAbility_receive(log);
             await networkAbility_receive(log);
             break;
         case '38':
@@ -89,18 +86,15 @@ export const loglineFirstStep = async (log) => {
                 await networkDoT_sync_38(log);
             }
             break;
-
         case '39':
             await networkupdatehp_39(log);
             break;
         case '41':
             //console.log(log);
             break;
-
         case '101':
             await primaryPlayerChanged_101(log);
             break;
-
         case '102':
             await partyChanged_102(log);
             break;

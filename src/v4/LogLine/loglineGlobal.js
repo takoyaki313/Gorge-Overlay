@@ -3,9 +3,9 @@ import { read_maindata } from "../maindataEdit.js";
 ///////////////////////////////////////////////////////////////////////////////
 export const Field_ID = 'E0000000';
 ///////////////////////////////////////////////////////////////////////////////
-export const Oppressor_HP = 500000;
-export const Justice_HP = 375000;//jas
-export const Chaiser_HP = 250000;
+export const Oppressor_HP = 600000;
+export const Justice_HP = 450000;//jas
+export const Chaiser_HP = 300000;
 export const Robot_Bunsin_HP = 100;
 export const Robot_name = ['che', 'opp', 'jas'];
 export const Core_Tower_HP = 8000000;
