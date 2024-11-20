@@ -3,210 +3,186 @@ import { object_to_array } from "./resource";
 export const DoT_ID = [
     {
         actionid: '722E',
-        action_potencial: 18000,
+        action_potential: 20000,
         dotid: '07F6',
         name: 'テンパランス：効果',
-        potencial: 3000,
+        potential: 6000,
         max: 5,
         type: 'HoT'
     }, {
         actionid: '',//ソルトアース起動71A6
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0BDD',
         name: 'ソルトアース',
-        potencial: 2000,
+        potential: 4000,
         max: 5,
         type: 'HoT'
     }, {
         actionid: '',//ソルトアース起動71A6
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0BDE',
         name: 'ソルトアース[害]',
-        potencial: 2000,
+        potential: 4000,
         max: 5,
         type: 'DoT'
     }, {
         actionid: '7231',
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0C11',
         name: '蟲毒法',
-        potencial: 3000,
-        max: 15,
+        potential: 2000,
+        max: 12,
         type: 'DoT'
     }, {
         actionid: '7232',//展開戦術
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0C11',
         name: '蟲毒法',
-        potencial: 3000,
-        max: 15,
+        potential: 2000,
+        max: 12,
         type: 'DoT'
     }, {
-        actionid: '45E3',
-        action_potencial: 12000,
-        dotid: '0811',
-        name: 'オーロラ',
-        potencial: 3000,
-        max: 12,
-        type: 'HoT'
-    }, {
         actionid: '723B',
-        action_potencial: 0,//5000-10000 HP可変
+        action_potential: 0,//6000-9000 HP可変
         dotid: '0C1B',
         name: 'アスペクトベネフィク[日]',
-        potencial: 2000,
+        potential: 4000,
         max: 15,
         type: 'HoT'
     }, {
         actionid: '7249',
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0C24',
         name: 'エウクラシア・ドシスIII',
-        potencial: 4000,
+        potential: 3000,
         max: 12,
         type: 'DoT'
     }, {
         actionid: '7252',
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0C30',
         name: 'リュペー',
-        potencial: 8000,
+        potential: 8000,
         max: 5,
         type: 'DoT'
     }, {
         actionid: '72DE',
-        action_potencial: 4000,
+        action_potential: 4000,
         dotid: '07E3',
         name: 'バイオブラスト',
-        potencial: 4000,
+        potential: 4000,
         max: 12,
         type: 'DoT'
     }, {//black mage
-        actionid: '73DD',
-        action_potencial: 0,//3000-6000-9000可変
+        actionid: 'A208',
+        action_potential: 16000,//3000-6000-9000可変
         dotid: '0C92',
         name: '火傷',
-        potencial: 3000,
-        max: 9,
+        potential: 4000,
+        max: 6,
         type: 'DoT'
     }, {
         actionid: '',
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0C9B',
         name: 'スリップストリーム[害]',
-        potencial: 4000,
-        max: 5,
+        potential: 4000,
+        max: 6,
         type: 'DoT'
     }, {
         actionid: '73F0',//フェニックスが使用
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0C9E',
         name: '不死鳥の翼',
-        potencial: 4000,
+        potential: 4000,
         max: 15,
         type: 'HoT'
     }, {
-        actionid: '73F2',
-        action_potencial: 3000,
-        dotid: '0CA0',
-        name: 'リヴァレーション',
-        potencial: 3000,
-        max: 15,
-        type: 'DoT'
-    }, {
-        actionid: '73FC',
-        action_potencial: 6000,
-        dotid: '0CA5',
-        name: 'エンリポスト',
-        potencial: 3000,
+        actionid: '73F1',
+        action_potential: 4000,
+        dotid: '0C9F',
+        name: '火焔',
+        potential: 4000,
         max: 6,
         type: 'DoT'
     }, {
-        actionid: '73FD',
-        action_potencial: 7000,
-        dotid: '0CA6',
-        name: 'エンツヴェルクハウ',
-        potencial: 3000,
-        max: 6,
-        type: 'DoT'
-    }, {
-        actionid: '73FE',
-        action_potencial: 8000,
-        dotid: '0CA7',
-        name: 'エンルドゥブルマン',
-        potencial: 3000,
+        actionid: 'A213',
+        action_potential: 8000,
+        dotid: '10DF',
+        name: 'スコーチ',
+        potential: 4000,
         max: 6,
         type: 'DoT'
     }, {
         actionid: '7340',
-        action_potencial: 4000,
+        action_potential: 4000,
         dotid: '0C70',
         name: '劫火滅却の術',
-        potencial: 4000,
+        potential: 4000,
         max: 12,
         type: 'DoT'
     }, {
         actionid: '7344',
-        action_potencial: 8000,
+        action_potential: 8000,
         dotid: '0C75',
         name: '命水',
-        potencial: 4000,
+        potential: 4000,
         max: 12,
         type: 'HoT'
     }, {
         actionid: '',//ドトン発動734A
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0C07',
         name: '土遁の術[害]',
-        potencial: 3000,
+        potential: 3000,
         max: 5,
         type: 'DoT'
     }, {
         actionid: '',
         //守護のクレスト　B2D
         //活性のクレスト　 B2E
-        action_potencial: 0,
+        action_potential: 0,
         dotid: '0B2E',
         name: '活性のクレスト',
-        potencial: 6000,
+        potential: 6000,
         max: 6,
         type: 'HoT'
     }, {
         actionid: '9931',
-        action_potencial: 8000,
+        action_potential: 8000,
         dotid: '1017',
         name: 'スタープリズム',
-        potencial: 2000,
+        potential: 2000,
         max: 12,
         type: 'HoT'
     }, {
         actionid: '9928',
-        action_potencial: 8000,
+        action_potential: 8000,
         dotid: '1010',
         name: 'イマジンファング',
-        potencial: 4000,
+        potential: 4000,
         max: 12,
         type: 'DoT'
     }, {
         actionid: '26FA',
-        action_potencial: 40000,
+        action_potential: 40000,
         dotid: '010B',
         name: '火傷',
-        potencial: 10000,
+        potential: 10000,
         max: 12,
         type: 'DoT'
     }, {
         actionid: '',
         dotid: '0597',
         name: 'タワーフィールド',
-        potencial: 4000,
+        potential: 4000,
         max: 1200,
         type: 'HoT'
     }, {// not use?
         actionid: '',
         dotid: '0598',
         name: 'タワーフィールド',
-        potencial: 4000,
+        potential: 4000,
         max: 1200,
         type: 'HoT'
     }
@@ -224,14 +200,6 @@ export const Unique_DoT = [{
     id: 'C64',
     name: '急所系穴',
     type: 'DoT'
-}, {
-    id: '544',
-    name: 'スリプル',
-    type: 'DoT'
-}, {
-    id: '886',
-    name: '深謀遠慮の策',
-    type: 'HoT'
 }, {
     id: 'C27',
     name: 'ハイマの印',

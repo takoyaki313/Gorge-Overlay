@@ -241,7 +241,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 8
     },
     '0514': {
         name: 'かばう',
@@ -249,7 +249,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 8
     },
     '0BD2': {
         name: 'ホーリーシェルトロン',
@@ -259,13 +259,21 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 5
     },
+    '0BD4': {
+        name: 'コンフィティオル実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 5
+    },
     '0C74': {
-        name: 'ナイトの堅守',
+        name: '忠義の盾',
         type: [false, false, true, false, true],
         effect: 1,
         cut: 0.8,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 8
     },
     '0C8A': {
         name: 'ファランクス',
@@ -288,6 +296,38 @@ export const EFFECT_ID = {
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '07DF': {
+        name: 'ロイエ実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10B9': {
+        name: 'ゲベート実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10BA': {
+        name: 'グラブカッマー実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10BB': {
+        name: 'シールドスマイト',
+        type: [false, false, true, false, false],
+        effect: 1,
+        cut: 1.1,
         cut_heal: 1,
         maxtime: 10
     },
@@ -316,16 +356,16 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
-    '07C8': {
-        name: '原初の混沌',
+    '0517': {
+        name: '原初の解放',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 15
     },
-    '0517': {
-        name: '原初の解放',
+    '07C8': {
+        name: 'カオティックサイクロン実行可',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -355,6 +395,38 @@ export const EFFECT_ID = {
         cut: 1,
         cut_heal: 1,
         maxtime: 15
+    },
+    '10BC': {
+        name: 'インナーカオス実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10BD': {
+        name: 'ルイネーター実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10BE': {
+        name: '原初の激震実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10BF': {
+        name: '原初の鼓動',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
     },
     //DarkNight
     '0BD9': {
@@ -421,15 +493,31 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
-    //GunBraker
-    '0BE3': {
-        name: 'ソイル',
+    '10C0': {
+        name: 'カマパンス実行可',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 9999
     },
+    '10C1': {
+        name: 'トアクリーバー実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '10C2': {
+        name: 'ディセスティーム実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    //GunBraker
     '07D2': {
         name: 'ジャギュラーリップ実行可',
         type: [false, false, false, false, true],
@@ -462,8 +550,16 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
+    '0BE7': {
+        name: 'ハイパーヴェロシティ',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
     '0BE8': {
-        name: 'シャギュラーリップ',//ブラッドドロー：タンク時
+        name: 'シャギュラーリップ',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -471,7 +567,7 @@ export const EFFECT_ID = {
         maxtime: 7
     },
     '0BE9': {
-        name: 'アブドメンテアー',//ブラッドドロー：タンク時
+        name: 'アブドメンテアー',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -479,60 +575,28 @@ export const EFFECT_ID = {
         maxtime: 7
     },
     '0BEA': {
-        name: 'アイガウジ',//ブラッドドロー：タンク時
+        name: 'アイガウジ',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 7
+    },
+    '0BEB': {
+        name: 'ネビュラ',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
     },
     '0BE2': {
         name: 'ノーマーシー',
         type: [true, true, false, false, true],
-        effect: 1.2,
+        effect: 1.1,
         cut: 1,
         cut_heal: 1,
         maxtime: 7
-    },
-    '0BE5': {
-        name: 'ブラッドドロー：DPS',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
-    '0BE6': {
-        name: 'ブラッドドロー：ヒーラー',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
-    '0BE4': {
-        name: 'ブラッドドロー：タンク',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
-    '0BEB': {
-        name: 'ネピュラ',
-        type: [false, false, true, false, true],
-        effect: 1,
-        cut: 0.8,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0811': {
-        name: 'オーロラ',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 12
     },
     '0BEC': {
         name: '連続剣',
@@ -542,45 +606,85 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 4
     },
+    '0BED': {//Stack ?
+        name: '連続剣[被]',
+        type: [false, false, true, false, false],
+        effect: 1,
+        cut: 1.05,
+        cut_heal: 1,
+        maxtime: 6
+    },
     '010BED': {//Stack 1
         name: '連続剣[被]',
         type: [false, false, true, false, false],
         effect: 1,
-        cut: 1.04,
+        cut: 1.05,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 6
     },
     '020BED': {//Stack 2
         name: '連続剣[被]',
         type: [false, false, true, false, false],
         effect: 1,
-        cut: 1.08,
+        cut: 1.1,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 6
     },
     '030BED': {//Stack 3
         name: '連続剣[被]',
         type: [false, false, true, false, false],
         effect: 1,
-        cut: 1.12,
+        cut: 1.15,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 6
     },
     '040BED': {//Stack 4
         name: '連続剣[被]',
         type: [false, false, true, false, false],
         effect: 1,
-        cut: 1.16,
+        cut: 1.2,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 6
     },
     '050BED': {//Stack 5
         name: '連続剣[被]',
         type: [false, false, true, false, false],
         effect: 1,
-        cut: 1.20,
+        cut: 1.25,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 6
+    },
+    '10C5': {
+        name: 'フェイテッドブランド実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10C6': {
+        name: 'フェイテッドブランド',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 6
+    },
+    '10C7': {
+        name: 'ハート・オブ・コランダム',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.9,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10C8': {
+        name: 'カタルシス・オブ・コランダム',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
     },
     //Whitemage
     '0C0E': {
@@ -617,36 +721,52 @@ export const EFFECT_ID = {
     },
     '07F5': {
         name: 'テンパランス',
-        type: [true, true, false, false, true],
-        effect: 1.1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '07F6': {
-        name: 'テンパランス：効果',
-        type: [true, false, true, false, true],
-        effect: 1.1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 5
-    },
-    //Scholar
-    '0C0F': {
-        name: '鼓舞',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 15
     },
-    '0C10': {
-        name: '激励',
-        type: [true, false, false, false, true],
-        effect: 1.08,
+    '07F6': {
+        name: 'テンパランス：効果',
+        type: [false, false, false, false, true],
+        effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 5
+    },
+    '10E6': {
+        name: 'グレアジャ実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 20
+    },
+    //Scholar
+    '057E': {
+        name: '連環計',
+        type: [true, false, false, false, false],
+        effect: 1.1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 6
+    },
+    '0C0F': {
+        name: '鼓舞',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 12
+    },
+    '0C10': {
+        name: '激励',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.9,
+        cut_heal: 1,
+        maxtime: 12
     },
     '0C11': {
         name: '蟲毒法',
@@ -654,15 +774,15 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 12
     },
     '0C12': {
         name: '蟲毒',
-        type: [true, false, false, false, false],
-        effect: 0.92,
+        type: [false, false, false, true, false],
+        effect: 1,
         cut: 1,
-        cut_heal: 1,
-        maxtime: 15
+        cut_heal: 0.8,
+        maxtime: 12
     },
     '0C16': {
         name: '秘策',
@@ -671,14 +791,6 @@ export const EFFECT_ID = {
         cut: 1,
         cut_heal: 1,
         maxtime: 15
-    },
-    '0C13': {
-        name: '枯骨法',
-        type: [false, false, false, true, false],
-        effect: 1,
-        cut: 1,
-        cut_heal: 0.75,
-        maxtime: 10
     },
     '0C14': {
         name: '疾風の計',
@@ -690,9 +802,9 @@ export const EFFECT_ID = {
     },
     '0C15': {
         name: '怒涛の計',
-        type: [false, false, true, false, true],
-        effect: 1,
-        cut: 0.9,
+        type: [true, false, false, false, true],
+        effect: 1.1,
+        cut: 1,
         cut_heal: 1,
         maxtime: 10
     },
@@ -714,8 +826,8 @@ export const EFFECT_ID = {
     },
     '0C18': {
         name: 'セラフィムウィング',
-        type: [false, false, false, false, true],
-        effect: 1,
+        type: [false, true, false, false, true],
+        effect: 1.2,
         cut: 1,
         cut_heal: 1,
         maxtime: 20
@@ -728,8 +840,8 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
-    '0886': {
-        name: '深謀遠慮の策',
+    '10E7': {
+        name: 'セラフィズム',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -743,7 +855,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 12
+        maxtime: 6
     },
     '0C1C': {
         name: 'アスペクト・ベネフィク[夜]',
@@ -751,55 +863,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
-    },
-    '0C1D': {
-        name: 'ドロー：アーゼマの均衡',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '053A': {
-        name: 'アーゼマの均衡',
-        type: [true, false, false, false, true],
-        effect: 1.1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '0D48': {
-        name: 'ドロー：世界樹の幹',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '053B': {
-        name: '世界樹の幹',
-        type: [false, false, true, false, true],
-        effect: 1,
-        cut: 0.9,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '0D4C': {
-        name: 'ドロー：オシュオンの矢',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '0D4A': {
-        name: 'オシュオンの矢',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
+        maxtime: 12
     },
     '0C20': {
         name: 'マクロコスモス',
@@ -811,16 +875,56 @@ export const EFFECT_ID = {
     },
     '0C21': {
         name: '星河一天',
-        type: [true, false, false, false, true],
-        effect: 1.3,//1.3-1.2-1.1
+        type: [true, true, false, false, true],
+        effect: 1.2,//1.3-1.2-1.1
         cut: 1,
         cut_heal: 1,
         maxtime: 15
     },
     '0C22': {
         name: '星河一天[害]',
-        type: [true, false, false, false, false],
-        effect: 0.7,//0.7-0.8-0.9
+        type: [true, true, false, false, false],
+        effect: 0.8,//0.7-0.8-0.9
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '10E8': {
+        name: 'クラウンレディ',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.9,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10E9': {
+        name: 'クラウンロード',
+        type: [true, false, false, false, true],
+        effect: 1.1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10EA': {
+        name: 'エピサイクル',
+        type: [false, false, false, false, true],
+        effect: 1,//0.7-0.8-0.9
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10EB': {
+        name: 'レトログレード実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10EC': {
+        name: 'オラクル実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 15
@@ -915,26 +1019,18 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 5
     },
-    '0C60': {
-        name: '六合星導脚',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 5
-    },
     '0C64': {
         name: '急所経穴',
         type: [false, false, false, false, false],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 3
+        maxtime: 4
     },
     '0C62': {
         name: '紅蓮の神髄',
-        type: [false, false, false, false, true],
-        effect: 1,
+        type: [true, false, false, false, true],
+        effect: 1.5,
         cut: 1,
         cut_heal: 1,
         maxtime: 10
@@ -970,6 +1066,22 @@ export const EFFECT_ID = {
         cut: 1,
         cut_heal: 1,
         maxtime: 2
+    },
+    '10CD': {
+        name: '乾坤闘気弾実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '1136': {//金剛の極意（ダメージ集計用？）
+        name: 'Unknown_1136',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
     },
     //Dragoon
     '0C69': {
@@ -1028,15 +1140,23 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
-    //Ninja
-    '0C6F': {
-        name: 'ぶんどる',
-        type: [false, false, true, false, false],
+    '10CE': {
+        name: 'スタークロッサー実行可',
+        type: [false, false, false, false, true],
         effect: 1,
-        cut: 1.1,
+        cut: 1,
         cut_heal: 1,
         maxtime: 10
     },
+    '1134': {
+        name: 'ナーストレンド実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    //Ninja
     '07DB': {
         name: '残影',
         type: [false, false, false, false, true],
@@ -1059,7 +1179,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 30
+        maxtime: 20
     },
     '0524': {
         name: 'かくれる',
@@ -1189,6 +1309,30 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 4
     },
+    '10CF': {
+        name: '毒盛の術',
+        type: [false, false, true, false, false],
+        effect: 1,
+        cut: 1.1,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '10D0': {
+        name: '土遁の術',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.8,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '10D1': {
+        name: '是生滅法実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
     //Samurai
     '0C7F': {
         name: '奥義波切',
@@ -1222,6 +1366,14 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 4
     },
+    '0526': {
+        name: '残心実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
     '0528': {
         name: '名鏡止水',
         type: [false, false, false, false, true],
@@ -1231,7 +1383,7 @@ export const EFFECT_ID = {
         maxtime: 3
     },
     '0C83': {
-        name: '乱れ雪月花実行可',
+        name: '天道雪月花実行可',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -1246,6 +1398,14 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
+    '10D2': {
+        name: '崩し［弱］',
+        type: [false, false, false, false, false],
+        effect: 1,//自分からのみ10%上昇
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
     //Reaper
     '0C84': {
         name: '死の供物',
@@ -1254,22 +1414,6 @@ export const EFFECT_ID = {
         cut: 1,
         cut_heal: 1,
         maxtime: 9999
-    },
-    '0C85': {
-        name: 'プレンティフルハーベスト',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '0B26': {
-        name: '妖異の鎌',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
     },
     '0C86': {
         name: 'デスワラント',
@@ -1295,24 +1439,8 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
-    '0B28': {
-        name: 'ギャロウズ実行可',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
     '0B2A': {
         name: 'クロスリーパー実行可',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0ABE': {
-        name: 'ソウルソウ',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -1329,8 +1457,8 @@ export const EFFECT_ID = {
     },
     '0B2D': {
         name: '守護のクレスト',
-        type: [true, false, false, false, true],
-        effect: 1.1,
+        type: [false, false, false, false, true],
+        effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 10
@@ -1351,7 +1479,159 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 2
     },
+    '10D3': {
+        name: 'エクスギロティン実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10D4': {
+        name: 'デスワラント',
+        type: [false, false, false, false, false],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 8
+    },
+    '10D5': {
+        name: 'ペルフェクティオ実行可',//フィアー？
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },//Viper
+    '0FF5': {
+        name: '参の牙【咬撃】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime:10
+    },
+    '0FF6': {
+        name: '壱の蛇【猛襲】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FF7': {
+        name: '弐の蛇【疾速】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FF8': {
+        name: '飛蛇連尾撃実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FF9': {
+        name: '?',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFA': {
+        name: '祖霊の蛇【壱】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFB': {
+        name: '祖霊の蛇【弐】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFC': {
+        name: '祖霊の蛇【参】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFD': {
+        name: '祖霊の蛇【肆】実行後',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0FFE': {
+        name: '祖霊降ろし',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 20
+    },
+    '0FFF': {
+        name: '蛇行',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '1000': {
+        name: '蛇鱗',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.5,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '1001': {
+        name: '蛇鱗［バリア］',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '1002': {
+        name: '蛇血',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '1003': {
+        name: '惨毒',
+        type: [false, false, false, false, false],
+        effect: 1,//自身からのみ1.2
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
     //Bird
+    '0C41': {
+        name: '詩心',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
     '0C42': {
         name: '進撃のマーチ',
         type: [false, false, false, false, true],
@@ -1376,14 +1656,6 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 20
     },
-    '0C41': {
-        name: '詩心',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
     '0C47': {
         name: '時神のピーアン',
         type: [false, false, false, false, true],
@@ -1391,30 +1663,6 @@ export const EFFECT_ID = {
         cut: 1,
         cut_heal: 1,
         maxtime: 8
-    },
-    '0882': {
-        name: '時神の護り',
-        type: [false, false, true, true, true],
-        effect: 1,
-        cut: 0.75,
-        cut_heal: 1.25,
-        maxtime: 5
-    },
-    '0C44': {
-        name: 'エイペックス・フォルテ',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0C45': {
-        name: 'エイペックス・フォルテ[被]',
-        type: [true, false, false, false, true],
-        effect: 1.05,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 5
     },
     '0C48': {
         name: '英雄のファンタジア',
@@ -1428,6 +1676,22 @@ export const EFFECT_ID = {
         name: '英雄のファンタジア[被]',
         type: [true, false, false, false, true],
         effect: 1.1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 30
+    },
+    '0882': {
+        name: '時神の護り',
+        type: [false, false, true, true, true],
+        effect: 1,
+        cut: 0.75,
+        cut_heal: 1.25,
+        maxtime: 4
+    },
+    '10D8': {
+        name: '英雄のアンコール実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 30
@@ -1449,6 +1713,14 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 5
     },
+    '0C4E': {
+        name: 'ドリル起動',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
     '0C4F': {
         name: 'バイオブラスト起動',
         type: [false, false, false, false, true],
@@ -1457,13 +1729,29 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 9999
     },
-    '052B': {
-        name: 'ワイルドファイア',
-        type: [false, false, false, false, false],
+    '0C50': {
+        name: 'エアアンカー起動',
+        type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 7
+        maxtime: 9999
+    },
+    '0C51': {
+        name: '回天のこぎり起動',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '0C52': {
+        name: '回天のこぎり',
+        type: [false, false, true, false, false],
+        effect: 1,
+        cut: 1.2,
+        cut_heal: 1,
+        maxtime: 6
     },
     '0C53': {
         name: 'ビショップ起動中',
@@ -1497,6 +1785,22 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
+    '052B': {
+        name: 'ワイルドファイア',
+        type: [false, false, false, false, false],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 7
+    },
+    '07E2': {
+        name: 'ワイルドファイア',
+        type: [false, false, true, false, false],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9
+    },
     '07E3': {
         name: 'バイオブラスト',
         type: [false, false, true, false, false],
@@ -1505,31 +1809,55 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 9
     },
-    '0C50': {
-        name: 'エアアンカー起動',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
-    '0C51': {
-        name: '回天のこぎり起動',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
-    '0C4E': {
-        name: 'ドリル起動',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
     //Dancer
+    '07E6': {
+        name: '剣の舞い',
+        type: [true, false, false, false, true],
+        effect: 1.1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0800': {
+        name: 'アン・アヴァン',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0804': {
+        name: '扇の舞い',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.9,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0BD0': {
+        name: '誘惑',
+        type: [false, false, false, false, false],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 2
+    },
+    '0C57': {
+        name: '飛剣',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '0C58': {
+        name: '剣の舞い実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
     '0C59': {
         name: '流星の舞い',
         type: [false, false, false, false, true],
@@ -1586,56 +1914,32 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
-    '0C57': {
-        name: '飛剣',
+    '10D9': {
+        name: '暁の絆',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 9999
     },
-    '0804': {
-        name: '扇の舞い',
-        type: [false, false, true, false, true],
-        effect: 1,
-        cut: 0.9,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '07E6': {
-        name: '剣の舞い',
+    '10DA': {
+        name: '暁の舞い',
         type: [true, false, false, false, true],
         effect: 1.1,
         cut: 1,
         cut_heal: 1,
         maxtime: 10
     },
-    '0C58': {
-        name: '剣の舞い実行可',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '0800': {
-        name: 'アン・アヴァン',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0BD0': {
-        name: '誘惑',
-        type: [false, false, false, false, false],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 2
-    },
     //BlackMage
     '0C8C': {
+        name: 'アストラルファイアI',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 30
+    },
+    '0C8D': {
         name: 'アストラルファイアII',
         type: [false, false, false, false, true],
         effect: 1,
@@ -1643,24 +1947,8 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 30
     },
-    /*'0C8D'*/'0D35': {
-        name: 'アストラルファイアIII',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 30
-    },
-    '0C90': {
-        name: 'アストラルファイア[被]',
-        type: [false, false, false, false, false],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
     '0C8E': {
-        name: 'アンブラルブリザードII',
+        name: 'アンブラルブリザードI',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
@@ -1668,44 +1956,12 @@ export const EFFECT_ID = {
         maxtime: 30
     },
     '0C8F': {
-        name: 'アンブラルブリザードIII',
+        name: 'アンブラルブリザードII',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 30
-    },
-    '0C91': {
-        name: 'アンブラルブリザード[被]',
-        type: [false, false, false, false, false],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
-    },
-    '0C95': {
-        name: 'バースト',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0BCE': {
-        name: '徐々に睡眠',
-        type: [false, false, false, false, false],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 3
-    },
-    '052D': {
-        name: '迅速魔',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
     },
     '0C92': {
         name: '火傷',
@@ -1713,7 +1969,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 12//6-9-12
+        maxtime: 6//6-9-12
     },
     '0C93': {
         name: '氷結',
@@ -1723,44 +1979,84 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 3//1-2-3
     },
+    '0C95': {
+        name: 'バースト',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
     '0C96': {
         name: 'ソウルレゾナンス',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 60
+        maxtime: 15
     },
-    '0C61': {
-        name: 'ホリグロット',
+    '0C97': {
+        name: 'パラドックスシンボル',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '0D35': {
+        name: 'アストラルファイアIII',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '0D36': {
+        name: 'アンブラルブリザードIII',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 15
+    },
+    '10DB': {
+        name: 'リース・オブ・ファイア',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 10
     },
-    '0C94': {
-        name: 'アポカタスタシス',
+    '10DC': {
+        name: 'リース・オブ・アイス',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.9,
+        cut: 0.8,
         cut_heal: 1,
-        maxtime: 1
+        maxtime: 10
     },
-    //Summoner
-    '0C99': {
-        name: 'スリップストリーム',
+    '10DD': {
+        name: 'エレメントスター',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 30
     },
-    '0C9B': {
-        name: 'スリップストリーム[害]',
-        type: [false, false, false, false, false],
-        effect: 1,
+    '10DE': {
+        name: 'レサージー',
+        type: [true, false, false, false, false],
+        effect: 0.75,
         cut: 1,
+        cut_heal: 1,
+        maxtime: 60
+    },
+    //Summoner
+    '0C98': {
+        name: '守りの光',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.8,
         cut_heal: 1,
         maxtime: 10
     },
@@ -1772,11 +2068,11 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 5
     },
-    '0C98': {
-        name: '守りの光',
-        type: [false, false, true, false, true],
+    '0C9B': {
+        name: 'スリップストリーム[害]',
+        type: [false, false, false, false, false],
         effect: 1,
-        cut: 0.8,
+        cut: 1,
         cut_heal: 1,
         maxtime: 10
     },
@@ -1806,27 +2102,35 @@ export const EFFECT_ID = {
     },
     '0C9F': {
         name: '火焔',
-        type: [true, false, false, false, false],
-        effect: 0.5,
+        type: [false, false, false, false, false],
+        effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 5
     },
-    '0CA0': {
+    '0CA0': {//煉獄の炎
         name: 'リヴァレーション',
-        type: [false, false, false, false, false],
-        effect: 1,
+        type: [true, false, false, false, false],
+        effect: 0.5,
         cut: 1,
         cut_heal: 1,
         maxtime: 15
     },
-    '07AD': {//バハムートが使ってる。謎
-        name: 'アクション実行待機III',
-        type: [false, false, false, false, false],
+    '112F': {
+        name: 'ルインジャ実行可',
+        type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 30
+        maxtime: 10
+    },
+    '1130': {
+        name: 'クリムゾンストライク実行可',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
     },
     //RedMage
     '0571': {
@@ -1837,6 +2141,38 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 10
     },
+    '08EA': {
+        name: 'エンボルデン',
+        type: [true, false, true, false, true],
+        effect: 1.1,
+        cut: 0.9,
+        cut_heal: 1,
+        maxtime: 8
+    },
+    '0CA2': {//White - Barrier
+        name: 'エンリポスト',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 6
+    },
+    '0CA3': {//White - Barrier
+        name: 'エンリポスト',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 6
+    },
+    '0CA4': {//White - Barrier
+        name: 'エンルドゥブルマン',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 6
+    },
     '0CAA': {
         name: 'モノマキー',
         type: [true, false, false, false, false],
@@ -1846,96 +2182,40 @@ export const EFFECT_ID = {
         maxtime: 7
     },
     '0CAB': {
-        name: 'マナフィケーション',
-        type: [false, false, false, false, true],
-        effect: 1,//次の魔法：ダメージ/ヒールを1.2倍
+        name: 'デプラスマン',
+        type: [true, true, false, false, true],
+        effect: 1.2,//付与したは付与された人へのダメージが1.1倍
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 7
     },
-    '0CAD': {
-        name: 'シフトホワイト',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
-    '0CAE': {
-        name: 'シフトブラック',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 9999
-    },
-    '0CA9': {
-        name: 'フラズル',
-        type: [false, false, true, true, false],
-        effect: 1,
-        cut: 1.1,
-        cut_heal: 0.9,
-        maxtime: 8
-    },
-    '0CA8': {
-        name: 'バマジク',
-        type: [false, false, true, true, true],
-        effect: 1,
-        cut: 0.9,
-        cut_heal: 1.1,
-        maxtime: 8
-    },
-    '0CA1': {
-        name: 'ヴァルホーリー、ヴァルフレア実行可',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0CA2': {//White - Barrier
-        name: 'エンリポスト',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0CA3': {//White - Barrier
-        name: 'エンリポスト',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0CA4': {//White - Barrier
-        name: 'エンルドゥブルマン',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0CA5': {//Black - DoT
-        name: 'エンリポスト',
+    '10DF': {
+        name: 'スコーチ',
         type: [false, false, false, false, false],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 6
     },
-    '0CA6': {//Black - DoT
-        name: 'エンリポスト',
-        type: [false, false, false, false, false],
+    '10E0': {
+        name: 'フォルテ',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.5,
+        cut_heal: 1,
+        maxtime: 4
+    },
+    '10E1': {
+        name: 'ブライヤー・クロゼ実行可',
+        type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
         maxtime: 6
     },
-    '0CA7': {//Black - DoT
-        name: 'エンルドゥブルマン',
-        type: [false, false, false, false, false],
+    '10E2': {
+        name: 'プリフルジェンス実行可',
+        type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
@@ -2020,7 +2300,7 @@ export const EFFECT_ID = {
         effect: 1.2,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 10
     },
     '100E': {
         name: 'イマジンウィング',
@@ -2101,126 +2381,46 @@ export const EFFECT_ID = {
         cut: 1,
         cut_heal: 1,
         maxtime: 12
-    },//Viper
-    '1018': {
-        name: '猛襲',
-        type: [true, false, false, false, true],
-        effect: 1.1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 15
     },
-    '1019': {
-        name: '疾速',
+    '101C': {
+        name: 'スタープリズム',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 12
     },
-    '0FFF': {
-        name: '蛇行',
-        type: [true, false, false, false, true],
-        effect: 1.25,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 4
-    },
-    '0FF5': {
-        name: '参の牙【咬撃】実行後',
+    '101D': {
+        name: 'ドラフトポンポン',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime:10
+        maxtime: 12
     },
-    '0FF6': {
-        name: '壱の蛇【猛襲】実行後',
+    '101E': {
+        name: 'ドラフトクロー',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 12
     },
-    '0FF7': {
-        name: '弐の蛇【疾速】実行後',
+    '101F': {
+        name: 'ドラフトファング',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 12
     },
-    '1000': {
-        name: '蛇鱗',
-        type: [false, false, true, false, true],
-        effect: 1,
-        cut: 0.5,
-        cut_heal: 1,
-        maxtime: 4
-    },
-    '1001': {
-        name: '蛇鱗［バリア］',
+    '10E4': {
+        name: 'ラフドローイング',
         type: [false, false, false, false, true],
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 4
-    },
-    '0FF8': {
-        name: '飛蛇連尾撃実行可',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '1003': {
-        name: '惨毒',
-        type: [false, false, false, false, false],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0FFE': {
-        name: '祖霊降ろし',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 20
-    },
-    '0FFA': {
-        name: '祖霊の蛇【壱】実行後',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0FFB': {
-        name: '祖霊の蛇【弐】実行後',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0FFC': {
-        name: '祖霊の蛇【参】実行後',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
-    },
-    '0FFD': {
-        name: '祖霊の蛇【肆】実行後',
-        type: [false, false, false, false, true],
-        effect: 1,
-        cut: 1,
-        cut_heal: 1,
-        maxtime: 10
+        maxtime: 12
     },
     //General Buff
     '0BEE': {
@@ -2228,6 +2428,14 @@ export const EFFECT_ID = {
         type: [false, false, true, false, true],
         effect: 1,
         cut: 0.1,
+        cut_heal: 1,
+        maxtime: 5
+    },
+    '0E59': {
+        name: '防御【弱】',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.5,
         cut_heal: 1,
         maxtime: 5
     },

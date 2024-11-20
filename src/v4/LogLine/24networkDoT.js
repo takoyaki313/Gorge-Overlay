@@ -51,7 +51,7 @@ export const networkDoT_24 = async (log) => {
         }
     }
     if (data.effectID === '0') {
-        let effect = await read_maindata('Player_hp', 'nameID', data.victimID, 'effect', 'dot_potencial');
+        let effect = await read_maindata('Player_hp', 'nameID', data.victimID, 'effect', 'dot_potential');
         if (effect.effect === undefined) {
             if (devMode.logLevel > 4) {
                 console.warn('DoT Simulation failed...');
@@ -60,26 +60,26 @@ export const networkDoT_24 = async (log) => {
             return null;
         }
         let effect_position = [];
-        let potencial = 0;
+        let potential = 0;
         for (let i = 0; i < effect.effect.length; i++) {
             let dot_id_position = DoT_ID_Array.indexOf(effect.effect[i].buffID);
             if (dot_id_position !== -1) {
                 //console.warn('Found->' + effect.effect[i].buffID + '('+ dot_id_position+ ')');
                 //console.warn('Type Check->' + data.DoTType + '===' + DoT_ID[dot_id_position].type);
                 if (data.DoTType === DoT_ID[dot_id_position].type) {
-                    let default_potencial = DoT_ID[dot_id_position].potencial;
-                    potencial = default_potencial;
-                    if (effect.dot_potencial !== undefined) {
+                    let default_potential = DoT_ID[dot_id_position].potential;
+                    potential = default_potential;
+                    if (effect.dot_potential !== undefined) {
                         let lastupdate_ms = await timestamp_change(data.lastupdate);
-                        for (let p = effect.dot_potencial.length - 1; p >= 0; p--) {
-                            if (effect.dot_potencial[p].dotID === effect.effect[i].buffID) {
-                                let effect_time = effect.dot_potencial[p].time_ms + (effect.dot_potencial[p].dot_time * 1000) + 2000;
+                        for (let p = effect.dot_potential.length - 1; p >= 0; p--) {
+                            if (effect.dot_potential[p].dotID === effect.effect[i].buffID) {
+                                let effect_time = effect.dot_potential[p].time_ms + (effect.dot_potential[p].dot_time * 1000) + 2000;
                                 if (effect_time > lastupdate_ms) {
-                                    potencial = effect.dot_potencial[p].potencial;
+                                    potential = effect.dot_potential[p].potential;
                                     break;
                                 }
                                 else {
-                                    //console.error('有効でないPotencialデータ（効果時間を過ぎた）');
+                                    //console.error('有効でないpotentialデータ（効果時間を過ぎた）');
                                     //console.error(effect_time +'>'+lastupdate_ms);
                                     //console.error(log);
                                     //console.error(DoT_ID[dot_id_position]);
@@ -89,7 +89,7 @@ export const networkDoT_24 = async (log) => {
                     }
                     else {
                     }
-                    effect_position.push({ player: effect.effect[i].attacker, potencial: potencial, default: default_potencial });
+                    effect_position.push({ player: effect.effect[i].attacker, potential: potential, default: default_potential });
                 }
             }
         }
@@ -105,14 +105,14 @@ export const networkDoT_24 = async (log) => {
 
         let sum = 0;
         for (let i = 0; i < effect_position.length; i++) {
-            sum += effect_position[i].potencial;
+            sum += effect_position[i].potential;
         }
         if (sum === 0) {
             for (let i = 0; i < effect_position.length; i++) {
-                effect_position[i].potencial = effect_position[i].default;
+                effect_position[i].potential = effect_position[i].default;
             }
             for (let i = 0; i < effect_position.length; i++) {
-                sum += effect_position[i].potencial;
+                sum += effect_position[i].potential;
             }
         }
         if (sum === 0) {
@@ -174,8 +174,8 @@ const dot_damage_distribution = async (data, sum, totaldamage, totaloverdamage) 
             overdamage = 0;
         }
         else {
-            damage = totaldamage * (data[i].potencial / sum);
-            overdamage = totaloverdamage * (data[i].potencial / sum);
+            damage = totaldamage * (data[i].potential / sum);
+            overdamage = totaloverdamage * (data[i].potential / sum);
             /*
             if(damage > 10000){
               if(devMode.logLevel > 4){
@@ -185,7 +185,7 @@ const dot_damage_distribution = async (data, sum, totaldamage, totaloverdamage) 
               }
             }*/
         }
-        //console.log('Simulation Damage->'+damage.toFixed(0)+':'+ overdamage.toFixed(0) + '(' + data[i].potencial / sum +'):'+data[i].player);
+        //console.log('Simulation Damage->'+damage.toFixed(0)+':'+ overdamage.toFixed(0) + '(' + data[i].potential / sum +'):'+data[i].player);
         added_data.push({ player: data[i].player, damage: Math.round(damage), overdamage: Math.round(overdamage) });
     }
     return added_data;

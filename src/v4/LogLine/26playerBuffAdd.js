@@ -1,12 +1,13 @@
 import { Special_Barrier_ID_Array_Dot, Special_Barrier_ID } from "./resource/barrierID.js";
 import { read_maindata, update_maindata } from "../maindataEdit.js";
-import { potencial_to_damage_calc_effect, effectdata_force4 } from "./21_22_networkActionSync.js";
+import { potential_to_damage_calc_effect, effectdata_force4 } from "./21_22_networkActionSync.js";
 import { new_change_accept_damage } from "./24networkDoT.js";
 import { timestamp_change } from "./logline_other.js";
 import { Stack_buff, TensyonID, TensyonMax } from "./loglineGlobal.js";
 import { devMode } from "../../index.js";
 import { AreaData } from "../../index.js";
 import { enemyPartyQueue_Push } from "./loglineClock.js";
+import { EFFECT_ID_LIST, EFFECT_ID } from "./resource/effectID.js";
 
 export const player_buff_add_26 = async (log) => {
     let data = { buffID: await buffID_coordinate(log[2]), attacker: log[5], victim: log[7], buff: log[3], time: Number(log[4]), time_ms: await timestamp_change(log[1]), lastupdate: log[1], alliance: 0 };
@@ -26,7 +27,7 @@ export const player_buff_add_26 = async (log) => {
             }
         }
         //let attacker = await read_maindata('Player_hp','nameID',data.attacker,data.buffID,'currenthp','maxhp');
-        let barrier = await potencial_to_damage_calc_effect(data.attacker, data.victim, Special_Barrier_ID[special].potencial, 'HoT');
+        let barrier = await potential_to_damage_calc_effect(data.attacker, data.victim, Special_Barrier_ID[special].potential, 'HoT');
         await new_change_accept_damage(data.attacker, data.victim, victim.currenthp, victim.maxhp, barrier, 'Kardia-barrier', data.buffID + data.lastupdate + data.attacker + data.victim, data.lastupdate);
     }
     //Meteor Drive
@@ -44,10 +45,13 @@ export const player_buff_add_26 = async (log) => {
             if (typeof read_data.alliance === 'number') {
                 data.alliance = read_data.alliance;
             }
-            if (data.alliance <= 0 ) {
+            if (data.alliance <= 0) {
                 enemyPartyQueue_Push(data);
             }
         }
+    }
+    if (devMode.buffRegisterMode) {
+        await buff_RegisterSampleCreate(log);
     }
 }
 
@@ -61,3 +65,54 @@ export const buffID_coordinate = async (id) => {
         return id;
     }
 }
+
+const buff_RegisterSampleCreate = async (log) => {
+    let buff_detail = { buff: log[3], buffID: log[2], buffID_cordinate: await buffID_coordinate(log[2],), job: "", name: log[6] }
+    let playerJob = await read_maindata('Player_data', 'nameID', log[5], 'job');
+    if (typeof playerJob.job === 'string') {
+        buff_detail.job = playerJob.job;
+    }
+    if (!Buff_ID_LIST.data.has(buff_detail.buffID)) {
+        console.log(log);
+        Buff_ID_LIST.data.set(buff_detail.buffID, buff_detail)
+    }
+}
+
+class BUFF_ID_LIST_ROOT {
+    constructor() {
+        this.data = new Map();
+    }
+    Export = async () => {
+        try {
+            const fileHandle = await window.showSaveFilePicker({
+                suggestedName: "BUFF_ID_LIST" + "_" + Date.now() + ".csv",
+            });
+
+            const writableStream = await fileHandle.createWritable();
+
+            let writeData = [["buffID", "buff", "cordinateID", "job", "name", "list"]];
+            for (const val of this.data.values()) {
+                let row = [];
+                row.push(val.buffID);
+                row.push(val.buff);
+                row.push(val.buffID_cordinate);
+                row.push(val.job);
+                row.push(val.name);
+                if (EFFECT_ID_LIST.indexOf(val.buffID_cordinate) !== -1) {
+                    let id_detail = EFFECT_ID[val.buffID_cordinate];
+                    row.push(id_detail.name);
+                }
+                writeData.push(row.join(','));
+            }
+            await writableStream.write(writeData.join('\n'));
+            await writableStream.close();
+
+            console.log("CSV-Save-OK");
+        } catch (error) {
+            console.error("CSV-Save-Error: " + error.message);
+        }
+    }
+}
+
+const Buff_ID_LIST = new BUFF_ID_LIST_ROOT();
+window.BUFF_ID_LIST = Buff_ID_LIST;

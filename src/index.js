@@ -26,7 +26,9 @@ export const devMode = {
   calcTime: false,
   forceReset: true,
   sampleReadMode: false,
-  wolves : false
+  wolves: false,
+  buffRegisterMode:false
+  
 };
 
 export const AreaData = new Area();

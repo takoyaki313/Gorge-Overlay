@@ -45,7 +45,7 @@ const player_buff_list_update = async (data, nameID, lastupdate) => {
     }
     if (data.length === 0) {
         //effect reset
-        await update_maindata('Player_hp', 'nameID', nameID, ['effect', [], true], ['dot_potencial', [], true], ['lastupdate', lastupdate, true]);
+        await update_maindata('Player_hp', 'nameID', nameID, ['effect', [], true], ['dot_potential', [], true], ['lastupdate', lastupdate, true]);
         return null;
     }
     else {
