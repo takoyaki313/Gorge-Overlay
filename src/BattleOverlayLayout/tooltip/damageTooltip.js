@@ -54,19 +54,19 @@ export const PlayerDetailTooltipLayout = (prop) => {
         <>
             <div className="P-horizontalLine flex-center"></div>
             <div className='tooltip-damage-cc'>
-            {data.map((d, index) => {
-                let role = job_to_role(d.nameData.job);
-                return (
-                    <React.Fragment key={d.type}>
-                        <span style={{ backgroundColor: "var(--" + role + "-role-color)", width: "100%", height: "90%" }}></span>
-                        <span className={'icon-' + d.nameData.job} style={{ fontSize: "0.8rem" }}></span>
-                        <span>{d.nameData.name}</span>
-                        <span>{d.ps}</span>
-                        <span>{Math.round((d.num / sumDamage) * 100) + '%'}</span>
-                    </React.Fragment>
-                )
-            })}
-        </div>
+                {data.map((d, index) => {
+                    let role = job_to_role(d.nameData.job);
+                    return (
+                        <React.Fragment key={d.type}>
+                            <span style={{ backgroundColor: "var(--" + role + "-role-color)", width: "100%", height: "90%" }}></span>
+                            <span className={'icon-' + d.nameData.job} style={{ fontSize: "0.8rem" }}></span>
+                            <span>{d.nameData.name}</span>
+                            <span>{d.ps}</span>
+                            <span>{Math.round((d.num / sumDamage) * 100) + '%'}</span>
+                        </React.Fragment>
+                    )
+                })}
+            </div>
         </>
 
     );
@@ -102,7 +102,7 @@ export const DamageObjectPersionTooltipLayout = (prop) => {
 }
 export const DamageTotalToolTipLayout = (prop) => {
     let data = prop.damage_All;
-    let damage = { total: { num: 0, ps: 0, Pct: '100%' }, normal: { num: 0, ps: 0, Pct: '0%' }, dot: { num: 0, ps: 0, Pct: '0%' }, counter: { num: 0, ps: 0, Pct: '0%' } }
+    let damage = { total: { num: 0, ps: 0, Pct: '100%' }, normal: { num: 0, ps: 0, Pct: '0%' }, dot: { num: 0, ps: 0, Pct: '0%' }, counter: { num: 0, ps: 0, Pct: '0%' }, mp: { num: 0, ps: 0, Pct: '' } }
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].type === "damage_total_DoT" || data[i].type === "accept_income_damage_total_DoT") {
@@ -117,6 +117,9 @@ export const DamageTotalToolTipLayout = (prop) => {
         } else if (data[i].type === "totaldamage" || data[i].type === "accept_income_totaldamage") {
             damage.total.num = data[i].num;
             damage.total.ps = data[i].ps;
+        } else if (data[i].type === "damage_mp" || data[i].type === "accept_income_damage_mp") {
+            damage.mp.num = data[i].num;
+            damage.mp.ps = data[i].num;
         }
     }
     if (damage.total.num > 0) {
@@ -125,10 +128,14 @@ export const DamageTotalToolTipLayout = (prop) => {
         damage.counter.Pct = Math.round((damage.counter.num / damage.total.num) * 100) + '%';
     }
     const OptDamage = (prop) => {
+        let pctText = ' (' + prop.data.Pct + ')';
+        if (prop.text === "mp") {
+            pctText = '';
+        } 
         if (prop.data.num > 0) {
             return (<>
                 <span>{prop.text}</span>
-                <span>{prop.data.ps}{' (' + prop.data.Pct + ')'}</span>
+                <span>{prop.data.ps}{pctText}</span>
             </>
             )
         } else {
@@ -145,6 +152,7 @@ export const DamageTotalToolTipLayout = (prop) => {
                 <OptDamage data={damage.normal} text="normal" />
                 <OptDamage data={damage.dot} text="dot" />
                 <OptDamage data={damage.counter} text="counter" />
+                <OptDamage data={damage.mp} text="mp" />
             </div>
         </>
     )

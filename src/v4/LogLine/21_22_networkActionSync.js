@@ -21,6 +21,7 @@ export const networkactionsync_21_22 = async (log) => {
             attacker_MaxHP = Oppressor_HP;
         }
     }
+
     let data = {
         attackerID: petcheck.nameID,
         attacker: petcheck.name,
@@ -38,6 +39,7 @@ export const networkactionsync_21_22 = async (log) => {
         count: "-" + log[45],
         count_row: Number(log[45]),
         hitnum: Number(log[46]),
+        dummy: effectdata.name.length === 0 ? true : false
     };
     let effectmax = effectdata.name.length;
     let victim_effect = { name: [], param: [] };
@@ -111,7 +113,7 @@ export const networkactionsync_21_22 = async (log) => {
     if (attacker_effect.name.length > 0) {
         attacker_input_data = await networkaction_calc(data, attacker_effect, "attacker");
     }
-    if (data.actionID === DoubleRocketPunch) {
+    if (data.actionID === DoubleRocketPunch && !data.dummy) {
         if (AreaData.Type === 2) {
             //Hidden Gorge
             if (data.count_row === 0) {
@@ -134,13 +136,12 @@ export const networkactionsync_21_22 = async (log) => {
             }
         }
     }
-    else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0) {
-
+    else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0 && !data.dummy) {
         let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
         attacker_input_data.data.push({ LimitBreak: data.actionID, use: 1, hit: data.hitnum, time: time, time_ms: data.time_ms });
-    } else if (LimitBreak_Extend.indexOf(data.actionID) !== -1 && data.count_row === 0) {
+    } else if (LimitBreak_Extend.indexOf(data.actionID) !== -1 && data.count_row === 0 && !data.dummy) {
         let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
@@ -304,6 +305,10 @@ const networkaction_calc = async (data, effect, type) => {
             input.inputdata = input.inputdata.concat(counter_input);
             input_data.data.push(counter_input);
             input_data.target.push('counter');
+            input_data.replace.push(false);
+        } else if (input.effectname[i] === "mp-drain") {
+            input_data.data.push(input.effectparam[i]);
+            input_data.target.push('damage_mp');
             input_data.replace.push(false);
         }
     }
@@ -951,7 +956,7 @@ const effectdata_exchangeInt = async (effectdata) => {
     for (let i = 0; i < effectdata.length; i++) {
         data_name.push(effectdata[i].flag);
         data_type.push(effectdata[i].type);
-        if (effectdata[i].flag === 'normal-damage' || effectdata[i].flag === 'heal' || effectdata[i].flag === 'mp-recover' || effectdata[i].flag === 'tp-recover') {
+        if (effectdata[i].flag === 'normal-damage' || effectdata[i].flag === 'heal' || effectdata[i].flag === 'mp-recover' || effectdata[i].flag === 'tp-recover' || effectdata[i].flag === 'mp-drain') {
             let param_calc = await networkAbility_damage_calc(effectdata[i].param);
             data_param.push(param_calc.damage);
             data_special.push(param_calc.return);
@@ -1012,7 +1017,7 @@ const effect_offset_checker = async (flag, log) => {
         case '01':
             return 'miss';
         case '1':
-                return 'miss';
+            return 'miss';
         case '21':
             return 'ex-miss';
         case '05':
@@ -1043,7 +1048,7 @@ const effect_offset_checker = async (flag, log) => {
 const effect_flag_checker = async (flag, log) => {
     switch (flag) {
         case 1:
-            return 'miss-damage';
+            return 'miss';
         case 2:
             console.log('normal-damage-2');
             return 'normal-damage';
@@ -1062,7 +1067,7 @@ const effect_flag_checker = async (flag, log) => {
         case 8:
             return 'esuna-miss';//効果なし
         case 10:
-            return 'mpdrain';
+            return 'mp-drain';
         case 11:
             return 'mp-recover';
         case 13:

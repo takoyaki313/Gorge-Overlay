@@ -28,7 +28,6 @@ export const devMode = {
   sampleReadMode: false,
   wolves: false,
   buffRegisterMode:false
-  
 };
 
 export const AreaData = new Area();

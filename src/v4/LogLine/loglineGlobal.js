@@ -17,11 +17,11 @@ export const Kaiki = '740F' //快気(SkillID)
 export const GunyouPortion = '717F' //軍用ポーション(SkillID)
 export const TensyonID = '05B9';
 export const TensyonMax = '06C2';//テンションマックス (buffID)
-export const DynamisIconID = ['0853', '0854', '0855', '0856', '0857', TensyonID , TensyonMax];
+export const DynamisIconID = ['0853', '0854', '0855', '0856', '0857', TensyonID, TensyonMax];
 export const OpticalSight = '26F4'//ホークブラスター(SkillID)
 export const BigMissile = '26F8'//超大型ミサイル(SkillID)
 export const LimitBreak = [/*TANK*/'718D', '719B', '71A9', '71CA',/*HEALER*/'722E', '7235', '7247', '7252',
-/*Range*/'72D9', '72E7', '72F8',/*MELEE*/'732D', '7339', '734B', '7361', '7371','9916',/*MAGICAL*/'73DE', '73E9', '73EE', '7408', '7409','992F'];
+/*Range*/'72D9', '72E7', '72F8',/*MELEE*/'732D', '7339', '734B', '7361', '7371', '9916',/*MAGICAL*/'73DE', '73E9', '73EE', 'A21A', '992F'];
 export const LimitBreak_Extend = [/*SCH*/'7237',/*SMN*/'73EB', '73F0',/*DRG*/'733A',/*PCT*/'9930',/*VPR*/'9905'];
 ///////////////////////////////////////////////////////////////////////////////
 export const Stack_buff = ['05B9'/*テンション*/, '0BED'/*連続剣*/, '0C5B'/*喝采*/];
