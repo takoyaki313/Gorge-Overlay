@@ -58,11 +58,11 @@ export const networkAbility_receive = async (log) => {
     await hpdata_add(data.nameID, data, attackerID);
 }
 
-const  add_accept_target = async (name, data, income) => {
+const add_accept_target = async (name, data, income) => {
     let rtn = { target: [], data: [], replace: [] };
     let input_str = 'accept_' + income + '_';
     for (let i = 0; i < name.length; i++) {
-        if (name[i] !== 'counter'&&name[i] !== 'lastupdate') {
+        if (name[i] !== 'counter' && name[i] !== 'lastupdate') {
             rtn.target.push(input_str + name[i]);
             rtn.data.push(data[i]);
             rtn.replace.push(false);

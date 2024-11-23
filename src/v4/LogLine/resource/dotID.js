@@ -82,8 +82,8 @@ export const DoT_ID = [
         max: 6,
         type: 'DoT'
     }, {
-        actionid: '',
-        action_potential: 0,
+        actionid: '73E5',
+        action_potential: 8000,
         dotid: '0C9B',
         name: 'スリップストリーム[害]',
         potential: 4000,
@@ -185,6 +185,20 @@ export const DoT_ID = [
         potential: 4000,
         max: 1200,
         type: 'HoT'
+    }, {
+        actionid: '',//RedSans
+        dotid: '0EA8',
+        name: '憩いの水',
+        potential: 5000,
+        max: 30,
+        type: 'HoT'
+    }, {
+        actionid: '',//RedSans
+        dotid: '0EA9',
+        name: '憩いの水',
+        potential: 7500,
+        max: 9999,
+        type: 'HoT'
     }
 ];
 
@@ -216,6 +230,10 @@ export const Unique_DoT = [{
     id: 'C67',
     name: 'メテオドライブ',
     type: 'DoT'
+}, {
+    id: '10C8',
+    name: '????',
+    type: 'HoT'
 }];
 
 export const DoT_ID_Array = object_to_array(DoT_ID, 'dotid');

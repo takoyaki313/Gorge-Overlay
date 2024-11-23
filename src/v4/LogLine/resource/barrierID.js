@@ -48,6 +48,7 @@ export const Barrier_ID = [
         type: 'barrier'
     }, {//sch
         actionid: '7230',
+        actionid2: '7232',//展開戦術（Todo 秘策効果）
         action_potential: 4000,
         dotid: '0C0F',
         name: '鼓舞',
@@ -82,7 +83,7 @@ export const Barrier_ID = [
         damage: false,
         type: 'barrier'
     }, {//gnb
-        actionid: '71B8',
+        actionid: '71B4',
         action_potential: 4000,
         dotid: '0BE8',
         name: 'ジャギュラーリップ',
@@ -93,7 +94,7 @@ export const Barrier_ID = [
         damage: true,
         type: 'barrier'
     }, {
-        actionid: '71B9',
+        actionid: '71B5',
         action_potential: 4000,
         dotid: '0BE8',
         name: 'アブドメンテアー',
@@ -104,7 +105,7 @@ export const Barrier_ID = [
         damage: true,
         type: 'barrier'
     }, {
-        actionid: '71BA',
+        actionid: '71B6',
         action_potential: 4000,
         dotid: '0BE8',
         name: 'アイガウジ',
@@ -227,7 +228,7 @@ export const Barrier_ID = [
         damage: false,
         type: 'barrier'
     }, {//rdm
-        actionid: '73F9',
+        actionid: 'A210',
         action_potential: 5000,
         dotid: '0CA2',
         name: 'エンリポスト',
@@ -238,7 +239,7 @@ export const Barrier_ID = [
         damage: true,
         type: 'barrier'
     }, {
-        actionid: '73FA',
+        actionid: 'A211',
         action_potential: 6000,
         dotid: '0CA3',
         name: 'エンツヴェルクハウ',
@@ -249,7 +250,7 @@ export const Barrier_ID = [
         damage: true,
         type: 'barrier'
     }, {
-        actionid: '73FB',
+        actionid: 'A212',
         action_potential: 7000,
         dotid: '0CA4',
         name: 'エンルドゥブルマン',

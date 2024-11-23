@@ -222,7 +222,7 @@ export const what_include_buff = async (effect, buff_type) => {
         return [];
     }
     if (buff_type === 'buff') {
-
+        search_type = true;
     } else if (buff_type === 'debuff') {
         search_type = false;
     } else {
@@ -231,11 +231,10 @@ export const what_include_buff = async (effect, buff_type) => {
         }
         return [];
     }
+    let return_data = [];
     if (Object.keys(effect).length > 0) {
-        let return_data = [];
         for (let i = 0; i < effect.length; i++) {
             if (effect[i].attacker === '0' || effect[i].attacker === 'E0000000' || EXCLUDE_BUFF.indexOf(effect[i].buffID) !== -1) {
-
             } else {
                 let position = EFFECT_ID_LIST.indexOf(effect[i].buffID);
                 if (position !== -1) {
@@ -245,10 +244,8 @@ export const what_include_buff = async (effect, buff_type) => {
                 }
             }
         }
-        return return_data;
-    } else {
-        return [];
-    }
+    } 
+    return return_data;
 }
 
 const rob_ride_check = async (nameID, old, now) => {

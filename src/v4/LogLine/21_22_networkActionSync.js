@@ -730,6 +730,13 @@ const potential_action_search_tool = async (target, actionID, dotid, position) =
         if (target[search_position].dotid === dotid) {
             if (actionID === target[search_position].actionid) {
                 return target[search_position];
+            } else {
+                if (typeof (target[search_position].actionid2) !== 'undefined') {
+                    if (actionID === target[search_position].actionid2) {
+                        return target[search_position];
+                    }
+                }
+                return target[position];
             }
         } else {
             if (devMode.logLevel > 2) {
@@ -807,16 +814,16 @@ export const potential_to_damage_calc_effect = async (attackerID, victimID, defa
     else if (damage_type === 'DoT') {//damage
         let attacker = await potential_to_damage_calc_id(attacker_data, attackerID, 'damage', true);
         let victim = await potential_to_damage_calc_id(victim_data, victimID, 'damage', false);
-        if (devMode.logLevel > 11) {
-            console.log(default_potential + ' * ' + attacker + ' * ' + victim + ' = ' + default_potential * attacker * victim);
+        if (devMode.logLevel > 100) {
+            console.debug(default_potential + ' * ' + attacker + ' * ' + victim + ' = ' + default_potential * attacker * victim);
         }
         //console.log(default_potential +' : '+ attacker + ' : '+ victim);
         return Math.round(default_potential * attacker * victim);
     } else {//heal
         let attacker = await potential_to_damage_calc_id(attacker_data, attackerID, 'heal', true);
         let victim = await potential_to_damage_calc_id(victim_data, victimID, 'heal', false);
-        if (devMode.logLevel > 11) {
-            console.log(default_potential + ' * ' + attacker + ' * ' + victim + ' = ' + default_potential * attacker * victim);
+        if (devMode.logLevel > 100) {
+            console.debug(default_potential + ' * ' + attacker + ' * ' + victim + ' = ' + default_potential * attacker * victim);
         }
         //console.log(default_potential +' : '+ attacker + ' : '+ victim);
         return Math.round(default_potential * attacker * victim);
@@ -1066,6 +1073,8 @@ const effect_flag_checker = async (flag, log) => {
             return 'invincible';//無敵に殴るとこれ（OP）
         case 8:
             return 'esuna-miss';//効果なし
+        case 9:
+            return 'mirror';//展開戦術
         case 10:
             return 'mp-drain';
         case 11:
@@ -1090,27 +1099,41 @@ const effect_flag_checker = async (flag, log) => {
             return 'provoke';
         case 27:
             return 'skill-replace';
+        case 28://4E1C 70000
+            return 'skill-replace';
         case 29:
             return 'additional_effect';//聖刻みたいなやつが敵についてて追加効果が発動している
+        case 31:// <-<- victim   <---- attacker
+            return 'knockback';
         case 32:
             return 'knockback';
         case 33:
             return 'pull';
+        case 39:
+            return 'mount2';
         case 40:
             return 'mount';
+        case 44://?
+            return 'buff-extension-miss';
         case 45:
             return 'buff-extension-miss';
         case 51:
             return 'instant death';
         case 55:
             return 'debuff-resisted';
+        case 57://ベルフェクティオ rpr
+            return 'instant death';
         case 59:
             return 'debuff-remove';//自身が与えたデバフを削除する。
         case 60:
             return 'control-ally';//ミクロコスモスでバフの終了を強制させる/バハムートに指示する等　別アクションを同時に実行させる
         case 61:
             return 'actor-jobgage';
-        case 73:
+        case 62:
+            return 'card';//マイナーアルカナ 分身 タレット イル－シヴ
+        case 73://-7.0?
+            return 'un-dead';
+        case 74://7.1-? 
             return 'un-dead';
         default:
             if (devMode.logLevel > 2) {
