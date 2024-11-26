@@ -1,106 +1,109 @@
 <!DOCTYPE html>
 <meta name="color-scheme" content="light dark">
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>IntLB</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
     body {
       background-color: transparent;
       font-family: 'Lato', sans-serif;
       color: white;
     }
-
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
   <script src="../areaID.js"></script>
   <script>
-  ////////////////////
-  //setting
-  ////////////////////
-  var Overlay_On = true;
-  let LastLB = 0
-  let MaxLB = 0;
-  ////////////////////
-  $(function (){
-    'use strict';
-    addOverlayListener('ChangeZone', (zone) => target_overlay_area_check(zone));
-    addOverlayListener('LogLine', (logline) => log_start(logline.line));
-    target_overlay_localstrage_get();
-    startOverlayEvents();
-  });
+    ////////////////////
+    //setting
+    ////////////////////
+    var Overlay_On = true;
+    let LastLB = 0
+    let MaxLB = 0;
+    ////////////////////
+    $(function () {
+      'use strict';
+      addOverlayListener('ChangeZone', (zone) => target_overlay_area_check(zone));
+      addOverlayListener('LogLine', (logline) => log_start(logline.line));
+      target_overlay_localstrage_get();
+      startOverlayEvents();
+    });
 
-  function log_start(log){
-    if(Overlay_On){
-      if(log[0] === '36'){
-        let lb = parseInt(log[2],16);
-        target_overlay_disp(lb + percentage(lb));
+    function log_start(log) {
+      if (Overlay_On) {
+        if (log[0] === '36') {
+          let lb = parseInt(log[2], 16);
+          target_overlay_disp(lb + percentage(lb));
+        }
       }
     }
-  }
-  function target_overlay_localstrage_get(){
-    let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
-    if(data === null){
-      target_overlay_fontsize(18);
+    function target_overlay_localstrage_get() {
+      let data = JSON.parse(localStorage.getItem('GorgeOverlay_4'));
+      if (data === null) {
+        target_overlay_fontsize(18);
+      }
+      else {
+        target_overlay_fontsize(data.addInIntLB);
+      }
     }
-    else {
-      target_overlay_fontsize(data.addInIntLB);
-    }
-  }
 
-  function target_overlay_disp(targetname){
-    $('#InTspace').text(targetname);
-  }
-  function target_overlay_hide(){
-    $('#InTspace').text('');
-  }
-  function target_overlay_fontsize(size){
-    $('#InTspace').css('font-size',size + "px");
-  }
-  ////////////////
-  function target_overlay_area_check(area){
-    MaxLB = 0;
-    LastLB = 0;
-    if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
-      Overlay_On = true;
-      target_overlay_disp(0);
+    function target_overlay_disp(targetname) {
+      $('#InTspace').text(targetname);
     }
-    else {
-      Overlay_On = false;
-      target_overlay_hide();
+    function target_overlay_hide() {
+      $('#InTspace').text('');
     }
-  }
-  function percentage(num){
-    let percent = '';
-    if(num >= MaxLB ){//最大より現在値が大きいとき　（最大値がわからない/ジョブを変更した）
-      MaxLB = num;
+    function target_overlay_fontsize(size) {
+      $('#InTspace').css('font-size', size + "px");
     }
-    else if (num === 0) {
-      if(MaxLB !== 0){
-        percent = ' : 0%';
+    ////////////////
+    function target_overlay_area_check(area) {
+      MaxLB = 0;
+      LastLB = 0;
+      if (areaID_Array.indexOf(String(area.zoneID)) !== -1) {
+        Overlay_On = true;
+        target_overlay_disp(0);
+      }
+      else {
+        Overlay_On = false;
+        target_overlay_hide();
       }
     }
-    else if (LastLB > num) {//前の値の方が現在の値より高いとき　（LB打った後・ジョブを変更した）
-      MaxLB = LastLB;
-      percent = ' : ' + Math.floor(num / MaxLB * 100) + '%';
-    }
-    else {
-      percent = ' : ' + Math.floor(num / MaxLB * 100) + '%';
-    }
-    if(num !== MaxLB){//最大値調査中
-      let tick_add = num - LastLB;
-      if(tick_add > 0){
-        let time_remain = Math.ceil((MaxLB - num)  / tick_add) * 3;
-        percent = percent + ' (' + time_remain +'s)';
+    function percentage(num) {
+      let percent = '';
+      if (num >= MaxLB) {//最大より現在値が大きいとき　（最大値がわからない/ジョブを変更した）
+        MaxLB = num;
       }
+      else if (num === 0) {
+        if (MaxLB !== 0) {
+          percent = ' : 0%';
+        }
+      }
+      else if (LastLB > num) {//前の値の方が現在の値より高いとき　（LB打った後・ジョブを変更した）
+        MaxLB = LastLB;
+        percent = ' : ' + Math.floor(num / MaxLB * 100) + '%';
+      }
+      else {
+        percent = ' : ' + Math.floor(num / MaxLB * 100) + '%';
+      }
+      if (num !== MaxLB) {//最大値調査中
+        let tick_add = num - LastLB;
+        if (tick_add > 0) {
+          let time_remain = Math.ceil((MaxLB - num) / tick_add) * 3;
+          percent = percent + ' (' + time_remain + 's)';
+        }
+      }
+      //console.log(num, num - LastLB);
+      LastLB = num;
+      return percent;
     }
-    LastLB = num;
-    return percent;
-  }
   </script>
 </head>
+
 <body>
   <div class="LBInt" id="LBInt">
     <span id="InTspace"></span>
