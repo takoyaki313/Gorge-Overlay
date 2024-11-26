@@ -113,7 +113,7 @@ export const networkactionsync_21_22 = async (log) => {
     if (attacker_effect.name.length > 0) {
         attacker_input_data = await networkaction_calc(data, attacker_effect, "attacker");
     }
-    if (data.actionID === DoubleRocketPunch && !data.dummy) {
+    if (data.actionID === DoubleRocketPunch /*&& !data.dummy*/) {
         if (AreaData.Type === 2) {
             //Hidden Gorge
             if (data.count_row === 0) {

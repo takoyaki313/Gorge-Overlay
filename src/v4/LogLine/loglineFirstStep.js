@@ -78,6 +78,10 @@ export const loglineFirstStep = async (log) => {
         case '33':
             logline_battle_start_check(log);
             break;
+        case '36':
+            //LB
+            //console.log(parseInt(log[2], 16));
+            break;
         case '37':
             await networkAbility_receive(log);
             break;

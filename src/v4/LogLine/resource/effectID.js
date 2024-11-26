@@ -2144,8 +2144,8 @@ export const EFFECT_ID = {
     '08EA': {
         name: 'エンボルデン',
         type: [true, false, true, false, true],
-        effect: 1.1,
-        cut: 0.9,
+        effect: 1.08,
+        cut: 0.92,
         cut_heal: 1,
         maxtime: 8
     },
@@ -2176,7 +2176,7 @@ export const EFFECT_ID = {
     '0CAA': {
         name: 'モノマキー',
         type: [true, false, false, false, false],
-        effect: 0.9,//付与したは付与された人へのダメージが1.1倍
+        effect: 0.9,//付与された人へのダメージが1.1倍
         cut: 1,
         cut_heal: 1,
         maxtime: 7
@@ -2184,7 +2184,7 @@ export const EFFECT_ID = {
     '0CAB': {
         name: 'デプラスマン',
         type: [true, true, false, false, true],
-        effect: 1.2,//付与したは付与された人へのダメージが1.1倍
+        effect: 1.15,
         cut: 1,
         cut_heal: 1,
         maxtime: 7
