@@ -165,7 +165,7 @@ export class maindata {
 
             const writableStream = await fileHandle.createWritable();
 
-            let writeData = [["C_attacker", "C_attackerID", "victim", "victimID", "attacker", "attackerID", "action", "actionID", "effectname", "effectparam", "inputdata", "inputname", "send", "accept", "processtime"]];
+            let writeData = [["C_attacker", "C_attackerID", "victim", "victimID", "attacker", "attackerID", "action", "actionID", "effectname", "effectparam", "inputdata", "inputname", "send", "accept", "processtime", "animationlock", "dummy"]];
             for (let i = 0; i < this.Action_Synced_data.length; i++) {
                 let data = this.Action_Synced_data[i];
                 let row = [];
@@ -184,6 +184,8 @@ export class maindata {
                 row.push(Date.parse(data.time_send));
                 row.push(Date.parse(data.time_accept));
                 row.push(Date.parse(data.time_accept) - Date.parse(data.time_send));
+                row.push(data.animationlock);
+                row.push(data.dummy ? "Y" : "N");
                 writeData.push(row.join(','));
             }
             await writableStream.write(writeData.join('\n'));

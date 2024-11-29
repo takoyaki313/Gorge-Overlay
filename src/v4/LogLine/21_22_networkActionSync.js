@@ -39,7 +39,9 @@ export const networkactionsync_21_22 = async (log) => {
         count: "-" + log[45],
         count_row: Number(log[45]),
         hitnum: Number(log[46]),
-        dummy: effectdata.name.length === 0 ? true : false
+        dummy: effectdata.name.length === 0 ? true : false,
+        castangle: parseInt(log[53], 16),
+        animationlock: Number(log[52])
     };
     let effectmax = effectdata.name.length;
     let victim_effect = { name: [], param: [] };
@@ -136,7 +138,7 @@ export const networkactionsync_21_22 = async (log) => {
             }
         }
     }
-    else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0 && !data.dummy) {
+    else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0 && !data.dummy && data.castangle === 0) {
         let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
@@ -198,6 +200,8 @@ const counterdamage_include = async (data, effect) => {
         time_send: data.lastupdate,
         time_accept: 'not-yet',
         time_ms: data.time_ms,
+        animationlock: data.animationlock,
+        dummy:data.dummy,
         uniqueID: uniqueID,
     }
     let counter_check = input.effectname.indexOf('counter');
@@ -245,6 +249,8 @@ const networkaction_calc = async (data, effect, type) => {
         time_send: data.lastupdate,
         time_accept: 'not-yet',
         time_ms: data.time_ms,
+        animationlock: data.animationlock,
+        dummy:data.dummy,
         uniqueID: uniqueID,
     }
     /* Duplite Check (Debugging)
