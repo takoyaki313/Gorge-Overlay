@@ -221,8 +221,8 @@ export const EFFECT_ID = {
     //Paladin
     '07C7': {
         name: '忠義の剣',
-        type: [false, false, false, false, true],
-        effect: 1,
+        type: [true, false, false, false, true],
+        effect: 1.15,
         cut: 1,
         cut_heal: 1,
         maxtime: 10
@@ -271,7 +271,7 @@ export const EFFECT_ID = {
         name: '忠義の盾',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.8,
+        cut: 0.85,
         cut_heal: 1,
         maxtime: 8
     },
@@ -1618,7 +1618,7 @@ export const EFFECT_ID = {
     '1003': {
         name: '惨毒',
         type: [false, false, false, false, false],
-        effect: 1,//自身からのみ1.2
+        effect: 1,//自身からのみ1.25
         cut: 1,
         cut_heal: 1,
         maxtime: 10
@@ -2056,7 +2056,7 @@ export const EFFECT_ID = {
         name: '守りの光',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.8,
+        cut: 0.75,
         cut_heal: 1,
         maxtime: 10
     },

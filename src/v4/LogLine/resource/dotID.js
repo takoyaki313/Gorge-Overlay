@@ -30,7 +30,7 @@ export const DoT_ID = [
         action_potential: 0,
         dotid: '0C11',
         name: '蟲毒法',
-        potential: 2000,
+        potential: 3000,
         max: 12,
         type: 'DoT'
     }, {
@@ -38,7 +38,7 @@ export const DoT_ID = [
         action_potential: 0,
         dotid: '0C11',
         name: '蟲毒法',
-        potential: 2000,
+        potential: 3000,
         max: 12,
         type: 'DoT'
     }, {
@@ -46,7 +46,7 @@ export const DoT_ID = [
         action_potential: 0,//6000-9000 HP可変
         dotid: '0C1B',
         name: 'アスペクトベネフィク[日]',
-        potential: 4000,
+        potential: 3000,
         max: 15,
         type: 'HoT'
     }, {
@@ -153,7 +153,7 @@ export const DoT_ID = [
         dotid: '1017',
         name: 'スタープリズム',
         potential: 2000,
-        max: 12,
+        max: 15,
         type: 'HoT'
     }, {
         actionid: '9928',

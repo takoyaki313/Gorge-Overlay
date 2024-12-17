@@ -377,7 +377,7 @@ export const Special_Barrier_ID = [{
     action_potential: 0,
     dotid: '0C26',//logline 26
     name: 'ハイマ',
-    potential: 3000,
+    potential: 4000,
     max: 10,
     synctype: 'calc',
     damagesync: 0,
