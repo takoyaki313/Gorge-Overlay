@@ -71,6 +71,7 @@ export class GorgeOverlay_Local {
         this.addInTargetMarker_PvE = typeof (data.addInTargetMarker_PvE) !== 'undefined' ? data.addInTargetMarker_PvE : false;
         this.addInTargetMarker_PvEHide = typeof (data.addInTargetMarker_PvEHide) !== 'undefined' ? data.addInTargetMarker_PvEHide : true;        
         this.addInTargetFrom_Size = typeof (data.addInTargetFrom_Size) !== 'undefined' ? data.addInTargetFrom_Size : 16;
+        this.addInTargetFrom_Size2 = typeof (data.addInTargetFrom_Size2) !== 'undefined' ? data.addInTargetFrom_Size2 : 14;
         this.ad_tf_Volume = typeof (data.ad_tf_Volume) !== 'undefined' ? data.ad_tf_Volume : 50;
         this.ad_tf_Volume2 = typeof (data.ad_tf_Volume2) !== 'undefined' ? data.ad_tf_Volume2 : 50;
         this.ad_tf_updateMS = typeof (data.ad_tf_updateMS) !== 'undefined' ? data.ad_tf_updateMS : 400;
@@ -127,6 +128,10 @@ export class GorgeOverlay_Local {
     }
     set setaddInTargetFrom_Size(data) {
         this.addInTargetFrom_Size = data;
+        saveLocalStorage(this);
+    }
+    set setaddInTargetFrom_Size2(data) {
+        this.addInTargetFrom_Size2 = data;
         saveLocalStorage(this);
     }
     set setaddInTargetMarker_Reverse(data) {

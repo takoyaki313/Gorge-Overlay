@@ -653,13 +653,24 @@ const ADSettingPage = () => {
             <div style={{ padding: "0.5rem", fontSize: "0.7rem", userSelect: "text" }}>https://takoyaki313.github.io/Gorge-Overlay/TargetFrom/</div>
             <SettingNumberInput
                 ja_main={"ターゲット人数の文字サイズ"}
-                ja_sub={"targetfrom"}
+                ja_sub={"右下の1.5倍のサイズになります"}
                 en_main={"TargetFrom add-in font size"}
-                en_sub={"targetfrom"}
+                en_sub={"Size is 1.5 times the lower right"}
                 local={(v) => local.setaddInTargetFrom_Size = v}
                 max={256}
                 min={8}
                 init={local.addInTargetFrom_Size}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"ターゲット人数の文字サイズ(左下）"}
+                ja_sub={"隠すときは0を指定してください"}
+                en_main={"TargetFrom add-in font size(Bottom left)"}
+                en_sub={"Hide by specifying 0"}
+                local={(v) => local.setaddInTargetFrom_Size2 = v}
+                max={256}
+                min={0}
+                init={local.addInTargetFrom_Size2}
                 lang={local.language}
             />
             <SettingNumberInput

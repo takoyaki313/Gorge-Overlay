@@ -9,7 +9,8 @@
     @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
     :root {
-      --rootFontSize: 18;
+      --rootFontSize: 16;
+      --leftBottomFontSize: 14;
     }
 
     html {
@@ -20,7 +21,7 @@
       display: grid;
       background-color: transparent;
       font-family: 'Lato', sans-serif;
-      grid-template-columns: 2rem 1.5rem;
+      grid-template-columns: 1rem 2rem 1.5rem;
       justify-items: center;
       align-items: baseline;
       color: white;
@@ -100,7 +101,8 @@
         this.rw = 2;
         this.cc = 2;
         this.fl = 3;
-        this.font = 18;
+        this.font = 16;
+        this.font2 = 14;
         this.sound1 = null;
         this.sound2 = null;
       }
@@ -115,6 +117,7 @@
         this.cc = data.ad_tf_cc_num;
         this.fl = data.ad_tf_fl_num;
         this.font = data.addInTargetFrom_Size;
+        this.font2 = data.addInTargetFrom_Size2;
         if (this.path1 !== "") {
           this.sound1 = new Audio(this.path1);
           this.sound1.volume = this.volume1 / 100;
@@ -147,6 +150,7 @@
         this.nameID = "";
         this.name = "";
         this.num = 0;
+        this.aroundNum = 0;
         this.last = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.isPlay = false;
         this.lastIcon = "";
@@ -190,17 +194,28 @@
         if (e.combatants.length === 0) {
           return null;
         }
-        let count = 0;
+        let targetMe = 0;
+        let aroundEnemy = 0;
+        //Me
         for (let i = 0; i < e.combatants.length; i++) {
           if (e.combatants[i].TargetID === this.nameID) {
             if (e.combatants[i].Type === 1 && e.combatants[i].PartyType === 0) {
-              count++;
+              targetMe++;
             }
           }
+          if (e.combatants[i].Type === 1 && e.combatants[i].PartyType === 0) {
+            aroundEnemy++;
+          }
         }
-
-        this.setNum = count;
+        this.setNum = targetMe;
+        this.setAroundNum = aroundEnemy;
       }
+      set setAroundNum(count) {
+        const t_rN = document.getElementById('around');
+        this.aroundNum = count;
+        t_rN.textContent = count;
+      }
+
       set setNum(count) {
         const t_rN = document.getElementById('Num');
         this.num = count;
@@ -288,12 +303,15 @@
         local_V.setLocalVal = data;
       }
       target_overlay_fontsize(local_V.font);
+      target_overlay_fontsize2(local_V.font2);
     }
 
     function target_overlay_fontsize(size) {
       document.documentElement.style.setProperty('--rootFontSize', size + 'px');
     }
-
+    function target_overlay_fontsize2(size) {
+      document.documentElement.style.setProperty('--leftBottomFontSize', size + 'px');
+    }
     ////////////////
     function target_overlay_area_check(area, main) {
       MaxLB = 0;
@@ -318,6 +336,7 @@
 </head>
 
 <body>
+  <div id="around" style="font-size: var(--leftBottomFontSize)"></div>
   <div id="Num" style="font-size: 1.5rem;"></div>
   <div id="AvgIcon"></div>
 </body>
