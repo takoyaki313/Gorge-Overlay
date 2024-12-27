@@ -67,7 +67,7 @@ export const networkactionsync_21_22 = async (log) => {
                     victim_effect.param.push({ type: effectdata.type[i], param: effectdata.param[i] });
                 }
             }
-            else if ('skill-replace' === effectdata.name[i] || 'actor-jobgage' === effectdata.name[i] || 'additional_effect' === effectdata.name[i]) {
+            else if ('skill-replace' === effectdata.name[i] || 'additional_effect' === effectdata.name[i]) {
 
             }
             else {
@@ -1134,7 +1134,8 @@ const effect_flag_checker = async (flag, log) => {
         case 60:
             return 'control-ally';//ミクロコスモスでバフの終了を強制させる/バハムートに指示する等　別アクションを同時に実行させる
         case 61:
-            return 'actor-jobgage';
+            console.log(log)
+            return 'actor-jobgage';//ミクロコスモス　スタープリズム　星遁天誅
         case 62:
             return 'card';//マイナーアルカナ 分身 タレット イル－シヴ
         case 73://-7.0?
