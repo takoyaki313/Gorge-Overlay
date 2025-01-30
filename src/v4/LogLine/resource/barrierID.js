@@ -273,10 +273,10 @@ export const Barrier_ID = [
         type: 'barrier'
     }, {//blm
         actionid: '73D9',
-        action_potential: 12000,
+        action_potential: 15000,
         dotid: '0C95',
         name: 'バースト',
-        potential: 12000,
+        potential: 15000,
         max: 10,
         synctype: 'calc',
         damagesync: 0,

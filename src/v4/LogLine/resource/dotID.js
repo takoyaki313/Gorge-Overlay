@@ -6,7 +6,7 @@ export const DoT_ID = [
         action_potential: 20000,
         dotid: '07F6',
         name: 'テンパランス：効果',
-        potential: 6000,
+        potential: 4000,
         max: 5,
         type: 'HoT'
     }, {

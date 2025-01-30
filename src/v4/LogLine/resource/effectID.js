@@ -827,7 +827,7 @@ export const EFFECT_ID = {
     '0C18': {
         name: 'セラフィムウィング',
         type: [false, true, false, false, true],
-        effect: 1.2,
+        effect: 1.1,
         cut: 1,
         cut_heal: 1,
         maxtime: 20
