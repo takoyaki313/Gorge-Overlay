@@ -342,7 +342,7 @@ export const Barrier_ID = [
         action_potential: 0,
         dotid: '1013',
         name: 'テンペラグラッサ',
-        potential: 6000,
+        potential: 8000,
         max: 10,
         synctype: 'calc',
         damagesync: 0,

@@ -1315,13 +1315,13 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1.1,
         cut_heal: 1,
-        maxtime: 4
+        maxtime: 8
     },
     '10D0': {
         name: '土遁の術',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.8,
+        cut: 0.85,
         cut_heal: 1,
         maxtime: 4
     },
@@ -2046,7 +2046,7 @@ export const EFFECT_ID = {
     '10DE': {
         name: 'レサージー',
         type: [true, false, false, false, false],
-        effect: 0.75,
+        effect: 0.67,
         cut: 1,
         cut_heal: 1,
         maxtime: 60
@@ -2429,7 +2429,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 0.1,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 4
     },
     '0E59': {
         name: '防御【弱】',
@@ -2437,7 +2437,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 0.5,
         cut_heal: 1,
-        maxtime: 5
+        maxtime: 4
     },
     '053E': {
         name: 'スプリント',
