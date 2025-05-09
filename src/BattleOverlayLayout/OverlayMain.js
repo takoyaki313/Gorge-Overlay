@@ -45,6 +45,7 @@ const encounterZoneGet = (Encounter) => {
     return 0;
   }
 }
+let isPrevActive = 'false';
 export const DefaultView = () => {
   let [enc, setEnc] = useState({ Encounter: { CurrentZoneName: 'Unknown Area', DURATION: '0' }, Combatant: {}, isActive: false });
   let [settingVisible, settingPage] = useState(false);
@@ -53,22 +54,25 @@ export const DefaultView = () => {
   window.EncounterState = async (CombatData) => {
     let areaZone = encounterZoneGet(CombatData.Encounter);
     if (areaZone === 0) {
-      if (CombatData.isActive === 'true') {
+      if (CombatData.isActive === 'true' || isPrevActive === 'true') {
+        isPrevActive = CombatData.isActive;
         setEnc(enc = CombatData);
         window.changeTime_Event(CombatData.Encounter.DURATION);
+        window.ChangeTotalDPS_Event(Number(CombatData.Encounter.ENCDPS), Number(CombatData.Encounter.deaths));
       }
     }
     else {
-      if (areaZone === 4) { 
+      if (areaZone === 4) {
         if (battleEvent.encounterStart && CombatData.isActive === 'false') {
           TBD.resetData = 'PART';
           battleEvent.encounterStart = false;
           battleEvent.reset = true;
           await battleStop('PART');
         }
-      } 
+      }
       if (!battleEvent.encounterStart && CombatData.isActive === 'true') {
         battleEvent.encounterStart = true;
+        window.ChangeTotalDPS_Event(0, 0);
       }
 
       if (!battleEvent.Result_Page && !battleEvent.Engage && CombatData.isActive === 'true') {
@@ -103,7 +107,7 @@ export const DefaultView = () => {
         <div id='mainArea'>
           {/*<HeaderAreaDefaultView />*/}
           <HeaderSimple setting={settingPage} />
-          <Overlay CombatData={enc.Combatant} isActive={enc.isActive} TBD={tbdTime} />
+          <Overlay CombatData={enc.Combatant} EncounterData={enc.Encounter} isActive={enc.isActive} TBD={tbdTime} />
         </div>
         <div id='subArea'>
         </div>
@@ -120,19 +124,19 @@ const Overlay = (props) => {
       {(() => {//AREA CHECK
         switch (AreaData.Type) {
           case 1: //Seal Rock & Onsal Hakair
-            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false}/></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
           case 2://Hidden Gorge
-            return (<><PvPMain tbdTime={props.TBD} area={"rw"} wolves={false}/></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"rw"} wolves={false} /></>);
           case 3://Border Land Ruins & Fields Of Glory 
-            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false}/></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
           case 4://Wolves Den Pier
             return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={true} /></>)
           case 5://Crystal Conflict Area
-            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={false}/></>);
+            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={false} /></>);
           case 6://Not Use
             return ('');
           default://PvE 
-            return (<><OverlayMCombatants Combatant={props.CombatData} /></>)
+            return (<><OverlayMCombatants Combatant={props.CombatData} Encounter={props.EncounterData} /></>)
         }
       })()
       }

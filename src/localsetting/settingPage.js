@@ -85,6 +85,16 @@ const PvESettingPage = () => {
                 max={2}
                 lang={local.language}
             />
+            <SettingToggleInput
+                ja_main={"PvEでの合計DPSの表示"}
+                ja_sub={"消すことでスペースを節約できます"}
+                en_main={"Displaying Total DPS in PvE"}
+                en_sub={"Save space by turning off"}
+                local={(v) => local.setPvE_TeamView = v}
+                uID={"pve_TeamView"}
+                init={local.pve_TeamView}
+                lang={local.language}
+            />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
             <SettingToggleInput
                 ja_main={"チームの合計表示のアイコン表示"}

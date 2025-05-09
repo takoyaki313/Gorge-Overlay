@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { m_dataCombatant } from './OverlayPlayer_M';
-
 import { OverlayM1 } from './OverlayPlayer_M1';
 import { OverlayM2 } from './OverlayPlayer_M2';
 import { local } from '..';
@@ -9,7 +8,7 @@ export const OverlayMCombatants = (Combatants) => {
     let Combatants_Array = [];
     let names = Object.keys(Combatants.Combatant);
 
-
+    //console.log(Combatants.Encounter)
     if (names.length === 0) {
         return (<div>No Data...</div>)
     }

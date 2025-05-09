@@ -7,34 +7,77 @@ export const damage_revise = async (nameID, job, lastupdate) => {
         return;
     }
     if (AreaData.Type === 1 || AreaData.Type === 3) {//FL
-        let class_A = ['pld', 'drg'];// 20-50
-        let class_B = ['mnk','nin','rpr','vpr'];//0-50
-        let class_C = ['war', 'gnb', 'sam'];//10-50
-        let class_D = ['drk'];//20-40
-        //
-        let class_E = ['smn','pct','whm','sch','ast'];//10-30
-        let class_F = ['brd','mch','dnc','blm','rdm','sge'];//0-30
-        if (class_A.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.8, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
+        let damage_offset = { damage: 1, income: 1 };
+        switch (job) {
+            case 'pld':
+                damage_offset = { damage: 0.8, income: 0.5 };
+                break;
+            case 'war':
+                damage_offset = { damage: 0.9, income: 0.45 };
+                break;
+            case 'drk':
+                damage_offset = { damage: 0.85, income: 0.6 };
+                break;
+            case 'gnb':
+                damage_offset = { damage: 0.9, income: 0.5 };
+                break;
+            case 'mnk':
+                damage_offset = { damage: 1, income: 0.5 };
+                break;
+            case 'drg':
+                damage_offset = { damage: 0.85, income: 0.5 };
+                break;
+            case 'nin':
+                damage_offset = { damage: 1, income: 0.55 };
+                break;
+            case 'sam':
+                damage_offset = { damage: 0.9, income: 0.5 };
+                break;
+            case 'rpr':
+                damage_offset = { damage: 1, income: 0.5 };
+                break;
+            case 'vpr':
+                damage_offset = { damage: 1, income: 0.4 };
+                break;
+            case 'brd':
+                damage_offset = { damage: 1, income: 0.7 };
+                break;
+            case 'mch':
+                damage_offset = { damage: 1, income: 0.7 };
+                break;
+            case 'dnc':
+                damage_offset = { damage: 1, income: 0.75 };
+                break;
+            case 'blm':
+                damage_offset = { damage: 0.95, income: 0.7 };
+                break;
+            case 'smn':
+                damage_offset = { damage: 0.9, income: 0.5 };
+                break;
+            case 'rdm':
+                damage_offset = { damage: 1, income: 0.62 };
+                break;
+            case 'pct':
+                damage_offset = { damage: 0.9, income: 0.7 };
+                break;
+            case 'whm':
+                damage_offset = { damage: 0.9, income: 0.75 };
+                break;
+            case 'sch':
+                damage_offset = { damage: 0.9, income: 0.7 };
+                break;
+            case 'ast':
+                damage_offset = { damage: 0.85, income: 0.75 };
+                break;
+            case 'sge':
+                damage_offset = { damage: 1, income: 0.65 };
+                break;
+            default:
+                damage_offset = { damage: 1, income: 1 };
+                break;
         }
-        else if (class_B.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
-        }
-        else if (class_C.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.5 }, true], ['lastupdate', lastupdate, true]);
-        }
-        else if (class_D.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.8, income: 0.6 }, true], ['lastupdate', lastupdate, true]);
-        }
-        else if (class_E.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 0.9, income: 0.7 }, true], ['lastupdate', lastupdate, true]);
-        }
-        else if (class_F.indexOf(job) !== -1) {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 0.7}, true], ['lastupdate', lastupdate, true]);
-        }
-        else {
-            await update_maindata('Player_hp', 'nameID', nameID, ['revise', { damage: 1, income: 1 }, true], ['lastupdate', lastupdate, true]);
-        }
+
+        await update_maindata('Player_hp', 'nameID', nameID, ['revise', damage_offset, true], ['lastupdate', lastupdate, true]);
     }
     else if (AreaData.Type === 2) {//Gorge
         let class_A = ['pld', 'war', 'drk', 'gnb', 'mnk', 'drg', 'nin', 'sam', 'rpr', 'vpr'];

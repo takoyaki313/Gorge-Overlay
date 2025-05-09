@@ -5,6 +5,7 @@ import './css/header.css'
 import { useState } from 'react';
 import { time_change } from './v4/timer/timer_format.js';
 import { saveOrRead_JSON } from './v4/sample/workSample';
+import { TooltipJSX } from './BattleOverlayLayout/tooltip/tooltip.js';
 
 import { local } from '.';
 
@@ -12,20 +13,27 @@ export const HeaderSimple = (prop) => {
   const [hide, setActive] = useState(local.root_header);
   let [AreaName, ChangeArea] = useState('Unknown');
   let [DURATION, ChangeTime] = useState(0);
+  let [TotalDPS, ChangeTotalDPS] = useState(0);
+  let deathCount = 0;
   window.changeArea_Event = (areaName) => {
     ChangeArea(AreaName = areaName);
   }
   window.changeTime_Event = (BattleTime) => {
     ChangeTime(DURATION = BattleTime);
   }
+  window.ChangeTotalDPS_Event = (DPS, death) => {
+    let dps = isNaN(DPS) ? 0 : DPS;
+    deathCount = isNaN(death) ? 0 : death;
+    ChangeTotalDPS(TotalDPS = dps);
+  }
   const hide_toggle = () => {
     setActive(!hide)
     local.setHeader = !hide;
   }
-  
+
   return (
     <div>
-      {hide ? '' : <HeaderDetail DURATION={DURATION} AreaName={AreaName} setting={prop.setting} />}
+      {hide ? '' : <HeaderDetail DURATION={DURATION} AreaName={AreaName} setting={prop.setting} TotalDPS={TotalDPS} deathCount={deathCount} />}
       <div className='headerOpen' onClick={hide_toggle}>
         {hide ? <div className='roundButton' ></div> : ''}
         <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
@@ -48,6 +56,9 @@ const HeaderDetail = (prop) => {
           <span id='zoneName'>{prop.AreaName}</span>
         </div>
         <div className='flex-center'>
+          <span className='bebasText flex-center spaceLow'>
+            {prop.TotalDPS === 0 && local.pve_TeamView? "" : <TooltipJSX setID={'header'} text={new Intl.NumberFormat().format(prop.TotalDPS)} html={"DEATH : " + prop.deathCount} />}
+          </span>
           <span className='bebasText flex-center spaceLow'>
             <span id='BattleTime_min'>{time[0]}</span>
             <span id='BattleTime_dot'>:</span>
