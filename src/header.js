@@ -57,7 +57,7 @@ const HeaderDetail = (prop) => {
         </div>
         <div className='flex-center'>
           <span className='bebasText flex-center spaceLow'>
-            {prop.TotalDPS === 0 && local.pve_TeamView? "" : <TooltipJSX setID={'header'} text={new Intl.NumberFormat().format(prop.TotalDPS)} html={"DEATH : " + prop.deathCount} />}
+            {local.pve_TeamView === true ? prop.TotalDPS === 0 ? "" : <TooltipJSX setID={'header'} text={new Intl.NumberFormat().format(prop.TotalDPS)} html={"DEATH : " + prop.deathCount} /> : ""}
           </span>
           <span className='bebasText flex-center spaceLow'>
             <span id='BattleTime_min'>{time[0]}</span>
