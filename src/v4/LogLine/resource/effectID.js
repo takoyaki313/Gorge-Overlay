@@ -889,19 +889,35 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 15
     },
-    '10E8': {
+    '10E8': {//引いただけ
         name: 'クラウンレディ',
-        type: [false, false, true, false, true],
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '10E9': {//引いただけ
+        name: 'クラウンロード',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '05AC': {//効果
+        name: 'クラウンレディ',
+        type: [false, true, false, false, true],
         effect: 1,
         cut: 0.9,
         cut_heal: 1,
         maxtime: 10
     },
-    '10E9': {
+    '05AB': {//効果
         name: 'クラウンロード',
-        type: [true, false, false, false, true],
-        effect: 1.1,
-        cut: 1,
+        type: [false, true, false, false, false],
+        effect: 1,
+        cut: 1.1,
         cut_heal: 1,
         maxtime: 10
     },
@@ -1509,7 +1525,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime:10
+        maxtime: 10
     },
     '0FF6': {
         name: '壱の蛇【猛襲】実行後',
@@ -2043,7 +2059,7 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 30
     },
-    '10DE': {
+    '10ED': {
         name: 'レサージー',
         type: [true, false, false, false, false],
         effect: 0.67,
@@ -2544,6 +2560,220 @@ export const EFFECT_ID = {
         cut_heal: 1,
         maxtime: 9999
     },
+    //RoleAction
+    '1183': {
+        name: 'PvPアクション ランページ',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1184': {
+        name: 'PvPアクション ランパート',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1185': {
+        name: 'PvPアクション フルスイング',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1186': {
+        name: 'PvPアクション ブラッドバス',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1187': {
+        name: 'PvPアクション スウィフト',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1188': {
+        name: 'PvPアクション スマイト',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1189': {
+        name: 'PvPアクション スピードスター',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '118A': {
+        name: 'PvPアクション ブレイブ',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '118B': {
+        name: 'PvPアクション イーグルアイ',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '118C': {
+        name: 'PvPアクション コメット',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '118D': {
+        name: 'PvPアクション',//バリア
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '118E': {
+        name: 'PvPアクション ダルウェポン',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '11A4': {
+        name: 'PvPアクション ファントムダート',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '118F': {
+        name: 'PvPアクション ヒール',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1190': {
+        name: 'PvPアクション ストンラスキン',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '1191': {
+        name: 'PvPアクション ディアブロシス',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    //RoleAction Tank
+    '117C': {
+        name: 'ランページ',
+        type: [false, false, true, false, false],
+        effect: 1,
+        cut: 1.25,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '07BA': {
+        name: 'ランパート',
+        type: [false, false, true, true, true],
+        effect: 1,
+        cut: 0.5,
+        cut_heal: 1.25,
+        maxtime: 15
+    },
+    //RoleAction Healer
+    '1181': {
+        name: 'ストンラスキン',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '1182': {
+        name: 'ディアブロシス',
+        type: [false, false, false, true, false],
+        effect: 1,
+        cut: 0.5,
+        cut_heal: 0.75,
+        maxtime: 10
+    },
+    //RoleAction Melee
+    '07BE': {
+        name: 'ブラッドバス',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '117D': {
+        name: 'スウィフト',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 44
+    },
+    //RoleAction Range
+    '117E': {
+        name: 'スピードスター',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 10
+    },
+    '117F': {
+        name: 'ブレイブ',
+        type: [true, false, true, false, true],
+        effect: 1.25,
+        cut: 0.75,
+        cut_heal: 1,
+        maxtime: 44
+    },
+    //RoleAction caster
+    '1180': {
+        name: 'ダルウェポン',
+        type: [true, false, false, true, false],
+        effect: 0.75,
+        cut: 1,
+        cut_heal: 0.75,
+        maxtime: 10
+    },
+    '07C2': {
+        name: 'ファントムダート',
+        type: [false, true, false, false, false],
+        effect: 1,
+        cut: 1.25,
+        cut_heal: 1,
+        maxtime: 44
+    },
     //Hidden Gorge
     '058C': {
         name: '搭乗',
@@ -2610,6 +2840,23 @@ export const EFFECT_ID = {
         cut: 1,
         cut_heal: 1
     },
+    //制圧
+    '1192': {
+        name: '予備電力',
+        type: [false, false, false, false, true],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    },
+    '0C01': {
+        name: '感電',
+        type: [false, false, false, false, false],
+        effect: 1,
+        cut: 1,
+        cut_heal: 1,
+        maxtime: 9999
+    }
 };
 
 export const EFFECT_ID_LIST = Object.keys(EFFECT_ID);

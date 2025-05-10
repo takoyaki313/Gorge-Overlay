@@ -359,6 +359,17 @@ export const Barrier_ID = [
         damagesync: 0,
         damage: false,
         type: 'barrier'
+    }, {//RoleAction Healer
+        actionid: 'A8F8A8F8',
+        action_potential: 0,
+        dotid: '1181',
+        name: 'ストンラスキン',
+        potential: 10000,
+        max: 10,
+        synctype: 'calc',
+        damagesync: 0,
+        damage: false,
+        type: 'barrier'
     }
 ];
 export const Special_Barrier_ID = [{

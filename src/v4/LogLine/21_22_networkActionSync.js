@@ -201,7 +201,7 @@ const counterdamage_include = async (data, effect) => {
         time_accept: 'not-yet',
         time_ms: data.time_ms,
         animationlock: data.animationlock,
-        dummy:data.dummy,
+        dummy: data.dummy,
         uniqueID: uniqueID,
     }
     let counter_check = input.effectname.indexOf('counter');
@@ -250,7 +250,7 @@ const networkaction_calc = async (data, effect, type) => {
         time_accept: 'not-yet',
         time_ms: data.time_ms,
         animationlock: data.animationlock,
-        dummy:data.dummy,
+        dummy: data.dummy,
         uniqueID: uniqueID,
     }
     /* Duplite Check (Debugging)
@@ -503,7 +503,7 @@ const heal_target = async (victimID, attackerID, actionID, special) => {
 const damage_target = async (victimID, attackerID, v_maxHP, a_maxHP, actionID, special, damage) => {
     let typeinput = ['totaldamage'];
     typeinput.push('damage_total_' + special);
-    if (attackerID.substring(0, 2) === '40') {//オブジェクト等の攻撃の場合
+    if (attackerID.substring(0, 2) === '40' || attackerID === Field_ID) {//オブジェクト等の攻撃の場合
         typeinput.push('damage_object');
         typeinput.push('damage_object_' + special);
     }
@@ -1063,17 +1063,14 @@ const effect_flag_checker = async (flag, log) => {
         case 1:
             return 'miss';
         case 2:
-            console.log('normal-damage-2');
             return 'normal-damage';
         case 3:
             return 'normal-damage';
         case 4:
             return 'heal';
         case 5:
-            console.log('parri-damage');
             return 'block-damage';
         case 6:
-            console.log('parri-damage');
             return 'parri-damage';
         case 7:
             return 'invincible';//無敵に殴るとこれ（OP）
@@ -1134,7 +1131,6 @@ const effect_flag_checker = async (flag, log) => {
         case 60:
             return 'control-ally';//ミクロコスモスでバフの終了を強制させる/バハムートに指示する等　別アクションを同時に実行させる
         case 61:
-            console.log(log)
             return 'actor-jobgage';//ミクロコスモス　スタープリズム　星遁天誅
         case 62:
             return 'card';//マイナーアルカナ 分身 タレット イル－シヴ

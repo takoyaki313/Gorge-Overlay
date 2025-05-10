@@ -73,8 +73,10 @@ const buff_RegisterSampleCreate = async (log) => {
         buff_detail.job = playerJob.job;
     }
     if (!Buff_ID_LIST.data.has(buff_detail.buffID)) {
-        console.log(log);
         Buff_ID_LIST.data.set(buff_detail.buffID, buff_detail)
+        if (EFFECT_ID_LIST.indexOf(buff_detail.buffID_cordinate) === -1) {
+            console.warn(log);
+        }
     }
 }
 

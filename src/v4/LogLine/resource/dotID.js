@@ -199,6 +199,13 @@ export const DoT_ID = [
         potential: 7500,
         max: 9999,
         type: 'HoT'
+    }, {
+        actionid: '',//The Border land Ruins
+        dotid: '0C01',
+        name: '感電',
+        potential: 10000,//Wakaran
+        max: 9999,
+        type: 'DoT'
     }
 ];
 

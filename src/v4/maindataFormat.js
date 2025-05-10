@@ -34,7 +34,7 @@ export class maindata {
             this.EnemyAlliance = [new dynamisParty()];
             this.EnemyUnknownDynamis = [];
             if (devMode.logLevel > 2) {
-                console.warn('MainData Reset');
+                console.log('MainData Reset Success');
             }
         }
         else if (type === 'PART') {
