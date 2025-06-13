@@ -55,7 +55,15 @@
     font-size: 1.2rem;
 }
 
+.m1_overlay .dps .dps-iex {
+    font-size: 1rem;
+}
+
 .m1_overlay .dps .dps-d {
+    font-size: 0.8rem;
+}
+
+.m1_overlay .dps .dps-dex {
     font-size: 0.8rem;
 }
 
