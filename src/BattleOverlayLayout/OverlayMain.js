@@ -3,7 +3,7 @@ import '../css/fonticon/style.css'
 import React, { useState } from 'react'
 
 import { SettingPageStart } from '../localsetting/settingPage';
-
+import { OverlayLogsPlayer } from './logsPlayer';
 import { HeaderSimple } from '../header';
 import { OverlayMCombatants } from './pve_Overlay';
 
@@ -49,12 +49,19 @@ let isPrevActive = 'false';
 export const DefaultView = () => {
   let [enc, setEnc] = useState({ Encounter: { CurrentZoneName: 'Unknown Area', DURATION: '0' }, Combatant: {}, isActive: false });
   let [settingVisible, settingPage] = useState(false);
+  let [logsPageVisible, logsPage] = useState(false);
   let [tbdTime, setTBD] = useState(0);
 
   window.EncounterState = async (CombatData) => {
     let areaZone = encounterZoneGet(CombatData.Encounter);
     if (areaZone === 0) {
+      if (isPrevActive === 'false' && CombatData.isActive === 'true') {
+        logsPage(false);
+      }
       if (CombatData.isActive === 'true' || isPrevActive === 'true') {
+        if (isPrevActive === 'false' && CombatData.isActive === 'true') {
+          logsPage(false);
+        }
         isPrevActive = CombatData.isActive;
         setEnc(enc = CombatData);
         window.changeTime_Event(CombatData.Encounter.DURATION);
@@ -101,13 +108,15 @@ export const DefaultView = () => {
       </>
     )
 
-  } else {
+  }
+  else {
     return (
       <div id="dispArea">
         <div id='mainArea'>
           {/*<HeaderAreaDefaultView />*/}
-          <HeaderSimple setting={settingPage} />
-          <Overlay CombatData={enc.Combatant} EncounterData={enc.Encounter} isActive={enc.isActive} TBD={tbdTime} />
+          <HeaderSimple setting={settingPage} logsPage={logsPage} logsPageState={logsPageVisible} />
+          {logsPageVisible ? <OverlayLogsPlayer /> : <Overlay CombatData={enc.Combatant} EncounterData={enc.Encounter} isActive={enc.isActive} TBD={tbdTime} />}
+
         </div>
         <div id='subArea'>
         </div>

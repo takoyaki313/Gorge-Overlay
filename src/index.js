@@ -27,7 +27,7 @@ export const devMode = {
   forceReset: true,
   sampleReadMode: false,
   wolves: false,
-  buffRegisterMode:false
+  buffRegisterMode: false
 };
 
 export const AreaData = new Area();
@@ -69,7 +69,7 @@ window.addOverlayListener('ChangeMap', (minimap) => {
   if (typeof (window.changeArea_Event) === 'undefined') {
     return null;
   }
-  
+
   window.changeArea_Event(minimap.placeName.toUpperCase());
   if (AreaData.battleId !== minimap.mapID) {
     AreaData.areaset_changeMap = minimap.mapID;

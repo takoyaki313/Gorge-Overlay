@@ -108,7 +108,7 @@ const PvESettingPage = () => {
             />
             <SettingNumberInput
                 ja_main={"オーバーレイの拡大縮小"}
-                ja_sub={"リロードが必要"}a
+                ja_sub={"リロードが必要"} a
                 en_main={"Scaling the overlay"}
                 en_sub={"reload required"}
                 local={(v) => local.setRootFontSize = v}
@@ -126,6 +126,35 @@ const PvESettingPage = () => {
                 local={(v) => local.setalliance_event = v}
                 uID={"alliance_event"}
                 init={local.alliance_event}
+                lang={local.language}
+            />
+            <SettingTextInput
+                ja_main={"Logs Client_ID（V2）"}
+                ja_sub={"LogsでClient IDを取得し入力"}
+                en_main={"Logs Client ID (V2)"}
+                en_sub={"Obtain and enter the Client ID in the logs"}
+                local={(t) => local.setLogsClientID = t}
+                init={local.logsClientID}
+                lang={local.language}
+            />
+            <SettingTextInput
+                ja_main={"Logs Secret_ID（V2）"}
+                ja_sub={"LogsでSecret IDを取得し入力"}
+                en_main={"Logs Secret ID (V2)"}
+                en_sub={"Obtain and enter the Secret ID in the logs"}
+                local={(t) => local.setLogsSecretID = t}
+                init={local.logsSecretID}
+                lang={local.language}
+            />
+            <SettingNumberInput
+                ja_main={"logsの基準とするMetric"}
+                ja_sub={"1=rdps, 2=adps, 3=ndps, 4=cdps"} a
+                en_main={"Metric to be used as the basis for logs"}
+                en_sub={"1=rdps, 2=adps, 3=ndps, 4=cdps"}
+                local={(v) => local.setLogsMetric = v}
+                max={4}
+                min={1}
+                init={local.logsMetric}
                 lang={local.language}
             />
             <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>

@@ -328,6 +328,7 @@ class dispPlayerData {
         this.me = this.nameID === PRIMARY_PLAYER.nameID ? true : false;
         this.server = typeof (before.server) === 'string' ? before.server : '';
         this.datacenter = typeof (before.dc_server) === 'string' ? before.dc_server : '';
+        this.region = typeof (before.region) === 'string' ? before.region : '';
         this.job = typeof (before.job) === 'string' ? before.job : '';
         this.jobhistory = typeof (before.jobhistory) === 'object' ? before.jobhistory : [];
         this.alliance = typeof (before.alliance) === 'number' ? before.alliance : 0;

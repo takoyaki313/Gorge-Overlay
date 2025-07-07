@@ -68,6 +68,7 @@ class sampleLog {
 
 export const saveOrRead_JSON = async () => {
     if (!devMode.sampleGet) {
+        
         return null;
     }
     if (sampleJSON.AreaType !== 0 && !devMode.sampleReadMode) {

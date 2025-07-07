@@ -6,7 +6,9 @@ import { KillTooltipLayout, DeathTooltipLayout, AssistTooltipLayout } from './to
 import { DynamishistoryTooltipLayout } from './tooltip/dynamisTooltip';
 import { DamageTooltipLayout } from './tooltip/damageTooltip';
 import { HealTooltipLayout } from "./tooltip/healTooltip";
+import { LogsTooltipLayout } from './tooltip/logsTooltip';
 import { PRIMARY_PLAYER } from '..';
+import { logsMode } from '../v4/xivapi/logsV2';
 
 class m_dataLayout {
     constructor() {
@@ -54,12 +56,12 @@ export class m_dataCombatant extends m_dataLayout {
         let sep_dps = separate_d_i(combatant_dps_formatChange(0, combatant.encdps));
         this.dps_i = sep_dps.int;
         this.dps_d = sep_dps.dec === '' ? '' : '.' + sep_dps.dec;
-        this.dps_tooltip = combatant.damage + ' | ' + combatant.maxhit;
+        this.dps_tooltip = combatant.maxhit + ' | Death : ' + combatant.deaths;
         let sep_hps = separate_d_i(combatant_dps_formatChange(0, combatant.enchps));
         this.hps = sep_hps.int;
         this.hps_tooltip = combatant.OverHealPct;
         this.name = combatant.name;
-        this.name_tooltip = "Death : " + combatant.deaths;
+        this.name_tooltip = logsMode?<LogsTooltipLayout name={combatant.name} />:"";
         this.nameID = combatant.name.replace("'", "");
 
         if (combatant.Job === "Limit Break") {
@@ -105,7 +107,7 @@ export class m_data extends m_dataLayout {
         this.hps = sep_hps.int
         this.hps_tooltip = d_Data.heal_All.length > 0 ? <HealTooltipLayout data={d_Data} /> : "";
         this.name = d_Data.name;
-        
+
         if (d_Data.datacenter !== "") {
             this.name_tooltip = d_Data.datacenter + " / " + d_Data.server;
         } else {

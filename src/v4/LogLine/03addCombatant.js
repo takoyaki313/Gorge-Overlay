@@ -37,12 +37,14 @@ export const addcombatant = async (log) => {
                 }
             } else {//Not Found 
                 let dc = "";
+                let region = "";
                 if (server !== "") {
                     if (typeof (serverList[server]) !== 'undefined') {
                         dc = serverList[server].dc;
+                        region = serverList[server].region;
                     }
                 }
-                await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ["dc_server", dc, true], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
+                await update_maindata('Player_data', 'nameID', nameID, ['name', name, true], ['job', job, true], ['server', server, true], ['battle', battle, true], ['add_combatant_time', { battle: true, time: time_ms, stamp: lastupdate }, false], ["dc_server", dc, true], ["region", region, true], ['ownerID', owner_id, true], ['lastupdate', lastupdate, true]);
             }
         } else {
             //Before Engage

@@ -17,6 +17,9 @@ export class GorgeOverlay_Local {
         this.pve_TeamView = typeof (data.pve_TeamView) !== 'undefined' ? data.pve_TeamView : false;
         this.teamSymbol = typeof (data.teamSymbol) !== 'undefined' ? data.teamSymbol : true;
         this.alliance_event = typeof (data.alliance_event) !== 'undefined' ? data.alliance_event : false;
+        this.logsClientID = typeof (data.logsClientID) !== 'undefined' ? data.logsClientID : "";
+        this.logsSecretID = typeof (data.logsSecretID) !== 'undefined' ? data.logsSecretID : "";
+        this.logsMetric = typeof (data.logsMetric) !== 'undefined' ? data.logsMetric : 1;
         //
         this.fl_layout = typeof (data.fl_layout) !== 'undefined' ? data.fl_layout : 2;
         this.fl_allyData = typeof (data.fl_allyData) !== 'undefined' ? data.fl_allyData : true;
@@ -70,7 +73,7 @@ export class GorgeOverlay_Local {
         this.addInTargetMarker_Size = typeof (data.addInTargetMarker_Size) !== 'undefined' ? data.addInTargetMarker_Size : 16;
         this.addInTargetMarker_Reverse = typeof (data.addInTargetMarker_Reverse) !== 'undefined' ? data.addInTargetMarker_Reverse : true;
         this.addInTargetMarker_PvE = typeof (data.addInTargetMarker_PvE) !== 'undefined' ? data.addInTargetMarker_PvE : false;
-        this.addInTargetMarker_PvEHide = typeof (data.addInTargetMarker_PvEHide) !== 'undefined' ? data.addInTargetMarker_PvEHide : true;        
+        this.addInTargetMarker_PvEHide = typeof (data.addInTargetMarker_PvEHide) !== 'undefined' ? data.addInTargetMarker_PvEHide : true;
         this.addInTargetFrom_Size = typeof (data.addInTargetFrom_Size) !== 'undefined' ? data.addInTargetFrom_Size : 16;
         this.addInTargetFrom_Size2 = typeof (data.addInTargetFrom_Size2) !== 'undefined' ? data.addInTargetFrom_Size2 : 14;
         this.ad_tf_Volume = typeof (data.ad_tf_Volume) !== 'undefined' ? data.ad_tf_Volume : 50;
@@ -89,6 +92,18 @@ export class GorgeOverlay_Local {
     }
     set setHeader(isHeader) {
         this.root_header = isHeader;
+        saveLocalStorage(this);
+    }
+    set setLogsMetric(metric) {
+        this.logsMetric = metric;
+        saveLocalStorage(this);
+    }
+    set setLogsSecretID(secretID) {
+        this.logsSecretID = secretID;
+        saveLocalStorage(this);
+    }
+    set setLogsClientID(clientID) {
+        this.logsClientID = clientID;
         saveLocalStorage(this);
     }
     set setPvEMax(max) {
@@ -118,7 +133,7 @@ export class GorgeOverlay_Local {
     set setaddInTargetName(data) {
         this.addInTargetName = data;
         saveLocalStorage(this);
-    } 
+    }
     set setaddInIntLB(data) {
         this.addInIntLB = data;
         saveLocalStorage(this);
@@ -378,6 +393,20 @@ export class GorgeOverlay_Local {
     set setalliance_event(data) {
         this.alliance_event = data;
         saveLocalStorage(this);
+    }
+
+    get logsMetricStr() {
+        if (this.logsMetric === 1) {
+            return "rdps";
+        } else if (this.logsMetric === 2) {
+            return "dps";
+        } else if (this.logsMetric === 3) {
+            return "ndps";
+        } else if (this.logsMetric === 4) {
+            return "cdps";
+        } else {
+            return "rdps";
+        }
     }
 }
 const rootFontSizeChange = (size) => {

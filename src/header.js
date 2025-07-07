@@ -7,6 +7,8 @@ import { time_change } from './v4/timer/timer_format.js';
 import { saveOrRead_JSON } from './v4/sample/workSample';
 import { TooltipJSX } from './BattleOverlayLayout/tooltip/tooltip.js';
 
+import { logsDataCreate } from './BattleOverlayLayout/logsPlayer.js';
+import { logsMode } from './v4/xivapi/logsV2.js';
 import { local } from '.';
 
 export const HeaderSimple = (prop) => {
@@ -33,7 +35,7 @@ export const HeaderSimple = (prop) => {
 
   return (
     <div>
-      {hide ? '' : <HeaderDetail DURATION={DURATION} AreaName={AreaName} setting={prop.setting} TotalDPS={TotalDPS} deathCount={deathCount} />}
+      {hide ? '' : <HeaderDetail DURATION={DURATION} AreaName={AreaName} setting={prop.setting} TotalDPS={TotalDPS} deathCount={deathCount} logsPage={prop.logsPage} logsPageState={prop.logsPageState} />}
       <div className='headerOpen' onClick={hide_toggle}>
         {hide ? <div className='roundButton' ></div> : ''}
         <div className='horizontalLine flex-center' style={{ backgroundColor: 'gray' }}></div>
@@ -46,13 +48,17 @@ const HeaderDetail = (prop) => {
   let time = time_change(Number(prop.DURATION));
   const contextMenu_Main = (e) => {
     e.preventDefault();
-    saveOrRead_JSON();
+    if (!local.sampleMode) {
+      testmoduleStart();
+    } else {
+      saveOrRead_JSON();
+    }
   }
   return (
     <header>
       <div className='header-Top'>
         <div className='flex-center'>
-          <span className='icon-app_fc' onClick={testmoduleStart} onContextMenu={(e) => contextMenu_Main(e)}></span>
+          <span className='icon-app_fc' onClick={async () => { if (logsMode) await logsPageStart(prop.logsPage, prop.logsPageState) }} onContextMenu={(e) => contextMenu_Main(e)}></span>
           <span id='zoneName'>{prop.AreaName}</span>
         </div>
         <div className='flex-center'>
@@ -69,6 +75,13 @@ const HeaderDetail = (prop) => {
       </div>
     </header>
   );
+}
+
+const logsPageStart = async (logsPage, logsPageState) => {
+  if (!logsPageState) {//false => true
+    await logsDataCreate();
+  }
+  logsPage(!logsPageState);
 }
 
 function testmoduleStart() {

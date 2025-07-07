@@ -47,12 +47,21 @@
 
   --root-padding: 0.6rem;
 
+  --dps-gray: #666666;
   --dps-green: #1EFF00;
   --dps-blue: #0070FF;
   --dps-purple: #A335EE;
   --dps-orange: #FF8000;
   --dps-pink: #E268A8;
   --dps-yellow: #E5CC80;
+
+  --dps-transparent-gray: #66666688;
+  --dps-transparent-green: #1EFF0088;
+  --dps-transparent-blue: #0070FF88;
+  --dps-transparent-purple: #A335EE88;
+  --dps-transparent-orange: #FF800088;
+  --dps-transparent-pink: #E268A888;
+  --dps-transparent-yellow: #E5CC8088;
 
   --rootFontSize: 16px;
 
@@ -120,4 +129,32 @@ code {
 
 .general-background-gradient {
   background: linear-gradient(90deg, var(--transparent-general-role-color) 0%, var(--transparent-general-role-color) 98%, transparent 100%);
+}
+
+.dps-background-gradient-gray {
+  background: linear-gradient(90deg, var(--dps-transparent-gray) 0%, var(--dps-transparent-gray) 98%, transparent 100%);
+}
+
+.dps-background-gradient-green {
+  background: linear-gradient(90deg, var(--dps-transparent-green) 0%, var(--dps-transparent-green) 98%, transparent 100%);
+}
+
+.dps-background-gradient-blue {
+  background: linear-gradient(90deg, var(--dps-transparent-blue) 0%, var(--dps-transparent-blue) 98%, transparent 100%);
+}
+
+.dps-background-gradient-purple {
+  background: linear-gradient(90deg, var(--dps-transparent-purple) 0%, var(--dps-transparent-purple) 98%, transparent 100%);
+}
+
+.dps-background-gradient-orange {
+  background: linear-gradient(90deg, var(--dps-transparent-orange) 0%, var(--dps-transparent-orange) 98%, transparent 100%);
+}
+
+.dps-background-gradient-pink {
+  background: linear-gradient(90deg, var(--dps-transparent-pink) 0%, var(--dps-transparent-pink) 98%, transparent 100%);
+}
+
+.dps-background-gradient-yellow {
+  background: linear-gradient(90deg, var(--dps-transparent-yellow) 0%, var(--dps-transparent-yellow) 98%, transparent 100%);
 }
