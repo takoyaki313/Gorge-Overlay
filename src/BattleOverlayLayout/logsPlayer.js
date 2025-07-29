@@ -41,7 +41,7 @@ export const logsDataCreate = async () => {
             let uKey = value.name + value.server;
             if (!logsData.has(uKey)) {
                 playerList.push(new logsLayout(value.name, value.server));
-            } 
+            }
         }
     });
 
@@ -61,14 +61,14 @@ export const logsDataCreate = async () => {
 }
 
 export const OverlayLogsPlayer = () => {
-    
+
     let partyLogsData = [];
     AllianceMember.forEach((value, key) => {
         if (value.inParty) {
             let uKey = value.name + value.server;
             if (logsData.has(uKey)) {
                 partyLogsData.push(logsData.get(uKey));
-            } 
+            }
         }
     });
 
@@ -95,9 +95,9 @@ const OverlayLogsPlayerRow = (prop) => {
         <>
             <div className="logsRowTop">
                 <a href={"https://www.fflogs.com/character/id/" + playerData.logsID} target="_blank" rel="noopener noreferrer" style={{ "color": "var(--default-color)", "textDecoration": "none" }}>
-                    <TooltipJSX b_class="" setID={data.name + 'logs_name'} text={data.name} icon={""} html={data.server  + " / " + data.dc} />
+                    <TooltipJSX b_class="" setID={data.name + 'logs_name'} text={data.name} icon={""} html={data.server + " / " + data.dc} />
                 </a>
-                <TooltipJSX b_class="leftPadding" setID={data.name + 'logs_job'} text={playerData.bestJob} icon={""} html={""} />
+                <TooltipJSX b_class="leftPadding" setID={data.name + 'logs_job'} text={playerData.hidden ? "Hidden" : playerData.bestJob} icon={""} html={""} />
                 {playerData.hidden ? "hidden" :
                     <>
                         <TooltipJSX b_class="dataRight flex-center" class={"perf-color-" + playerData.avgBestPerfColor} setID={data.name + 'logs_allPerf'} text={playerData.avgBestPerf} icon={""} html={<><div>Metric : {playerData.metric}</div><br /><span>Median : </span><span className={'perf-color-' + playerData.avgMedianPerfColor}>{playerData.avgMedianPerf}</span></>} />
@@ -105,17 +105,18 @@ const OverlayLogsPlayerRow = (prop) => {
                     </>
                 }
             </div>
-            <div className="logsRowDivLine"></div>
-            <div className="logsRowBottom">
-                {playerData.zoneData.map((zoneData, index) => {
-                    return (
-                        <div key={playerData.name + "-zoneDetail-" + index} style={{ "width": "100%" ,"display": "flex"}}>
-                            <span style={{"paddingRight": "0.4rem"}}>{zoneData.index + ". "}</span><TooltipJSX class={"perf-color-" + zoneData.rankPercentColor + " flex-center"} setID={data.name + zoneData.index + '-zone-' + index} text={zoneData.bestPerf} icon={""} html={zoneData.zoneLogDetail} />
-                        </div>
-                    )
-                })}
-            </div>
-
+            {playerData.hidden ? "" : <>
+                <div className="logsRowDivLine"></div>
+                <div className="logsRowBottom">
+                    {playerData.zoneData.map((zoneData, index) => {
+                        return (
+                            <div key={playerData.name + "-zoneDetail-" + index} style={{ "width": "100%", "display": "flex" }}>
+                                <span style={{ "paddingRight": "0.4rem" }}>{zoneData.index + ". "}</span><TooltipJSX class={"perf-color-" + zoneData.rankPercentColor + " flex-center"} setID={data.name + zoneData.index + '-zone-' + index} text={zoneData.bestPerf} icon={""} html={zoneData.zoneLogDetail} />
+                            </div>
+                        )
+                    })}
+                </div>
+            </>}
         </>
     );
 }

@@ -19,16 +19,20 @@ export const LogsTooltipLayout = (prop) => {
             data = value;
             isFound = true;
         }
+
     });
 
     if (isFound) {
-        if (data.res.data.characterData.character.hidden) {
-            return (<>Logs-Hidden</>);
+        if (data === null) {
+            return (<>Logs-No-data(Lodestone Hidden)</>);
         }
-
         let zoneRanking = data.res.data.characterData.character.zoneRankings;
         if (zoneRanking.bestPerformanceAverage === null) {
             return (<>Logs-No-data(No uploaded)</>);
+        }
+
+        if (data.res.data.characterData.character.hidden) {
+            return (<>Logs-Hidden</>);
         }
 
         let bestPerfColor = fflogsPerfColor(zoneRanking.bestPerformanceAverage);
