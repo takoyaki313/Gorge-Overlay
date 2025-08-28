@@ -75,7 +75,8 @@ export const OverlayLogsPlayer = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             {partyLogsData.map((data) => {
-                let playerData = new playerLogsData(data.res.data);
+
+                let playerData = new playerLogsData(data.res === null ? {} : data.res.data);
                 let background_color_row = "dps-background-gradient-" + playerData.avgBestPerfColor;
                 let gage_offset = Math.abs((playerData.avgBestPerf) - 100) - 2;
                 return (
@@ -123,20 +124,28 @@ const OverlayLogsPlayerRow = (prop) => {
 
 class playerLogsData {
     constructor(data) {
-        this.logsID = data.characterData.character.canonicalID;
-        this.name = data.characterData.character.name;
-        this.lodestoneID = data.characterData.character.lodestoneID;
-        this.logsVisible = data.characterData.character.hidden;
-        this.metric = data.characterData.character.zoneRankings.metric;
-        this.avgBestPerf = data.characterData.character.zoneRankings.bestPerformanceAverage.toFixed(2);
+        console.log(data)
+        if (data === null) {
+            return null;
+        }
+        this.logsID = typeof (data.characterData.character.canonicalID) === 'undefined' ? "" : data.characterData.character.canonicalID;
+        this.name = typeof (data.characterData.character.name) === 'undefined' ? "" : data.characterData.character.name;
+        this.lodestoneID = typeof (data.characterData.character.lodestoneID) === 'undefined' ? "" : data.characterData.character.lodestoneID;
+        this.logsVisible = typeof (data.characterData.character.hidden) === 'undefined' ? false : !data.characterData.character.hidden;
+        this.metric = typeof (data.characterData.character.zoneRankings.metric) === 'undefined' ? "" : data.characterData.character.zoneRankings.metric;
+        this.avgBestPerf = typeof (data.characterData.character.zoneRankings.bestPerformanceAverag) === "undefined" ? "" : data.characterData.character.zoneRankings.bestPerformanceAverag.toFixed(2);
         this.avgBestPerfColor = fflogsPerfColor(this.avgBestPerf);
-        this.avgMedianPerf = data.characterData.character.zoneRankings.medianPerformanceAverage.toFixed(2);
+        this.avgMedianPerf = typeof (data.characterData.character.zoneRankings.medianPerformanceAverage) === 'undefined' ? "" : data.characterData.character.zoneRankings.medianPerformanceAverage.toFixed(2);
         this.avgMedianPerfColor = fflogsPerfColor(this.avgMedianPerf);
-        this.bestJob = data.characterData.character.zoneRankings.allStars[0].spec;
-        this.allStarPoint = data.characterData.character.zoneRankings.allStars[0].points.toFixed(1);
-        this.allStarsDetail = DataGridDisplay(data.characterData.character.zoneRankings.allStars[0]);
+        this.bestJob = typeof(data.characterData.character.zoneRankings.allStars[0].spec) === 'undefined' ? "" : data.characterData.character.zoneRankings.allStars[0].spec;
+        this.allStarPoint = typeof(data.characterData.character.zoneRankings.allStars[0].points) === 'undefined'? "" : data.characterData.character.zoneRankings.allStars[0].points.toFixed(1);
+        this.allStarsDetail = DataGridDisplay(typeof(data.characterData.character.zoneRankings.allStars[0])==='undefined'?null:data.characterData.character.zoneRankings.allStars[0]);
         this.zoneData = [];
-        this.hidden = data.characterData.character.hidden;
+        this.hidden = typeof(data.characterData.character.hidden) === 'undefined' ? false : data.characterData.character.hidden;
+        if(typeof(data.characterData.character.zoneRankings.rankings)=== 'undefined'?null:data.characterData.character.zoneRankings.rankings.length===0){
+            return null;
+        }
+
         for (let i = 0; i < data.characterData.character.zoneRankings.rankings.length; i++) {
             this.zoneData.push(new zoneLogsData(data.characterData.character.zoneRankings.rankings[i], i));
         }
