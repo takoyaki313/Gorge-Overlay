@@ -1370,7 +1370,7 @@ export const EFFECT_ID = {
         name: '必殺剣・地天',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.75,
+        cut: 0.67,
         cut_heal: 1,
         maxtime: 5
     },
@@ -2047,7 +2047,7 @@ export const EFFECT_ID = {
         name: 'リース・オブ・アイス',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.8,
+        cut: 0.75,
         cut_heal: 1,
         maxtime: 10
     },
@@ -2392,8 +2392,8 @@ export const EFFECT_ID = {
     },
     '1017': {
         name: 'スタープリズム',
-        type: [false, false, false, false, true],
-        effect: 1,
+        type: [true, false, false, false, true],
+        effect: 1.1,
         cut: 1,
         cut_heal: 1,
         maxtime: 12
@@ -2726,8 +2726,8 @@ export const EFFECT_ID = {
     //RoleAction Melee
     '07BE': {
         name: 'ブラッドバス',
-        type: [false, false, false, false, true],
-        effect: 1,
+        type: [true, false, false, false, true],
+        effect: 1.1,
         cut: 1,
         cut_heal: 1,
         maxtime: 10

@@ -25,7 +25,9 @@ const PvPAreaZoneCC = [
   'the palaistra',
   'the volcanic heart',
   'cloud nine',
-  'the clockwork castletown'
+  'the clockwork castletown',
+  'red sans',
+  'the bayside battleground'
 ];
 
 const PvPAreaZoneOt = ["wolves' den pier"];
