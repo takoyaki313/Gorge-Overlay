@@ -358,6 +358,7 @@ class dispPlayerData {
         this.accept_heal_All_CC = [];
         this.nameID_Job_CC = nameID_Job;
         this.over_heal_All = [];
+        this.jouka_num = typeof (before.jouka_num) === 'number' ? before.jouka_num : 0;
 
         this.accept_income_damage_All = [];
         this.accept_income_damage_G_All = [];

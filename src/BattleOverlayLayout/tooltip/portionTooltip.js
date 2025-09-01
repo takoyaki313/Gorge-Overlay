@@ -11,6 +11,10 @@ export const PortionTooltipLayout = (prop) => {
         <div> - {prop.data.kaiki_num}</div>
         <div> {prop.data.kaiki}</div>
         <div>{" O-" + prop.data.over_kaikiPct}</div>
+        <div className='tooltip_png_iconSize jouka-png'></div>
+        <div> - {prop.data.jouka}</div>
+        <div>-</div>
+        <div>-</div>
         <div className='tooltip_png_iconSize portion-png'></div>
         <div> - {prop.data.portion_num}</div>
         <div> {prop.data.portion}</div>

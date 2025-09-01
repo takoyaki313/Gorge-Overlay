@@ -10,7 +10,7 @@ export const GorgeAdvance = (prop) => {
                 <TooltipJSX b_class={"matonTower"} icon="icon-maton smallPadding" class='flex-center' setID={data.nameID + 'object_damage'} text={data.damage_maton + " + " + data.damage_tower} html={data.damage_maton_Tooltip} />
                 {prop.slim ?
                     <div className="portionNum PortionNum2">
-                        <TooltipJSX icon="icon-Frasco smallPadding" class='flex-center' setID={data.nameID + 'Frasco'} text={data.kaiki + "(" + data.portion + ")"} html={data.portion_Tooltip} />
+                        <TooltipJSX icon="icon-Frasco smallPadding" class='flex-center' setID={data.nameID + 'Frasco'} text={data.kaiki + '-' + data.jouka + " (" + data.portion + ")"} html={data.portion_Tooltip} />
                     </div>
                     : ""}
                 <div className="limitbreakNumA2">

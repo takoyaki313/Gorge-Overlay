@@ -1,6 +1,6 @@
 import { pet_replace, LimitBreak, LimitBreak_Extend } from "./loglineGlobal.js";
 import { timestamp_change } from "./logline_other.js";
-import { DoubleRocketPunch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppressor_HP, Justice_HP, Core_Tower_HP, OpticalSight, BigMissile } from "./loglineGlobal.js";
+import { DoubleRocketPunch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppressor_HP, Justice_HP, Core_Tower_HP, OpticalSight, BigMissile, Jouka } from "./loglineGlobal.js";
 import { update_maindata_change_array, update_maindata, insert_maindata_object, read_maindata } from "../maindataEdit.js";
 import { EFFECT_ID, EFFECT_ID_LIST } from "./resource/effectID.js";
 import { Barrier_ID, Barrier_ID_Array, Special_Barrier_ID, Special_Barrier_ID_Array_Skill } from "./resource/barrierID.js";
@@ -137,6 +137,17 @@ export const networkactionsync_21_22 = async (log) => {
                 }
             }
         }
+    }
+    else if (data.actionID === Jouka && data.count_row === 0 && !data.dummy && data.castangle === 0) {
+        /*
+        attacker_input_data.target.push('jouka_check');
+        attacker_input_data.replace.push(false);
+        let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
+        attacker_input_data.data.push({ succuss: false, time: time, time_ms: data.time_ms });
+        */
+        attacker_input_data.target.push('jouka_num');
+        attacker_input_data.replace.push(false);
+        attacker_input_data.data.push(1);
     }
     else if (LimitBreak.indexOf(data.actionID) !== -1 && data.count_row === 0 && !data.dummy && data.castangle === 0) {
         let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);

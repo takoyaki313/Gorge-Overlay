@@ -25,11 +25,12 @@ export class a_data {
         this.damage_object_Tooltip = <DamageTooltipLayout data={d_Data} />
         this.portion = 0;
         this.kaiki = 0;
+        this.jouka = d_Data.jouka_num;
         this.overHealPct = '-%';
         if (d_Data.heal.num > 0) {
             this.overHealPct = Math.round((d_Data.over_heal.num / d_Data.heal.num) * 100) + '%'
         }
-        let portion_TooltipData = { kaiki_num: 0, kaiki: 0, over_kaikiPct: '0%', portion_num: 0, portion: 0, over_portionPct: '0%' }
+        let portion_TooltipData = { kaiki_num: 0, kaiki: 0, over_kaikiPct: '0%', portion_num: 0, portion: 0, over_portionPct: '0%', jouka: this.jouka }
         if (d_Data.heal_All.length > 0) {
             for (let i = 0; i < d_Data.heal_All.length; i++) {
                 if (d_Data.heal_All[i].type === 'heal_G_portion_num') {
@@ -67,7 +68,7 @@ export class a_data {
         if (d_Data.limitbreak.length > 0) {
             let backup_limit = { count: -1, time: 0 };
             let new_limitbreak = [];
-            for (let i = d_Data.limitbreak.length-1; i >= 0; i--) {
+            for (let i = d_Data.limitbreak.length - 1; i >= 0; i--) {
                 if (d_Data.limitbreak[i].use === 0) {
                     backup_limit = { count: d_Data.limitbreak[i].hit, time: d_Data.limitbreak[i].time_ms };
                 } else {
@@ -82,7 +83,7 @@ export class a_data {
             }
             new_limitbreak.sort((a, b) => a.time_ms - b.time_ms);
             this.limitbreakNum = d_Data.limitbreak.reduce((sum, d) => sum + d.use, 0);
-            
+
             if (new_limitbreak.length > 0) {
                 this.last_limitbreak = d_Data.enctime - new_limitbreak[new_limitbreak.length - 1].time;
                 this.limitbreak_Tooltip = <LimitBreakTooltipLayout data={new_limitbreak} />;
@@ -90,7 +91,7 @@ export class a_data {
                 this.last_limitbreak = d_Data.enctime - d_Data.limitbreak[d_Data.limitbreak.length - 1].time;
                 this.limitbreak_Tooltip = <LimitBreakTooltipLayout data={d_Data.limitbreak} />;
             }
-            
+
         } else {
             this.last_limitbreak = "X"
         }

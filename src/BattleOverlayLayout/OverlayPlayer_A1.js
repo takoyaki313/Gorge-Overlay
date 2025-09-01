@@ -11,6 +11,7 @@ export const NormalAdvance = (prop) => {
                 {prop.slim ?
                     <div className="portionNum">
                         <TooltipJSX icon="icon-whatshot smallPadding" class='flex-center' setID={data.nameID + 'Kaiki'} text={data.kaiki} html={data.portion_Tooltip} />
+                        <TooltipJSX class='flex-center smallPadding' setID={data.nameID + 'Jouka'} text={' - ' + data.jouka + ' '} html={data.portion_Tooltip} />
                         <TooltipJSX icon="icon-Frasco smallPadding" class='flex-center' setID={data.nameID + 'Frasco'} text={data.portion} html={data.portion_Tooltip} />
                     </div>
                     : ""}

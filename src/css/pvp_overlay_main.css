@@ -344,3 +344,8 @@
     content: url("https://xivapi.com/i/009000/009582_hr1.png");
     background-size: cover;
 }
+
+.jouka-png {
+    content: url("https://xivapi.com/i/009000/009112_hr1.png");
+    background-size: cover;
+}
