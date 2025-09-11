@@ -14,7 +14,7 @@ export const DoT_ID = [
         action_potential: 0,
         dotid: '0BDD',
         name: 'ソルトアース',
-        potential: 4000,
+        potential: 6000,
         max: 5,
         type: 'HoT'
     }, {
@@ -22,7 +22,7 @@ export const DoT_ID = [
         action_potential: 0,
         dotid: '0BDE',
         name: 'ソルトアース[害]',
-        potential: 4000,
+        potential: 6000,
         max: 5,
         type: 'DoT'
     }, {

@@ -883,7 +883,7 @@ export const EFFECT_ID = {
     },
     '0C22': {
         name: '星河一天[害]',
-        type: [true, true, false, false, false],
+        type: [true, false, false, false, false],
         effect: 0.8,//0.7-0.8-0.9
         cut: 1,
         cut_heal: 1,
@@ -1104,7 +1104,7 @@ export const EFFECT_ID = {
         name: '紅の流血',
         type: [true, false, true, false, true],
         effect: 1.25,
-        cut: 1.25,
+        cut: 1.15,
         cut_heal: 1,
         maxtime: 10
     },
@@ -2047,7 +2047,7 @@ export const EFFECT_ID = {
         name: 'リース・オブ・アイス',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.75,
+        cut: 0.8,
         cut_heal: 1,
         maxtime: 10
     },

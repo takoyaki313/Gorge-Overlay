@@ -9,9 +9,10 @@ import './css/logs.css'
 import '../index.css'
 export const logsData = new Map();
 class logsLayout {
-    constructor(playerName, server) {
+    constructor( playerName, server) {
         this.name = playerName;
         this.server = server;
+        this.nameID = String(this.name).replace("'", "") + server;
 
         if (typeof (serverList[this.server]) !== 'undefined') {
             this.dc = serverList[this.server].dc;
@@ -80,7 +81,7 @@ export const OverlayLogsPlayer = () => {
                 let background_color_row = "dps-background-gradient-" + playerData.avgBestPerfColor;
                 let gage_offset = Math.abs((playerData.avgBestPerf) - 100) - 2;
                 return (
-                    <li className='li_space gageRelative' key={data.name + data.server + '-logs'} style={{ flexWrap: 'wrap' }}>
+                    <li className='li_space gageRelative' key={data.nameID + data.server + '-logs'} style={{ flexWrap: 'wrap' }}>
                         <div className={'gegeAbs ' + background_color_row} style={{ right: gage_offset + '%' }}></div>
                         <OverlayLogsPlayerRow data={data} playerData={playerData} />
                     </li>
@@ -96,13 +97,13 @@ const OverlayLogsPlayerRow = (prop) => {
         <>
             <div className="logsRowTop">
                 <a href={"https://www.fflogs.com/character/id/" + playerData.logsID} target="_blank" rel="noopener noreferrer" style={{ "color": "var(--default-color)", "textDecoration": "none" }}>
-                    <TooltipJSX b_class="" setID={data.name + 'logs_name'} text={data.name} icon={""} html={data.server + " / " + data.dc} />
+                    <TooltipJSX b_class="" setID={data.nameID + 'logs_name'} text={data.name} icon={""} html={data.server + " / " + data.dc} />
                 </a>
-                <TooltipJSX b_class="leftPadding" setID={data.name + 'logs_job'} text={playerData.hidden ? "Hidden" : playerData.bestJob} icon={""} html={""} />
+                <TooltipJSX b_class="leftPadding" setID={data.nameID + 'logs_job'} text={playerData.hidden ? "Hidden" : playerData.bestJob} icon={""} html={""} />
                 {playerData.hidden ? "hidden" :
                     <>
-                        <TooltipJSX b_class="dataRight flex-center" class={"perf-color-" + playerData.avgBestPerfColor} setID={data.name + 'logs_allPerf'} text={playerData.avgBestPerf} icon={""} html={<><div>Metric : {playerData.metric}</div><br /><span>Median : </span><span className={'perf-color-' + playerData.avgMedianPerfColor}>{playerData.avgMedianPerf}</span></>} />
-                        <TooltipJSX b_class="dataRight flex-center" setID={data.name + 'logs_allStars'} text={"★ " + playerData.allStarPoint} icon={""} html={playerData.allStarsDetail} />
+                        <TooltipJSX b_class="dataRight flex-center" class={"perf-color-" + playerData.avgBestPerfColor} setID={data.nameID + 'logs_allPerf'} text={playerData.avgBestPerf} icon={""} html={<><div>Metric : {playerData.metric}</div><br /><span>Median : </span><span className={'perf-color-' + playerData.avgMedianPerfColor}>{playerData.avgMedianPerf}</span></>} />
+                        <TooltipJSX b_class="dataRight flex-center" setID={data.nameID + 'logs_allStars'} text={"★ " + playerData.allStarPoint} icon={""} html={playerData.allStarsDetail} />
                     </>
                 }
             </div>
@@ -112,7 +113,7 @@ const OverlayLogsPlayerRow = (prop) => {
                     {playerData.zoneData.map((zoneData, index) => {
                         return (
                             <div key={playerData.name + "-zoneDetail-" + index} style={{ "width": "100%", "display": "flex" }}>
-                                <span style={{ "paddingRight": "0.4rem" }}>{zoneData.index + ". "}</span><TooltipJSX class={"perf-color-" + zoneData.rankPercentColor + " flex-center"} setID={data.name + zoneData.index + '-zone-' + index} text={zoneData.bestPerf} icon={""} html={zoneData.zoneLogDetail} />
+                                <span style={{ "paddingRight": "0.4rem" }}>{zoneData.index + ". "}</span><TooltipJSX class={"perf-color-" + zoneData.rankPercentColor + " flex-center"} setID={data.nameID + zoneData.index + '-zone-' + index} text={zoneData.bestPerf} icon={""} html={zoneData.zoneLogDetail} />
                             </div>
                         )
                     })}
@@ -124,7 +125,6 @@ const OverlayLogsPlayerRow = (prop) => {
 
 class playerLogsData {
     constructor(data) {
-        console.log(data)
         if (data === null) {
             return null;
         }
