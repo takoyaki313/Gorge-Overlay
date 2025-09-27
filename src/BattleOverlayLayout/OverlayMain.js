@@ -1,6 +1,7 @@
 import '../css/fonticon/style.css'
 
 import React, { useState } from 'react'
+import { ErrorBoundary } from './error';
 
 import { SettingPageStart } from '../localsetting/settingPage';
 import { OverlayLogsPlayer } from './logsPlayer';
@@ -116,11 +117,12 @@ export const DefaultView = () => {
       <div id="dispArea">
         <div id='mainArea'>
           {/*<HeaderAreaDefaultView />*/}
-          <HeaderSimple setting={settingPage} logsPage={logsPage} logsPageState={logsPageVisible} />
-          {logsPageVisible ? <OverlayLogsPlayer /> : <Overlay CombatData={enc.Combatant} EncounterData={enc.Encounter} isActive={enc.isActive} TBD={tbdTime} />}
-
-        </div>
-        <div id='subArea'>
+          <ErrorBoundary>
+            <HeaderSimple setting={settingPage} logsPage={logsPage} logsPageState={logsPageVisible} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            {logsPageVisible ? <OverlayLogsPlayer /> : <Overlay CombatData={enc.Combatant} EncounterData={enc.Encounter} isActive={enc.isActive} TBD={tbdTime} />}
+          </ErrorBoundary>
         </div>
       </div>
     );
@@ -128,31 +130,34 @@ export const DefaultView = () => {
 }
 
 const Overlay = (props) => {
-
-  // eslint-disable-next-line no-mixed-operators
-  return (
-    <>
-      {(() => {//AREA CHECK
-        switch (AreaData.Type) {
-          case 1: //Seal Rock & Onsal Hakair
-            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
-          case 2://Hidden Gorge
-            return (<><PvPMain tbdTime={props.TBD} area={"rw"} wolves={false} /></>);
-          case 3://Border Land Ruins & Fields Of Glory 
-            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
-          case 4://Wolves Den Pier
-            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={true} /></>)
-          case 5://Crystal Conflict Area
-            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={false} /></>);
-          case 6://Not Use
-            return ('');
-          default://PvE 
-            return (<><OverlayMCombatants Combatant={props.CombatData} Encounter={props.EncounterData} /></>)
+  try {
+    return (
+      <>
+        {(() => {//AREA CHECK
+          switch (AreaData.Type) {
+            case 1: //Seal Rock & Onsal Hakair
+              return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
+            case 2://Hidden Gorge
+              return (<><PvPMain tbdTime={props.TBD} area={"rw"} wolves={false} /></>);
+            case 3://Border Land Ruins & Fields Of Glory 
+              return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
+            case 4://Wolves Den Pier
+              return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={true} /></>)
+            case 5://Crystal Conflict Area
+              return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={false} /></>);
+            case 6://Not Use
+              return ('');
+            default://PvE 
+              return (<><OverlayMCombatants Combatant={props.CombatData} Encounter={props.EncounterData} /></>)
+          }
+        })()
         }
-      })()
-      }
-    </>
-  );
+      </>
+    );
+  } catch (error) {
+
+  }
+
 }
 
 

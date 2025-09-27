@@ -62,8 +62,8 @@ export class m_dataCombatant extends m_dataLayout {
         this.hps_tooltip = combatant.OverHealPct;
         this.name = combatant.name;
         this.name_tooltip = logsMode?<LogsTooltipLayout name={this.name} />:"";
-        this.nameID = combatant.name.replace("'", "");
-
+        this.nameID = combatant.name.replaceAll("'", "");
+        
         if (combatant.Job === "Limit Break") {
             this.job = "app_fc";
         }
