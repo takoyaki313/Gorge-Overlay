@@ -130,7 +130,6 @@ export const DefaultView = () => {
 }
 
 const Overlay = (props) => {
-  try {
     return (
       <>
         {(() => {//AREA CHECK
@@ -154,10 +153,6 @@ const Overlay = (props) => {
         }
       </>
     );
-  } catch (error) {
-
-  }
-
 }
 
 
