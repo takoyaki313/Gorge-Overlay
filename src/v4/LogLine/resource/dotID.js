@@ -83,10 +83,10 @@ export const DoT_ID = [
         type: 'DoT'
     }, {
         actionid: '73E5',
-        action_potential: 8000,
+        action_potential: 9000,
         dotid: '0C9B',
         name: 'スリップストリーム[害]',
-        potential: 4000,
+        potential: 4500,
         max: 6,
         type: 'DoT'
     }, {
