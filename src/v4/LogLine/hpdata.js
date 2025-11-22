@@ -8,7 +8,6 @@ import { simulationKDA } from "../maindataFormat.js";
 
 const Assist_Debuff_Reset = false;
 const HP_Update_duplite_data = true;
-const HP_Update_duplite_robride_process = false;
 
 export const hpdata_add = async (nameID, player_data, attackerID) => {
     let dataname = [];
@@ -97,7 +96,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                         if (attackerID.substring(0, 2) === '10') {//キルした人がプレイヤー
                             attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'alliance', 'name', 'job', 'robot', 'robot_data');
                             attacker_job = await robot_replace_job(attacker_name);
-                            simulationdata = await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name,victim_name.alliance);
+                            simulationdata = await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name, victim_name.alliance);
                         }
                         else if (attackerID.substring(0, 2) === '40') {//キルした人がNPC
                             if (readed_data.attacker.length > 0) {
@@ -117,7 +116,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                             }
                             attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'alliance', 'name', 'job', 'robot', 'robot_data');
                             attacker_job = await robot_replace_job(attacker_name);
-                            simulationdata = await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name,victim_name.alliance);
+                            simulationdata = await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name, victim_name.alliance);
                         }
                         else if (attackerID === ' log_38 ') {
                             if (readed_data.attacker.length > 0) {
@@ -136,7 +135,7 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                                 }
                                 attacker_name = await read_maindata('Player_data', 'nameID', attackerID, 'alliance', 'name', 'job', 'robot', 'robot_data');
                                 attacker_job = await robot_replace_job(attacker_name);
-                                simulationdata =  await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name,victim_name.alliance);
+                                simulationdata = await assist_main(attackerID, player_data.nameID, readed_data.attacker, player_data.lastupdate, player_data.time_number, victim_name.name, attacker_name.alliance, victim_job, attacker_job, attacker_name.name, victim_name.alliance);
                             } else {
                                 if (devMode.logLevel > 12) {
                                     console.warn('Warn : Kill Player Unknown->' + attackerID + '->' + player_data.nameID);
@@ -152,27 +151,18 @@ export const hpdata_add = async (nameID, player_data, attackerID) => {
                             simulationdata = new simulationKDA(
                                 attackerID, attacker_name.name, attacker_job, attacker_name.alliance,
                                 player_data.nameID, victim_name.name, victim_job, victim_name.alliance,
-                                [],player_data.time_number,Math.round((player_data.time_number - battleEvent.timer.Get_BattleStart) / 1000)
+                                [], player_data.time_number, Math.round((player_data.time_number - battleEvent.timer.Get_BattleStart) / 1000)
                             );
                         }
-                        await update_maindata('Player_data', 'nameID', player_data.nameID, ['s_death', 1, false], ['s-death-name',simulationdata, false], ['lastupdate', player_data.lastupdate, true]);
+                        await update_maindata('Player_data', 'nameID', player_data.nameID, ['s_death', 1, false], ['s-death-name', simulationdata, false], ['lastupdate', player_data.lastupdate, true]);
                     }
                 }
             }
             if (AreaData.Type === 2) {//Hidden Gorge
-                if (temp_time > 0 || HP_Update_duplite_robride_process) {//duplite Hpdata exclude
-                    if (battleEvent.Engage) {
-                        await rob_ride_check(nameID, readed_data, player_data);
-                    }
+                if (battleEvent.Engage) {
+                    await rob_ride_check(nameID, readed_data, player_data);
                 }
-                //readed_data
-                //player_data
             }
-            /////
-            /////
-            /////   Rob ride process
-            /////
-            /////
         }
         else if (temp_time === 0) {
             //同一データ?
@@ -244,7 +234,7 @@ export const what_include_buff = async (effect, buff_type) => {
                 }
             }
         }
-    } 
+    }
     return return_data;
 }
 
