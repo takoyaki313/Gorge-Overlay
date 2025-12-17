@@ -78,7 +78,7 @@ const areaTypeSet_40 = (zoneID) => {
             return 5;
         case 1060://Crystal Conflict The Bayside Battleground
             return 5;
-        case 1192://Worqor Chirteh
+        case 1119://Worqor Chirteh
             return 1;
         case 51://Wolves Den Pier
             if (devMode.wolves) {
