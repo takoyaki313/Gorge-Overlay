@@ -5,6 +5,7 @@ const areaID = {
     554: { type: 3, name: "The Fields Of Glory Shatter", map: "s3p1", offset: { num: 1, x: 0, y: 0 } },
     888: { type: 1, name: "Onsal Hakair Danshig Naadam", map: "e3p1", offset: { num: 1, x: 0, y: 0 } },
     1273: { type: 1, name: "the Borderland Ruins(Secure)", map: "l1p1", offset: { num: 1, x: 0, y: 0 } },
+    1313: { type: 1, name: "Worqor Chirteh (Triumph)", map: "l1p1", offset: { num: 1, x: 0, y: 0 } },
 
     1032: { type: 5, name: "The Palaistra", map: "s5p1", offset: { num: 4, x: 0, y: 0 } },
     1058: { type: 5, name: "The Palaistra", map: "s5p1", offset: { num: 4, x: 0, y: 0 } },

@@ -14,7 +14,7 @@ export const DoT_ID = [
         action_potential: 0,
         dotid: '0BDD',
         name: 'ソルトアース',
-        potential: 6000,
+        potential: 5000,
         max: 5,
         type: 'HoT'
     }, {
@@ -22,7 +22,7 @@ export const DoT_ID = [
         action_potential: 0,
         dotid: '0BDE',
         name: 'ソルトアース[害]',
-        potential: 6000,
+        potential: 5000,
         max: 5,
         type: 'DoT'
     }, {
@@ -115,10 +115,10 @@ export const DoT_ID = [
         type: 'DoT'
     }, {
         actionid: '7340',
-        action_potential: 4000,
+        action_potential: 5000,
         dotid: '0C70',
         name: '劫火滅却の術',
-        potential: 4000,
+        potential: 5000,
         max: 12,
         type: 'DoT'
     }, {

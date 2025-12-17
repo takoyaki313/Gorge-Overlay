@@ -781,7 +781,7 @@ export const EFFECT_ID = {
         type: [false, false, false, true, false],
         effect: 1,
         cut: 1,
-        cut_heal: 0.8,
+        cut_heal: 0.85,
         maxtime: 12
     },
     '0C16': {
@@ -2331,7 +2331,7 @@ export const EFFECT_ID = {
         type: [false, false, true, true, false],
         effect: 1,
         cut: 1.1,
-        cut_heal: 0.8,
+        cut_heal: 0.85,
         maxtime: 10
     },
     '1010': {

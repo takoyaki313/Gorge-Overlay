@@ -17,7 +17,8 @@ const PvPAreaZoneFL = [
   'the borderland ruins (secure)',
   'seal rock (seize)',
   'the fields of glory (shatter)',
-  'onsal hakair (danshig naadam)'
+  'onsal hakair (danshig naadam)',
+  'worqor chirteh (triumph)'
 ];
 
 const PvPAreaZoneRW = ['hidden gorge'];
@@ -130,29 +131,29 @@ export const DefaultView = () => {
 }
 
 const Overlay = (props) => {
-    return (
-      <>
-        {(() => {//AREA CHECK
-          switch (AreaData.Type) {
-            case 1: //Seal Rock & Onsal Hakair
-              return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
-            case 2://Hidden Gorge
-              return (<><PvPMain tbdTime={props.TBD} area={"rw"} wolves={false} /></>);
-            case 3://Border Land Ruins & Fields Of Glory 
-              return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
-            case 4://Wolves Den Pier
-              return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={true} /></>)
-            case 5://Crystal Conflict Area
-              return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={false} /></>);
-            case 6://Not Use
-              return ('');
-            default://PvE 
-              return (<><OverlayMCombatants Combatant={props.CombatData} Encounter={props.EncounterData} /></>)
-          }
-        })()
+  return (
+    <>
+      {(() => {//AREA CHECK
+        switch (AreaData.Type) {
+          case 1: //Seal Rock & Onsal Hakair
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
+          case 2://Hidden Gorge
+            return (<><PvPMain tbdTime={props.TBD} area={"rw"} wolves={false} /></>);
+          case 3://Border Land Ruins & Fields Of Glory 
+            return (<><PvPMain tbdTime={props.TBD} area={"fl"} wolves={false} /></>);
+          case 4://Wolves Den Pier
+            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={true} /></>)
+          case 5://Crystal Conflict Area
+            return (<><PvPMain tbdTime={props.TBD} area={"cc"} wolves={false} /></>);
+          case 6://Not Use
+            return ('');
+          default://PvE 
+            return (<><OverlayMCombatants Combatant={props.CombatData} Encounter={props.EncounterData} /></>)
         }
-      </>
-    );
+      })()
+      }
+    </>
+  );
 }
 
 
