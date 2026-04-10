@@ -20,7 +20,7 @@ query {
 `;
 
 export const PLAYER_PERF_QUERY = `
-query ($characterName:String!,$serverName:String!,$regionName:String!,$metric:CharacterRankingMetricType){
+query ($characterName:String!,$serverName:String!,$regionName:String!,$metric:CharacterPageRankingMetricType){
   characterData {
 		character(name:$characterName,
 			serverSlug:$serverName,
