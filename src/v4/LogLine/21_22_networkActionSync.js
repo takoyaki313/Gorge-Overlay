@@ -46,8 +46,12 @@ export const networkactionsync_21_22 = async (log) => {
     let effectmax = effectdata.name.length;
     let victim_effect = { name: [], param: [] };
     let attacker_effect = { name: [], param: [] };
+    let counter_drain_heal = 0;//反撃側(victim)の反撃ダメージ吸収による自己回復 (c=20)
     for (let i = 0; i < effectmax; i++) {
-        if (Update_attacker.indexOf(effectdata.name[i]) === -1 && !effectdata.special[i]) {//victim 側への影響
+        if ('heal' === effectdata.name[i] && effectdata.counterDrainHeal[i]) {
+            counter_drain_heal += effectdata.param[i];
+        }
+        else if (Update_attacker.indexOf(effectdata.name[i]) === -1 && !effectdata.special[i]) {//victim 側への影響
             if ('normal-damage' === effectdata.name[i]) {
                 //victim_effect.name.push('damage');
                 //victim_effect.param.push({type:effectdata.type[i],param:effectdata.param[i]});
@@ -163,6 +167,12 @@ export const networkactionsync_21_22 = async (log) => {
     let marge_input_data = await general_input_type(data.lastupdate, victim_input_data, attacker_input_data);
 
     await update_maindata_change_array('Player_data', 'nameID', data.attackerID, marge_input_data.target, marge_input_data.data, marge_input_data.replace);
+
+    if (counter_drain_heal > 0) {
+        let counter_heal_input = await damage_heal_input_type(null, data.victimID, data.victimID, data.victimmaxHP, data.victimCurrentHP, data.victimmaxHP, data.victimCurrentHP, data.actionID, 'heal', counter_drain_heal, 'normal');
+        let counter_heal_data = await general_input_type(data.lastupdate, { target: [], data: [], replace: [] }, counter_heal_input);
+        await update_maindata_change_array('Player_data', 'nameID', data.victimID, counter_heal_data.target, counter_heal_data.data, counter_heal_data.replace);
+    }
 
     let special_Barrier = Special_Barrier_ID_Array_Skill.indexOf(data.actionID);
     if (special_Barrier !== -1) {
@@ -688,6 +698,7 @@ const networkAbility_damage_calc = async (damage_bit) => {
         let d = damage_bit.substring(damage_bit.length - 2, damage_bit.length);
         let damage = 0;
         let special = false;
+        let counterDrainHeal = false;
         if (c === '00' & d === '00') {
             damage = parseInt(ab, 16);
         }
@@ -707,19 +718,24 @@ const networkAbility_damage_calc = async (damage_bit) => {
             } else {
                 damage = parseInt(ab, 16);
             }
+        }
+        else if (c === '20' && d === '00') {
+            // 反撃側(victim)の反撃ダメージ吸収による自己回復 (c=A0の反撃ダメージと対になる)
+            damage = parseInt(ab, 16);
+            counterDrainHeal = true;
         } else {
             console.error('damage-calc failed...' + damage_bit);
         }
-        return { damage: damage, return: special };
+        return { damage: damage, return: special, counterDrainHeal: counterDrainHeal };
     }
     else if (damage_bit === '0') {
-        return { damage: 0, return: false };
+        return { damage: 0, return: false, counterDrainHeal: false };
     }
     else {
         if (devMode.logLevel > 2) {
             console.warn('Error: networkAbility-damage is not 4 lower length ...->' + damage_bit);
         }
-        return { damage: 0, return: false };
+        return { damage: 0, return: false, counterDrainHeal: false };
     }
 }
 
@@ -977,6 +993,7 @@ const effectdata_exchangeInt = async (effectdata) => {
     let data_param = [];
     let data_type = [];
     let data_special = [];
+    let counterDrainHealFlag = [];
     for (let i = 0; i < effectdata.length; i++) {
         data_name.push(effectdata[i].flag);
         data_type.push(effectdata[i].type);
@@ -984,14 +1001,15 @@ const effectdata_exchangeInt = async (effectdata) => {
             let param_calc = await networkAbility_damage_calc(effectdata[i].param);
             data_param.push(param_calc.damage);
             data_special.push(param_calc.return);
-            //console.log('damage->' + param_calc.damage + ' type->' + effectdata[i].flag + ' type->' + effectdata[i].type + ' rtn->' + param_calc.return);
+            counterDrainHealFlag.push(param_calc.counterDrainHeal);
         }
         else {
             data_param.push(effectdata[i].param.substring(0, effectdata[i].param.length - 4));
             data_special.push(false);
+            counterDrainHealFlag.push(false);
         }
     }
-    return { name: data_name, param: data_param, type: data_type, special: data_special };
+    return { name: data_name, param: data_param, type: data_type, special: data_special, counterDrainHeal: counterDrainHealFlag };
 }
 
 const network_action_datatype = async (log) => {
@@ -1065,7 +1083,7 @@ const effect_offset_checker = async (flag, log) => {
         default:
             console.error('effect type offset unknown -> ' + flag);
             console.error(log);
-            return 'noraml';
+            return 'normal';
     }
 }
 
