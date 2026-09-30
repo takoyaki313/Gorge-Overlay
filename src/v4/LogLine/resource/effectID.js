@@ -442,8 +442,8 @@ export const EFFECT_ID = {
         type: [false, false, false, true, false],
         effect: 1,
         cut: 1,
-        cut_heal: 0.8,
-        maxtime: 15
+        cut_heal: 0.85,
+        maxtime: 12
     },
     '051C': {
         name: 'ブラックナイト',
@@ -451,7 +451,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 8
     },
     '0BDA': {
         name: 'ダークアーツ',
@@ -697,9 +697,9 @@ export const EFFECT_ID = {
     },
     '0C0D': {
         name: 'ミラクル・オブ・ネイチャー',
-        type: [false, false, false, false, false],
+        type: [false, false, true, false, false],
         effect: 1,
-        cut: 1,
+        cut: 1.2,
         cut_heal: 1,
         maxtime: 2
     },
@@ -746,11 +746,11 @@ export const EFFECT_ID = {
     //Scholar
     '057E': {
         name: '連環計',
-        type: [true, false, false, false, false],
-        effect: 1.1,
-        cut: 1,
+        type: [false, false, true, false, false],
+        effect: 1,
+        cut: 1.1,
         cut_heal: 1,
-        maxtime: 6
+        maxtime: 10
     },
     '0C0F': {
         name: '鼓舞',
@@ -814,7 +814,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 20
     },
     '0C17': {
         name: 'サモン・セラフィム',
@@ -907,7 +907,7 @@ export const EFFECT_ID = {
     },
     '05AC': {//効果
         name: 'クラウンレディ',
-        type: [false, true, false, false, true],
+        type: [false, false, true, false, true],
         effect: 1,
         cut: 0.9,
         cut_heal: 1,
@@ -915,7 +915,7 @@ export const EFFECT_ID = {
     },
     '05AB': {//効果
         name: 'クラウンロード',
-        type: [false, true, false, false, false],
+        type: [false, false, true, false, false],
         effect: 1,
         cut: 1.1,
         cut_heal: 1,
@@ -927,7 +927,7 @@ export const EFFECT_ID = {
         effect: 1,//0.7-0.8-0.9
         cut: 1,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 5
     },
     '10EB': {
         name: 'レトログレード実行可',
@@ -976,7 +976,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1.1,
         cut_heal: 1,
-        maxtime: 6
+        maxtime: 7
     },
     '0C24': {
         name: 'エウクラシア・ドシスIII',
@@ -992,7 +992,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 12
     },
     '0C2B': {
         name: 'アダースティング',
@@ -1251,7 +1251,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 12
     },
     '0C7E': {
         name: '命水実行不可',
@@ -1267,7 +1267,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 10
     },
     '0C7C': {
         name: '風遁の術実行不可',
@@ -1331,7 +1331,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1.1,
         cut_heal: 1,
-        maxtime: 8
+        maxtime: 6
     },
     '10D0': {
         name: '土遁の術',
@@ -1392,10 +1392,10 @@ export const EFFECT_ID = {
     },
     '0528': {
         name: '名鏡止水',
-        type: [false, false, false, false, true],
+        type: [false, false, false, true, true],
         effect: 1,
         cut: 1,
-        cut_heal: 1,
+        cut_heal: 1.15,
         maxtime: 3
     },
     '0C83': {
@@ -1783,7 +1783,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 7
+        maxtime: 6
     },
     '0C55': {
         name: 'エーテルモーター[害]',
@@ -1846,9 +1846,9 @@ export const EFFECT_ID = {
         name: '扇の舞い',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.9,
+        cut: 0.8,
         cut_heal: 1,
-        maxtime: 10
+        maxtime: 6
     },
     '0BD0': {
         name: '誘惑',
@@ -1985,7 +1985,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 6//6-9-12
+        maxtime: 12
     },
     '0C93': {
         name: '氷結',
@@ -2065,7 +2065,7 @@ export const EFFECT_ID = {
         effect: 0.67,
         cut: 1,
         cut_heal: 1,
-        maxtime: 60
+        maxtime: 5
     },
     //Summoner
     '0C98': {
@@ -2114,7 +2114,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 18
     },
     '0C9F': {
         name: '火焔',
@@ -2130,7 +2130,15 @@ export const EFFECT_ID = {
         effect: 0.5,
         cut: 1,
         cut_heal: 1,
-        maxtime: 15
+        maxtime: 6
+    },
+    '159B': {
+        name: 'マウンテンバスター',
+        type: [false, false, true, false, true],
+        effect: 1,
+        cut: 0.85,
+        cut_heal: 1,
+        maxtime: 5
     },
     '112F': {
         name: 'ルインジャ実行可',
@@ -2192,10 +2200,10 @@ export const EFFECT_ID = {
     '0CAA': {
         name: 'モノマキー',
         type: [true, false, false, false, false],
-        effect: 0.9,//付与された人へのダメージが1.1倍
+        effect: 0.85,//付与された人へのダメージが1.15倍
         cut: 1,
         cut_heal: 1,
-        maxtime: 7
+        maxtime: 8
     },
     '0CAB': {
         name: 'デプラスマン',
@@ -2219,7 +2227,7 @@ export const EFFECT_ID = {
         effect: 1,
         cut: 0.5,
         cut_heal: 1,
-        maxtime: 4
+        maxtime: 5
     },
     '10E1': {
         name: 'ブライヤー・クロゼ実行可',
@@ -2396,7 +2404,7 @@ export const EFFECT_ID = {
         effect: 1.1,
         cut: 1,
         cut_heal: 1,
-        maxtime: 12
+        maxtime: 15
     },
     '101C': {
         name: 'スタープリズム',
@@ -2443,7 +2451,7 @@ export const EFFECT_ID = {
         name: '防御',
         type: [false, false, true, false, true],
         effect: 1,
-        cut: 0.1,
+        cut: 0.01,
         cut_heal: 1,
         maxtime: 4
     },
@@ -2719,15 +2727,15 @@ export const EFFECT_ID = {
         name: 'ディアブロシス',
         type: [false, false, false, true, false],
         effect: 1,
-        cut: 0.5,
-        cut_heal: 0.75,
+        cut: 1,
+        cut_heal: 0.67,
         maxtime: 10
     },
     //RoleAction Melee
     '07BE': {
         name: 'ブラッドバス',
         type: [true, false, false, false, true],
-        effect: 1.1,
+        effect: 1.25,
         cut: 1,
         cut_heal: 1,
         maxtime: 10
@@ -2760,19 +2768,19 @@ export const EFFECT_ID = {
     //RoleAction caster
     '1180': {
         name: 'ダルウェポン',
-        type: [true, false, false, true, false],
-        effect: 0.75,
+        type: [true, true, false, false, false],
+        effect: 0.67,
         cut: 1,
-        cut_heal: 0.75,
+        cut_heal: 1,
         maxtime: 10
     },
     '07C2': {
         name: 'ファントムダート',
-        type: [false, true, false, false, false],
+        type: [false, false, true, false, false],
         effect: 1,
         cut: 1.25,
         cut_heal: 1,
-        maxtime: 44
+        maxtime: 5
     },
     //Hidden Gorge
     '058C': {

@@ -47,7 +47,7 @@ export const DoT_ID = [
         dotid: '0C1B',
         name: 'アスペクトベネフィク[日]',
         potential: 3000,
-        max: 15,
+        max: 6,
         type: 'HoT'
     }, {
         actionid: '7249',
@@ -62,7 +62,7 @@ export const DoT_ID = [
         action_potential: 0,
         dotid: '0C30',
         name: 'リュペー',
-        potential: 8000,
+        potential: 9000,
         max: 5,
         type: 'DoT'
     }, {
@@ -75,11 +75,11 @@ export const DoT_ID = [
         type: 'DoT'
     }, {//black mage
         actionid: 'A208',
-        action_potential: 16000,//3000-6000-9000可変
+        action_potential: 20000,//フレアスター
         dotid: '0C92',
         name: '火傷',
-        potential: 4000,
-        max: 6,
+        potential: 5000,
+        max: 12,
         type: 'DoT'
     }, {
         actionid: '73E5',
@@ -95,7 +95,7 @@ export const DoT_ID = [
         dotid: '0C9E',
         name: '不死鳥の翼',
         potential: 4000,
-        max: 15,
+        max: 18,
         type: 'HoT'
     }, {
         actionid: '73F1',
@@ -126,7 +126,7 @@ export const DoT_ID = [
         action_potential: 8000,
         dotid: '0C75',
         name: '命水',
-        potential: 4000,
+        potential: 5000,
         max: 12,
         type: 'HoT'
     }, {
@@ -146,14 +146,6 @@ export const DoT_ID = [
         name: '活性のクレスト',
         potential: 6000,
         max: 6,
-        type: 'HoT'
-    }, {
-        actionid: '9931',
-        action_potential: 8000,
-        dotid: '1017',
-        name: 'スタープリズム',
-        potential: 2000,
-        max: 15,
         type: 'HoT'
     }, {
         actionid: '9928',
