@@ -78,6 +78,8 @@ const areaTypeSet_40 = (zoneID) => {
             return 5;
         case 1060://Crystal Conflict The Bayside Battleground
             return 5;
+        case 1229://Crystal Conflict Archeia Harmonias
+            return 5;
         case 1119://Worqor Chirteh
             return 1;
         case 51://Wolves Den Pier

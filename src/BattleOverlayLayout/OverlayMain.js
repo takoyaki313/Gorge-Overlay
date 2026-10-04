@@ -28,19 +28,22 @@ const PvPAreaZoneCC = [
   'the volcanic heart',
   'cloud nine',
   'the clockwork castletown',
-  'red sans',
-  'the bayside battleground'
+  'red sands',
+  'the bayside battleground',
+  'archeia harmonias'
 ];
 
 const PvPAreaZoneOt = ["wolves' den pier"];
+const zoneMatch = (list, zoneName) => list.some((name) => zoneName.includes(name));
 const encounterZoneGet = (Encounter) => {
-  if (PvPAreaZoneFL.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+  const zoneName = Encounter.CurrentZoneName.toLowerCase();
+  if (zoneMatch(PvPAreaZoneFL, zoneName)) {
     return 3;
-  } else if (PvPAreaZoneRW.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+  } else if (zoneMatch(PvPAreaZoneRW, zoneName)) {
     return 2;
-  } else if (PvPAreaZoneCC.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+  } else if (zoneMatch(PvPAreaZoneCC, zoneName)) {
     return 5;
-  } else if (PvPAreaZoneOt.indexOf(Encounter.CurrentZoneName.toLowerCase()) !== -1) {
+  } else if (zoneMatch(PvPAreaZoneOt, zoneName)) {
     if (devMode.wolves) {
       return 4;
     }
