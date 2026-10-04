@@ -19,6 +19,8 @@ const areaID = {
     1139: { type: 5, name: "The RedSans ", map: "s5p5", offset: { num: 4, x: 0, y: 0 } },
     1293: { type: 5, name: "The Bayside Battleground ", map: "s5p6", offset: { num: 4, x: -100, y: -100 } },
     1294: { type: 5, name: "The Bayside Battleground", map: "s5p6", offset: { num: 4, x: -100, y: -100 } },
+    1357: { type: 5, name: "Archeia Harmonias", map: "s5p7", offset: { num: 4, x: -100, y: -100 } },
+    1358: { type: 5, name: "Archeia Harmonias", map: "s5p7", offset: { num: 4, x: -100, y: -100 } },
 
     250: { type: 5, name: "Wolves Den Pier", map: "s1p1", offset: { num: 4, x: 77, y: 0 } },
     717: { type: 5, name: "Wolves Den Pier", map: "s1p1", offset: { num: 4, x: 77, y: 0 } },
