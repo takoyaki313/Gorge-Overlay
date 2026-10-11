@@ -1,4 +1,4 @@
-import { pet_replace, LimitBreak, LimitBreak_Extend } from "./loglineGlobal.js";
+import { pet_replace, LimitBreak, LimitBreak_Extend, Phalanx, PhalanxInvincibleTime } from "./loglineGlobal.js";
 import { timestamp_change } from "./logline_other.js";
 import { DoubleRocketPunch, Field_ID, Kaiki, GunyouPortion, Chaiser_HP, Oppressor_HP, Justice_HP, Core_Tower_HP, OpticalSight, BigMissile, Jouka } from "./loglineGlobal.js";
 import { update_maindata_change_array, update_maindata, insert_maindata_object, read_maindata } from "../maindataEdit.js";
@@ -113,6 +113,10 @@ export const networkactionsync_21_22 = async (log) => {
     let victim_input_data = { target: [], data: [], replace: [] };
     let attacker_input_data = { target: [], data: [], replace: [] };
 
+    let invincible_check = victim_effect.name.indexOf('damage');
+    if (invincible_check !== -1 && data.attackerID !== data.victimID && victim_effect.param[invincible_check].type === 'invincible') {
+        await invincible_hit_count(data.victimID, data.time_ms);
+    }
     if (victim_effect.name.length > 0) {
         victim_input_data = await networkaction_calc(data, victim_effect, "victim");
     }
@@ -157,7 +161,9 @@ export const networkactionsync_21_22 = async (log) => {
         let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
         attacker_input_data.replace.push(false);
-        attacker_input_data.data.push({ LimitBreak: data.actionID, use: 1, hit: data.hitnum, time: time, time_ms: data.time_ms });
+        //Phalanx : Hit is counted by invincible_hit_count
+        let hit = data.actionID === Phalanx ? invincible_pending_take(data.attackerID, data.time_ms) : data.hitnum;
+        attacker_input_data.data.push({ LimitBreak: data.actionID, use: 1, hit: hit, time: time, time_ms: data.time_ms });
     } else if (LimitBreak_Extend.indexOf(data.actionID) !== -1 && data.count_row === 0 && !data.dummy) {
         let time = Math.round((data.time_ms - battleEvent.timer.Get_BattleStart) / 1000);
         attacker_input_data.target.push('limitBreak');
@@ -178,6 +184,41 @@ export const networkactionsync_21_22 = async (log) => {
     if (special_Barrier !== -1) {
         await special_barrier_calc(data, Special_Barrier_ID[special_Barrier]);
     }
+}
+
+//Invincible starts with the first Phalanx line (no effect), but the LB is recorded with the second line (~1s later).
+//Attacks blocked before the record exists are kept here and added when the record is created.
+const PhalanxPendingTime = 3000;//ms
+let INVINCIBLE_PENDING = new Map();//victimID -> [time_ms, ...]
+
+const invincible_hit_count = async (victimID, time_ms) => {
+    //Invincible(0516) only comes from Phalanx -> add the blocked attack to the latest Phalanx
+    let read_data = await read_maindata('Player_data', 'nameID', victimID, 'limitBreak');
+    if (typeof read_data.limitBreak === 'object') {
+        for (let i = read_data.limitBreak.length - 1; i >= 0; i--) {
+            let lb = read_data.limitBreak[i];
+            if (lb.LimitBreak === Phalanx) {
+                if (time_ms - lb.time_ms <= PhalanxInvincibleTime) {
+                    lb.hit++;
+                    return null;
+                }
+                break;
+            }
+        }
+    }
+    if (!INVINCIBLE_PENDING.has(victimID)) {
+        INVINCIBLE_PENDING.set(victimID, []);
+    }
+    INVINCIBLE_PENDING.get(victimID).push(time_ms);
+}
+
+const invincible_pending_take = (attackerID, time_ms) => {
+    let pending = INVINCIBLE_PENDING.get(attackerID);
+    INVINCIBLE_PENDING.delete(attackerID);
+    if (pending === undefined) {
+        return 0;
+    }
+    return pending.filter((t) => time_ms - t <= PhalanxPendingTime).length;
 }
 
 const special_barrier_calc = async (data, barrier) => {
@@ -1056,10 +1097,10 @@ const network_action_datatype = async (log) => {
 
 const effect_offset_checker = async (flag, log) => {
     switch (flag) {
-        case '01':
-            return 'miss';
+        case '01'://blocked by Invincible (damage 0)
+            return 'invincible';
         case '1':
-            return 'miss';
+            return 'invincible';
         case '21':
             return 'ex-miss';
         case '05':

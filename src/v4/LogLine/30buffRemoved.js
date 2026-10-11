@@ -4,7 +4,7 @@ import { new_change_accept_damage } from "./24networkDoT.js";
 import { timestamp_change } from "./logline_other.js";
 import { devMode } from "../../index.js";
 
-const UniqueID_end = 3;
+const UniqueID_end = 2;//A2C(Kardia) and 51A(Soul Survivor) are handled in 24. C64 must be included here
 const AcceptMarginTime = 100;
 
 export const network_buff_removed_30 = async (log) => {
